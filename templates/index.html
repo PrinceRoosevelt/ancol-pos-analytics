@@ -1,0 +1,4186 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sales Performance Dashboard 2026 vs 2025</title>
+  <!-- SheetJS untuk ekspor Excel langsung di browser -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --panel-hover: #f1f5f9;
+      --panel-border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --brand: #2563eb;
+      --brand-subtle: #eff6ff;
+      --brand-border: #bfdbfe;
+      --success: #10b981;
+      --success-subtle: #ecfdf5;
+      --success-border: #a7f3d0;
+      --warning: #f59e0b;
+      --warning-subtle: #fffbeb;
+      --warning-border: #fde68a;
+      --danger: #ef4444;
+      --danger-subtle: #fef2f2;
+      --danger-border: #fecaca;
+      --purple: #8b5cf6;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+      --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+      --radius-sm: 6px;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+    }
+
+    :root.dark {
+      color-scheme: dark;
+      --bg: #0b0f19;
+      --panel: #111827;
+      --panel-hover: #1f2937;
+      --panel-border: #1f2937;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-light: #64748b;
+      --brand: #3b82f6;
+      --brand-subtle: #1e293b;
+      --brand-border: #1d4ed8;
+      --success: #10b981;
+      --success-subtle: #064e3b;
+      --success-border: #047857;
+      --warning: #f59e0b;
+      --warning-subtle: #78350f;
+      --warning-border: #b45309;
+      --danger: #f87171;
+      --danger-subtle: #7f1d1d;
+      --danger-border: #b91c1c;
+      --purple: #a78bfa;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+      --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color .3s ease, color .3s ease;
+    }
+
+    .app-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 20px 24px 60px;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--panel-border);
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+
+    .brand-info h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-info p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--brand-subtle);
+      color: var(--brand);
+      border: 1px solid var(--brand-border);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--brand);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 15px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--panel-border);
+      background: var(--panel);
+      color: var(--text);
+      transition: all .2s ease;
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: var(--panel-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: #ffffff !important;
+      border-color: #2563eb;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+
+    /* Sticky Filter Bar */
+    .filter-card {
+      position: sticky;
+      top: 12px;
+      z-index: 90;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+      transition: box-shadow .3s ease, background-color .3s ease, padding .2s ease;
+    }
+
+    :root.dark .filter-card {
+      background: rgba(17, 24, 39, 0.92);
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.55fr 1fr 1.25fr;
+      gap: 14px;
+      align-items: flex-end;
+    }
+
+    @media (max-width: 1100px) {
+      .filter-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--panel-border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13.5px;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    select:focus, input[type="text"]:focus {
+      border-color: var(--brand);
+    }
+
+    /* Custom Date Trigger in Filter Bar */
+    .custom-date-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      background: var(--bg);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-sm);
+      padding: 7px 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: all .2s ease;
+      min-height: 38px;
+    }
+    .custom-date-trigger:hover {
+      border-color: var(--brand);
+      background: var(--panel-bg);
+    }
+    .trigger-content {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 0;
+    }
+    .trigger-icon {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    .trigger-text {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .trigger-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .trigger-arrow {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .btn-clear-date {
+      border: none;
+      background: rgba(148, 163, 184, 0.25);
+      color: var(--text-muted);
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+      flex-shrink: 0;
+    }
+    .btn-clear-date:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    /* Modal Overlay */
+    .cal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: calFadeIn .2s ease-out;
+    }
+    @keyframes calFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Calendar Card (Matching Screenshot) */
+    .cal-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 440px;
+      border-radius: 22px;
+      padding: 24px 24px 20px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.25), 0 0 1px 1px rgba(0, 0, 0, 0.05);
+      color: #1e293b;
+      position: relative;
+      animation: calSlideUp .25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    :root.dark .cal-card {
+      background: #111827;
+      color: #f8fafc;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+    @keyframes calSlideUp {
+      from { opacity: 0; transform: translateY(16px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .cal-top-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .cal-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      margin: 0 0 3px 0;
+    }
+    :root.dark .cal-title {
+      color: #f8fafc;
+    }
+    .cal-subtitle {
+      font-size: 11.5px;
+      color: #64748b;
+    }
+    :root.dark .cal-subtitle {
+      color: #94a3b8;
+    }
+    .cal-btn-close-icon {
+      border: none;
+      background: #f1f5f9;
+      color: #64748b;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+    }
+    :root.dark .cal-btn-close-icon {
+      background: #1e293b;
+      color: #94a3b8;
+    }
+    .cal-btn-close-icon:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+    :root.dark .cal-btn-close-icon:hover {
+      background: #334155;
+      color: #fff;
+    }
+
+    /* From / To Pills Bar (Matching Screenshot) */
+    .cal-range-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+    }
+    :root.dark .cal-range-header {
+      background: #0f172a;
+      border-color: #1e293b;
+    }
+    .cal-range-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cal-range-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+      flex-shrink: 0;
+    }
+    :root.dark .cal-range-label {
+      color: #94a3b8;
+    }
+    .cal-range-val-pill {
+      flex: 1;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 18px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #0f172a;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    :root.dark .cal-range-val-pill {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+    .cal-range-val-pill.active {
+      border-color: #0284c7;
+      background: #f0f9ff;
+      color: #0369a1;
+    }
+    :root.dark .cal-range-val-pill.active {
+      background: rgba(2, 132, 199, 0.2);
+      color: #38bdf8;
+    }
+
+    /* Month & Year Selectors with Navigation (Matching Screenshot) */
+    .cal-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .cal-nav-btn {
+      border: none;
+      background: #f1f5f9;
+      color: #334155;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+    }
+    :root.dark .cal-nav-btn {
+      background: #1e293b;
+      color: #cbd5e1;
+    }
+    .cal-nav-btn:hover {
+      background: #0284c7;
+      color: #fff;
+    }
+    .cal-selectors {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cal-select-pill {
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      color: #0f172a;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 20px;
+      padding: 6px 14px;
+      outline: none;
+      cursor: pointer;
+      transition: border-color .2s;
+    }
+    :root.dark .cal-select-pill {
+      border-color: #334155;
+      background: #1e293b;
+      color: #f8fafc;
+    }
+    .cal-select-pill:focus {
+      border-color: #0284c7;
+    }
+
+    /* Weekday Headers */
+    .cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    :root.dark .cal-weekdays {
+      border-color: #1e293b;
+    }
+    .cal-wd {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      letter-spacing: 0.05em;
+    }
+    :root.dark .cal-wd {
+      color: #94a3b8;
+    }
+    .cal-wd-sun {
+      color: #ef4444 !important; /* Hari Minggu Merah */
+    }
+    .cal-wd-sat {
+      color: #0284c7 !important; /* Hari Sabtu Biru */
+    }
+
+    /* Days Grid */
+    .cal-days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      row-gap: 4px;
+      column-gap: 2px;
+      margin-bottom: 14px;
+    }
+    .cal-day-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 50%;
+      user-select: none;
+      transition: all .15s ease;
+      color: #1e293b;
+    }
+    :root.dark .cal-day-cell {
+      color: #e2e8f0;
+    }
+    .cal-day-cell:hover:not(.disabled):not(.active-endpoint) {
+      background: #f1f5f9;
+    }
+    :root.dark .cal-day-cell:hover:not(.disabled):not(.active-endpoint) {
+      background: #1e293b;
+    }
+    .cal-day-cell.other-month {
+      color: #cbd5e1 !important;
+      cursor: default;
+      pointer-events: none;
+    }
+    :root.dark .cal-day-cell.other-month {
+      color: #475569 !important;
+    }
+
+    /* Sunday & Holiday Styling (Tanggal Merah Indonesia) */
+    .cal-day-cell.sunday {
+      color: #ef4444; /* Merah untuk hari Minggu */
+    }
+    .cal-day-cell.saturday {
+      color: #0284c7; /* Biru/Cyan untuk hari Sabtu */
+    }
+    .cal-day-cell.holiday {
+      color: #ef4444 !important; /* Merah terang untuk Libur Nasional */
+      font-weight: 800;
+    }
+    .holiday-dot {
+      width: 4px;
+      height: 4px;
+      background: #ef4444;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 4px;
+    }
+
+    /* In Range & Selected Endpoints (Matching Screenshot Blue Pill) */
+    .cal-day-cell.in-range {
+      background: #e0f2fe !important;
+      border-radius: 0 !important;
+      color: #0369a1 !important;
+    }
+    :root.dark .cal-day-cell.in-range {
+      background: rgba(2, 132, 199, 0.25) !important;
+      color: #7dd3fc !important;
+    }
+    .cal-day-cell.range-start {
+      border-top-left-radius: 50% !important;
+      border-bottom-left-radius: 50% !important;
+    }
+    .cal-day-cell.range-end {
+      border-top-right-radius: 50% !important;
+      border-bottom-right-radius: 50% !important;
+    }
+    .cal-day-cell.active-endpoint {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      border-radius: 50% !important;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4);
+      font-weight: 700 !important;
+    }
+    .cal-day-cell.active-endpoint .holiday-dot {
+      background: #ffffff;
+    }
+
+    /* Holiday & Legend Bar */
+    .cal-legend-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      font-size: 11px;
+      color: #64748b;
+      margin-bottom: 12px;
+      padding: 6px 10px;
+      background: #f8fafc;
+      border-radius: 10px;
+    }
+    :root.dark .cal-legend-bar {
+      background: #1e293b;
+      color: #94a3b8;
+    }
+    .cal-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Presets */
+    .cal-presets-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .cal-preset-btn {
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      color: #475569;
+      border-radius: 14px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    :root.dark .cal-preset-btn {
+      background: #1e293b;
+      border-color: #334155;
+      color: #cbd5e1;
+    }
+    .cal-preset-btn:hover {
+      background: #0284c7;
+      color: #fff;
+      border-color: #0284c7;
+    }
+
+    /* Footer Buttons (Matching Screenshot: Close in peach, Confirm in lime/green) */
+    .cal-footer-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 8px;
+    }
+    .cal-btn-action {
+      border: none;
+      border-radius: 20px;
+      padding: 10px 24px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cal-btn-close {
+      background: #fff1f2;
+      color: #e11d48;
+    }
+    :root.dark .cal-btn-close {
+      background: rgba(225, 29, 72, 0.15);
+      color: #fda4af;
+    }
+    .cal-btn-close:hover {
+      background: #ffe4e6;
+      transform: translateY(-1px);
+    }
+    .cal-btn-confirm {
+      background: #ecfccb;
+      color: #4d7c0f;
+    }
+    :root.dark .cal-btn-confirm {
+      background: rgba(132, 204, 22, 0.2);
+      color: #bef264;
+    }
+    .cal-btn-confirm:hover {
+      background: #d9f99d;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(101, 163, 13, 0.25);
+    }
+
+    .active-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--panel-border);
+      align-items: center;
+    }
+
+    .filter-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      background: var(--brand-subtle);
+      color: var(--brand);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* Executive Narrative Banner */
+    .narrative-banner {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(124, 58, 237, 0.08));
+      border: 1px solid var(--brand-border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .narrative-icon {
+      font-size: 24px;
+      line-height: 1;
+      padding: 10px;
+      border-radius: var(--radius);
+      background: var(--brand-subtle);
+      color: var(--brand);
+    }
+
+    .narrative-content h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--brand);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .narrative-content p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    /* KPI Hero Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 1300px) {
+      .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 900px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+    }
+
+    .kpi-card {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      transition: transform .2s ease, box-shadow .2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .kpi-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .kpi-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .kpi-badge-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+      background: var(--panel-hover);
+    }
+
+    .kpi-value {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .kpi-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-top: 10px;
+      border-top: 1px solid var(--panel-border);
+      font-size: 12.5px;
+    }
+
+    .kpi-compare-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-muted);
+    }
+
+    .badge-growth {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      font-size: 11.5px;
+    }
+
+    .badge-growth.positive {
+      background: var(--success-subtle);
+      color: var(--success);
+    }
+
+    .badge-growth.negative {
+      background: var(--danger-subtle);
+      color: var(--danger);
+    }
+
+    .badge-growth.neutral {
+      background: var(--panel-hover);
+      color: var(--text-muted);
+    }
+
+    /* Target Progress Bar */
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: var(--panel-hover);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #f59e0b, #10b981);
+      border-radius: var(--radius-full);
+      transition: width .4s ease-out;
+    }
+
+    /* Operational Insights 3-column Grid */
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .insight-card {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .insight-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .insight-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .insight-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--panel-border);
+      font-size: 13px;
+    }
+
+    .insight-item:last-child {
+      border-bottom: none;
+    }
+
+    .insight-rank {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--panel-hover);
+      font-size: 11px;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    /* Visual Charts Section */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .chart-panel {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .chart-header h2 {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    canvas {
+      width: 100%;
+      height: 320px;
+      display: block;
+      cursor: crosshair;
+    }
+
+    /* Custom Tooltips */
+    .chart-tooltip {
+      position: absolute;
+      display: none;
+      pointer-events: none;
+      background: #0f172a;
+      color: #f8fafc;
+      border: 1px solid #334155;
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      box-shadow: var(--shadow-md);
+      z-index: 10;
+      min-width: 220px;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .tooltip-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 4px;
+    }
+
+    .tooltip-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .tooltip-label {
+      color: #94a3b8;
+    }
+
+    .tooltip-val {
+      font-weight: 700;
+    }
+
+    /* Tables Section */
+    .table-section {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .table-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .tab-group {
+      display: flex;
+      gap: 6px;
+      background: var(--bg);
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--panel-border);
+    }
+
+    .tab-btn {
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .tab-btn.active {
+      background: var(--panel);
+      color: var(--brand);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .table-search {
+      max-width: 280px;
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    th {
+      padding: 10px 12px;
+      background: var(--bg);
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--panel-border);
+      white-space: nowrap;
+      text-transform: uppercase;
+      font-size: 11.5px;
+      letter-spacing: 0.03em;
+    }
+
+    th.text-right, td.text-right {
+      text-align: right;
+    }
+
+    th.text-center, td.text-center {
+      text-align: center;
+    }
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--panel-border);
+      white-space: nowrap;
+    }
+
+    tr:hover td {
+      background: var(--panel-hover);
+    }
+
+    .bar-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: 100%;
+      min-width: 140px;
+    }
+
+    .data-bar {
+      position: absolute;
+      right: 0;
+      top: 2px;
+      bottom: 2px;
+      background: rgba(37, 99, 235, 0.12);
+      border-radius: 4px;
+      z-index: 0;
+    }
+
+    .bar-value {
+      position: relative;
+      z-index: 1;
+      font-weight: 600;
+    }
+
+    mark.search-highlight {
+      background-color: #fef08a;
+      color: #854d0e;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-weight: 700;
+    }
+
+    :root.dark mark.search-highlight {
+      background-color: #854d0e;
+      color: #fef08a;
+    }
+
+    .table-action-bar select {
+      border-color: var(--panel-border);
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .search-wrapper input {
+      width: 100%;
+    }
+
+    /* Business Insight Section Styling */
+    .business-insight-section {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .insight-header-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: 1px solid var(--panel-border);
+      padding-bottom: 14px;
+    }
+
+    .insight-badge-tag {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #2563eb;
+      margin-bottom: 4px;
+    }
+    :root.dark .insight-badge-tag {
+      color: #60a5fa;
+    }
+
+    .insight-main-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      margin: 0 0 3px 0;
+    }
+
+    .insight-sub-title {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .insight-health-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--brand-subtle);
+      color: var(--brand);
+      border: 1px solid var(--brand-border);
+    }
+    .insight-health-status.positive {
+      background: var(--success-subtle);
+      color: var(--success);
+      border-color: rgba(16, 185, 129, 0.25);
+    }
+    .insight-health-status.warning {
+      background: #fef3c7;
+      color: #b45309;
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+    :root.dark .insight-health-status.warning {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+    .insight-health-status.danger {
+      background: var(--danger-subtle);
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.25);
+    }
+
+    .health-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .insight-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      .insight-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .biz-card {
+      background: var(--bg);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-sm);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all .2s ease;
+    }
+    .biz-card:hover {
+      border-color: var(--brand);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .biz-card-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .biz-card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .biz-card-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .biz-card-val {
+      font-size: 15.5px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .biz-card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .biz-point {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .biz-point-tag {
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .biz-point-tag.growth { background: #dcfce7; color: #15803d; }
+    .biz-point-tag.drop { background: #fee2e2; color: #b91c1c; }
+    .biz-point-tag.target { background: #fef3c7; color: #b45309; }
+    .biz-point-tag.driver { background: #e0f2fe; color: #0369a1; }
+    .biz-point-tag.star { background: #fef08a; color: #854d0e; }
+    .biz-point-tag.action { background: #f3e8ff; color: #7e22ce; }
+
+    :root.dark .biz-point-tag.growth { background: rgba(34, 197, 94, 0.2); color: #86efac; }
+    :root.dark .biz-point-tag.drop { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+    :root.dark .biz-point-tag.target { background: rgba(245, 158, 11, 0.2); color: #fde68a; }
+    :root.dark .biz-point-tag.driver { background: rgba(2, 132, 199, 0.2); color: #7dd3fc; }
+    :root.dark .biz-point-tag.star { background: rgba(234, 179, 8, 0.2); color: #fef08a; }
+    :root.dark .biz-point-tag.action { background: rgba(168, 85, 247, 0.2); color: #d8b4fe; }
+
+    .biz-point-text {
+      flex: 1;
+    }
+    .biz-point-text strong {
+      color: var(--text);
+    }
+
+    .glossary-card {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .glossary-item strong {
+      color: var(--text);
+    }
+
+    /* Scroll to Top Floating Button */
+    .btn-scroll-top {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.45);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: bold;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(16px);
+      transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+      outline: none;
+    }
+
+    .btn-scroll-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .btn-scroll-top:hover {
+      background: #1d4ed8;
+      transform: translateY(-4px) scale(1.06);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+    }
+
+    .btn-scroll-top:active {
+      transform: translateY(-1px) scale(0.98);
+    }
+
+    @media (max-width: 1100px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .insights-grid { grid-template-columns: 1fr; }
+      .charts-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .app-container { padding: 12px 14px 40px; }
+      .kpi-grid { grid-template-columns: 1fr; }
+      header { flex-direction: column; align-items: flex-start; }
+      .header-controls { width: 100%; justify-content: space-between; }
+      .filter-card {
+        top: 8px;
+        padding: 12px 14px;
+      }
+      .btn-scroll-top {
+        bottom: 20px;
+        right: 20px;
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+      }
+    }
+
+    @media print {
+      body { background: white !important; color: black !important; font-size: 11pt; }
+      .header-controls, .filter-card, .tab-group, .table-search, .btn { display: none !important; }
+      .app-container { max-width: 100%; padding: 0; }
+      .chart-panel, .kpi-card, .insight-card, .table-section { box-shadow: none !important; border: 1px solid #ccc !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-container">
+
+  <!-- Header -->
+  <header>
+    <div class="brand-section">
+      <div class="brand-logo">📊</div>
+      <div class="brand-info">
+        <h1>Sales Performance & Growth Dashboard</h1>
+        <p>Analisis Penjualan <strong>2026 (Utama)</strong> vs <strong>2025 (Pembanding)</strong> & Monitoring Target</p>
+      </div>
+    </div>
+    <div class="header-controls">
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span id="rowsCountBadge">{{ data.rows_read }} Baris Data Diolah</span>
+      </div>
+      <button type="button" class="btn" id="themeToggle">
+        <span id="themeIcon">☀</span> <span id="themeText">Tema</span>
+      </button>
+      <button type="button" class="btn btn-primary" id="btnDownloadExcel" onclick="downloadCuratedExcel()">
+        <span>📥</span> <span>Download Laporan (.xlsx)</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Filter Card -->
+  <div class="filter-card">
+    <div class="filter-grid">
+      <div class="filter-group">
+        <label class="filter-label">Periode Bulan (2026)</label>
+        <select id="filterMonth" onchange="applyFilters()">
+          <option value="">Semua Bulan (YTD)</option>
+          {% for m in data.months %}
+          <option value="{{ m }}" {% if m == selected_month %}selected{% endif %}>{{ data.month_labels[m] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Rentang Tanggal (Kalender)</label>
+        <div class="custom-date-trigger" id="customDateTrigger" onclick="openCalendarModal(event)">
+          <div class="trigger-content">
+            <span class="trigger-icon">📅</span>
+            <span id="dateRangeDisplayLabel" class="trigger-text">Semua Tanggal (YTD)</span>
+          </div>
+          <div class="trigger-actions">
+            <button type="button" id="clearDateBtn" class="btn-clear-date" onclick="event.stopPropagation(); clearDateRange();" title="Reset Tanggal" style="display:none;">✕</button>
+            <span class="trigger-arrow">▾</span>
+          </div>
+        </div>
+        <input type="hidden" id="filterStartDate" value="">
+        <input type="hidden" id="filterEndDate" value="">
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Area Operasional</label>
+        <select id="filterArea" onchange="onAreaChange()">
+          <option value="">Semua Area</option>
+          {% for a in data.area_options %}
+          <option value="{{ a }}" {% if a == selected_area %}selected{% endif %}>{{ a }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Lokasi Konter / Outlet</label>
+        <select id="filterOutlet" onchange="applyFilters()">
+          <option value="">Semua Outlet ({{ data.outlet_options|length }})</option>
+          {% for o in data.outlet_options %}
+          <option value="{{ o }}" {% if o == selected_outlet %}selected{% endif %}>{{ o }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div id="activeFiltersContainer" class="active-filters" style="{% if not (selected_month or selected_date or selected_area or selected_outlet) %}display:none;{% endif %}">
+      <span style="font-size:12px; font-weight:600; color:var(--text-muted);">Filter Aktif:</span>
+      <span id="activeFilterTags"></span>
+      <button type="button" class="btn" onclick="resetFilters()" style="padding:2px 8px; font-size:11px; margin-left:auto; background:transparent; border-color:var(--panel-border);">✖ Reset Filter</button>
+    </div>
+  </div>
+
+  <!-- Custom Calendar Modal Popup (Matching Mockup UI) -->
+  <div id="calendarModalOverlay" class="cal-overlay" onclick="closeCalendarModal(event)" style="display:none;">
+    <div class="cal-card" onclick="event.stopPropagation()">
+      <div class="cal-top-header">
+        <div class="cal-title-area">
+          <h3 class="cal-title">Select Date</h3>
+          <span class="cal-subtitle">Weekend &amp; Tanggal Merah Indonesia ditandai warna khusus</span>
+        </div>
+        <button type="button" class="cal-btn-close-icon" onclick="closeCalendarModal(event)">✕</button>
+      </div>
+
+      <!-- From / To Header Pills (Matching Screenshot) -->
+      <div class="cal-range-header">
+        <div class="cal-range-box">
+          <span class="cal-range-label">From</span>
+          <div class="cal-range-val-pill" id="calFromDisplay">Pilih Tanggal ▾</div>
+        </div>
+        <div class="cal-range-box">
+          <span class="cal-range-label">To</span>
+          <div class="cal-range-val-pill" id="calToDisplay">Pilih Tanggal ▾</div>
+        </div>
+      </div>
+
+      <!-- Navigation & Month/Year Selector -->
+      <div class="cal-nav-bar">
+        <button type="button" class="cal-nav-btn" onclick="navCalendarMonth(-1)" title="Bulan Sebelumnya">‹</button>
+        <div class="cal-selectors">
+          <select id="calMonthSelect" class="cal-select-pill" onchange="onCalSelectChange()">
+            <option value="0">Januari</option>
+            <option value="1">Februari</option>
+            <option value="2">Maret</option>
+            <option value="3">April</option>
+            <option value="4">Mei</option>
+            <option value="5">Juni</option>
+            <option value="6">Juli</option>
+            <option value="7">Agustus</option>
+            <option value="8">September</option>
+            <option value="9">Oktober</option>
+            <option value="10">November</option>
+            <option value="11">Desember</option>
+          </select>
+          <select id="calYearSelect" class="cal-select-pill" onchange="onCalSelectChange()">
+            <option value="2026">2026</option>
+            <option value="2025">2025</option>
+          </select>
+        </div>
+        <button type="button" class="cal-nav-btn" onclick="navCalendarMonth(1)" title="Bulan Berikutnya">›</button>
+      </div>
+
+      <!-- Weekdays Header -->
+      <div class="cal-weekdays">
+        <span class="cal-wd cal-wd-sun" title="Minggu">SUN</span>
+        <span class="cal-wd" title="Senin">MON</span>
+        <span class="cal-wd" title="Selasa">TUE</span>
+        <span class="cal-wd" title="Rabu">WED</span>
+        <span class="cal-wd" title="Kamis">THU</span>
+        <span class="cal-wd" title="Jumat">FRI</span>
+        <span class="cal-wd cal-wd-sat" title="Sabtu">SAT</span>
+      </div>
+
+      <!-- Days Grid (Rendered via JS) -->
+      <div id="calDaysGrid" class="cal-days-grid"></div>
+
+      <!-- Holiday Legend & Info Note -->
+      <div class="cal-legend-bar">
+        <div class="cal-legend-item"><span class="holiday-dot" style="position:static; display:inline-block; margin-right:4px;"></span> <span style="color:#ef4444; font-weight:700;">Tanggal Merah</span> (Libur Nasional)</div>
+        <div class="cal-legend-item"><span style="color:#ef4444; font-weight:700;">SUN</span>: Minggu | <span style="color:#0284c7; font-weight:700;">SAT</span>: Sabtu</div>
+      </div>
+
+      <!-- Quick Presets -->
+      <div class="cal-presets-bar">
+        <button type="button" class="cal-preset-btn" onclick="applyQuickPreset('today')">Hari Ini</button>
+        <button type="button" class="cal-preset-btn" onclick="applyQuickPreset('7days')">7 Hari</button>
+        <button type="button" class="cal-preset-btn" onclick="applyQuickPreset('30days')">30 Hari</button>
+        <button type="button" class="cal-preset-btn" onclick="applyQuickPreset('thisMonth')">Bulan Ini</button>
+        <button type="button" class="cal-preset-btn" onclick="applyQuickPreset('all')">Semua Data (YTD)</button>
+      </div>
+
+      <!-- Bottom Action Buttons (Matching Screenshot: Close & Confirm) -->
+      <div class="cal-footer-actions">
+        <button type="button" class="cal-btn-action cal-btn-close" onclick="closeCalendarModal(event)">Close</button>
+        <button type="button" class="cal-btn-action cal-btn-confirm" onclick="confirmCalendarSelection()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Executive Summary Banner (Auto Narrative) -->
+  <div class="narrative-banner">
+    <div class="narrative-icon">💡</div>
+    <div class="narrative-content">
+      <h3>Ringkasan Eksekutif & Kinerja Utama</h3>
+      <p id="narrativeText">{{ data.executive_narrative }}</p>
+    </div>
+  </div>
+
+  <!-- 4 Main Hero KPI Scorecards -->
+  <div class="kpi-grid">
+    
+    <!-- KPI 1: Net Sales -->
+    <div class="kpi-card">
+      <div class="kpi-card-header">
+        <span class="kpi-title">Total Net Sales (2026)</span>
+        <div class="kpi-badge-icon">💰</div>
+      </div>
+      <div class="kpi-value" id="kpiSales2026">Rp {{ "{:,.0f}".format(data.summary["2026"]["net_sales"]).replace(',', '.') }}</div>
+      <div class="kpi-footer">
+        <div class="kpi-compare-row">
+          <span>Tahun 2025:</span>
+          <strong id="kpiSales2025">Rp {{ "{:,.0f}".format(data.summary["2025"]["net_sales"]).replace(',', '.') }}</strong>
+        </div>
+        <div class="kpi-compare-row">
+          <span>Pertumbuhan YoY:</span>
+          <span id="kpiSalesGrowth" class="badge-growth {% if data.summary['growth']['net_sales'] is not none and data.summary['growth']['net_sales'] >= 0 %}positive{% elif data.summary['growth']['net_sales'] is not none %}negative{% else %}neutral{% endif %}">
+            {% if data.summary['growth']['net_sales'] is none %}-{% else %}{{ "{:+.2f}%".format(data.summary['growth']['net_sales']) }}{% endif %}
+            ({{ "{:+,.0f}".format(data.summary["diff"]["net_sales"]).replace(',', '.') }})
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI 2: Target Revenue -->
+    <div class="kpi-card">
+      <div class="kpi-card-header">
+        <span class="kpi-title">Target Revenue (2026)</span>
+        <div class="kpi-badge-icon">🎯</div>
+      </div>
+      <div class="kpi-value" id="kpiTargetRevenue">Rp {{ "{:,.0f}".format(data.target_revenue).replace(',', '.') }}</div>
+      <div class="kpi-footer">
+        <div class="kpi-compare-row">
+          <span>Pencapaian:</span>
+          <strong id="kpiTargetAchievement">{{ "{:.2f}%".format(data.target_achievement) }}</strong>
+        </div>
+        <div class="progress-track">
+          <div id="kpiTargetProgressFill" class="progress-fill" style="width: {{ [data.target_achievement, 100.0]|min }}%;"></div>
+        </div>
+        <div class="kpi-compare-row">
+          <span>Status:</span>
+          <span id="kpiTargetStatus" class="badge-growth {% if data.target_gap >= 0 %}positive{% else %}negative{% endif %}">
+            {{ data.target_status }} ({{ "{:+,.0f}".format(data.target_gap).replace(',', '.') }})
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI 3: Transaksi & ATV -->
+    <div class="kpi-card">
+      <div class="kpi-card-header">
+        <span class="kpi-title">Total Transaksi & ATV</span>
+        <div class="kpi-badge-icon">🧾</div>
+      </div>
+      <div class="kpi-value"><span id="kpiTx2026">{{ "{:,.0f}".format(data.summary["2026"]["transactions"]).replace(',', '.') }}</span> <span style="font-size:14px; font-weight:normal; color:var(--text-muted);">Struk</span></div>
+      <div class="kpi-footer">
+        <div class="kpi-compare-row">
+          <span>Pertumbuhan Struk:</span>
+          <span id="kpiTxGrowth" class="badge-growth {% if data.summary['growth']['transactions'] is not none and data.summary['growth']['transactions'] >= 0 %}positive{% else %}negative{% endif %}">
+            {% if data.summary['growth']['transactions'] is none %}-{% else %}{{ "{:+.2f}%".format(data.summary['growth']['transactions']) }}{% endif %}
+          </span>
+        </div>
+        <div class="kpi-compare-row">
+          <span>ATV (Rata-rata/Struk):</span>
+          <strong id="kpiAtv">Rp {{ "{:,.0f}".format(data.summary["2026"]["atv"]).replace(',', '.') }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI 4: Qty & UPT -->
+    <div class="kpi-card">
+      <div class="kpi-card-header">
+        <span class="kpi-title">Volume Barang (Qty) & UPT</span>
+        <div class="kpi-badge-icon">📦</div>
+      </div>
+      <div class="kpi-value"><span id="kpiQty2026">{{ "{:,.0f}".format(data.summary["2026"]["qty"]).replace(',', '.') }}</span> <span style="font-size:14px; font-weight:normal; color:var(--text-muted);">Pcs</span></div>
+      <div class="kpi-footer">
+        <div class="kpi-compare-row">
+          <span>Pertumbuhan Qty:</span>
+          <span id="kpiQtyGrowth" class="badge-growth {% if data.summary['growth']['qty'] is not none and data.summary['growth']['qty'] >= 0 %}positive{% else %}negative{% endif %}">
+            {% if data.summary['growth']['qty'] is none %}-{% else %}{{ "{:+.2f}%".format(data.summary['growth']['qty']) }}{% endif %}
+          </span>
+        </div>
+        <div class="kpi-compare-row">
+          <span>UPT (Barang/Struk):</span>
+          <strong id="kpiUpt">{{ "{:.2f}".format(data.summary["2026"]["upt"]) }} item</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI 5: Pengunjung & SPH (Spending per Head) -->
+    <div class="kpi-card">
+      <div class="kpi-card-header">
+        <span class="kpi-title">Pengunjung &amp; SPH (2026)</span>
+        <div class="kpi-badge-icon" style="background:#ecfdf5; color:#059669;">👥</div>
+      </div>
+      <div class="kpi-value">
+        {% if data.total_visitors and data.total_visitors > 0 %}
+        <span id="kpiVisitorCount">{{ "{:,.0f}".format(data.total_visitors).replace(',', '.') }}</span> <span style="font-size:14px; font-weight:normal; color:var(--text-muted);">Orang</span>
+        {% else %}
+        <span id="kpiVisitorCount" style="font-size:16px; color:var(--text-muted); font-weight:600;">Belum Diinput</span>
+        {% endif %}
+      </div>
+      <div class="kpi-footer">
+        <div class="kpi-compare-row">
+          <span>SPH (Belanja/Head):</span>
+          <strong id="kpiSphVal">
+            {% if data.sph and data.sph > 0 %}
+            Rp {{ "{:,.0f}".format(data.sph).replace(',', '.') }}
+            {% else %}
+            -
+            {% endif %}
+          </strong>
+        </div>
+        <div class="kpi-compare-row">
+          <span>Capture Rate:</span>
+          <span id="kpiCaptureRate" class="badge-growth {% if data.capture_rate and data.capture_rate > 0 %}positive{% else %}neutral{% endif %}">
+            {% if data.capture_rate and data.capture_rate > 0 %}
+            {{ "{:.1f}%".format(data.capture_rate) }} ({{ "{:,.0f}".format(data.summary['2026']['transactions']).replace(',', '.') }} struk)
+            {% else %}
+            -
+            {% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Operational Insights Grid -->
+  <div class="insights-grid">
+    
+    <!-- Card 1: Peak Hours -->
+    <div class="insight-card">
+      <h3><span>⏰</span> Jam Sibuk Operasional (Peak Hours)</h3>
+      <div class="insight-list">
+        <div class="insight-item">
+          <span class="text-muted">Puncak Penjualan (Revenue):</span>
+          <strong id="peakSalesHour">Pukul {{ data.peak_sales_hour }}:00</strong>
+        </div>
+        <div class="insight-item">
+          <span class="text-muted">Puncak Kepadatan Struk:</span>
+          <strong id="peakTxHour">Pukul {{ data.peak_tx_hour }}:00</strong>
+        </div>
+        <div class="insight-item" style="background:var(--panel-hover); padding:8px 10px; border-radius:6px; margin-top:4px;">
+          <span style="font-size:12px; color:var(--text-muted);">💡 <em>Tips Operasional:</em> Pastikan antrian kasir dan restock barang siap 30 menit sebelum jam puncak.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Top 5 Outlets -->
+    <div class="insight-card">
+      <h3><span>🏆</span> Top 5 Cabang Terbesar (2026)</h3>
+      <div class="insight-list" id="topOutletsList">
+        {% for o in data.top_5_outlets %}
+        <div class="insight-item">
+          <div>
+            <span class="insight-rank">{{ loop.index }}</span>
+            <span>{{ o.name }}</span>
+          </div>
+          <strong>Rp {{ "{:,.0f}".format(o["2026"]["net_sales"]).replace(',', '.') }} <span style="font-size:11px; color:var(--text-muted);">({{ "{:.1f}%".format(o.contrib_2026) }})</span></strong>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Card 3: Bottom 5 Outlets -->
+    <div class="insight-card">
+      <h3><span>⚠️</span> Cabang Butuh Perhatian / Evaluasi</h3>
+      <div class="insight-list" id="bottomOutletsList">
+        {% for o in data.bottom_5_outlets %}
+        <div class="insight-item">
+          <div>
+            <span class="insight-rank" style="background:var(--danger-subtle); color:var(--danger);">!</span>
+            <span>{{ o.name }}</span>
+          </div>
+          <strong>Rp {{ "{:,.0f}".format(o["2026"]["net_sales"]).replace(',', '.') }} <span class="badge-growth {% if o.growth_sales is not none and o.growth_sales < 0 %}negative{% else %}neutral{% endif %}">{{ "{:+.1f}%".format(o.growth_sales) if o.growth_sales is not none else "-" }}</span></strong>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Visual Charts Section -->
+  <div class="charts-grid">
+    
+    <!-- Chart 1: YoY Daily/Monthly Trend -->
+    <div class="chart-panel">
+      <div class="chart-header">
+        <div>
+          <h2 id="chart1Title">{% if selected_month %}Tren Penjualan Harian (2026 vs 2025){% else %}Tren Penjualan Bulanan (2026 vs 2025){% endif %}</h2>
+          <span id="chart1Subtitle" style="font-size:12px; color:var(--text-muted);">{% if selected_month %}Perbandingan pergerakan revenue harian{% else %}Perbandingan pergerakan revenue bulanan YTD{% endif %}</span>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#2563eb;"></span> 2026</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#a78bfa;"></span> 2025</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="salesChart"></canvas>
+        <div id="chartTooltip" class="chart-tooltip"></div>
+      </div>
+    </div>
+
+    <!-- Chart 2: Target vs Actual -->
+    <div class="chart-panel">
+      <div class="chart-header">
+        <div>
+          <h2 id="chart2Title">{% if selected_month %}Target vs Realisasi Harian 2026{% else %}Target vs Realisasi Bulanan 2026{% endif %}</h2>
+          <span id="chart2Subtitle" style="font-size:12px; color:var(--text-muted);">{% if selected_month %}Monitoring target harian vs aktual tercapai{% else %}Monitoring target bulanan vs aktual tercapai YTD{% endif %}</span>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#f59e0b;"></span> Target</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span> Realisasi</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="targetChart"></canvas>
+        <div id="targetTooltip" class="chart-tooltip"></div>
+      </div>
+    </div>
+
+    <!-- Chart 3: Hourly Sales -->
+    <div class="chart-panel">
+      <div class="chart-header">
+        <div>
+          <h2>Distribusi Revenue per Jam Operasional</h2>
+          <span style="font-size:12px; color:var(--text-muted);">Net Sales (Rp) per jam</span>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#2563eb;"></span> 2026</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#a78bfa;"></span> 2025</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="hourlySalesChart"></canvas>
+        <div id="hourlySalesTooltip" class="chart-tooltip"></div>
+      </div>
+    </div>
+
+    <!-- Chart 4: Hourly Transactions -->
+    <div class="chart-panel">
+      <div class="chart-header">
+        <div>
+          <h2>Kepadatan Transaksi (Struk) per Jam</h2>
+          <span style="font-size:12px; color:var(--text-muted);">Jumlah transaksi per jam</span>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#059669;"></span> 2026</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#cbd5e1;"></span> 2025</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="hourlyTransactionsChart"></canvas>
+        <div id="hourlyTransactionsTooltip" class="chart-tooltip"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Detailed Data Tables Section -->
+  <div class="table-section">
+    <div class="table-controls">
+      <div class="tab-group">
+        <button type="button" class="tab-btn active" onclick="switchTable('outlets', this)">🏬 Performa Konter / Outlet</button>
+        <button type="button" class="tab-btn" onclick="switchTable('areas', this)">🗺 Performa Area</button>
+        <button type="button" class="tab-btn" onclick="switchTable('products', this)">📦 Top Produk Terlaris</button>
+      </div>
+
+      <div class="table-action-bar" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <!-- Dropdown Limit Khusus Produk -->
+        <div id="productLimitWrapper" style="display:none; align-items:center; gap:6px;">
+          <label for="productLimitSelect" style="font-size:12px; font-weight:600; color:var(--text-muted);">Peringkat:</label>
+          <select id="productLimitSelect" onchange="onProductFilterChange()" style="padding:6px 10px; width:auto; font-size:13px;">
+            <option value="5">Top 5 Produk</option>
+            <option value="10" selected>Top 10 Produk</option>
+            <option value="20">Top 20 Produk</option>
+            <option value="50">Top 50 Produk</option>
+            <option value="all">Semua Produk</option>
+          </select>
+        </div>
+
+        <!-- Search Input Bar -->
+        <div class="search-wrapper" style="position:relative; display:flex; align-items:center; min-width:260px;">
+          <input type="text" id="tableSearchInput" class="table-search" placeholder="🔍 Cari nama konter / outlet..." oninput="onSearchInput(this.value)" style="padding-right:28px;">
+          <button type="button" id="clearSearchBtn" onclick="clearSearch()" style="position:absolute; right:8px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:13px; display:none;" title="Hapus pencarian">✖</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Search Info Banner (Muncul otomatis saat kata kunci dicari) -->
+    <div id="productSearchSummary" class="product-search-summary" style="display:none; margin-bottom:14px; padding:10px 14px; background:var(--brand-subtle); border:1px solid var(--brand-border); border-radius:var(--radius-sm); font-size:12.5px; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+      <div>
+        <span style="font-weight:700; color:var(--brand);">🔍 Hasil Pencarian Produk:</span>
+        <span id="productSearchStats" style="margin-left:4px;"></span>
+      </div>
+      <button type="button" onclick="clearSearch()" class="btn" style="padding:2px 8px; font-size:11px; background:var(--panel);">✖ Reset Pencarian</button>
+    </div>
+
+    <!-- Outlets Table -->
+    <div id="table-outlets" class="table-responsive">
+      <table id="outletsTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Konter / Outlet</th>
+            <th class="text-right">Net Sales 2026</th>
+            <th class="text-right">Kontribusi</th>
+            <th class="text-right">Qty 2026</th>
+            <th class="text-right">Transaksi 2026</th>
+            <th class="text-right">Net Sales 2025</th>
+            <th class="text-right">Growth YoY</th>
+          </tr>
+        </thead>
+        <tbody id="outletsTableBody">
+          {% set max_outlet_sales = data.outlets[0]['2026']['net_sales'] if data.outlets else 1 %}
+          {% for item in data.outlets %}
+          <tr>
+            <td class="text-center" style="color:var(--text-muted);">{{ loop.index }}</td>
+            <td style="font-weight:600;">{{ item.name }}</td>
+            <td class="text-right">
+              <div class="bar-container">
+                <div class="data-bar" style="width: {{ (item['2026']['net_sales'] / max_outlet_sales * 100)|round(1) }}%;"></div>
+                <span class="bar-value">Rp {{ "{:,.0f}".format(item["2026"]["net_sales"]).replace(',', '.') }}</span>
+              </div>
+            </td>
+            <td class="text-right"><strong>{{ "{:.1f}%".format(item.contrib_2026) }}</strong></td>
+            <td class="text-right">{{ "{:,.0f}".format(item["2026"]["qty"]).replace(',', '.') }}</td>
+            <td class="text-right">{{ "{:,.0f}".format(item["2026"]["transactions"]).replace(',', '.') }}</td>
+            <td class="text-right" style="color:var(--text-muted);">Rp {{ "{:,.0f}".format(item["2025"]["net_sales"]).replace(',', '.') }}</td>
+            <td class="text-right">
+              <span class="badge-growth {% if item.growth_sales is not none and item.growth_sales >= 0 %}positive{% elif item.growth_sales is not none %}negative{% else %}neutral{% endif %}">
+                {% if item.growth_sales is none %}-{% else %}{{ "{:+.1f}%".format(item.growth_sales) }}{% endif %}
+              </span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Areas Table -->
+    <div id="table-areas" class="table-responsive" style="display:none;">
+      <table id="areasTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Area</th>
+            <th class="text-right">Net Sales 2026</th>
+            <th class="text-right">Kontribusi</th>
+            <th class="text-right">Qty 2026</th>
+            <th class="text-right">Transaksi 2026</th>
+            <th class="text-right">Net Sales 2025</th>
+            <th class="text-right">Growth YoY</th>
+          </tr>
+        </thead>
+        <tbody id="areasTableBody">
+          {% set max_area_sales = data.areas[0]['2026']['net_sales'] if data.areas else 1 %}
+          {% for item in data.areas %}
+          <tr>
+            <td class="text-center" style="color:var(--text-muted);">{{ loop.index }}</td>
+            <td style="font-weight:600;">{{ item.name }}</td>
+            <td class="text-right">
+              <div class="bar-container">
+                <div class="data-bar" style="width: {{ (item['2026']['net_sales'] / max_area_sales * 100)|round(1) }}%;"></div>
+                <span class="bar-value">Rp {{ "{:,.0f}".format(item["2026"]["net_sales"]).replace(',', '.') }}</span>
+              </div>
+            </td>
+            <td class="text-right"><strong>{{ "{:.1f}%".format(item.contrib_2026) }}</strong></td>
+            <td class="text-right">{{ "{:,.0f}".format(item["2026"]["qty"]).replace(',', '.') }}</td>
+            <td class="text-right">{{ "{:,.0f}".format(item["2026"]["transactions"]).replace(',', '.') }}</td>
+            <td class="text-right" style="color:var(--text-muted);">Rp {{ "{:,.0f}".format(item["2025"]["net_sales"]).replace(',', '.') }}</td>
+            <td class="text-right">
+              <span class="badge-growth {% if item.growth_sales is not none and item.growth_sales >= 0 %}positive{% elif item.growth_sales is not none %}negative{% else %}neutral{% endif %}">
+                {% if item.growth_sales is none %}-{% else %}{{ "{:+.1f}%".format(item.growth_sales) }}{% endif %}
+              </span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Products Table -->
+    <div id="table-products" class="table-responsive" style="display:none;">
+      <table id="productsTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Barang / Produk</th>
+            <th class="text-right">Net Sales 2026</th>
+            <th class="text-right">Kontribusi</th>
+            <th class="text-right">Qty 2026</th>
+            <th class="text-right">Qty 2025</th>
+            <th class="text-right">Growth Qty</th>
+          </tr>
+        </thead>
+        <tbody id="productsTableBody">
+          {% set max_product_sales = data.products[0]['2026']['net_sales'] if data.products else 1 %}
+          {% for item in data.products[:10] %}
+          <tr>
+            <td class="text-center" style="color:var(--text-muted);">{{ loop.index }}</td>
+            <td style="font-weight:600;">{{ item.name }}</td>
+            <td class="text-right">
+              <div class="bar-container">
+                <div class="data-bar" style="width: {{ (item['2026']['net_sales'] / max_product_sales * 100)|round(1) }}%;"></div>
+                <span class="bar-value">Rp {{ "{:,.0f}".format(item["2026"]["net_sales"]).replace(',', '.') }}</span>
+              </div>
+            </td>
+            <td class="text-right"><strong>{{ "{:.1f}%".format(item.contrib_2026) }}</strong></td>
+            <td class="text-right">{{ "{:,.0f}".format(item["2026"]["qty"]).replace(',', '.') }}</td>
+            <td class="text-right" style="color:var(--text-muted);">{{ "{:,.0f}".format(item["2025"]["qty"]).replace(',', '.') }}</td>
+            <td class="text-right">
+              <span class="badge-growth {% if item.growth_qty is not none and item.growth_qty >= 0 %}positive{% elif item.growth_qty is not none %}negative{% else %}neutral{% endif %}">
+                {% if item.growth_qty is none %}-{% else %}{{ "{:+.1f}%".format(item.growth_qty) }}{% endif %}
+              </span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Executive Business Insight Section (Dynamic Management & Operational Summary) -->
+  <div class="business-insight-section" id="businessInsightSection">
+    <div class="insight-header-panel">
+      <div class="insight-header-left">
+        <div class="insight-badge-tag">📊 STRATEGIC INTELLIGENCE &amp; INSIGHTS</div>
+        <h2 class="insight-main-title">Executive Business Insights &amp; Operational Review</h2>
+        <p class="insight-sub-title" id="insightPeriodSubtitle">Analisis pintar otomatis berdasarkan filter aktif (Periode, Area, dan Outlet)</p>
+      </div>
+      <div class="insight-header-right">
+        {% set is_healthy = data.target_achievement >= 100 or (data.summary.growth.net_sales is not none and data.summary.growth.net_sales >= 0) %}
+        <div class="insight-health-status {% if is_healthy %}positive{% elif data.summary.growth.net_sales is not none and data.summary.growth.net_sales >= -10 %}warning{% else %}danger{% endif %}" id="insightHealthBadge">
+          <span class="health-dot"></span>
+          <span id="insightHealthText">
+            {% if is_healthy %}🟢 Performa Prima (Target {{ "{:.1f}%".format(data.target_achievement) }} | Tumbuh YoY)
+            {% elif data.summary.growth.net_sales is not none and data.summary.growth.net_sales >= -10 %}🟡 Waspada Penurunan ({{ "{:+.1f}%".format(data.summary.growth.net_sales) }} YoY)
+            {% else %}🔴 Perlu Intervensi Taktis ({{ "{:+.1f}%".format(data.summary.growth.net_sales) if data.summary.growth.net_sales is not none else "-" }} YoY){% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4-Card Executive Grid -->
+    <div class="insight-cards-grid">
+      <!-- Card 1: Revenue Health & Growth Driver -->
+      <div class="biz-card">
+        <div class="biz-card-head">
+          <div class="biz-card-icon" style="background:#eff6ff; color:#2563eb;">💰</div>
+          <div>
+            <div class="biz-card-label">Kesehatan Omset &amp; Pencapaian Target</div>
+            <div class="biz-card-val" id="bizRevenueTitle">Rp {{ "{:,.0f}".format(data.summary['2026']['net_sales']).replace(',', '.') }} ({{ "{:+.1f}%".format(data.summary.growth.net_sales) if data.summary.growth.net_sales is not none else "-" }} YoY)</div>
+          </div>
+        </div>
+        <div class="biz-card-body" id="bizRevenueContent">
+          <div class="biz-point">
+            <span class="biz-point-tag {% if data.summary.diff.net_sales >= 0 %}growth{% else %}drop{% endif %}">{% if data.summary.diff.net_sales >= 0 %}▲ YoY{% else %}▼ YoY{% endif %}</span>
+            <div class="biz-point-text">
+              Realisasi omset 2026 tercatat <strong>Rp {{ "{:,.0f}".format(data.summary['2026']['net_sales']).replace(',', '.') }}</strong> dibanding <strong>Rp {{ "{:,.0f}".format(data.summary['2025']['net_sales']).replace(',', '.') }}</strong> di 2025 ({% if data.summary.diff.net_sales >= 0 %}tumbuh +{% else %}turun -{% endif %}Rp {{ "{:,.0f}".format(data.summary.diff.net_sales|abs).replace(',', '.') }}).
+            </div>
+          </div>
+          <div class="biz-point">
+            <span class="biz-point-tag target">Target</span>
+            <div class="biz-point-text">
+              Tercapai <strong>{{ "{:.1f}%".format(data.target_achievement) }}</strong> dari target <strong>Rp {{ "{:,.0f}".format(data.target_revenue).replace(',', '.') }}</strong>. 
+              {% if data.target_gap >= 0 %}Surplus <strong style="color:var(--success);">+Rp {{ "{:,.0f}".format(data.target_gap).replace(',', '.') }}</strong> di atas budget target.{% else %}Kurang <strong style="color:var(--danger);">Rp {{ "{:,.0f}".format(data.target_gap|abs).replace(',', '.') }}</strong> untuk mencapai 100% target.{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Customer Basket & Ticket Size -->
+      <div class="biz-card">
+        <div class="biz-card-head">
+          <div class="biz-card-icon" style="background:#f0fdf4; color:#16a34a;">🛒</div>
+          <div>
+            <div class="biz-card-label">Perilaku Belanja &amp; Basket Size</div>
+            <div class="biz-card-val" id="bizBasketTitle">ATV Rp {{ "{:,.0f}".format(data.summary['2026']['atv']).replace(',', '.') }} | UPT {{ "{:.2f}".format(data.summary['2026']['upt']) }} item</div>
+          </div>
+        </div>
+        <div class="biz-card-body" id="bizBasketContent">
+          <div class="biz-point">
+            <span class="biz-point-tag driver">Keranjang</span>
+            <div class="biz-point-text">
+              Rata-rata belanja per struk (ATV) <strong>Rp {{ "{:,.0f}".format(data.summary['2026']['atv']).replace(',', '.') }}</strong> ({% if data.summary.diff.atv >= 0 %}naik +{% else %}turun -{% endif %}Rp {{ "{:,.0f}".format(data.summary.diff.atv|abs).replace(',', '.') }} / {{ "{:+.1f}%".format(data.summary.growth.atv) if data.summary.growth.atv is not none else "-" }} YoY).
+            </div>
+          </div>
+          <div class="biz-point">
+            <span class="biz-point-tag {% if data.summary.growth.transactions is not none and data.summary.growth.transactions >= 0 %}growth{% else %}action{% endif %}">Traffic</span>
+            <div class="biz-point-text">
+              Total <strong>{{ "{:,.0f}".format(data.summary['2026']['transactions']).replace(',', '.') }} struk</strong> ({{ "{:+.1f}%".format(data.summary.growth.transactions) if data.summary.growth.transactions is not none else "-" }} YoY).
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Outlet & Area Champions / Risks -->
+      <div class="biz-card">
+        <div class="biz-card-head">
+          <div class="biz-card-icon" style="background:#fef3c7; color:#d97706;">🏬</div>
+          <div>
+            <div class="biz-card-label">Top Performers &amp; Focus Units</div>
+            <div class="biz-card-val" id="bizOutletTitle">{{ data.outlets|length }} Konter Aktif Beroperasi</div>
+          </div>
+        </div>
+        <div class="biz-card-body" id="bizOutletContent">
+          {% if data.outlets %}
+          <div class="biz-point">
+            <span class="biz-point-tag star">Top Outlet</span>
+            <div class="biz-point-text">
+              <strong>{{ data.outlets[0].name }}</strong> memimpin dengan omset <strong>Rp {{ "{:,.0f}".format(data.outlets[0]['2026']['net_sales']).replace(',', '.') }}</strong> (kontribusi <strong>{{ "{:.1f}%".format(data.outlets[0].contrib_2026) }}</strong>).
+            </div>
+          </div>
+          {% endif %}
+          {% if data.areas %}
+          <div class="biz-point">
+            <span class="biz-point-tag driver">Top Area</span>
+            <div class="biz-point-text">
+              Area <strong>{{ data.areas[0].name }}</strong> menyumbang kontribusi terbesar yaitu <strong>{{ "{:.1f}%".format(data.areas[0].contrib_2026) }}</strong> (Rp {{ "{:,.0f}".format(data.areas[0]['2026']['net_sales']).replace(',', '.') }}).
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Card 4: Operating Hours & Key Action Items -->
+      <div class="biz-card">
+        <div class="biz-card-head">
+          <div class="biz-card-icon" style="background:#faf5ff; color:#9333ea;">⚡</div>
+          <div>
+            <div class="biz-card-label">Jam Sibuk &amp; Rekomendasi Taktis</div>
+            <div class="biz-card-val" id="bizActionTitle">Puncak Jam {{ data.peak_sales_hour }}:00 &amp; Rekomendasi</div>
+          </div>
+        </div>
+        <div class="biz-card-body" id="bizActionContent">
+          <div class="biz-point">
+            <span class="biz-point-tag star">Peak Hour</span>
+            <div class="biz-point-text">
+              Jam tersibuk penjualan terkonsentrasi pada pukul <strong>{{ data.peak_sales_hour }}:00</strong> dan struk terbanyak pada pukul <strong>{{ data.peak_tx_hour }}:00</strong>.
+            </div>
+          </div>
+          <div class="biz-point">
+            <span class="biz-point-tag action">Aksi Taktis</span>
+            <div class="biz-point-text">
+              {% if data.summary['2026']['upt'] < 1.5 %}
+              UPT berada di angka &lt;1.5 item/struk. Terapkan strategi purchase with purchase (PWP) atau bundling 2-item hemat di kasir.
+              {% elif data.target_achievement < 90 %}
+              Pencapaian target &lt;90%. Maksimalkan push promo dan ketersediaan stok produk terlaris pada jam sibuk.
+              {% else %}
+              Performa penjualan solid. Jaga konsistensi stok SKU unggulan dan pertahankan standar pelayanan tim sales.
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Glossary / Panduan Istilah -->
+  <div class="glossary-card">
+    <strong style="color:var(--text); font-size:13px;">📖 Panduan Istilah & Metrik untuk Pengguna:</strong>
+    <div class="glossary-grid">
+      <div class="glossary-item"><strong>Net Sales:</strong> Total omset penjualan bersih setelah potongan diskon.</div>
+      <div class="glossary-item"><strong>Growth YoY:</strong> Pertumbuhan persentase dibanding periode yang sama di tahun 2025.</div>
+      <div class="glossary-item"><strong>ATV (Average Transaction Value):</strong> Rata-rata uang yang dibelanjakan pelanggan per 1 struk/transaksi (Net Sales / Transaksi).</div>
+      <div class="glossary-item"><strong>UPT (Units Per Transaction):</strong> Rata-rata banyaknya barang yang dibeli pelanggan dalam 1 struk (Qty / Transaksi).</div>
+      <div class="glossary-item"><strong>SPH (Spending Per Head):</strong> Rata-rata belanja merchandise per 1 orang pengunjung wahana (Net Sales / Pengunjung).</div>
+      <div class="glossary-item"><strong>Capture Rate:</strong> Rasio persentase struk transaksi toko terhadap total pengunjung wahana (Transaksi / Pengunjung).</div>
+      <div class="glossary-item"><strong>Pencapaian Target:</strong> Persentase perbandingan realisasi omset 2026 terhadap master target revenue yang ditetapkan.</div>
+      <div class="glossary-item"><strong>Peak Hours:</strong> Jam dengan akumulasi penjualan dan struk tertinggi untuk optimasi jadwal kerja tim operasional.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Scroll To Top Floating Button -->
+<button type="button" id="btnScrollTop" class="btn-scroll-top" onclick="scrollToTop()" title="Kembali ke Atas" aria-label="Kembali ke Atas">
+  <span>↑</span>
+</button>
+
+<!-- Data & Client Engine Scripts -->
+<script>
+  // Raw Data Embedded for Instant Client-Side Processing
+  // RAW_SALES format: [year, date, hour, outlet, area, product, qty, net_sales, invoice, item_net_sales]
+  const RAW_SALES = {{ data.compact_sales|tojson if data.compact_sales else '[]' }};
+  const RAW_TARGETS = {{ data.compact_targets|tojson if data.compact_targets else '[]' }};
+  const RAW_VISITORS = {{ data.compact_visitors|tojson if data.compact_visitors else '[]' }};
+  const MONTH_NAMES = {{ data.month_labels|tojson if data.month_labels else '{}' }};
+  const DATE_LABELS = {{ data.date_labels|tojson if data.date_labels else '{}' }};
+
+  const OUTLET_TO_VISITOR_MAP = {
+    "SWIN Sea World Induk": "SeaWorld",
+    "ODIN Samudra Induk": "Samudra",
+    "AWIN Atlantis Induk": "Atlantis",
+    "AWKL AWA Taman Kelapa 2": "Atlantis",
+    "JBIN JBL Induk": "Samudra",
+    "DFAR Dufan Arung Jeram": "Dufan",
+    "DFGA Dufan Galactica": "Dufan",
+    "DFIC Dufan Ice Age": "Dufan",
+    "DFIL Dufan Induk Lama": "Dufan",
+    "DFIN Dufan Induk": "Dufan",
+    "DFKE Dufan Kereta Misteri": "Dufan",
+    "DFOR Dufan Oriental": "Dufan",
+    "DFSI Dufan Simulator": "Dufan",
+    "DFTO Dufan Tornado": "Dufan",
+    "DFWW Dufan WWN": "Dufan",
+    "OL01 Online Shop": "Beachpark",
+    "TJOM Merchandise Ombak Laut": "Beachpark",
+    "TJSO Symphony Of The Sea": "Beachpark"
+  };
+
+  // State
+  let currentFilter = {
+    month: "{{ selected_month or '' }}",
+    date: "{{ selected_date or '' }}",
+    area: "{{ selected_area or '' }}",
+    outlet: "{{ selected_outlet or '' }}"
+  };
+
+  let currentDashboardData = {
+    summary: {{ data.summary|tojson }},
+    target_revenue: {{ data.target_revenue }},
+    target_achievement: {{ data.target_achievement }},
+    target_gap: {{ data.target_gap }},
+    target_status: "{{ data.target_status }}",
+    outlets: {{ data.outlets|tojson }},
+    areas: {{ data.areas|tojson }},
+    products: {{ data.products|tojson }},
+    daily_chart: {{ data.daily_chart|tojson }},
+    target_chart: {{ data.target_chart|tojson }},
+    hourly_chart: {{ data.hourly_chart|tojson }},
+    top_5_outlets: {{ data.top_5_outlets|tojson }},
+    bottom_5_outlets: {{ data.bottom_5_outlets|tojson }},
+    peak_sales_hour: "{{ data.peak_sales_hour }}",
+    peak_tx_hour: "{{ data.peak_tx_hour }}",
+    executive_narrative: {{ data.executive_narrative|tojson }}
+  };
+
+  // Format Helper
+  function formatRp(val) {
+    return 'Rp ' + Math.round(val || 0).toLocaleString('id-ID');
+  }
+
+  function formatNum(val) {
+    return Math.round(val || 0).toLocaleString('id-ID');
+  }
+
+  // Dark / Light Theme
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const themeText = document.getElementById('themeText');
+
+  function applyTheme(theme) {
+    const isDark = theme === 'dark';
+    root.classList.toggle('dark', isDark);
+    themeIcon.textContent = isDark ? '☀' : '☾';
+    themeText.textContent = isDark ? 'Terang' : 'Gelap';
+    setTimeout(redrawAllCharts, 50);
+  }
+
+  applyTheme(localStorage.getItem('sales-theme') || 'light');
+
+  themeToggle.addEventListener('click', () => {
+    const next = root.classList.contains('dark') ? 'light' : 'dark';
+    localStorage.setItem('sales-theme', next);
+    applyTheme(next);
+  });
+
+  // Table Switching & Search
+  let activeTableTab = 'outlets';
+  function switchTable(tabName, btnElement) {
+    activeTableTab = tabName;
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    if (btnElement) {
+      btnElement.classList.add('active');
+    } else {
+      const targetBtn = document.querySelector(`.tab-btn[onclick*="'${tabName}'"]`);
+      if (targetBtn) targetBtn.classList.add('active');
+    }
+
+    document.getElementById('table-outlets').style.display = tabName === 'outlets' ? 'block' : 'none';
+    document.getElementById('table-areas').style.display = tabName === 'areas' ? 'block' : 'none';
+    document.getElementById('table-products').style.display = tabName === 'products' ? 'block' : 'none';
+
+    const productLimitWrapper = document.getElementById('productLimitWrapper');
+    const searchInput = document.getElementById('tableSearchInput');
+    const summaryEl = document.getElementById('productSearchSummary');
+
+    if (tabName === 'products') {
+      if (productLimitWrapper) productLimitWrapper.style.display = 'flex';
+      if (searchInput) searchInput.placeholder = '🔍 Cari kata kunci produk (misal: jas, sandal, prima, botol)...';
+      renderProductsTable(currentDashboardData.products);
+    } else {
+      if (productLimitWrapper) productLimitWrapper.style.display = 'none';
+      if (summaryEl) summaryEl.style.display = 'none';
+      if (searchInput) {
+        searchInput.placeholder = tabName === 'outlets' ? '🔍 Cari nama konter / outlet...' : '🔍 Cari nama area...';
+      }
+      filterTable();
+    }
+  }
+
+  function filterTable() {
+    const query = (document.getElementById('tableSearchInput') ? document.getElementById('tableSearchInput').value : '').toLowerCase().trim();
+    if (activeTableTab === 'products') {
+      renderProductsTable(currentDashboardData.products);
+      return;
+    }
+    const tableId = activeTableTab === 'outlets' ? 'outletsTable' : 'areasTable';
+    const rows = document.querySelectorAll('#' + tableId + ' tbody tr');
+    rows.forEach(row => {
+      const text = (row.cells[1] ? row.cells[1].innerText : '').toLowerCase();
+      row.style.display = text.includes(query) ? '' : 'none';
+    });
+  }
+
+  function onSearchInput(val) {
+    const clearBtn = document.getElementById('clearSearchBtn');
+    if (clearBtn) clearBtn.style.display = val.trim() ? 'block' : 'none';
+
+    if (activeTableTab === 'products') {
+      renderProductsTable(currentDashboardData.products);
+    } else {
+      filterTable();
+    }
+  }
+
+  function clearSearch() {
+    const searchInput = document.getElementById('tableSearchInput');
+    if (searchInput) {
+      searchInput.value = '';
+      onSearchInput('');
+      searchInput.focus();
+    }
+  }
+
+  function onProductFilterChange() {
+    if (activeTableTab === 'products') {
+      renderProductsTable(currentDashboardData.products);
+    }
+  }
+
+  // Cascading Filter when Area changes
+  function onAreaChange() {
+    const areaVal = document.getElementById('filterArea').value;
+    const outletSelect = document.getElementById('filterOutlet');
+    
+    // Filter available outlets in the select dropdown
+    const availableOutlets = new Set();
+    RAW_SALES.forEach(r => {
+      if (!areaVal || r[4] === areaVal) {
+        availableOutlets.add(r[3]);
+      }
+    });
+
+    const currentOutletVal = outletSelect.value;
+    outletSelect.innerHTML = `<option value="">Semua Outlet (${availableOutlets.size})</option>`;
+    Array.from(availableOutlets).sort().forEach(o => {
+      const opt = document.createElement('option');
+      opt.value = o;
+      opt.textContent = o;
+      if (o === currentOutletVal && availableOutlets.has(currentOutletVal)) {
+        opt.selected = true;
+      }
+      outletSelect.appendChild(opt);
+    });
+
+    applyFilters();
+  }
+
+  function formatDisplayDate(dStr) {
+    if (!dStr) return '';
+    const parts = dStr.split('-');
+    if (parts.length < 3) return dStr;
+    const d = parseInt(parts[2], 10);
+    const m = ["", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"][parseInt(parts[1], 10)] || parts[1];
+    return d + ' ' + m + ' ' + parts[0];
+  }
+
+  // ----------------------------------------------------
+  // INDONESIA HOLIDAYS (Tanggal Merah 2025 & 2026)
+  // ----------------------------------------------------
+  const INDONESIA_HOLIDAYS = {
+    // 2025
+    '2025-01-01': 'Tahun Baru 2025 Masehi',
+    '2025-01-27': 'Isra Mi\'raj Nabi Muhammad SAW',
+    '2025-01-29': 'Tahun Baru Imlek 2576 Kongzili',
+    '2025-03-29': 'Hari Suci Nyepi (Tahun Baru Saka 1947)',
+    '2025-03-31': 'Hari Raya Idul Fitri 1446 H',
+    '2025-04-01': 'Hari Raya Idul Fitri 1446 H',
+    '2025-04-18': 'Wafat Yesus Kristus',
+    '2025-04-20': 'Kebangkitan Yesus Kristus (Paskah)',
+    '2025-05-01': 'Hari Buruh Internasional',
+    '2025-05-12': 'Hari Raya Waisak 2569 BE',
+    '2025-05-29': 'Kenaikan Yesus Kristus',
+    '2025-06-01': 'Hari Lahir Pancasila',
+    '2025-06-07': 'Hari Raya Idul Adha 1446 H',
+    '2025-06-27': 'Tahun Baru Islam 1447 H',
+    '2025-08-17': 'Proklamasi Kemerdekaan RI',
+    '2025-09-05': 'Maulid Nabi Muhammad SAW',
+    '2025-12-25': 'Kelahiran Yesus Kristus (Natal)',
+
+    // 2026
+    '2026-01-01': 'Tahun Baru 2026 Masehi',
+    '2026-01-16': 'Isra Mi\'raj Nabi Muhammad SAW',
+    '2026-02-17': 'Tahun Baru Imlek 2577 Kongzili',
+    '2026-03-19': 'Hari Raya Idul Fitri 1447 H',
+    '2026-03-20': 'Hari Raya Idul Fitri 1447 H',
+    '2026-03-21': 'Hari Suci Nyepi (Tahun Baru Saka 1948)',
+    '2026-04-03': 'Wafat Yesus Kristus (Jumat Agung)',
+    '2026-04-05': 'Kebangkitan Yesus Kristus (Paskah)',
+    '2026-05-01': 'Hari Buruh Internasional',
+    '2026-05-14': 'Kenaikan Yesus Kristus',
+    '2026-05-27': 'Hari Raya Idul Adha 1447 H',
+    '2026-05-31': 'Hari Raya Waisak 2570 BE',
+    '2026-06-01': 'Hari Lahir Pancasila',
+    '2026-06-16': 'Tahun Baru Islam 1448 H',
+    '2026-08-17': 'Hari Kemerdekaan RI Ke-81',
+    '2026-08-25': 'Maulid Nabi Muhammad SAW',
+    '2026-12-25': 'Hari Raya Natal'
+  };
+
+  // State for Calendar Date Picker
+  let calCurrentYear = 2026;
+  let calCurrentMonth = 0; // 0 = Jan, 1 = Feb, etc.
+  let calTempStartDate = '';
+  let calTempEndDate = '';
+
+  function openCalendarModal(e) {
+    if (e) e.stopPropagation();
+    const modal = document.getElementById('calendarModalOverlay');
+    if (!modal) return;
+
+    calTempStartDate = document.getElementById('filterStartDate').value || '';
+    calTempEndDate = document.getElementById('filterEndDate').value || '';
+
+    if (calTempStartDate) {
+      const parts = calTempStartDate.split('-');
+      calCurrentYear = parseInt(parts[0], 10) || 2026;
+      calCurrentMonth = (parseInt(parts[1], 10) || 1) - 1;
+    } else {
+      calCurrentYear = 2026;
+      calCurrentMonth = 0;
+    }
+
+    syncCalSelectors();
+    renderCalendarGrid();
+    updateCalHeaderPills();
+    modal.style.display = 'flex';
+  }
+
+  function closeCalendarModal(e) {
+    if (e) e.stopPropagation();
+    const modal = document.getElementById('calendarModalOverlay');
+    if (modal) modal.style.display = 'none';
+  }
+
+  function syncCalSelectors() {
+    const monthSelect = document.getElementById('calMonthSelect');
+    const yearSelect = document.getElementById('calYearSelect');
+    if (monthSelect) monthSelect.value = String(calCurrentMonth);
+    if (yearSelect) yearSelect.value = String(calCurrentYear);
+  }
+
+  function onCalSelectChange() {
+    const monthSelect = document.getElementById('calMonthSelect');
+    const yearSelect = document.getElementById('calYearSelect');
+    if (monthSelect) calCurrentMonth = parseInt(monthSelect.value, 10);
+    if (yearSelect) calCurrentYear = parseInt(yearSelect.value, 10);
+    renderCalendarGrid();
+  }
+
+  function navCalendarMonth(direction) {
+    calCurrentMonth += direction;
+    if (calCurrentMonth < 0) {
+      calCurrentMonth = 11;
+      calCurrentYear--;
+    } else if (calCurrentMonth > 11) {
+      calCurrentMonth = 0;
+      calCurrentYear++;
+    }
+    syncCalSelectors();
+    renderCalendarGrid();
+  }
+
+  function formatPillDate(dStr) {
+    if (!dStr) return 'Pilih Tanggal ▾';
+    const parts = dStr.split('-');
+    if (parts.length < 3) return dStr;
+    const d = String(parseInt(parts[2], 10)).padStart(2, '0');
+    const m = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"][parseInt(parts[1], 10) - 1] || parts[1];
+    return `${d} ${m}, ${parts[0]}`;
+  }
+
+  function updateCalHeaderPills() {
+    const fromPill = document.getElementById('calFromDisplay');
+    const toPill = document.getElementById('calToDisplay');
+    if (fromPill) {
+      fromPill.textContent = formatPillDate(calTempStartDate);
+      fromPill.classList.toggle('active', Boolean(calTempStartDate));
+    }
+    if (toPill) {
+      toPill.textContent = formatPillDate(calTempEndDate);
+      toPill.classList.toggle('active', Boolean(calTempEndDate));
+    }
+  }
+
+  function onDateCellClick(dStr) {
+    if (!calTempStartDate || (calTempStartDate && calTempEndDate)) {
+      calTempStartDate = dStr;
+      calTempEndDate = '';
+    } else if (calTempStartDate && !calTempEndDate) {
+      if (dStr < calTempStartDate) {
+        calTempEndDate = calTempStartDate;
+        calTempStartDate = dStr;
+      } else {
+        calTempEndDate = dStr;
+      }
+    }
+    updateCalHeaderPills();
+    renderCalendarGrid();
+  }
+
+  function renderCalendarGrid() {
+    const grid = document.getElementById('calDaysGrid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    const firstDayIndex = new Date(calCurrentYear, calCurrentMonth, 1).getDay(); // 0 = Sunday
+    const daysInMonth = new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate();
+    const daysInPrevMonth = new Date(calCurrentYear, calCurrentMonth, 0).getDate();
+
+    // Previous month trailing days
+    for (let i = firstDayIndex - 1; i >= 0; i--) {
+      const prevD = daysInPrevMonth - i;
+      const cell = document.createElement('div');
+      cell.className = 'cal-day-cell other-month';
+      cell.textContent = String(prevD).padStart(2, '0');
+      grid.appendChild(cell);
+    }
+
+    // Current month days
+    for (let d = 1; d <= daysInMonth; d++) {
+      const mStr = String(calCurrentMonth + 1).padStart(2, '0');
+      const dStr = String(d).padStart(2, '0');
+      const dateKey = `${calCurrentYear}-${mStr}-${dStr}`;
+      const dayOfWeek = new Date(calCurrentYear, calCurrentMonth, d).getDay(); // 0 = Sun, 6 = Sat
+      const holidayName = INDONESIA_HOLIDAYS[dateKey];
+
+      const cell = document.createElement('div');
+      cell.className = 'cal-day-cell';
+      cell.textContent = dStr;
+      cell.title = holidayName ? `${dateKey} (${holidayName})` : dateKey;
+
+      if (dayOfWeek === 0) cell.classList.add('sunday');
+      if (dayOfWeek === 6) cell.classList.add('saturday');
+
+      if (holidayName) {
+        cell.classList.add('holiday');
+        const dot = document.createElement('span');
+        dot.className = 'holiday-dot';
+        cell.appendChild(dot);
+      }
+
+      // Check selection state
+      if (calTempStartDate && dateKey === calTempStartDate) {
+        cell.classList.add('active-endpoint', 'range-start');
+      }
+      if (calTempEndDate && dateKey === calTempEndDate) {
+        cell.classList.add('active-endpoint', 'range-end');
+      }
+      if (calTempStartDate && calTempEndDate && dateKey > calTempStartDate && dateKey < calTempEndDate) {
+        cell.classList.add('in-range');
+      }
+
+      cell.onclick = () => onDateCellClick(dateKey);
+      grid.appendChild(cell);
+    }
+
+    // Next month leading days
+    const totalRendered = firstDayIndex + daysInMonth;
+    const remaining = (7 - (totalRendered % 7)) % 7;
+    for (let i = 1; i <= remaining; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'cal-day-cell other-month';
+      cell.textContent = String(i).padStart(2, '0');
+      grid.appendChild(cell);
+    }
+  }
+
+  function applyQuickPreset(type) {
+    if (type === 'today') {
+      calTempStartDate = '2026-02-28';
+      calTempEndDate = '2026-02-28';
+    } else if (type === '7days') {
+      calTempStartDate = '2026-02-22';
+      calTempEndDate = '2026-02-28';
+    } else if (type === '30days') {
+      calTempStartDate = '2026-01-30';
+      calTempEndDate = '2026-02-28';
+    } else if (type === 'thisMonth') {
+      calTempStartDate = '2026-02-01';
+      calTempEndDate = '2026-02-28';
+    } else if (type === 'all') {
+      calTempStartDate = '';
+      calTempEndDate = '';
+    }
+
+    if (calTempStartDate) {
+      const parts = calTempStartDate.split('-');
+      calCurrentYear = parseInt(parts[0], 10);
+      calCurrentMonth = parseInt(parts[1], 10) - 1;
+      syncCalSelectors();
+    }
+    updateCalHeaderPills();
+    renderCalendarGrid();
+  }
+
+  function confirmCalendarSelection() {
+    const startInput = document.getElementById('filterStartDate');
+    const endInput = document.getElementById('filterEndDate');
+    const displayLabel = document.getElementById('dateRangeDisplayLabel');
+    const clearBtn = document.getElementById('clearDateBtn');
+
+    if (startInput) startInput.value = calTempStartDate;
+    if (endInput) endInput.value = calTempEndDate;
+
+    if (calTempStartDate && calTempEndDate) {
+      if (displayLabel) displayLabel.textContent = `${formatDisplayDate(calTempStartDate)} - ${formatDisplayDate(calTempEndDate)}`;
+      if (clearBtn) clearBtn.style.display = 'flex';
+      const monthSelect = document.getElementById('filterMonth');
+      if (monthSelect) monthSelect.value = '';
+    } else if (calTempStartDate) {
+      if (displayLabel) displayLabel.textContent = formatDisplayDate(calTempStartDate);
+      if (clearBtn) clearBtn.style.display = 'flex';
+      const monthSelect = document.getElementById('filterMonth');
+      if (monthSelect) monthSelect.value = '';
+    } else {
+      if (displayLabel) displayLabel.textContent = 'Semua Tanggal (YTD)';
+      if (clearBtn) clearBtn.style.display = 'none';
+    }
+
+    closeCalendarModal();
+    applyFilters();
+  }
+
+  function clearDateRange() {
+    calTempStartDate = '';
+    calTempEndDate = '';
+    const startInput = document.getElementById('filterStartDate');
+    const endInput = document.getElementById('filterEndDate');
+    const displayLabel = document.getElementById('dateRangeDisplayLabel');
+    const clearBtn = document.getElementById('clearDateBtn');
+
+    if (startInput) startInput.value = '';
+    if (endInput) endInput.value = '';
+    if (displayLabel) displayLabel.textContent = 'Semua Tanggal (YTD)';
+    if (clearBtn) clearBtn.style.display = 'none';
+
+    updateCalHeaderPills();
+    applyFilters();
+  }
+
+  // Instant Client-Side Filter Engine
+  function applyFilters() {
+    const month = document.getElementById('filterMonth').value;
+    const startDate = document.getElementById('filterStartDate') ? document.getElementById('filterStartDate').value : '';
+    const endDate = document.getElementById('filterEndDate') ? document.getElementById('filterEndDate').value : '';
+    const area = document.getElementById('filterArea').value;
+    const outlet = document.getElementById('filterOutlet').value;
+
+    const clearDateBtn = document.getElementById('clearDateBtn');
+    if (clearDateBtn) {
+      clearDateBtn.style.display = (startDate || endDate) ? 'flex' : 'none';
+    }
+
+    currentFilter = { month, startDate, endDate, area, outlet };
+
+    // Update active filter tags
+    updateActiveFilterTags();
+
+    if (!RAW_SALES.length) return;
+
+    // Fast Filtering Loop (56k items in < 5ms)
+    let s26 = 0, s25 = 0, q26 = 0, q25 = 0;
+    const txSet26 = new Set(), txSet25 = new Set();
+    
+    const byOutlet = {}, byArea = {}, byProduct = {}, byHour = {}, byDay = {}, byMonth = {};
+    const hourTx26 = {}, hourTx25 = {};
+
+    for (let i = 0; i < 24; i++) {
+      const hStr = String(i).padStart(2, '0');
+      byHour[hStr] = { s26: 0, s25: 0 };
+      hourTx26[hStr] = new Set();
+      hourTx25[hStr] = new Set();
+    }
+
+    let itemNetSales26 = 0, itemNetSales25 = 0;
+
+    const startDm = startDate ? startDate.substring(5) : '';
+    const endDm = endDate ? endDate.substring(5) : '';
+    const selMonth = month ? month.slice(-2) : '';
+
+    for (let i = 0; i < RAW_SALES.length; i++) {
+      const r = RAW_SALES[i]; // [year, date, hour, outlet, area, product, qty, net_sales, invoice, item_net_sales]
+      const rYear = r[0];
+      const rDate = r[1];
+      const rMonth = rDate.substring(0, 7);
+      const rHour = r[2];
+      const rOutlet = r[3];
+      const rArea = r[4];
+      const rProduct = r[5];
+      const rQty = r[6];
+      const rSales = r[7];
+      const rInvoice = r[8];
+      const rItemNetSales = r[9] || 0;
+      const rDm = rDate.substring(5);
+
+      // Match filter criteria
+      if (startDate || endDate) {
+        if (startDm && rDm < startDm) continue;
+        if (endDm && rDm > endDm) continue;
+      } else if (selMonth) {
+        if (rDate.substring(5, 7) !== selMonth) continue;
+      }
+
+      if (area && rArea !== area) continue;
+      if (outlet && rOutlet !== outlet) continue;
+
+      const txId = rOutlet + '_' + rDate + '_' + rInvoice;
+      const mKey = rMonth.substring(5, 7);
+      if (!byMonth[mKey]) byMonth[mKey] = { s26: 0, s25: 0 };
+
+      if (rYear === 2026) {
+        s26 += rSales;
+        itemNetSales26 += rItemNetSales;
+        q26 += rQty;
+        txSet26.add(txId);
+
+        if (!byOutlet[rOutlet]) byOutlet[rOutlet] = { s26: 0, s25: 0, q26: 0, q25: 0, tx26: new Set(), tx25: new Set(), area: rArea };
+        byOutlet[rOutlet].s26 += rSales;
+        byOutlet[rOutlet].q26 += rQty;
+        byOutlet[rOutlet].tx26.add(txId);
+
+        if (!byArea[rArea]) byArea[rArea] = { s26: 0, s25: 0, q26: 0, q25: 0, tx26: new Set(), tx25: new Set() };
+        byArea[rArea].s26 += rSales;
+        byArea[rArea].q26 += rQty;
+        byArea[rArea].tx26.add(txId);
+
+        if (!byProduct[rProduct]) byProduct[rProduct] = { s26: 0, s25: 0, q26: 0, q25: 0 };
+        byProduct[rProduct].s26 += rSales;
+        byProduct[rProduct].q26 += rQty;
+
+        if (byHour[rHour]) {
+          byHour[rHour].s26 += rSales;
+          hourTx26[rHour].add(txId);
+        }
+
+        const dayKey = rDate.substring(5);
+        if (!byDay[dayKey]) byDay[dayKey] = { s26: 0, s25: 0 };
+        byDay[dayKey].s26 += rSales;
+        byMonth[mKey].s26 += rSales;
+
+      } else if (rYear === 2025) {
+        s25 += rSales;
+        itemNetSales25 += rItemNetSales;
+        q25 += rQty;
+        txSet25.add(txId);
+
+        if (!byOutlet[rOutlet]) byOutlet[rOutlet] = { s26: 0, s25: 0, q26: 0, q25: 0, tx26: new Set(), tx25: new Set(), area: rArea };
+        byOutlet[rOutlet].s25 += rSales;
+        byOutlet[rOutlet].q25 += rQty;
+        byOutlet[rOutlet].tx25.add(txId);
+
+        if (!byArea[rArea]) byArea[rArea] = { s26: 0, s25: 0, q26: 0, q25: 0, tx26: new Set(), tx25: new Set() };
+        byArea[rArea].s25 += rSales;
+        byArea[rArea].q25 += rQty;
+        byArea[rArea].tx25.add(txId);
+
+        if (!byProduct[rProduct]) byProduct[rProduct] = { s26: 0, s25: 0, q26: 0, q25: 0 };
+        byProduct[rProduct].s25 += rSales;
+        byProduct[rProduct].q25 += rQty;
+
+        if (byHour[rHour]) {
+          byHour[rHour].s25 += rSales;
+          hourTx25[rHour].add(txId);
+        }
+
+        const dayKey = rDate.substring(5);
+        if (!byDay[dayKey]) byDay[dayKey] = { s26: 0, s25: 0 };
+        byDay[dayKey].s25 += rSales;
+        byMonth[mKey].s25 += rSales;
+      }
+    }
+
+    // Filter Target
+    let targetTotal = 0;
+    const targetDailyMap = {};
+    const targetMonthMap = {};
+    for (let i = 0; i < RAW_TARGETS.length; i++) {
+      const t = RAW_TARGETS[i];
+      const tDm = t.date.substring(5);
+      if (startDate || endDate) {
+        if (startDm && tDm < startDm) continue;
+        if (endDm && tDm > endDm) continue;
+      } else if (selMonth) {
+        if (t.date.substring(5, 7) !== selMonth) continue;
+      }
+
+      if (outlet && t.outlet !== outlet) continue;
+      if (area && t.area !== area) continue;
+
+      targetTotal += t.target;
+      targetDailyMap[t.date] = (targetDailyMap[t.date] || 0) + t.target;
+      const tmKey = t.date.substring(5, 7);
+      targetMonthMap[tmKey] = (targetMonthMap[tmKey] || 0) + t.target;
+    }
+
+    const tx26Count = txSet26.size;
+    const tx25Count = txSet25.size;
+    const atv26 = tx26Count > 0 ? (s26 / tx26Count) : 0;
+    const atv25 = tx25Count > 0 ? (s25 / tx25Count) : 0;
+    const upt26 = tx26Count > 0 ? (q26 / tx26Count) : 0;
+    const upt25 = tx25Count > 0 ? (q25 / tx25Count) : 0;
+
+    const growthSales = s25 > 0 ? ((s26 - s25) / s25 * 100) : null;
+    const growthTx = tx25Count > 0 ? ((tx26Count - tx25Count) / tx25Count * 100) : null;
+    const growthQty = q25 > 0 ? ((q26 - q25) / q25 * 100) : null;
+    const growthAtv = atv25 > 0 ? ((atv26 - atv25) / atv25 * 100) : null;
+    const growthUpt = upt25 > 0 ? ((upt26 - upt25) / upt25 * 100) : null;
+
+    const targetAchieve = targetTotal > 0 ? (s26 / targetTotal * 100) : 0;
+    const targetGap = s26 - targetTotal;
+    const diffNetSales = s26 - s25;
+
+    // Update KPIs in DOM
+    const kpiSales26El = document.getElementById('kpiSales2026');
+    if (kpiSales26El) kpiSales26El.textContent = formatRp(s26);
+    const kpiSales25El = document.getElementById('kpiSales2025');
+    if (kpiSales25El) kpiSales25El.textContent = formatRp(s25);
+    
+    const kpiSalesGrowthEl = document.getElementById('kpiSalesGrowth');
+    if (kpiSalesGrowthEl) {
+      kpiSalesGrowthEl.className = 'badge-growth ' + (growthSales !== null && growthSales >= 0 ? 'positive' : (growthSales !== null ? 'negative' : 'neutral'));
+      const diffSign = diffNetSales >= 0 ? '+' : '-';
+      kpiSalesGrowthEl.textContent = (growthSales !== null ? (growthSales >= 0 ? '+' : '') + growthSales.toFixed(2) + '%' : '-') + ' (' + diffSign + formatRp(Math.abs(diffNetSales)) + ')';
+    }
+
+    const kpiTargetRevEl = document.getElementById('kpiTargetRevenue');
+    if (kpiTargetRevEl) kpiTargetRevEl.textContent = formatRp(targetTotal);
+    const kpiTargetAchEl = document.getElementById('kpiTargetAchievement');
+    if (kpiTargetAchEl) kpiTargetAchEl.textContent = targetAchieve.toFixed(2) + '%';
+    const kpiTargetProgEl = document.getElementById('kpiTargetProgressFill');
+    if (kpiTargetProgEl) kpiTargetProgEl.style.width = Math.min(targetAchieve, 100) + '%';
+
+    const kpiTargetStatusEl = document.getElementById('kpiTargetStatus');
+    if (kpiTargetStatusEl) {
+      kpiTargetStatusEl.className = 'badge-growth ' + (targetGap >= 0 ? 'positive' : 'negative');
+      const gapSign = targetGap >= 0 ? '+' : '-';
+      kpiTargetStatusEl.textContent = (targetGap >= 0 ? 'MELAMPAUI TARGET' : 'DEFISIT DARI TARGET') + ' (' + gapSign + formatRp(Math.abs(targetGap)) + ')';
+    }
+
+    const kpiTx26El = document.getElementById('kpiTx2026');
+    if (kpiTx26El) kpiTx26El.textContent = formatNum(tx26Count);
+    const kpiTxGrowthEl = document.getElementById('kpiTxGrowth');
+    if (kpiTxGrowthEl) {
+      kpiTxGrowthEl.className = 'badge-growth ' + (growthTx !== null && growthTx >= 0 ? 'positive' : 'negative');
+      kpiTxGrowthEl.textContent = growthTx !== null ? (growthTx >= 0 ? '+' : '') + growthTx.toFixed(2) + '%' : '-';
+    }
+    const kpiAtvEl = document.getElementById('kpiAtv');
+    if (kpiAtvEl) kpiAtvEl.textContent = formatRp(atv26);
+
+    const kpiQty26El = document.getElementById('kpiQty2026');
+    if (kpiQty26El) kpiQty26El.textContent = formatNum(q26);
+    const kpiQtyGrowthEl = document.getElementById('kpiQtyGrowth');
+    if (kpiQtyGrowthEl) {
+      kpiQtyGrowthEl.className = 'badge-growth ' + (growthQty !== null && growthQty >= 0 ? 'positive' : 'negative');
+      kpiQtyGrowthEl.textContent = growthQty !== null ? (growthQty >= 0 ? '+' : '') + growthQty.toFixed(2) + '%' : '-';
+    }
+    const kpiUptEl = document.getElementById('kpiUpt');
+    if (kpiUptEl) kpiUptEl.textContent = upt26.toFixed(2) + ' item';
+
+    // Filter Visitor Actual (2026)
+    let totalVisitors = 0;
+    const matchedVisitorUnit = outlet ? (OUTLET_TO_VISITOR_MAP[outlet] || null) : null;
+    for (let i = 0; i < RAW_VISITORS.length; i++) {
+      const v = RAW_VISITORS[i];
+      const vDm = v.date.substring(5);
+      if (startDate || endDate) {
+        if (startDm && vDm < startDm) continue;
+        if (endDm && vDm > endDm) continue;
+      } else if (selMonth) {
+        if (v.date.substring(5, 7) !== selMonth) continue;
+      }
+
+      if (matchedVisitorUnit) {
+        if (v.unit.toLowerCase() !== matchedVisitorUnit.toLowerCase()) continue;
+      } else if (area) {
+        if (v.area.toLowerCase() !== area.toLowerCase()) continue;
+      }
+
+      totalVisitors += v.visitors;
+    }
+
+    const sph26 = totalVisitors > 0 ? (s26 / totalVisitors) : 0;
+    const captureRate26 = totalVisitors > 0 ? (tx26Count / totalVisitors * 100) : 0;
+
+    const kpiVisCountEl = document.getElementById('kpiVisitorCount');
+    if (kpiVisCountEl) {
+      if (totalVisitors > 0) {
+        kpiVisCountEl.innerHTML = `${formatNum(totalVisitors)} <span style="font-size:14px; font-weight:normal; color:var(--text-muted);">Orang</span>`;
+      } else {
+        kpiVisCountEl.innerHTML = `<span style="font-size:15px; color:var(--text-muted); font-weight:600;">Belum Diinput</span>`;
+      }
+    }
+
+    const kpiSphEl = document.getElementById('kpiSphVal');
+    if (kpiSphEl) {
+      kpiSphEl.textContent = totalVisitors > 0 ? formatRp(sph26) : '-';
+    }
+
+    const kpiCapEl = document.getElementById('kpiCaptureRate');
+    if (kpiCapEl) {
+      if (totalVisitors > 0) {
+        kpiCapEl.className = 'badge-growth ' + (captureRate26 > 0 ? 'positive' : 'neutral');
+        kpiCapEl.textContent = `${captureRate26.toFixed(1)}% (${formatNum(tx26Count)} struk)`;
+      } else {
+        kpiCapEl.className = 'badge-growth neutral';
+        kpiCapEl.textContent = '-';
+      }
+    }
+
+    // Outlets Flatten & Sort
+    const outletList = Object.entries(byOutlet).map(([name, v]) => ({
+      name,
+      area: v.area || '',
+      s26: v.s26,
+      s25: v.s25,
+      q26: v.q26,
+      q25: v.q25,
+      tx26: v.tx26.size,
+      tx25: v.tx25.size,
+      contrib26: s26 > 0 ? (v.s26 / s26 * 100) : 0,
+      growthSales: v.s25 > 0 ? ((v.s26 - v.s25) / v.s25 * 100) : null
+    })).sort((a, b) => b.s26 - a.s26);
+
+    // Areas Flatten & Sort
+    const areaList = Object.entries(byArea).map(([name, v]) => ({
+      name,
+      s26: v.s26,
+      s25: v.s25,
+      q26: v.q26,
+      q25: v.q25,
+      tx26: v.tx26.size,
+      tx25: v.tx25.size,
+      contrib26: s26 > 0 ? (v.s26 / s26 * 100) : 0,
+      growthSales: v.s25 > 0 ? ((v.s26 - v.s25) / v.s25 * 100) : null
+    })).sort((a, b) => b.s26 - a.s26);
+
+    // Products Flatten & Sort
+    const productList = Object.entries(byProduct).map(([name, v]) => ({
+      name,
+      s26: v.s26,
+      s25: v.s25,
+      q26: v.q26,
+      q25: v.q25,
+      contrib26: s26 > 0 ? (v.s26 / s26 * 100) : 0,
+      growthQty: v.q25 > 0 ? ((v.q26 - v.q25) / v.q25 * 100) : null
+    })).sort((a, b) => b.s26 - a.s26);
+
+    // Hourly Array (Only active operational hours up to hour 20, excluding 21-23)
+    const activeHours = Object.keys(byHour).filter(h => parseInt(h, 10) <= 20 && (byHour[h].s26 > 0 || byHour[h].s25 > 0 || hourTx26[h].size > 0 || hourTx25[h].size > 0)).sort();
+    const minH = activeHours.length ? parseInt(activeHours[0], 10) : 8;
+    const maxH = Math.min(activeHours.length ? parseInt(activeHours[activeHours.length - 1], 10) : 20, 20);
+
+    const hourlyList = [];
+    let maxHourSales = 0, peakHourSales = "16";
+    let maxHourTx = 0, peakHourTx = "16";
+
+    for (let i = minH; i <= maxH; i++) {
+      const hStr = String(i).padStart(2, '0');
+      const s26H = byHour[hStr] ? byHour[hStr].s26 : 0;
+      const s25H = byHour[hStr] ? byHour[hStr].s25 : 0;
+      const tx26H = hourTx26[hStr] ? hourTx26[hStr].size : 0;
+      const tx25H = hourTx25[hStr] ? hourTx25[hStr].size : 0;
+
+      if (s26H > maxHourSales) { maxHourSales = s26H; peakHourSales = hStr; }
+      if (tx26H > maxHourTx) { maxHourTx = tx26H; peakHourTx = hStr; }
+
+      hourlyList.push({
+        hour: hStr,
+        net_sales_2026: s26H,
+        net_sales_2025: s25H,
+        transactions_2026: tx26H,
+        transactions_2025: tx25H
+      });
+    }
+
+    const peakSalesEl = document.getElementById('peakSalesHour');
+    if (peakSalesEl) peakSalesEl.textContent = 'Pukul ' + peakHourSales + ':00';
+    const peakTxEl = document.getElementById('peakTxHour');
+    if (peakTxEl) peakTxEl.textContent = 'Pukul ' + peakHourTx + ':00';
+
+    // Chart 1 & Chart 2 Data (Monthly if YTD/all months with no custom date range; Daily if single month or custom date range selected)
+    const mNames = ["", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+    const mFullNames = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const hasDateRange = Boolean(startDate || endDate);
+    const isMonthlyView = !selMonth && !hasDateRange; // True only if "Semua Bulan (YTD)" and no date range
+
+    let dailyChartList = [];
+    let targetChartList = [];
+
+    const chart1Title = document.getElementById('chart1Title');
+    const chart1Subtitle = document.getElementById('chart1Subtitle');
+    const chart2Title = document.getElementById('chart2Title');
+    const chart2Subtitle = document.getElementById('chart2Subtitle');
+
+    if (isMonthlyView) {
+      if (chart1Title) chart1Title.textContent = 'Tren Penjualan Bulanan (2026 vs 2025)';
+      if (chart1Subtitle) chart1Subtitle.textContent = 'Perbandingan pergerakan revenue bulanan YTD';
+      if (chart2Title) chart2Title.textContent = 'Target vs Realisasi Bulanan 2026';
+      if (chart2Subtitle) chart2Subtitle.textContent = 'Monitoring target bulanan vs aktual tercapai YTD';
+
+      const monthKeys = Object.keys(byMonth).sort();
+      dailyChartList = monthKeys.map(mKey => {
+        const mIdx = parseInt(mKey, 10);
+        return {
+          date: '2026-' + mKey,
+          comparison_date: '2025-' + mKey,
+          label: mFullNames[mIdx] || mKey,
+          short_label: mNames[mIdx] || mKey,
+          is_monthly: true,
+          2026: byMonth[mKey].s26,
+          2025: byMonth[mKey].s25
+        };
+      });
+
+      targetChartList = dailyChartList.map(item => {
+        const mKey = item.date.substring(5, 7);
+        return {
+          date: item.date,
+          label: item.label,
+          short_label: item.short_label,
+          is_monthly: true,
+          target: targetMonthMap[mKey] || 0,
+          actual: item['2026']
+        };
+      });
+    } else {
+      if (hasDateRange) {
+        const dateRangeLabel = (startDate ? formatDisplayDate(startDate) : 'Awal') + ' - ' + (endDate ? formatDisplayDate(endDate) : 'Akhir');
+        if (chart1Title) chart1Title.textContent = `Tren Penjualan Harian (${dateRangeLabel})`;
+        if (chart1Subtitle) chart1Subtitle.textContent = `Perbandingan pergerakan revenue harian 2026 vs 2025`;
+        if (chart2Title) chart2Title.textContent = `Target vs Realisasi Harian (${dateRangeLabel})`;
+        if (chart2Subtitle) chart2Subtitle.textContent = `Monitoring target harian vs aktual tercapai`;
+      } else {
+        const selMonthIdx = parseInt(selMonth, 10);
+        const selMonthName = mFullNames[selMonthIdx] || month;
+        if (chart1Title) chart1Title.textContent = `Tren Penjualan Harian (${selMonthName} 2026 vs 2025)`;
+        if (chart1Subtitle) chart1Subtitle.textContent = `Perbandingan pergerakan revenue harian bulan ${selMonthName}`;
+        if (chart2Title) chart2Title.textContent = `Target vs Realisasi Harian (${selMonthName} 2026)`;
+        if (chart2Subtitle) chart2Subtitle.textContent = `Monitoring target harian vs aktual tercapai bulan ${selMonthName}`;
+      }
+
+      const dayKeys = Object.keys(byDay).sort();
+      dailyChartList = dayKeys.map(dayKey => {
+        const parts = dayKey.split('-');
+        const dNum = parseInt(parts[1], 10);
+        const mLabel = mNames[parseInt(parts[0], 10)] || parts[0];
+        return {
+          date: '2026-' + dayKey,
+          comparison_date: '2025-' + dayKey,
+          label: dNum + ' ' + mLabel,
+          short_label: dNum + ' ' + mLabel,
+          is_monthly: false,
+          2026: byDay[dayKey].s26,
+          2025: byDay[dayKey].s25
+        };
+      });
+
+      targetChartList = dailyChartList.map(item => ({
+        date: item.date,
+        label: item.label,
+        short_label: item.short_label,
+        is_monthly: false,
+        target: targetDailyMap[item.date] || 0,
+        actual: item['2026']
+      }));
+    }
+
+    // Update Top 5 & Bottom 5 in DOM
+    const active26Outlets = outletList.filter(o => o.s26 > 0);
+    const top5 = active26Outlets.slice(0, 5);
+    const bottom5 = [...active26Outlets].reverse().slice(0, 5);
+
+    let topHtml = '';
+    top5.forEach((o, idx) => {
+      topHtml += `
+        <div class="insight-item">
+          <div><span class="insight-rank">${idx + 1}</span><span>${o.name}</span></div>
+          <strong>${formatRp(o.s26)} <span style="font-size:11px; color:var(--text-muted);">(${o.contrib26.toFixed(1)}%)</span></strong>
+        </div>`;
+    });
+    const topOutletsEl = document.getElementById('topOutletsList');
+    if (topOutletsEl) topOutletsEl.innerHTML = topHtml || '<div class="insight-item">Tidak ada data</div>';
+
+    let bottomHtml = '';
+    bottom5.forEach(o => {
+      bottomHtml += `
+        <div class="insight-item">
+          <div><span class="insight-rank" style="background:var(--danger-subtle); color:var(--danger);">!</span><span>${o.name}</span></div>
+          <strong>${formatRp(o.s26)} <span class="badge-growth ${o.growthSales !== null && o.growthSales < 0 ? 'negative' : 'neutral'}">${o.growthSales !== null ? (o.growthSales >= 0 ? '+' : '') + o.growthSales.toFixed(1) + '%' : '-'}</span></strong>
+        </div>`;
+    });
+    const bottomOutletsEl = document.getElementById('bottomOutletsList');
+    if (bottomOutletsEl) bottomOutletsEl.innerHTML = bottomHtml || '<div class="insight-item">Tidak ada data</div>';
+
+    // Update Narrative Text
+    try {
+      const growthSalesStr = growthSales !== null ? (growthSales >= 0 ? '+' : '') + growthSales.toFixed(2) + '%' : '0.0%';
+      const narEl = document.getElementById('narrativeText');
+      if (narEl) {
+        narEl.textContent = 
+          `Total penjualan 2026 tercatat sebesar ${formatRp(s26)} (${targetAchieve.toFixed(1)}% dari target ${formatRp(targetTotal)}). ` +
+          `Performa penjualan tercatat ${(growthSales || 0) >= 0 ? 'tumbuh' : 'terkoreksi'} ${growthSalesStr} dibanding periode yang sama tahun 2025. ` +
+          `Rata-rata transaksi per pelanggan (ATV) adalah ${formatRp(atv26)} dengan puncak penjualan pada pukul ${peakHourSales}:00.`;
+      }
+    } catch (e) { console.error('Narrative error:', e); }
+
+    // Update Business Insights Cards (Dynamic Management & Operational Summary)
+    try {
+      updateBusinessInsights({
+        s26, s25, q26, q25, tx26Count, tx25Count,
+        growthSales, growthQty, growthTx, growthAtv, growthUpt,
+        atv26, atv25, upt26, upt25,
+        targetTotal, targetAchieve, targetGap,
+        outletList, areaList, productList,
+        peakHourSales, peakHourTx, hourlyList,
+        currentFilter
+      });
+    } catch (e) { console.error('Business Insights error:', e); }
+
+    // Render Tables in DOM
+    try {
+      renderOutletsTable(outletList);
+      renderAreasTable(areaList);
+      renderProductsTable(productList);
+    } catch (e) { console.error('Table render error:', e); }
+
+    // Save data for chart redraw & Excel download
+    currentDashboardData = {
+      summary: {
+        "2026": { net_sales: s26, qty: q26, transactions: tx26Count, atv: atv26, upt: upt26, asp: q26 > 0 ? s26/q26 : 0 },
+        "2025": { net_sales: s25, qty: q25, transactions: tx25Count, atv: atv25, upt: upt25, asp: q25 > 0 ? s25/q25 : 0 },
+        growth: { net_sales: growthSales, qty: growthQty, transactions: growthTx, atv: growthAtv },
+        diff: { net_sales: s26 - s25, qty: q26 - q25, transactions: tx26Count - tx25Count, atv: atv26 - atv25 }
+      },
+      target_revenue: targetTotal,
+      target_achievement: targetAchieve,
+      target_gap: targetGap,
+      target_status: targetGap >= 0 ? "MELAMPAUI TARGET" : "DEFISIT DARI TARGET",
+      outlets: outletList.map(o => ({ name: o.name, "2026": { net_sales: o.s26, qty: o.q26, transactions: o.tx26 }, "2025": { net_sales: o.s25, qty: o.q25 }, contrib_2026: o.contrib26, growth_sales: o.growthSales })),
+      areas: areaList.map(a => ({ name: a.name, "2026": { net_sales: a.s26, qty: a.q26, transactions: a.tx26 }, "2025": { net_sales: a.s25, qty: a.q25 }, contrib_2026: a.contrib26, growth_sales: a.growthSales })),
+      products: productList.map(p => ({ name: p.name, "2026": { net_sales: p.s26, qty: p.q26 }, "2025": { qty: p.q25, net_sales: p.s25 }, contrib_2026: p.contrib26, growth_qty: p.growthQty })),
+      daily_chart: dailyChartList,
+      target_chart: targetChartList,
+      hourly_chart: hourlyList,
+      peak_sales_hour: peakHourSales,
+      peak_tx_hour: peakHourTx,
+      executive_narrative: document.getElementById('narrativeText') ? document.getElementById('narrativeText').textContent : ''
+    };
+
+    // Redraw charts
+    try {
+      redrawAllCharts();
+    } catch (e) { console.error('Chart redraw error:', e); }
+  }
+
+  function updateActiveFilterTags() {
+    const container = document.getElementById('activeFiltersContainer');
+    const tagsEl = document.getElementById('activeFilterTags');
+    const parts = [];
+
+    if (currentFilter.month) parts.push(`Bulan: ${MONTH_NAMES[currentFilter.month] || currentFilter.month}`);
+    if (currentFilter.startDate && currentFilter.endDate) {
+      parts.push(`Tanggal: ${formatDisplayDate(currentFilter.startDate)} s/d ${formatDisplayDate(currentFilter.endDate)}`);
+    } else if (currentFilter.startDate) {
+      parts.push(`Dari: ${formatDisplayDate(currentFilter.startDate)}`);
+    } else if (currentFilter.endDate) {
+      parts.push(`Sampai: ${formatDisplayDate(currentFilter.endDate)}`);
+    }
+    if (currentFilter.area) parts.push(`Area: ${currentFilter.area}`);
+    if (currentFilter.outlet) parts.push(`Outlet: ${currentFilter.outlet}`);
+
+    if (parts.length) {
+      container.style.display = 'flex';
+      tagsEl.innerHTML = parts.map(p => `<span class="filter-tag">${p}</span>`).join(' ');
+    } else {
+      container.style.display = 'none';
+      tagsEl.innerHTML = '';
+    }
+  }
+
+  function resetFilters() {
+    document.getElementById('filterMonth').value = '';
+    const startEl = document.getElementById('filterStartDate');
+    const endEl = document.getElementById('filterEndDate');
+    if (startEl) startEl.value = '';
+    const clearBtn = document.getElementById('clearDateBtn');
+    if (clearBtn) clearBtn.style.display = 'none';
+    document.getElementById('filterArea').value = '';
+    document.getElementById('filterOutlet').value = '';
+    onAreaChange(); // This will reset outlet dropdown and call applyFilters()
+  }
+
+  function updateBusinessInsights(params) {
+    const {
+      s26, s25, q26, q25, tx26Count, tx25Count,
+      growthSales, growthQty, growthTx, growthAtv, growthUpt,
+      atv26, atv25, upt26, upt25,
+      targetTotal, targetAchieve, targetGap,
+      outletList, areaList, productList,
+      peakHourSales, peakHourTx, hourlyList,
+      currentFilter
+    } = params;
+
+    const healthBadge = document.getElementById('insightHealthBadge');
+    const healthText = document.getElementById('insightHealthText');
+    const subtitleEl = document.getElementById('insightPeriodSubtitle');
+
+    // Filter subtitle description
+    let filterDesc = 'Semua Data (YTD 2026)';
+    if (currentFilter.startDate && currentFilter.endDate) {
+      filterDesc = `Rentang Tanggal: ${formatDisplayDate(currentFilter.startDate)} s/d ${formatDisplayDate(currentFilter.endDate)}`;
+    } else if (currentFilter.startDate) {
+      filterDesc = `Sejak: ${formatDisplayDate(currentFilter.startDate)}`;
+    } else if (currentFilter.month) {
+      filterDesc = `Bulan: ${MONTH_NAMES[currentFilter.month] || currentFilter.month}`;
+    }
+    if (currentFilter.area) filterDesc += ` | Area: ${currentFilter.area}`;
+    if (currentFilter.outlet) filterDesc += ` | Outlet: ${currentFilter.outlet}`;
+    if (subtitleEl) subtitleEl.textContent = `Analisis pintar otomatis untuk: ${filterDesc}`;
+
+    // Overall Health Status
+    if (healthBadge && healthText) {
+      healthBadge.className = 'insight-health-status';
+      if (targetAchieve >= 100 && (growthSales || 0) >= 0) {
+        healthBadge.classList.add('positive');
+        healthText.textContent = `🟢 Performa Prima (Target ${targetAchieve.toFixed(1)}% | Tumbuh YoY)`;
+      } else if ((growthSales || 0) >= 0) {
+        healthBadge.classList.add('positive');
+        healthText.textContent = `🟢 Tumbuh Positif (+${(growthSales||0).toFixed(1)}% YoY)`;
+      } else if ((growthSales || 0) >= -10) {
+        healthBadge.classList.add('warning');
+        healthText.textContent = `🟡 Waspada Penurunan (${(growthSales||0).toFixed(1)}% YoY)`;
+      } else {
+        healthBadge.classList.add('danger');
+        healthText.textContent = `🔴 Perlu Intervensi Taktis (${(growthSales||0).toFixed(1)}% YoY)`;
+      }
+    }
+
+    // Card 1: Revenue Health & Target
+    const revTitle = document.getElementById('bizRevenueTitle');
+    const revContent = document.getElementById('bizRevenueContent');
+    if (revTitle) revTitle.textContent = `${formatRp(s26)} (${(growthSales !== null && growthSales >= 0 ? '+' : '') + (growthSales || 0).toFixed(1)}% YoY)`;
+
+    const diffSales = s26 - s25;
+    const targetStatusText = targetGap >= 0 
+      ? `Surplus <strong style="color:var(--success);">+${formatRp(targetGap)}</strong> di atas budget target.`
+      : `Kurang <strong style="color:var(--danger);">${formatRp(Math.abs(targetGap))}</strong> untuk mencapai 100% target.`;
+
+    let card1Html = `
+      <div class="biz-point">
+        <span class="biz-point-tag ${diffSales >= 0 ? 'growth' : 'drop'}">${diffSales >= 0 ? '▲ YoY' : '▼ YoY'}</span>
+        <div class="biz-point-text">
+          Realisasi omset 2026 tercatat <strong>${formatRp(s26)}</strong> dibanding <strong>${formatRp(s25)}</strong> di 2025 (${diffSales >= 0 ? 'tumbuh +' : 'turun '}${formatRp(Math.abs(diffSales))}).
+        </div>
+      </div>
+      <div class="biz-point">
+        <span class="biz-point-tag target">Target</span>
+        <div class="biz-point-text">
+          Tercapai <strong>${targetAchieve.toFixed(1)}%</strong> dari target <strong>${formatRp(targetTotal)}</strong>. ${targetStatusText}
+        </div>
+      </div>
+    `;
+    if (revContent) revContent.innerHTML = card1Html;
+
+    // Card 2: Customer Basket & Ticket Size
+    const basketTitle = document.getElementById('bizBasketTitle');
+    const basketContent = document.getElementById('bizBasketContent');
+    if (basketTitle) basketTitle.textContent = `ATV ${formatRp(atv26)} | UPT ${upt26.toFixed(2)} item`;
+
+    const atvDiff = atv26 - atv25;
+    const isTrafficDriver = (growthTx || 0) > (growthAtv || 0);
+
+    let card2Html = `
+      <div class="biz-point">
+        <span class="biz-point-tag driver">Keranjang</span>
+        <div class="biz-point-text">
+          Rata-rata belanja per struk (ATV) <strong>${formatRp(atv26)}</strong> (${atvDiff >= 0 ? 'naik +' : 'turun '}${formatRp(Math.abs(atvDiff))} / ${(growthAtv||0).toFixed(1)}% YoY).
+        </div>
+      </div>
+      <div class="biz-point">
+        <span class="biz-point-tag ${isTrafficDriver ? 'growth' : 'action'}">${isTrafficDriver ? 'Traffic' : 'Ticket Size'}</span>
+        <div class="biz-point-text">
+          Total <strong>${tx26Count.toLocaleString('id-ID')} struk</strong> (${(growthTx||0) >= 0 ? '+' : ''}${(growthTx||0).toFixed(1)}% YoY). Pertumbuhan omset saat ini didorong oleh <strong>${isTrafficDriver ? 'peningkatan volume transaksi/pelanggan' : 'kenaikan rata-rata nilai belanja per struk'}</strong>.
+        </div>
+      </div>
+    `;
+    if (basketContent) basketContent.innerHTML = card2Html;
+
+    // Card 3: Top Performers & Focus Units
+    const outletTitle = document.getElementById('bizOutletTitle');
+    const outletContent = document.getElementById('bizOutletContent');
+    const activeOutlets = outletList.filter(o => o.s26 > 0);
+    if (outletTitle) outletTitle.textContent = `${activeOutlets.length} Konter Aktif Beroperasi`;
+
+    const topOutlet = activeOutlets.length ? activeOutlets[0] : null;
+    const growthOutlets = [...activeOutlets].filter(o => o.s25 > 0 && o.growthSales !== null).sort((a, b) => b.growthSales - a.growthSales);
+    const starGrowthOutlet = growthOutlets.length ? growthOutlets[0] : null;
+    const laggingOutlet = growthOutlets.length ? growthOutlets[growthOutlets.length - 1] : null;
+
+    let card3Html = '';
+    if (topOutlet) {
+      card3Html += `
+        <div class="biz-point">
+          <span class="biz-point-tag star">Top Outlet</span>
+          <div class="biz-point-text">
+            <strong>${topOutlet.name}</strong>${topOutlet.area ? ` (${topOutlet.area})` : ''} memimpin dengan omset <strong>${formatRp(topOutlet.s26)}</strong> (kontribusi <strong>${topOutlet.contrib26.toFixed(1)}%</strong>).
+          </div>
+        </div>
+      `;
+    }
+    const topArea = areaList && areaList.length ? areaList[0] : null;
+    if (topArea && topArea.s26 > 0) {
+      card3Html += `
+        <div class="biz-point">
+          <span class="biz-point-tag driver">Top Area</span>
+          <div class="biz-point-text">
+            Area <strong>${topArea.name}</strong> menyumbang kontribusi terbesar yaitu <strong>${topArea.contrib26.toFixed(1)}%</strong> (${formatRp(topArea.s26)}).
+          </div>
+        </div>
+      `;
+    }
+    if (starGrowthOutlet && starGrowthOutlet.growthSales > 0 && starGrowthOutlet.name !== (topOutlet ? topOutlet.name : '')) {
+      card3Html += `
+        <div class="biz-point">
+          <span class="biz-point-tag growth">Fastest</span>
+          <div class="biz-point-text">
+            Pertumbuhan tertinggi diraih <strong>${starGrowthOutlet.name}</strong> (+${starGrowthOutlet.growthSales.toFixed(1)}% YoY).
+          </div>
+        </div>
+      `;
+    } else if (laggingOutlet && laggingOutlet.growthSales < 0) {
+      card3Html += `
+        <div class="biz-point">
+          <span class="biz-point-tag drop">Perhatian</span>
+          <div class="biz-point-text">
+            <strong>${laggingOutlet.name}</strong> mengalami koreksi omset (${laggingOutlet.growthSales.toFixed(1)}% YoY). Perlu evaluasi display dan promo lokal.
+          </div>
+        </div>
+      `;
+    }
+    if (outletContent) outletContent.innerHTML = card3Html || '<div class="biz-point">Tidak ada data unit</div>';
+
+    // Card 4: Operating Hours & Key Action Items
+    const actionTitle = document.getElementById('bizActionTitle');
+    const actionContent = document.getElementById('bizActionContent');
+    if (actionTitle) actionTitle.textContent = `Puncak Jam ${peakHourSales}:00 & Rekomendasi`;
+
+    let actionRecommendation = '';
+    if (upt26 < 1.5) {
+      actionRecommendation = 'UPT berada di angka <1.5 item/struk. Terapkan strategi purchase with purchase (PWP) atau bundling 2-item hemat di kasir.';
+    } else if (targetAchieve < 90) {
+      actionRecommendation = 'Pencapaian target <90%. Maksimalkan push promo dan ketersediaan stok produk terlaris pada jam sibuk.';
+    } else {
+      actionRecommendation = 'Performa penjualan solid. Jaga konsistensi stok SKU unggulan dan pertahankan standar pelayanan tim sales.';
+    }
+
+    let card4Html = `
+      <div class="biz-point">
+        <span class="biz-point-tag star">Peak Hour</span>
+        <div class="biz-point-text">
+          Jam tersibuk penjualan terkonsentrasi pada pukul <strong>${peakHourSales}:00</strong> dan struk terbanyak pada pukul <strong>${peakHourTx}:00</strong>.
+        </div>
+      </div>
+      <div class="biz-point">
+        <span class="biz-point-tag action">Aksi Taktis</span>
+        <div class="biz-point-text">
+          ${actionRecommendation}
+        </div>
+      </div>
+    `;
+    if (actionContent) actionContent.innerHTML = card4Html;
+  }
+
+  // Render Table DOMs
+  function renderOutletsTable(list) {
+    const tbody = document.getElementById('outletsTableBody');
+    const maxSales = list.length ? Math.max(...list.map(x => x.s26), 1) : 1;
+    let html = '';
+    list.forEach((o, i) => {
+      const gw = o.growthSales;
+      const gwBadge = gw !== null ? (gw >= 0 ? '+' : '') + gw.toFixed(1) + '%' : '-';
+      const gwClass = gw !== null && gw >= 0 ? 'positive' : (gw !== null ? 'negative' : 'neutral');
+      const barPct = (o.s26 / maxSales * 100).toFixed(1);
+      html += `
+        <tr>
+          <td class="text-center" style="color:var(--text-muted);">${i + 1}</td>
+          <td style="font-weight:600;">${o.name}</td>
+          <td class="text-right">
+            <div class="bar-container">
+              <div class="data-bar" style="width: ${barPct}%;"></div>
+              <span class="bar-value">${formatRp(o.s26)}</span>
+            </div>
+          </td>
+          <td class="text-right"><strong>${o.contrib26.toFixed(1)}%</strong></td>
+          <td class="text-right">${formatNum(o.q26)}</td>
+          <td class="text-right">${formatNum(o.tx26)}</td>
+          <td class="text-right" style="color:var(--text-muted);">${formatRp(o.s25)}</td>
+          <td class="text-right"><span class="badge-growth ${gwClass}">${gwBadge}</span></td>
+        </tr>`;
+    });
+    tbody.innerHTML = html;
+  }
+
+  function renderAreasTable(list) {
+    const tbody = document.getElementById('areasTableBody');
+    const maxSales = list.length ? Math.max(...list.map(x => x.s26), 1) : 1;
+    let html = '';
+    list.forEach((a, i) => {
+      const gw = a.growthSales;
+      const gwBadge = gw !== null ? (gw >= 0 ? '+' : '') + gw.toFixed(1) + '%' : '-';
+      const gwClass = gw !== null && gw >= 0 ? 'positive' : (gw !== null ? 'negative' : 'neutral');
+      const barPct = (a.s26 / maxSales * 100).toFixed(1);
+      html += `
+        <tr>
+          <td class="text-center" style="color:var(--text-muted);">${i + 1}</td>
+          <td style="font-weight:600;">${a.name}</td>
+          <td class="text-right">
+            <div class="bar-container">
+              <div class="data-bar" style="width: ${barPct}%;"></div>
+              <span class="bar-value">${formatRp(a.s26)}</span>
+            </div>
+          </td>
+          <td class="text-right"><strong>${a.contrib26.toFixed(1)}%</strong></td>
+          <td class="text-right">${formatNum(a.q26)}</td>
+          <td class="text-right">${formatNum(a.tx26)}</td>
+          <td class="text-right" style="color:var(--text-muted);">${formatRp(a.s25)}</td>
+          <td class="text-right"><span class="badge-growth ${gwClass}">${gwBadge}</span></td>
+        </tr>`;
+    });
+    tbody.innerHTML = html;
+  }
+
+  // Product Synonyms Dictionary for natural / keyword searching
+  const PRODUCT_SYNONYMS = {
+    'sandal': ['sandal', 'sndl', 'sendal'],
+    'sndl': ['sandal', 'sndl', 'sendal'],
+    'jas': ['jas', 'hujan', 'raincoat'],
+    'hujan': ['jas', 'hujan'],
+    'botol': ['botol', 'btl', 'prima', 'drink'],
+    'btl': ['botol', 'btl'],
+    'prima': ['prima', '600ml'],
+    'tas': ['tas', 'spunbond', 'bag', 'tote'],
+    'spunbond': ['spunbond', 'tas'],
+    'case': ['case', 'casing', 'waterproof'],
+    'casing': ['case', 'casing', 'waterproof'],
+    'waterproof': ['waterproof', 'case'],
+    'celana': ['celana', 'cln', 'pant', 'pants', 'boxer'],
+    'cln': ['celana', 'cln'],
+    'baju': ['baju', 'kaos', 't-shirt', 'hoodie', 'shirt'],
+    'hoodie': ['hoodie', 'sweater', 'jaket'],
+    'topi': ['topi', 'tp', 'cap', 'hat'],
+    'tp': ['topi', 'tp'],
+    'payung': ['payung', 'pyg'],
+    'kacamata': ['kacamata', 'kcm', 'glasses', 'sunglasses'],
+    'boneka': ['bnk', 'boneka', 'doll', 'plush'],
+    'bnk': ['bnk', 'boneka']
+  };
+
+  function matchProductKeyword(productName, queryTokens) {
+    if (!queryTokens.length) return true;
+    const lowerName = productName.toLowerCase();
+
+    // Every token in query must match either literally or through synonym groups
+    return queryTokens.every(token => {
+      if (lowerName.includes(token)) return true;
+      const syns = PRODUCT_SYNONYMS[token];
+      if (syns && syns.some(s => lowerName.includes(s))) return true;
+      return false;
+    });
+  }
+
+  function renderProductsTable(allProducts) {
+    const tbody = document.getElementById('productsTableBody');
+    const limitSelect = document.getElementById('productLimitSelect');
+    const limitVal = limitSelect ? limitSelect.value : '10';
+    const rawQuery = (document.getElementById('tableSearchInput') ? document.getElementById('tableSearchInput').value : '').toLowerCase().trim();
+    const summaryEl = document.getElementById('productSearchSummary');
+    const statsEl = document.getElementById('productSearchStats');
+
+    // Filter products by keyword query
+    const queryTokens = rawQuery.split(/\s+/).filter(Boolean);
+    let filtered = allProducts || [];
+
+    if (queryTokens.length > 0) {
+      filtered = filtered.filter(p => matchProductKeyword(p.name, queryTokens));
+    }
+
+    // Calculate totals of filtered products for context
+    const totalDashboardSales = currentDashboardData.summary && currentDashboardData.summary["2026"] ? currentDashboardData.summary["2026"].net_sales : 1;
+    const filteredTotalSales = filtered.reduce((acc, p) => acc + (p.s26 !== undefined ? p.s26 : (p["2026"] ? p["2026"].net_sales : 0)), 0);
+    const filteredTotalQty = filtered.reduce((acc, p) => acc + (p.q26 !== undefined ? p.q26 : (p["2026"] ? p["2026"].qty : 0)), 0);
+    const filteredContrib = totalDashboardSales > 0 ? (filteredTotalSales / totalDashboardSales * 100) : 0;
+
+    if (queryTokens.length > 0 && summaryEl) {
+      summaryEl.style.display = 'flex';
+      statsEl.innerHTML = `Ditemukan <strong>${filtered.length}</strong> produk mengandung kata kunci "<em>${rawQuery}</em>" | Total Omset: <strong>${formatRp(filteredTotalSales)}</strong> (${filteredContrib.toFixed(1)}% dari total) | Total Qty: <strong>${formatNum(filteredTotalQty)} Pcs</strong>`;
+    } else if (summaryEl) {
+      summaryEl.style.display = 'none';
+    }
+
+    // Slice by selected limit
+    let displayed = filtered;
+    if (limitVal !== 'all') {
+      displayed = filtered.slice(0, parseInt(limitVal, 10));
+    }
+
+    const maxSales = displayed.length ? Math.max(...displayed.map(x => (x.s26 !== undefined ? x.s26 : (x["2026"] ? x["2026"].net_sales : 0))), 1) : 1;
+
+    if (!displayed.length) {
+      tbody.innerHTML = `<tr><td colspan="7" class="text-center" style="padding:28px 16px; color:var(--text-muted);">Tidak ada produk yang cocok dengan kata kunci "<strong>${rawQuery}</strong>".<br><span style="font-size:12px;">Tips: Coba ketik kata kunci umum seperti <em>jas, sandal, prima, botol, casing, topi</em>.</span></td></tr>`;
+      return;
+    }
+
+    let html = '';
+    displayed.forEach((p, i) => {
+      const s26 = p.s26 !== undefined ? p.s26 : (p["2026"] ? p["2026"].net_sales : 0);
+      const q26 = p.q26 !== undefined ? p.q26 : (p["2026"] ? p["2026"].qty : 0);
+      const q25 = p.q25 !== undefined ? p.q25 : (p["2025"] ? p["2025"].qty : 0);
+      const contrib = p.contrib26 !== undefined ? p.contrib26 : (p.contrib_2026 || (totalDashboardSales > 0 ? s26 / totalDashboardSales * 100 : 0));
+      const gq = p.growthQty !== undefined ? p.growthQty : (p.growth_qty !== undefined ? p.growth_qty : (q25 > 0 ? (q26 - q25)/q25 * 100 : null));
+
+      const gqBadge = gq !== null ? (gq >= 0 ? '+' : '') + gq.toFixed(1) + '%' : '-';
+      const gqClass = gq !== null && gq >= 0 ? 'positive' : (gq !== null ? 'negative' : 'neutral');
+      const barPct = (s26 / maxSales * 100).toFixed(1);
+
+      // Highlight query tokens in product name
+      let highlightedName = p.name;
+      if (queryTokens.length > 0) {
+        queryTokens.forEach(tok => {
+          const regex = new RegExp(`(${tok})`, 'gi');
+          highlightedName = highlightedName.replace(regex, '<mark class="search-highlight">$1</mark>');
+        });
+      }
+
+      html += `
+        <tr>
+          <td class="text-center" style="color:var(--text-muted);">${i + 1}</td>
+          <td style="font-weight:600;">${highlightedName}</td>
+          <td class="text-right">
+            <div class="bar-container">
+              <div class="data-bar" style="width: ${barPct}%;"></div>
+              <span class="bar-value">${formatRp(s26)}</span>
+            </div>
+          </td>
+          <td class="text-right"><strong>${contrib.toFixed(1)}%</strong></td>
+          <td class="text-right">${formatNum(q26)}</td>
+          <td class="text-right" style="color:var(--text-muted);">${formatNum(q25)}</td>
+          <td class="text-right"><span class="badge-growth ${gqClass}">${gqBadge}</span></td>
+        </tr>`;
+    });
+    tbody.innerHTML = html;
+  }
+
+  // ----------------------------------------------------
+  // DOWNLOAD EXCEL (.xlsx) ENGINE
+  // ----------------------------------------------------
+  function downloadCuratedExcel() {
+    // Check if on Flask server
+    if (window.location.protocol.startsWith('http')) {
+      const params = new URLSearchParams();
+      if (currentFilter.month) params.set('month', currentFilter.month);
+      if (currentFilter.startDate) params.set('start_date', currentFilter.startDate);
+      if (currentFilter.endDate) params.set('end_date', currentFilter.endDate);
+      if (currentFilter.area) params.set('area', currentFilter.area);
+      if (currentFilter.outlet) params.set('outlet', currentFilter.outlet);
+      window.location.href = '/download?' + params.toString();
+      return;
+    }
+
+    // Client-side SheetJS Export (Works 100% Offline in Static HTML)
+    if (typeof XLSX === 'undefined') {
+      alert('Sedang memuat engine Excel, silakan coba 2 detik lagi...');
+      return;
+    }
+
+    const d = currentDashboardData;
+    const wb = XLSX.utils.book_new();
+
+    // 1. Sheet: Ringkasan KPI
+    const kpiData = [
+      ["SALES PERFORMANCE & GROWTH REPORT"],
+      ["Filter: " + (Object.values(currentFilter).filter(Boolean).join(" - ") || "Semua Data")],
+      ["Diunduh: " + new Date().toLocaleString('id-ID')],
+      [],
+      ["RINGKASAN EKSEKUTIF:"],
+      [d.executive_narrative],
+      [],
+      ["Indikator / Metrik", "Tahun 2026 (Utama)", "Tahun 2025 (Pembanding)", "Pertumbuhan YoY (%)", "Selisih (+/-)"],
+      ["Net Sales (Omset)", d.summary["2026"].net_sales, d.summary["2025"].net_sales, (d.summary.growth.net_sales || 0) + '%', d.summary.diff.net_sales],
+      ["Target Revenue 2026", d.target_revenue, "-", "-", d.target_gap],
+      ["Pencapaian Target (%)", d.target_achievement.toFixed(2) + '%', "-", "-", "-"],
+      ["Total Transaksi (Struk)", d.summary["2026"].transactions, d.summary["2025"].transactions, (d.summary.growth.transactions || 0) + '%', d.summary.diff.transactions],
+      ["Total Qty Terjual (Pcs)", d.summary["2026"].qty, d.summary["2025"].qty, (d.summary.growth.qty || 0) + '%', d.summary.diff.qty],
+      ["ATV (Rata-rata/Struk)", d.summary["2026"].atv, d.summary["2025"].atv, (d.summary.growth.atv || 0) + '%', d.summary.diff.atv],
+      ["UPT (Item/Struk)", d.summary["2026"].upt, d.summary["2025"].upt, "-", "-"]
+    ];
+    const wsKpi = XLSX.utils.aoa_to_sheet(kpiData);
+    XLSX.utils.book_append_sheet(wb, wsKpi, "Ringkasan KPI");
+
+    // 2. Sheet: Performa Outlet
+    const outletData = [
+      ["Rank", "Nama Konter / Outlet", "Net Sales 2026", "Kontribusi (%)", "Qty 2026", "Transaksi 2026", "Net Sales 2025", "Growth Sales (%)"]
+    ];
+    d.outlets.forEach((o, i) => {
+      outletData.push([
+        i + 1, o.name, o["2026"].net_sales, o.contrib_2026 ? o.contrib_2026.toFixed(1) + '%' : '0%',
+        o["2026"].qty, o["2026"].transactions, o["2025"].net_sales, o.growth_sales !== null ? o.growth_sales.toFixed(1) + '%' : '-'
+      ]);
+    });
+    const wsOutlet = XLSX.utils.aoa_to_sheet(outletData);
+    XLSX.utils.book_append_sheet(wb, wsOutlet, "Performa Outlet");
+
+    // 3. Sheet: Performa Area
+    const areaData = [
+      ["Rank", "Nama Area", "Net Sales 2026", "Kontribusi (%)", "Qty 2026", "Transaksi 2026", "Net Sales 2025", "Growth Sales (%)"]
+    ];
+    d.areas.forEach((a, i) => {
+      areaData.push([
+        i + 1, a.name, a["2026"].net_sales, a.contrib_2026 ? a.contrib_2026.toFixed(1) + '%' : '0%',
+        a["2026"].qty, a["2026"].transactions, a["2025"].net_sales, a.growth_sales !== null ? a.growth_sales.toFixed(1) + '%' : '-'
+      ]);
+    });
+    const wsArea = XLSX.utils.aoa_to_sheet(areaData);
+    XLSX.utils.book_append_sheet(wb, wsArea, "Performa Area");
+
+    // 4. Sheet: Top Produk
+    const prodData = [
+      ["Rank", "Nama Barang / Produk", "Net Sales 2026", "Kontribusi (%)", "Qty 2026", "Qty 2025", "Growth Qty (%)"]
+    ];
+    d.products.slice(0, 200).forEach((p, i) => {
+      prodData.push([
+        i + 1, p.name, p["2026"].net_sales, p.contrib_2026 ? p.contrib_2026.toFixed(1) + '%' : '0%',
+        p["2026"].qty, p["2025"].qty, p.growth_qty !== null ? p.growth_qty.toFixed(1) + '%' : '-'
+      ]);
+    });
+    const wsProd = XLSX.utils.aoa_to_sheet(prodData);
+    XLSX.utils.book_append_sheet(wb, wsProd, "Top Produk");
+
+    // 5. Sheet: Performa Jam
+    const hrData = [
+      ["Jam Operasional", "Net Sales 2026", "Transaksi 2026", "Net Sales 2025", "Transaksi 2025"]
+    ];
+    d.hourly_chart.forEach(h => {
+      hrData.push([`Pukul ${h.hour}:00`, h.net_sales_2026, h.transactions_2026, h.net_sales_2025, h.transactions_2025]);
+    });
+    const wsHr = XLSX.utils.aoa_to_sheet(hrData);
+    XLSX.utils.book_append_sheet(wb, wsHr, "Performa Jam");
+
+    const fileSuffix = Object.values(currentFilter).filter(Boolean).join('_') || 'Semua';
+    XLSX.writeFile(wb, `Laporan_Sales_${fileSuffix}.xlsx`);
+  }
+
+  // ----------------------------------------------------
+  // CHARTS RENDERING ENGINE
+  // ----------------------------------------------------
+  function redrawAllCharts() {
+    drawDailySalesChart();
+    drawTargetChart();
+    drawHourlySalesChart();
+    drawHourlyTxChart();
+  }
+
+  // Chart 1: YoY Daily Sales
+  const salesCanvas = document.getElementById('salesChart');
+  const salesTooltip = document.getElementById('chartTooltip');
+  let salesPoints = [];
+
+  function drawDailySalesChart() {
+    if (!salesCanvas) return;
+    const isDark = root.classList.contains('dark');
+    const gridColor = isDark ? '#1f2937' : '#e2e8f0';
+    const textColor = isDark ? '#94a3b8' : '#64748b';
+
+    const box = salesCanvas.parentElement;
+    const ratio = window.devicePixelRatio || 1;
+    const width = box.clientWidth;
+    const height = 320;
+    salesCanvas.width = width * ratio;
+    salesCanvas.height = height * ratio;
+    salesCanvas.style.height = height + 'px';
+
+    const ctx = salesCanvas.getContext('2d');
+    ctx.scale(ratio, ratio);
+
+    const dailyData = currentDashboardData.daily_chart || [];
+    if (!dailyData.length) {
+      ctx.fillStyle = textColor;
+      ctx.textAlign = 'center';
+      ctx.font = '13px sans-serif';
+      ctx.fillText('Tidak ada data harian untuk filter ini', width / 2, height / 2);
+      return;
+    }
+
+    const maxVal = Math.max(...dailyData.flatMap(x => [x['2026'], x['2025']]), 1000000);
+    const left = 68, bottom = 36, top = 20, right = 16;
+    const plotW = width - left - right;
+    const plotH = height - top - bottom;
+
+    ctx.font = '11px sans-serif';
+    ctx.fillStyle = textColor;
+    ctx.strokeStyle = gridColor;
+    ctx.lineWidth = 1;
+
+    [0, 0.25, 0.5, 0.75, 1].forEach(t => {
+      const y = top + plotH * (1 - t);
+      ctx.beginPath();
+      ctx.moveTo(left, y);
+      ctx.lineTo(width - right, y);
+      ctx.stroke();
+      ctx.textAlign = 'left';
+      ctx.fillText('Rp ' + Math.round(maxVal * t / 1000000) + 'jt', 6, y + 4);
+    });
+
+    const step = plotW / Math.max(dailyData.length - 1, 1);
+    salesPoints = [];
+
+    // Series 2025
+    ctx.strokeStyle = '#a78bfa';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    dailyData.forEach((item, i) => {
+      const x = left + i * step;
+      const y = top + plotH - (item['2025'] / maxVal) * plotH;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // Series 2026
+    ctx.strokeStyle = '#2563eb';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    dailyData.forEach((item, i) => {
+      const x = left + i * step;
+      const y = top + plotH - (item['2026'] / maxVal) * plotH;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      salesPoints.push({ x, y, item });
+    });
+    ctx.stroke();
+
+    // Markers
+    dailyData.forEach((item, i) => {
+      const x = left + i * step;
+      const y26 = top + plotH - (item['2026'] / maxVal) * plotH;
+      ctx.fillStyle = '#2563eb';
+      ctx.beginPath();
+      ctx.arc(x, y26, 4, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Labels
+    ctx.fillStyle = textColor;
+    ctx.textAlign = 'center';
+    ctx.font = '11px sans-serif';
+    dailyData.forEach((item, i) => {
+      const lbl = item.is_monthly ? (item.short_label || item.label) : item.label;
+      if (dailyData.length <= 12) {
+        ctx.fillText(lbl, left + i * step, height - 10);
+      } else {
+        if (i === 0 || i === dailyData.length - 1 || i % Math.ceil(dailyData.length / 10) === 0) {
+          ctx.fillText(lbl, left + i * step, height - 10);
+        }
+      }
+    });
+  }
+
+  salesCanvas.addEventListener('mousemove', function(e) {
+    if (!salesPoints.length) return;
+    const rect = salesCanvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    let nearest = salesPoints.reduce((a, p) => Math.hypot(p.x - x, p.y - y) < Math.hypot(a.x - x, a.y - y) ? p : a);
+    if (Math.hypot(nearest.x - x, nearest.y - y) < 30) {
+      const it = nearest.item;
+      const diff = it['2026'] - it['2025'];
+      const growth = it['2025'] > 0 ? ((diff / it['2025']) * 100).toFixed(1) + '%' : '-';
+
+      salesTooltip.style.display = 'block';
+      salesTooltip.style.left = Math.min(nearest.x + 12, salesCanvas.clientWidth - 230) + 'px';
+      salesTooltip.style.top = Math.max(nearest.y - 110, 10) + 'px';
+      salesTooltip.innerHTML = `
+        <div class="tooltip-title">${it.label} ${it.is_monthly ? '2026 (Bulanan)' : '2026'}</div>
+        <div class="tooltip-row"><span class="tooltip-label" style="color:#60a5fa;">● 2026 (Utama):</span> <span class="tooltip-val">${formatRp(it['2026'])}</span></div>
+        <div class="tooltip-row"><span class="tooltip-label" style="color:#c4b5fd;">● 2025 (Pembanding):</span> <span class="tooltip-val">${formatRp(it['2025'])}</span></div>
+        <div class="tooltip-row"><span class="tooltip-label">YoY Growth:</span> <span class="tooltip-val" style="color:${diff >= 0 ? '#34d399' : '#f87171'}">${growth} (${diff >= 0 ? '+' : ''}${formatRp(diff)})</span></div>
+      `;
+    } else {
+      salesTooltip.style.display = 'none';
+    }
+  });
+  salesCanvas.addEventListener('mouseleave', () => salesTooltip.style.display = 'none');
+
+  // Chart 2: Target vs Actual
+  const targetCanvas = document.getElementById('targetChart');
+  const targetTooltip = document.getElementById('targetTooltip');
+  let targetPoints = [];
+
+  function drawTargetChart() {
+    if (!targetCanvas) return;
+    const isDark = root.classList.contains('dark');
+    const gridColor = isDark ? '#1f2937' : '#e2e8f0';
+    const textColor = isDark ? '#94a3b8' : '#64748b';
+
+    const box = targetCanvas.parentElement;
+    const ratio = window.devicePixelRatio || 1;
+    const width = box.clientWidth;
+    const height = 320;
+    targetCanvas.width = width * ratio;
+    targetCanvas.height = height * ratio;
+    targetCanvas.style.height = height + 'px';
+
+    const ctx = targetCanvas.getContext('2d');
+    ctx.scale(ratio, ratio);
+
+    const targetData = currentDashboardData.target_chart || [];
+    if (!targetData.length) {
+      ctx.fillStyle = textColor;
+      ctx.textAlign = 'center';
+      ctx.fillText('Tidak ada data target', width / 2, height / 2);
+      return;
+    }
+
+    const maxVal = Math.max(...targetData.flatMap(x => [x.target, x.actual]), 1000000);
+    const left = 68, bottom = 36, top = 20, right = 16;
+    const plotW = width - left - right;
+    const plotH = height - top - bottom;
+
+    ctx.font = '11px sans-serif';
+    ctx.fillStyle = textColor;
+    ctx.strokeStyle = gridColor;
+    ctx.lineWidth = 1;
+
+    [0, 0.25, 0.5, 0.75, 1].forEach(t => {
+      const y = top + plotH * (1 - t);
+      ctx.beginPath();
+      ctx.moveTo(left, y);
+      ctx.lineTo(width - right, y);
+      ctx.stroke();
+      ctx.textAlign = 'left';
+      ctx.fillText('Rp ' + Math.round(maxVal * t / 1000000) + 'jt', 6, y + 4);
+    });
+
+    const step = plotW / Math.max(targetData.length - 1, 1);
+    targetPoints = [];
+
+    // Target Line (Amber)
+    ctx.strokeStyle = '#f59e0b';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    targetData.forEach((item, i) => {
+      const x = left + i * step;
+      const y = top + plotH - (item.target / maxVal) * plotH;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // Actual Line (Emerald)
+    ctx.strokeStyle = '#10b981';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    targetData.forEach((item, i) => {
+      const x = left + i * step;
+      const y = top + plotH - (item.actual / maxVal) * plotH;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      targetPoints.push({ x, y, item });
+    });
+    ctx.stroke();
+
+    // Markers
+    targetData.forEach((item, i) => {
+      const x = left + i * step;
+      const y = top + plotH - (item.actual / maxVal) * plotH;
+      ctx.fillStyle = '#10b981';
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Labels
+    ctx.fillStyle = textColor;
+    ctx.textAlign = 'center';
+    ctx.font = '11px sans-serif';
+    targetData.forEach((item, i) => {
+      const lbl = item.is_monthly ? (item.short_label || item.label) : item.label;
+      if (targetData.length <= 12) {
+        ctx.fillText(lbl, left + i * step, height - 10);
+      } else {
+        if (i === 0 || i === targetData.length - 1 || i % Math.ceil(targetData.length / 10) === 0) {
+          ctx.fillText(lbl, left + i * step, height - 10);
+        }
+      }
+    });
+  }
+
+  targetCanvas.addEventListener('mousemove', function(e) {
+    if (!targetPoints.length) return;
+    const rect = targetCanvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    let nearest = targetPoints.reduce((a, p) => Math.hypot(p.x - x, p.y - y) < Math.hypot(a.x - x, a.y - y) ? p : a);
+    if (Math.hypot(nearest.x - x, nearest.y - y) < 30) {
+      const it = nearest.item;
+      const achieve = it.target > 0 ? ((it.actual / it.target) * 100).toFixed(1) + '%' : '-';
+      const gap = it.actual - it.target;
+
+      targetTooltip.style.display = 'block';
+      targetTooltip.style.left = Math.min(nearest.x + 12, targetCanvas.clientWidth - 230) + 'px';
+      targetTooltip.style.top = Math.max(nearest.y - 110, 10) + 'px';
+      targetTooltip.innerHTML = `
+        <div class="tooltip-title">${it.label} ${it.is_monthly ? '2026 (Bulanan)' : '2026'}</div>
+        <div class="tooltip-row"><span class="tooltip-label" style="color:#fbbf24;">● Target Revenue:</span> <span class="tooltip-val">${formatRp(it.target)}</span></div>
+        <div class="tooltip-row"><span class="tooltip-label" style="color:#34d399;">● Realisasi Sales:</span> <span class="tooltip-val">${formatRp(it.actual)}</span></div>
+        <div class="tooltip-row"><span class="tooltip-label">Pencapaian:</span> <span class="tooltip-val" style="color:${gap >= 0 ? '#34d399' : '#f87171'}">${achieve} (${gap >= 0 ? '+' : ''}${formatRp(gap)})</span></div>
+      `;
+    } else {
+      targetTooltip.style.display = 'none';
+    }
+  });
+  targetCanvas.addEventListener('mouseleave', () => targetTooltip.style.display = 'none');
+
+  // Hourly Charts
+  function drawGenericHourlyChart(canvasId, tooltipId, key26, key25, color26, color25, formatter) {
+    const cvs = document.getElementById(canvasId);
+    const tip = document.getElementById(tooltipId);
+    const hourlyData = currentDashboardData.hourly_chart || [];
+    if (!cvs || !hourlyData.length) return;
+
+    const isDark = root.classList.contains('dark');
+    const gridColor = isDark ? '#1f2937' : '#e2e8f0';
+    const textColor = isDark ? '#94a3b8' : '#64748b';
+
+    const box = cvs.parentElement;
+    const ratio = window.devicePixelRatio || 1;
+    const width = box.clientWidth;
+    const height = 320;
+    cvs.width = width * ratio;
+    cvs.height = height * ratio;
+    cvs.style.height = height + 'px';
+
+    const ctx = cvs.getContext('2d');
+    ctx.scale(ratio, ratio);
+
+    const maxVal = Math.max(...hourlyData.flatMap(x => [x[key26], x[key25]]), 1);
+    const left = 56, bottom = 36, top = 20, right = 16;
+    const plotW = width - left - right;
+    const plotH = height - top - bottom;
+
+    ctx.font = '11px sans-serif';
+    ctx.fillStyle = textColor;
+    ctx.strokeStyle = gridColor;
+    ctx.lineWidth = 1;
+
+    [0, 0.33, 0.66, 1].forEach(t => {
+      const y = top + plotH * (1 - t);
+      ctx.beginPath();
+      ctx.moveTo(left, y);
+      ctx.lineTo(width - right, y);
+      ctx.stroke();
+      ctx.textAlign = 'left';
+      ctx.fillText(key26.includes('sales') ? 'Rp ' + Math.round(maxVal * t / 1000000) + 'jt' : Math.round(maxVal * t).toLocaleString('id-ID'), 6, y + 4);
+    });
+
+    const step = plotW / Math.max(hourlyData.length - 1, 1);
+    const points = [];
+
+    // Series 2025
+    ctx.strokeStyle = color25;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    hourlyData.forEach((item, i) => {
+      const x = left + i * step;
+      const y = top + plotH - (item[key25] / maxVal) * plotH;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // Series 2026
+    ctx.strokeStyle = color26;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    hourlyData.forEach((item, i) => {
+      const x = left + i * step;
+      const y = top + plotH - (item[key26] / maxVal) * plotH;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      points.push({ x, y, item });
+    });
+    ctx.stroke();
+
+    // Markers
+    hourlyData.forEach((item, i) => {
+      const x = left + i * step;
+      const y = top + plotH - (item[key26] / maxVal) * plotH;
+      ctx.fillStyle = color26;
+      ctx.beginPath();
+      ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Labels
+    ctx.fillStyle = textColor;
+    ctx.textAlign = 'center';
+    ctx.font = '10px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    const showEvery = step < 26 ? 2 : 1;
+    hourlyData.forEach((item, i) => {
+      const hrStr = String(parseInt(item.hour, 10)).padStart(2, '0');
+      if (i % showEvery === 0 || i === hourlyData.length - 1) {
+        ctx.fillText(hrStr, left + i * step, height - 10);
+      }
+    });
+
+    cvs.onmousemove = function(e) {
+      const rect = cvs.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      let nearest = points.reduce((a, p) => Math.hypot(p.x - x, p.y - y) < Math.hypot(a.x - x, a.y - y) ? p : a);
+      if (Math.hypot(nearest.x - x, nearest.y - y) < 30) {
+        const it = nearest.item;
+        tip.style.display = 'block';
+        tip.style.left = Math.min(nearest.x + 12, cvs.clientWidth - 200) + 'px';
+        tip.style.top = Math.max(nearest.y - 90, 10) + 'px';
+        tip.innerHTML = `
+          <div class="tooltip-title">Pukul ${it.hour}:00</div>
+          <div class="tooltip-row"><span class="tooltip-label">Tahun 2026:</span> <span class="tooltip-val">${formatter(it[key26])}</span></div>
+          <div class="tooltip-row"><span class="tooltip-label">Tahun 2025:</span> <span class="tooltip-val">${formatter(it[key25])}</span></div>
+        `;
+      } else {
+        tip.style.display = 'none';
+      }
+    };
+    cvs.onmouseleave = () => tip.style.display = 'none';
+  }
+
+  function drawHourlySalesChart() {
+    drawGenericHourlyChart('hourlySalesChart', 'hourlySalesTooltip', 'net_sales_2026', 'net_sales_2025', '#2563eb', '#a78bfa', formatRp);
+  }
+
+  function drawHourlyTxChart() {
+    drawGenericHourlyChart('hourlyTransactionsChart', 'hourlyTransactionsTooltip', 'transactions_2026', 'transactions_2025', '#059669', '#cbd5e1', val => (val || 0).toLocaleString('id-ID') + ' Struk');
+  }
+
+  // Initial load & draw
+  applyFilters();
+  redrawAllCharts();
+  updateActiveFilterTags();
+
+  window.addEventListener('resize', redrawAllCharts);
+
+  // Scroll to Top Smooth Handler
+  const btnScrollTop = document.getElementById('btnScrollTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 250) {
+      btnScrollTop.classList.add('visible');
+    } else {
+      btnScrollTop.classList.remove('visible');
+    }
+  }, { passive: true });
+
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+</script>
+</body>
+</html>

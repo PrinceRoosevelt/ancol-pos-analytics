@@ -1,0 +1,11 @@
+﻿services:
+  - type: web
+    name: sales-dashboard
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python server.py
+    envVars:
+      - key: ADMIN_PIN
+        value: ganti_dengan_pin_anda
+      - key: PORT
+        value: 10000

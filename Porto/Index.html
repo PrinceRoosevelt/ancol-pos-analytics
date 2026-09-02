@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Muhammad Iryansyah | Commercial Retail & AI Automation Portfolio</title>
+  
+  <!-- SEO & Open Graph Meta Tags -->
+  <meta name="description" content="Portfolio Muhammad Iryansyah - Commercial Retail & AI Automation Analyst di Ancol Retail Division. Spesialisasi Data POS, Looker Studio, Python SQLite Analytics, dan O2O Digital Retail." />
+  <meta name="author" content="Muhammad Iryansyah" />
+  <meta property="og:title" content="Muhammad Iryansyah | Commercial Retail & AI Automation Portfolio" />
+  <meta property="og:description" content="Menghubungkan Data Kasir POS, Traffic Wahana, Arsitektur SQL, dan Keputusan Eksekutif Retail Ancol." />
+  <meta property="og:image" content="./Muir.jpg" />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Google Fonts: Outfit, Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Outfit"', '"Plus Jakarta Sans"', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            body: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            pastel: {
+              sage: '#D7E6DD',
+              sageDark: '#2D5A43',
+              lavender: '#E5E0F4',
+              lavenderDark: '#4A3B77',
+              apricot: '#FCE7DC',
+              apricotDark: '#8C4320',
+              sky: '#DCECF7',
+              skyDark: '#1E5173',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(150, 150, 150, 0.25); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(150, 150, 150, 0.45); }
+  </style>
+</head>
+
+<body class="h-full bg-[#FAF8F5] dark:bg-[#0f1115] text-stone-800 dark:text-stone-200 font-sans antialiased transition-colors duration-300 relative overflow-x-hidden lg:overflow-hidden select-none">
+
+  <!-- ABSTRACT PASTEL MESH BACKGROUND -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-70 dark:opacity-25">
+    <div class="absolute -top-32 -left-20 w-[550px] h-[550px] bg-pastel-sage rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen animate-pulse duration-[8000ms]"></div>
+    <div class="absolute top-1/3 -right-24 w-[600px] h-[600px] bg-pastel-lavender rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen animate-pulse duration-[10000ms]"></div>
+    <div class="absolute -bottom-32 left-1/3 w-[550px] h-[550px] bg-pastel-apricot rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen animate-pulse duration-[9000ms]"></div>
+  </div>
+
+  <!-- MAIN ULTRA-WIDE CONTAINER -->
+  <div class="relative z-10 h-full flex flex-col max-w-[1700px] w-full mx-auto px-4 sm:px-8 py-4">
+
+    <!-- NAVBAR -->
+    <header class="flex-none bg-white/70 dark:bg-stone-900/70 backdrop-blur-md rounded-2xl px-6 py-3 border border-stone-200/80 dark:border-stone-800 flex items-center justify-between shadow-xs mb-4">
+      <div class="flex items-center gap-3">
+        <span class="w-8 h-8 bg-pastel-sage dark:bg-pastel-sageDark text-pastel-sageDark dark:text-emerald-300 flex items-center justify-center rounded-xl text-xs font-extrabold shadow-2xs">DA</span>
+        <div class="flex items-center gap-2">
+          <span class="font-extrabold tracking-tight text-stone-900 dark:text-white text-base">Muir Portfolio<span class="text-emerald-600 dark:text-emerald-400">.</span></span>
+          <span class="hidden md:inline-block text-xs font-medium text-stone-500 dark:text-stone-400 border-l border-stone-200 dark:border-stone-700 pl-2.5">Commercial Retail & AI Automation Analyst</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex items-center gap-1.5 bg-stone-100/80 dark:bg-stone-800/80 p-1.5 rounded-xl text-xs font-semibold text-stone-600 dark:text-stone-300">
+        <button onclick="switchTab('overview')" id="tab-btn-overview" class="px-3.5 py-1.5 rounded-lg bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-2xs transition-all font-bold">Overview</button>
+        <button onclick="switchTab('pythonapp')" id="tab-btn-pythonapp" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all text-emerald-700 dark:text-emerald-400 font-extrabold flex items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Live App Engine</span>
+        </button>
+        <button onclick="switchTab('analytics')" id="tab-btn-analytics" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all">Looker Studio</button>
+        <button onclick="switchTab('strategy')" id="tab-btn-strategy" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all">★ O2O Strategy</button>
+        <button onclick="switchTab('cases')" id="tab-btn-cases" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all">Executive Cases</button>
+        <button onclick="switchTab('vault')" id="tab-btn-vault" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all text-sky-700 dark:text-sky-400 font-bold">📁 Files Vault</button>
+        <button onclick="switchTab('pipeline')" id="tab-btn-pipeline" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all hidden xl:inline-block">ETL &amp; SQL</button>
+      </nav>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3">
+        <button onclick="toggleDarkMode()" class="w-9 h-9 flex items-center justify-center rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors" title="Toggle Dark/Light Mode">
+          <span id="theme-icon">🌙</span>
+        </button>
+        <a href="https://wa.me/6282125431312?text=Halo%20Muhammad%20Iryansyah%20(Muir),%20saya%20melihat%20portfolio%20Anda%20dan%20tertarik%20untuk%20berdiskusi%20lebih%20lanjut." target="_blank" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs hidden sm:inline-flex items-center gap-1.5">
+          <span>💬</span> Hubungi WhatsApp
+        </a>
+      </div>
+    </header>
+
+    <!-- ULTRA-WIDE DUAL WORKSPACE -->
+    <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5 min-h-0 overflow-y-auto lg:overflow-hidden pb-2">
+      
+      <!-- LEFT PROFILE & TOOLKIT SIDEBAR -->
+      <aside class="lg:col-span-4 xl:col-span-3 flex flex-col gap-4 overflow-y-auto pr-1">
+        
+        <!-- Profile Card -->
+        <div class="bg-white/80 dark:bg-stone-900/80 backdrop-blur-md p-5 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-4">
+          <div class="flex gap-4 items-center">
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 overflow-hidden shrink-0 relative shadow-2xs">
+              <img 
+                id="user-profile-img"
+                src="./Muir.jpg" 
+                alt="Foto Profil Muir" 
+                class="w-full h-full object-cover object-[center_20%]"
+                onerror="
+                  if (!this.triedProfile) { this.triedProfile = true; this.src = './profile.jpg'; }
+                  else if (!this.triedImg) { this.triedImg = true; this.src = './IMG_5190.jpg'; }
+                "
+              />
+            </div>
+            <div class="space-y-1">
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-pastel-sage dark:bg-emerald-950/70 border border-pastel-sageDark/20 dark:border-emerald-700/40 text-pastel-sageDark dark:text-emerald-400 text-[10px] font-bold rounded-full">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                Active Analyst
+              </div>
+              <h2 class="text-lg font-extrabold text-stone-900 dark:text-white leading-tight">Muhammad Iryansyah</h2>
+              <p class="text-xs text-stone-600 dark:text-stone-400 leading-snug">Commercial Retail & AI Automation Analyst</p>
+            </div>
+          </div>
+
+          <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
+            Mengolah data puluhan toko merchandise dan resto di Ancol menjadi strategi bisnis nyata, dashboard analytics interaktif berkecepatan tinggi, dan inovasi O2O belanja yang lebih efisien.
+          </p>
+
+          <div class="flex flex-col gap-2 border-t border-stone-100 dark:border-stone-800 pt-3 text-[11px] font-mono text-stone-500 dark:text-stone-400">
+            <div class="flex items-center justify-between">
+              <span>📍 Ancol Retail Division</span>
+              <span class="text-emerald-600 dark:text-emerald-400 font-semibold">Available for Projects</span>
+            </div>
+            <div class="flex items-center gap-2 pt-1">
+              <a href="https://wa.me/6282125431312?text=Halo%20Muir,%20saya%20tertarik%20dengan%20portfolio%20Anda." target="_blank" class="px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all font-sans">
+                <span>💬</span> WhatsApp
+              </a>
+              <a href="mailto:iryansyah777@gmail.com" class="px-2.5 py-1 bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 rounded-lg text-stone-700 dark:text-stone-300 font-sans text-xs font-semibold flex items-center gap-1 transition-all">
+                <span>✉️</span> Email
+              </a>
+              <a href="https://linkedin.com" target="_blank" class="px-2.5 py-1 bg-sky-50 dark:bg-sky-950/50 hover:bg-sky-100 dark:hover:bg-sky-900/50 text-sky-700 dark:text-sky-300 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all font-sans">
+                <span>💼</span> LinkedIn
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toolkit Cards WITH SVG LOGOS & 4/5 SMOOTH STARS -->
+        <div class="bg-white/80 dark:bg-stone-900/80 backdrop-blur-md p-5 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-3.5 flex-1">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-stone-400 dark:text-stone-500">Core Tools Stack</span>
+            <span class="text-[11px] font-mono text-amber-600 dark:text-amber-400 font-semibold">4.0 / 5.0 (Advanced)</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <!-- Python & SQLite (Modern Stack) -->
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-emerald-300 transition-all">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-md bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center shrink-0">
+                  <span class="text-xs">🐍</span>
+                </div>
+                <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">Python & SQL</span>
+              </div>
+              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              </div>
+            </div>
+
+            <!-- Looker Studio -->
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-sky-300 transition-all">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-md bg-sky-50 dark:bg-sky-950/50 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="#E1EEF7"/>
+                    <path d="M7 16h2V8H7v8zm4 0h2V4h-2v12zm4 0h2v-5h-2v5z" fill="#0284C7"/>
+                  </svg>
+                </div>
+                <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">Looker Studio</span>
+              </div>
+              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              </div>
+            </div>
+
+            <!-- MS Excel -->
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-emerald-300 transition-all">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-md bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <path d="M4 3h16a2 2 0 012 2v14a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2z" fill="#107C41"/>
+                    <path d="M14 8h6v2h-6V8zm0 3h6v2h-6v-2zm0 3h6v2h-6v-2zM4 6.5l4 5.5-4 5.5h2.5l2.7-4 2.7 4h2.5l-4-5.5 4-5.5h-2.5l-2.7 4-2.7-4H4z" fill="#FFFFFF"/>
+                  </svg>
+                </div>
+                <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">MS Excel</span>
+              </div>
+              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              </div>
+            </div>
+
+            <!-- VS Code -->
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-blue-300 transition-all">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-md bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <path d="M17.5 2.5L7.5 10 3.5 7 1 8.5 4.5 12 1 15.5 3.5 17l4-3 10 7.5 5.5-2.5V5L17.5 2.5z" fill="#007ACC"/>
+                    <path d="M17.5 6.5l-7 5.5 7 5.5V6.5z" fill="#FFFFFF"/>
+                  </svg>
+                </div>
+                <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">VS Code</span>
+              </div>
+              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              </div>
+            </div>
+
+            <!-- Photoshop -->
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-blue-400 transition-all">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-md bg-[#001E36] flex items-center justify-center shrink-0">
+                  <span class="text-[#31A8FF] font-bold text-[10px] font-mono">Ps</span>
+                </div>
+                <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">Photoshop</span>
+              </div>
+              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              </div>
+            </div>
+
+            <!-- CapCut -->
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-stone-400 transition-all">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-md bg-stone-900 dark:bg-stone-700 flex items-center justify-center shrink-0">
+                  <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M4 6h3l5 6-5 6H4l5-6-5-6zm16 0h-3l-5 6 5 6h3l-5-6 5-6z"/>
+                  </svg>
+                </div>
+                <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">CapCut Video</span>
+              </div>
+              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              </div>
+            </div>
+
+            <!-- PowerPoint -->
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-orange-300 transition-all">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-md bg-orange-50 dark:bg-orange-950/50 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <path d="M4 3h16a2 2 0 012 2v14a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2z" fill="#D24726"/>
+                    <path d="M12 6.5c-2.5 0-4 1.5-4 4.5 0 2.8 1.5 4.5 4 4.5s4-1.7 4-4.5c0-3-1.5-4.5-4-4.5zm0 6.5c-1.2 0-1.8-1-1.8-2s.6-2 1.8-2 1.8 1 1.8 2-.6 2-1.8 2z" fill="#FFFFFF"/>
+                  </svg>
+                </div>
+                <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">PowerPoint</span>
+              </div>
+              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              </div>
+            </div>
+
+            <!-- Adobe Lightroom (3 Stars) -->
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-sky-400 transition-all">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-md bg-[#001D26] flex items-center justify-center shrink-0">
+                  <span class="text-[#31A8FF] font-bold text-[10px] font-mono">Lr</span>
+                </div>
+                <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">Lightroom</span>
+              </div>
+              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
+                <span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- RIGHT WIDE WORKSPACE: DYNAMIC CONTENT -->
+      <section class="lg:col-span-8 xl:col-span-9 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md rounded-2xl border border-stone-200/80 dark:border-stone-800 p-6 sm:p-8 shadow-xs overflow-y-auto flex flex-col">
+        
+        <!-- TAB 1: OVERVIEW HERO (GOLDEN RATIO PROPORTIONS & HIGH-END TYPOGRAPHY) -->
+        <div id="tab-content-overview" class="space-y-7 my-auto">
+          
+          <div class="space-y-4 max-w-5xl">
+            <!-- Top Capability Badges (All-in-One Synergy) -->
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border border-emerald-300/40">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Commercial Retail &amp; POS Analytics
+              </span>
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-mono font-bold bg-purple-100 dark:bg-purple-950/80 text-purple-800 dark:text-purple-300 border border-purple-300/40">
+                📸 Commercial Photography &amp; Video Production
+              </span>
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-mono font-bold bg-sky-100 dark:bg-sky-950/80 text-sky-800 dark:text-sky-300 border border-sky-300/40">
+                🚀 O2O Experience &amp; Creative Strategy
+              </span>
+            </div>
+
+            <!-- Smooth & Stylish Modern Headline (Font Outfit / Plus Jakarta Sans) -->
+            <h1 class="font-display text-3xl sm:text-4xl xl:text-[46px] font-extrabold text-stone-900 dark:text-white tracking-[-0.03em] leading-[1.2]">
+              Menghubungkan <span class="text-emerald-600 dark:text-emerald-400 font-black">Data Kasir POS</span>, Traffic Wahana, &amp; <span class="text-stone-900 dark:text-white border-b-2 border-emerald-500/80 pb-0.5">Keputusan Eksekutif</span>.
+            </h1>
+
+            <!-- All-in-One Comprehensive Description (Golden Ratio Text Balance) -->
+            <p class="font-sans text-sm sm:text-base text-stone-600 dark:text-stone-300 leading-relaxed max-w-4xl pt-1">
+              Memimpin integrasi data dan strategi komersial lintas divisi retail merchandise &amp; F&B Ancol: dari pelaporan eksekutif bulanan (P&amp;L kelola sendiri vs mitra), pemodelan O2O Digital Counter, perancangan dashboard Looker Studio &amp; SQLite WAL berkecepatan tinggi, hingga <strong>eksekusi kreatif langsung (Creative Direction, Fotografi Lookbook Produk, dan Editing Video Kampanye Kolaborasi Artis Dufan)</strong> untuk mendorong konversi belanja nyata di lapangan.
+            </p>
+          </div>
+
+          <!-- 3 Value Pillars -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="p-5 bg-pastel-sage/50 dark:bg-emerald-950/30 rounded-2xl border border-pastel-sageDark/15 dark:border-emerald-800/30 space-y-2">
+              <div class="text-xl">📈</div>
+              <h3 class="font-bold text-stone-900 dark:text-white text-sm">Commercial Analytics</h3>
+              <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">Konsolidasi MTD & YTD 18 outlet merchandise serta 76 titik mitra bagi hasil & resto.</p>
+            </div>
+            <div class="p-5 bg-pastel-lavender/50 dark:bg-purple-950/30 rounded-2xl border border-pastel-lavenderDark/15 dark:border-purple-800/30 space-y-2">
+              <div class="text-xl">📱</div>
+              <h3 class="font-bold text-stone-900 dark:text-white text-sm">O2O & Digital Innovation</h3>
+              <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">Feasibility study konter interaktif digital, AR try-on, dan integrasi 4 platform marketplace.</p>
+            </div>
+            <div class="p-5 bg-pastel-sky/50 dark:bg-sky-950/30 rounded-2xl border border-pastel-skyDark/15 dark:border-sky-800/30 space-y-2">
+              <div class="text-xl">⚡</div>
+              <h3 class="font-bold text-stone-900 dark:text-white text-sm">Automated Governance</h3>
+              <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">Dashboard evaluasi supplier, profiling produk fast/slow moving, dan survey VOC terintegrasi.</p>
+            </div>
+          </div>
+
+          <!-- Highlights Bar -->
+          <div class="p-5 bg-stone-50 dark:bg-stone-800/60 rounded-2xl border border-stone-200/60 dark:border-stone-700 flex flex-wrap items-center justify-between gap-6">
+            <div>
+              <div class="text-xs text-stone-400 font-mono">YTD Merchandise Revenue</div>
+              <div class="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">Rp 10,29 Miliar (93%)</div>
+            </div>
+            <div>
+              <div class="text-xs text-stone-400 font-mono">YTD F&B Revenue</div>
+              <div class="text-xl font-extrabold text-stone-800 dark:text-stone-200">Rp 25,07 Miliar (97%)</div>
+            </div>
+            <div>
+              <div class="text-xs text-stone-400 font-mono">Digital Counter Capex/P&L</div>
+              <div class="text-xl font-extrabold text-sky-600 dark:text-sky-400">13% Projected Net Margin</div>
+            </div>
+            <button onclick="switchTab('pythonapp')" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5">
+              <span>🚀 Buka Live App Simulator</span> →
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB: PYTHON LIVE APP ENGINE (FULL INTERACTIVE MOCKUP & ADMIN PORTAL) -->
+        <div id="tab-content-pythonapp" class="hidden space-y-5">
+          
+          <!-- TOP CONTROLS & SUB-VIEW SWITCHER -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md p-4 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl font-bold">
+                📊
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse mr-1"></span>
+                    127.614 Baris Data Terkoneksi (SQLite WAL)
+                  </span>
+                </div>
+                <h2 class="text-sm sm:text-base font-extrabold text-stone-900 dark:text-white mt-0.5">Sales Performance &amp; Growth Dashboard Live Simulator</h2>
+              </div>
+            </div>
+
+            <!-- Sub-Mode Switcher -->
+            <div class="flex items-center gap-1.5 p-1 bg-stone-100 dark:bg-stone-800 rounded-xl text-xs font-bold">
+              <button onclick="switchAppView('dashboard')" id="btn-app-dash" class="px-3.5 py-1.5 rounded-lg bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-2xs transition-all">
+                📈 Executive Dashboard
+              </button>
+              <button onclick="switchAppView('admin')" id="btn-app-admin" class="px-3.5 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all">
+                📤 Admin &amp; Visitor Portal
+              </button>
+            </div>
+          </div>
+
+          <!-- SUB-VIEW 1: EXECUTIVE DASHBOARD (PERSIS GAMBAR ASLI) -->
+          <div id="app-view-dashboard" class="space-y-4">
+            
+            <!-- HEADER FILTERS BAR -->
+            <div class="bg-white/90 dark:bg-stone-900/90 p-4 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              <div>
+                <label class="block font-bold text-stone-500 dark:text-stone-400 text-[10px] uppercase mb-1">Periode Bulan (2026)</label>
+                <select id="app-filter-month" onchange="runLiveSimulation()" class="w-full bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl px-3 py-2 text-stone-900 dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  <option value="all">Semua Bulan (YTD Jan-Feb)</option>
+                  <option value="jan">Januari 2026</option>
+                  <option value="feb">Februari 2026</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block font-bold text-stone-500 dark:text-stone-400 text-[10px] uppercase mb-1">Rentang Tanggal</label>
+                <div class="flex items-center gap-1.5 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl px-3 py-2 text-stone-700 dark:text-stone-300">
+                  <span>📅</span>
+                  <span id="app-filter-daterange" class="font-mono text-xs">01 Jan 2026 - 28 Feb 2026</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-bold text-stone-500 dark:text-stone-400 text-[10px] uppercase mb-1">Area Operasional</label>
+                <select id="app-filter-area" onchange="runLiveSimulation()" class="w-full bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl px-3 py-2 text-stone-900 dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  <option value="all">Semua Area (18 Konter)</option>
+                  <option value="dufan">DUFAN</option>
+                  <option value="awapark">AWAPARK (SeaWorld &amp; Samudra)</option>
+                  <option value="beachpark">BEACHPARK</option>
+                </select>
+              </div>
+
+              <div class="flex items-end">
+                <a href="./docs/jualan detail 5 agu 26.xlsx" download class="w-full py-2 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-xs">
+                  <span>📥 Download Laporan (.xlsx)</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- EXECUTIVE BANNER (RINGKASAN EKSEKUTIF KUNING PERSIS GAMBAR) -->
+            <div class="p-4 bg-sky-50/80 dark:bg-sky-950/40 rounded-2xl border border-sky-200/80 dark:border-sky-800/60 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 text-lg">
+                💡
+              </div>
+              <div class="space-y-1">
+                <span class="text-[11px] font-bold text-sky-900 dark:text-sky-300 uppercase tracking-wider">Ringkasan Eksekutif &amp; Kinerja Utama</span>
+                <p id="app-exec-summary" class="text-xs text-stone-700 dark:text-stone-300 leading-relaxed">
+                  Total penjualan 2026 tercatat sebesar <strong>Rp 3.110.541.556</strong> (89.67% dari target Rp 3.469.010.382). Performa penjualan tercatat terkoreksi -20.19% dibanding periode yang sama tahun 2025. Rata-rata transaksi per pelanggan (ATV) adalah <strong>Rp 106.213</strong> dengan puncak penjualan pada pukul 16:00.
+                </p>
+              </div>
+            </div>
+
+            <!-- 5 HERO CARDS PERSIS SCREENSHOT DASHBOARD -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+              
+              <!-- Card 1: Total Net Sales -->
+              <div class="bg-white dark:bg-stone-900 p-4 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs text-stone-500">
+                  <span class="font-semibold">Total Net Sales (2026)</span>
+                  <span>💰</span>
+                </div>
+                <div class="my-2">
+                  <p id="app-kpi-sales" class="text-xl font-extrabold text-stone-900 dark:text-white">Rp 3.110.541.556</p>
+                </div>
+                <div class="border-t border-stone-100 dark:border-stone-800 pt-2 text-[11px] space-y-0.5">
+                  <div class="flex justify-between text-stone-400 font-mono">
+                    <span>Tahun 2025:</span>
+                    <span id="app-kpi-sales25">Rp 3.897.590.624</span>
+                  </div>
+                  <div class="flex justify-between font-bold text-rose-600 dark:text-rose-400">
+                    <span>Pertumbuhan:</span>
+                    <span id="app-kpi-growth">-20.19% (-Rp 787 Jt)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 2: Target Revenue -->
+              <div class="bg-white dark:bg-stone-900 p-4 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs text-stone-500">
+                  <span class="font-semibold">Target Revenue (2026)</span>
+                  <span>🎯</span>
+                </div>
+                <div class="my-2">
+                  <p id="app-kpi-target" class="text-xl font-extrabold text-stone-900 dark:text-white">Rp 3.469.010.382</p>
+                </div>
+                <div class="border-t border-stone-100 dark:border-stone-800 pt-2 text-[11px] space-y-1">
+                  <div class="flex justify-between text-stone-500 font-medium">
+                    <span>Pencapaian:</span>
+                    <span id="app-kpi-ach" class="font-bold text-emerald-600 dark:text-emerald-400">89.67%</span>
+                  </div>
+                  <div class="w-full bg-stone-100 dark:bg-stone-800 h-1.5 rounded-full overflow-hidden">
+                    <div id="app-kpi-progress" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 89.67%"></div>
+                  </div>
+                  <div class="text-[10px] text-rose-600 dark:text-rose-400 font-semibold" id="app-kpi-target-gap">
+                    DEFISIT DARI TARGET (-Rp 358.468.826)
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 3: Total Transaksi & ATV -->
+              <div class="bg-white dark:bg-stone-900 p-4 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs text-stone-500">
+                  <span class="font-semibold">Total Transaksi &amp; ATV</span>
+                  <span>🧾</span>
+                </div>
+                <div class="my-2">
+                  <p id="app-kpi-tx" class="text-xl font-extrabold text-stone-900 dark:text-white">29.286 <span class="text-xs font-normal text-stone-400">Struk</span></p>
+                </div>
+                <div class="border-t border-stone-100 dark:border-stone-800 pt-2 text-[11px] space-y-0.5">
+                  <div class="flex justify-between text-stone-400">
+                    <span>Pertumbuhan Struk:</span>
+                    <span id="app-kpi-tx-growth" class="font-bold text-rose-600">-12.59%</span>
+                  </div>
+                  <div class="flex justify-between font-mono font-bold text-stone-800 dark:text-stone-200">
+                    <span>ATV (Rata-rata):</span>
+                    <span id="app-kpi-atv">Rp 106.213</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 4: Volume Barang (Qty) & UPT -->
+              <div class="bg-white dark:bg-stone-900 p-4 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs text-stone-500">
+                  <span class="font-semibold">Volume Barang (Qty) &amp; UPT</span>
+                  <span>📦</span>
+                </div>
+                <div class="my-2">
+                  <p id="app-kpi-qty" class="text-xl font-extrabold text-stone-900 dark:text-white">111.453 <span class="text-xs font-normal text-stone-400">Pcs</span></p>
+                </div>
+                <div class="border-t border-stone-100 dark:border-stone-800 pt-2 text-[11px] space-y-0.5">
+                  <div class="flex justify-between text-emerald-600 dark:text-emerald-400 font-bold">
+                    <span>Pertumbuhan Qty:</span>
+                    <span id="app-kpi-qty-growth">+20.17%</span>
+                  </div>
+                  <div class="flex justify-between font-mono font-bold text-stone-800 dark:text-stone-200">
+                    <span>UPT (Barang/Struk):</span>
+                    <span id="app-kpi-upt">3.81 item</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 5: Pengunjung & SPH -->
+              <div class="bg-white dark:bg-stone-900 p-4 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs text-stone-500">
+                  <span class="font-semibold">Pengunjung &amp; SPH (2026)</span>
+                  <span>👥</span>
+                </div>
+                <div class="my-2">
+                  <p id="app-kpi-visitor" class="text-xl font-extrabold text-stone-900 dark:text-white">1.885.605 <span class="text-xs font-normal text-stone-400">Orang</span></p>
+                </div>
+                <div class="border-t border-stone-100 dark:border-stone-800 pt-2 text-[11px] space-y-0.5">
+                  <div class="flex justify-between font-mono font-bold text-sky-600 dark:text-sky-400">
+                    <span>SPH (Belanja/Head):</span>
+                    <span id="app-kpi-sph">Rp 1.650</span>
+                  </div>
+                  <div class="flex justify-between text-stone-400">
+                    <span>Capture Rate:</span>
+                    <span id="app-kpi-capture" class="font-bold text-emerald-600">1.55% (29.286 struk)</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- 3 BOTTOM WIDGETS: PEAK HOURS, TOP 5 CABANG, BOTTOM EVALUASI -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 text-xs">
+              
+              <!-- Peak Hours Widget -->
+              <div class="bg-white dark:bg-stone-900 p-4 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-3">
+                <div class="flex items-center gap-2 font-bold text-stone-900 dark:text-white text-xs">
+                  <span>⏰</span>
+                  <span>Jam Sibuk Operasional (Peak Hours)</span>
+                </div>
+                <div class="space-y-2 pt-1 font-mono text-[11px]">
+                  <div class="flex justify-between p-2 bg-stone-50 dark:bg-stone-800/60 rounded-xl">
+                    <span class="text-stone-500">Puncak Penjualan (Revenue):</span>
+                    <span class="font-bold text-emerald-600 dark:text-emerald-400">Pukul 16:00</span>
+                  </div>
+                  <div class="flex justify-between p-2 bg-stone-50 dark:bg-stone-800/60 rounded-xl">
+                    <span class="text-stone-500">Puncak Kepadatan Struk:</span>
+                    <span class="font-bold text-sky-600 dark:text-sky-400">Pukul 16:00</span>
+                  </div>
+                </div>
+                <div class="p-2.5 bg-amber-50/80 dark:bg-amber-950/30 rounded-xl text-[10px] text-amber-800 dark:text-amber-300 leading-relaxed border border-amber-200/60 dark:border-amber-800/40">
+                  💡 <strong>Tips Operasional:</strong> Pastikan antrian kasir dan restock barang cepat laku siap 30 menit sebelum jam puncak (15:30).
+                </div>
+              </div>
+
+              <!-- Top 5 Cabang Terbesar -->
+              <div class="bg-white dark:bg-stone-900 p-4 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-2">
+                <div class="flex items-center justify-between font-bold text-stone-900 dark:text-white text-xs">
+                  <div class="flex items-center gap-2">
+                    <span>🏆</span>
+                    <span>Top Cabang Terbesar (2026)</span>
+                  </div>
+                  <span class="text-[10px] font-mono text-emerald-600">Kontribusi %</span>
+                </div>
+                <div id="app-top-outlets" class="space-y-1.5 pt-1 text-[11px]">
+                  <div class="flex justify-between items-center py-1 border-b border-stone-100 dark:border-stone-800">
+                    <span class="truncate font-medium text-stone-700 dark:text-stone-300">1. SWIN Sea World Induk</span>
+                    <span class="font-mono font-bold text-emerald-600">Rp 873,90 Jt <span class="text-[10px] text-stone-400">(28.1%)</span></span>
+                  </div>
+                  <div class="flex justify-between items-center py-1 border-b border-stone-100 dark:border-stone-800">
+                    <span class="truncate font-medium text-stone-700 dark:text-stone-300">2. ODIN Samudra Induk</span>
+                    <span class="font-mono font-bold text-emerald-600">Rp 495,12 Jt <span class="text-[10px] text-stone-400">(15.9%)</span></span>
+                  </div>
+                  <div class="flex justify-between items-center py-1 border-b border-stone-100 dark:border-stone-800">
+                    <span class="truncate font-medium text-stone-700 dark:text-stone-300">3. DFIN Dufan Induk</span>
+                    <span class="font-mono font-bold text-emerald-600">Rp 477,30 Jt <span class="text-[10px] text-stone-400">(15.3%)</span></span>
+                  </div>
+                  <div class="flex justify-between items-center py-1 border-b border-stone-100 dark:border-stone-800">
+                    <span class="truncate font-medium text-stone-700 dark:text-stone-300">4. DFIL Dufan Induk Lama</span>
+                    <span class="font-mono font-bold text-emerald-600">Rp 288,79 Jt <span class="text-[10px] text-stone-400">(9.3%)</span></span>
+                  </div>
+                  <div class="flex justify-between items-center py-1">
+                    <span class="truncate font-medium text-stone-700 dark:text-stone-300">5. DFKE Dufan Kereta Misteri</span>
+                    <span class="font-mono font-bold text-emerald-600">Rp 195,02 Jt <span class="text-[10px] text-stone-400">(6.3%)</span></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Cabang Butuh Perhatian / Evaluasi -->
+              <div class="bg-white dark:bg-stone-900 p-4 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-2">
+                <div class="flex items-center justify-between font-bold text-stone-900 dark:text-white text-xs">
+                  <div class="flex items-center gap-2">
+                    <span>⚠️</span>
+                    <span>Cabang Butuh Perhatian / Evaluasi</span>
+                  </div>
+                  <span class="text-[10px] font-mono text-stone-400">YoY Growth</span>
+                </div>
+                <div id="app-bottom-outlets" class="space-y-1.5 pt-1 text-[11px]">
+                  <div class="flex justify-between items-center py-1 border-b border-stone-100 dark:border-stone-800">
+                    <span class="truncate font-medium text-stone-700 dark:text-stone-300">! TJOM Merchandise Ombak Laut</span>
+                    <span class="font-mono font-bold text-emerald-600">Rp 5,17 Jt <span class="text-[10px] text-emerald-600">+81.5%</span></span>
+                  </div>
+                  <div class="flex justify-between items-center py-1 border-b border-stone-100 dark:border-stone-800">
+                    <span class="truncate font-medium text-stone-700 dark:text-stone-300">! JBIN JBL Induk</span>
+                    <span class="font-mono font-bold text-emerald-600">Rp 12,07 Jt <span class="text-[10px] text-emerald-600">+19.7%</span></span>
+                  </div>
+                  <div class="flex justify-between items-center py-1 border-b border-stone-100 dark:border-stone-800">
+                    <span class="truncate font-medium text-stone-700 dark:text-stone-300">! OL01 Online Shop</span>
+                    <span class="font-mono font-bold text-rose-600">Rp 20,26 Jt <span class="text-[10px] text-rose-600">-25.1%</span></span>
+                  </div>
+                  <div class="flex justify-between items-center py-1 border-b border-stone-100 dark:border-stone-800">
+                    <span class="truncate font-medium text-stone-700 dark:text-stone-300">! DFTO Dufan Tornado</span>
+                    <span class="font-mono font-bold text-rose-600">Rp 24,00 Jt <span class="text-[10px] text-rose-600">-28.7%</span></span>
+                  </div>
+                  <div class="flex justify-between items-center py-1">
+                    <span class="truncate font-medium text-stone-700 dark:text-stone-300">! AWKL AWA Taman Kelapa 2</span>
+                    <span class="font-mono font-bold text-rose-600">Rp 26,81 Jt <span class="text-[10px] text-rose-600">-5.4%</span></span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- SUB-VIEW 2: ADMIN UPLOAD & VISITOR LOG PORTAL (SIMULASI INTERAKTIF) -->
+          <div id="app-view-admin" class="hidden max-w-2xl mx-auto space-y-4">
+            
+            <div class="bg-white/90 dark:bg-stone-900/90 p-6 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-5">
+              
+              <!-- Tab Switcher Admin -->
+              <div class="flex gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+                <button onclick="switchAdminSubTab('upload')" id="btn-adm-upload" class="flex-1 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-2xs transition-all">
+                  📁 Upload File Excel Sales
+                </button>
+                <button onclick="switchAdminSubTab('visitor')" id="btn-adm-visitor" class="flex-1 py-2.5 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 font-bold text-xs hover:bg-stone-200 transition-all">
+                  👥 Input Pengunjung Harian
+                </button>
+              </div>
+
+              <!-- Admin Alert Notification Simulation -->
+              <div id="admin-sim-alert" class="hidden p-3.5 rounded-2xl text-xs font-medium"></div>
+
+              <!-- Form 1: Upload Excel -->
+              <div id="adm-tab-upload" class="space-y-4 text-xs">
+                <div>
+                  <label class="block font-bold text-stone-600 dark:text-stone-300 mb-1">🔐 PIN Admin</label>
+                  <input type="password" id="sim-pin-upload" value="1234" placeholder="Masukkan PIN admin..." class="w-full bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl px-3.5 py-2.5 text-stone-900 dark:text-white font-mono">
+                </div>
+
+                <div>
+                  <label class="block font-bold text-stone-600 dark:text-stone-300 mb-1">📂 Folder Tujuan Ingestion</label>
+                  <select class="w-full bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl px-3.5 py-2.5 text-stone-900 dark:text-white">
+                    <option>data/sales detail 2026/ (Penjualan 2026)</option>
+                    <option>data/sales detail 2025/ (Penjualan 2025)</option>
+                    <option>data/target 2026/ (Master Budget &amp; Target)</option>
+                    <option>✨ Otomatis Deteksi dari Nama File</option>
+                  </select>
+                </div>
+
+                <!-- Drag & Drop Zone -->
+                <div onclick="simulateFileUpload()" class="border-2 border-dashed border-emerald-300 dark:border-emerald-700/60 bg-emerald-50/40 dark:bg-emerald-950/20 rounded-2xl p-8 text-center cursor-pointer hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-all space-y-2">
+                  <div class="text-3xl">📤</div>
+                  <p class="font-bold text-stone-800 dark:text-stone-200">Klik atau Tarik File Excel ke Sini</p>
+                  <p class="text-[11px] text-stone-500">Mendukung file .xlsx, .xls multi-cashier (Ukuran maks: 50MB)</p>
+                  <div id="sim-file-status" class="hidden text-xs font-mono text-emerald-600 font-bold pt-2">
+                    ✓ jualan detail 5 agu 26.xlsx (2.4 MB) Siap Diproses
+                  </div>
+                </div>
+
+                <button onclick="executeSimulatedUpload()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition-all shadow-xs flex items-center justify-center gap-2">
+                  <span>⚡ Proses ETL &amp; Ingestion ke SQLite WAL</span>
+                </button>
+              </div>
+
+              <!-- Form 2: Input Pengunjung Harian -->
+              <div id="adm-tab-visitor" class="hidden space-y-4 text-xs">
+                <div>
+                  <label class="block font-bold text-stone-600 dark:text-stone-300 mb-1">🔐 PIN Admin</label>
+                  <input type="password" id="sim-pin-visitor" value="1234" placeholder="Masukkan PIN admin..." class="w-full bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl px-3.5 py-2.5 text-stone-900 dark:text-white font-mono">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block font-bold text-stone-600 dark:text-stone-300 mb-1">📅 Tanggal Kunjungan</label>
+                    <input type="date" id="sim-visitor-date" value="2026-08-05" class="w-full bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl px-3.5 py-2 text-stone-900 dark:text-white font-mono">
+                  </div>
+
+                  <div>
+                    <label class="block font-bold text-stone-600 dark:text-stone-300 mb-1">🏰 Unit Wahana</label>
+                    <select id="sim-visitor-unit" class="w-full bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl px-3.5 py-2.5 text-stone-900 dark:text-white">
+                      <option value="SEAWORLD">SEAWORLD</option>
+                      <option value="SAMUDRA">SAMUDRA</option>
+                      <option value="DUFAN">DUFAN</option>
+                      <option value="ATLANTIS">ATLANTIS</option>
+                      <option value="BEACHPARK">BEACHPARK / ANCOL</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block font-bold text-stone-600 dark:text-stone-300 mb-1">👥 Jumlah Pengunjung Actual (Orang)</label>
+                  <input type="number" id="sim-visitor-count" value="12500" placeholder="Contoh: 12500" class="w-full bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl px-3.5 py-2.5 text-stone-900 dark:text-white font-mono">
+                </div>
+
+                <button onclick="executeSimulatedVisitorInput()" class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl text-xs transition-all shadow-xs flex items-center justify-center gap-2">
+                  <span>💾 Simpan &amp; Perbarui Metrik SPH Dashboard</span>
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- TAB 3: LOOKER STUDIO SHOWCASE -->
+        <div id="tab-content-analytics" class="hidden space-y-6">
+          
+          <!-- TOP: LOOKER STUDIO INTERACTIVE 3-SCREENSHOT SHOWCASE -->
+          <div class="bg-stone-50/80 dark:bg-stone-800/60 rounded-2xl border border-stone-200/80 dark:border-stone-700 p-5 space-y-4 shadow-xs">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-200/60 dark:border-stone-700 pb-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></span>
+                  <span class="text-[11px] font-mono font-bold text-sky-600 dark:text-sky-400 uppercase tracking-wider">Looker Studio Interactive Showcase</span>
+                </div>
+                <h3 class="text-base sm:text-lg font-extrabold text-stone-900 dark:text-white mt-0.5">Ancol Store Multi-View Analytics Dashboard</h3>
+              </div>
+
+              <!-- Switcher 3 Screenshot Tabs -->
+              <div class="flex flex-wrap gap-1 p-1 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/70 dark:border-stone-700 text-xs font-semibold">
+                <button onclick="switchLookerSS('monitoring')" id="btn-ss-monitoring" class="px-3 py-1.5 rounded-lg bg-stone-900 dark:bg-white text-white dark:text-stone-900 shadow-2xs transition-all">1. Multi-Year Sales</button>
+                <button onclick="switchLookerSS('survey')" id="btn-ss-survey" class="px-3 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all">2. Survey VOC</button>
+                <button onclick="switchLookerSS('performance')" id="btn-ss-performance" class="px-3 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all">3. Performance Report</button>
+              </div>
+            </div>
+
+            <!-- Dynamic Screenshot Frame with Mockup Style -->
+            <div class="relative w-full rounded-2xl overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-900 shadow-sm group">
+              
+              <!-- Image 1: Monitoring 2024-2026 -->
+              <div id="ss-view-monitoring" class="w-full">
+                <img 
+                  src="./docs/looker-monitoring.png" 
+                  alt="Monitoring Penjualan Merchandise 2024-2026" 
+                  class="w-full h-auto max-h-[440px] object-cover object-top group-hover:scale-[1.01] transition-transform duration-500"
+                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80';"
+                />
+              </div>
+
+              <!-- Image 2: Survey VOC (250 Responden) -->
+              <div id="ss-view-survey" class="w-full hidden">
+                <img 
+                  src="./docs/looker-survey.jpg" 
+                  alt="Analisa Survei Konsumen Ancol Store" 
+                  class="w-full h-auto max-h-[440px] object-cover object-top group-hover:scale-[1.01] transition-transform duration-500"
+                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80';"
+                />
+              </div>
+
+              <!-- Image 3: Performance Report -->
+              <div id="ss-view-performance" class="w-full hidden">
+                <img 
+                  src="./docs/looker-performance.jpg" 
+                  alt="Dashboard Performance Report Bulanan" 
+                  class="w-full h-auto max-h-[440px] object-cover object-top group-hover:scale-[1.01] transition-transform duration-500"
+                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=1200&q=80';"
+                />
+              </div>
+
+              <!-- Floating Action Overlay on Hover -->
+              <div class="absolute bottom-3 right-3 opacity-90 group-hover:opacity-100 transition-opacity">
+                <a href="./docs/evaluasi merch.pdf" target="_blank" class="px-3.5 py-1.5 bg-stone-900/90 text-white text-xs font-bold rounded-xl backdrop-blur-md hover:bg-black transition-all flex items-center gap-1.5 shadow-md">
+                  <span>Lihat Full Report PDF</span> ↗
+                </a>
+              </div>
+            </div>
+
+            <!-- Dynamic Captions corresponding to active SS -->
+            <div id="ss-caption-monitoring" class="flex flex-wrap items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 text-stone-600 dark:text-stone-300">
+                <span class="font-bold text-stone-900 dark:text-white">Fokus:</span>
+                <span>Volume 282.535 pcs (2026) • Nilai Jual Rp 12,25 Miliar • Perbandingan Qty Dufan Induk (168k) vs Seaworld (162k)</span>
+              </div>
+              <span class="font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">Multi-Year Trendline</span>
+            </div>
+
+            <div id="ss-caption-survey" class="hidden flex-wrap items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 text-stone-600 dark:text-stone-300">
+                <span class="font-bold text-stone-900 dark:text-white">Fokus:</span>
+                <span>250 Responden • 62.8% Wanita • Usia Dominan 26-35 Th • 75.6% Belanja di Toko Gerbang Utama</span>
+              </div>
+              <span class="font-mono text-[11px] text-sky-600 dark:text-sky-400 font-semibold">Voice of Customer</span>
+            </div>
+
+            <div id="ss-caption-performance" class="hidden flex-wrap items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 text-stone-600 dark:text-stone-300">
+                <span class="font-bold text-stone-900 dark:text-white">Fokus:</span>
+                <span>Spending Unit: Tampan (Rp 165k), Seaworld (Rp 144k) • Korelasi Kurva Gate Visitor vs Omzet Harian</span>
+              </div>
+              <span class="font-mono text-[11px] text-purple-600 dark:text-purple-400 font-semibold">Segment & Spending Matrix</span>
+            </div>
+
+          </div>
+
+          <!-- BOTTOM: COMMERCIAL AREA SIMULATOR & JS BAR CHART -->
+          <div class="space-y-4 pt-2">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-100 dark:border-stone-800 pb-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span class="text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Engine: SQLite WAL + Flask Realtime Aggregation</span>
+                </div>
+                <h2 class="text-base font-extrabold text-stone-900 dark:text-white mt-0.5">Live POS Executive Analytics Simulator (2026 vs 2025 YoY)</h2>
+                <p class="text-xs text-stone-500 dark:text-stone-400">Simulasi filter analitik multi-area: 127.614 transaksi POS, 82.490 target budget, dan 465 log pengunjung.</p>
+              </div>
+              <div class="flex flex-wrap gap-1.5 p-1 bg-stone-100 dark:bg-stone-800 rounded-xl text-xs font-semibold">
+                <button onclick="updateAreaFilter('all')" id="btn-all" class="px-3 py-1.5 rounded-lg bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-2xs font-bold">All Areas</button>
+                <button onclick="updateAreaFilter('dufan')" id="btn-dufan" class="px-3 py-1.5 rounded-lg text-stone-500 dark:text-stone-400">Dufan</button>
+                <button onclick="updateAreaFilter('awapark')" id="btn-awapark" class="px-3 py-1.5 rounded-lg text-stone-500 dark:text-stone-400">AWAPARK</button>
+                <button onclick="updateAreaFilter('beachpark')" id="btn-beachpark" class="px-3 py-1.5 rounded-lg text-stone-500 dark:text-stone-400">Beachpark</button>
+              </div>
+            </div>
+
+            <!-- 5 HERO KPI CARDS -->
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-xs">
+              <!-- KPI 1: Net Sales -->
+              <div class="p-3.5 bg-pastel-sage/40 dark:bg-emerald-950/30 rounded-xl border border-stone-200/50 dark:border-emerald-800/30 flex flex-col justify-between">
+                <div>
+                  <span class="text-[11px] text-stone-500 dark:text-stone-400 font-medium">💰 Net Sales 2026</span>
+                  <p id="m-sales-26" class="text-base sm:text-lg font-extrabold text-pastel-sageDark dark:text-emerald-400 mt-1">Rp 3,11 M</p>
+                </div>
+                <p id="m-sales-growth" class="text-[10px] font-bold text-rose-600 dark:text-rose-400 mt-1">-20.19% YoY</p>
+              </div>
+
+              <!-- KPI 2: Target Revenue -->
+              <div class="p-3.5 bg-pastel-lavender/40 dark:bg-purple-950/30 rounded-xl border border-stone-200/50 dark:border-purple-800/30 flex flex-col justify-between">
+                <div>
+                  <span class="text-[11px] text-stone-500 dark:text-stone-400 font-medium">🎯 Target Revenue</span>
+                  <p id="m-target-total" class="text-base sm:text-lg font-extrabold text-pastel-lavenderDark dark:text-purple-300 mt-1">Rp 3,47 M</p>
+                </div>
+                <p id="m-target-ach" class="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 mt-1">Ach: 89.67%</p>
+              </div>
+
+              <!-- KPI 3: Transaksi & ATV -->
+              <div class="p-3.5 bg-pastel-sky/40 dark:bg-sky-950/30 rounded-xl border border-stone-200/50 dark:border-sky-800/30 flex flex-col justify-between">
+                <div>
+                  <span class="text-[11px] text-stone-500 dark:text-stone-400 font-medium">🧾 Transaksi &amp; ATV</span>
+                  <p id="m-tx-count" class="text-base sm:text-lg font-extrabold text-pastel-skyDark dark:text-sky-300 mt-1">29.286 Tx</p>
+                </div>
+                <p id="m-atv-val" class="text-[10px] text-stone-500 dark:text-stone-400 mt-1 font-mono">ATV: Rp 106.213</p>
+              </div>
+
+              <!-- KPI 4: Volume & UPT -->
+              <div class="p-3.5 bg-pastel-apricot/40 dark:bg-amber-950/30 rounded-xl border border-stone-200/50 dark:border-amber-800/30 flex flex-col justify-between">
+                <div>
+                  <span class="text-[11px] text-stone-500 dark:text-stone-400 font-medium">📦 Volume &amp; UPT</span>
+                  <p id="m-qty-val" class="text-base sm:text-lg font-extrabold text-pastel-apricotDark dark:text-amber-400 mt-1">111.453 Pcs</p>
+                </div>
+                <p id="m-upt-val" class="text-[10px] text-emerald-600 dark:text-emerald-400 mt-1 font-bold">UPT: 3.81 (+37% YoY)</p>
+              </div>
+
+              <!-- KPI 5: Pengunjung & SPH -->
+              <div class="p-3.5 bg-stone-100 dark:bg-stone-800/80 rounded-xl border border-stone-200/60 dark:border-stone-700 flex flex-col justify-between col-span-2 sm:col-span-1">
+                <div>
+                  <span class="text-[11px] text-stone-500 dark:text-stone-400 font-medium">👥 Visitor &amp; SPH</span>
+                  <p id="m-visitor-val" class="text-base sm:text-lg font-extrabold text-stone-900 dark:text-white mt-1">1,89 Juta</p>
+                </div>
+                <p id="m-sph-val" class="text-[10px] text-sky-600 dark:text-sky-400 mt-1 font-mono font-bold">SPH: Rp 1.650 / pax</p>
+              </div>
+            </div>
+
+            <!-- DYNAMIC EXECUTIVE BUSINESS INSIGHT BOX -->
+            <div id="m-insight-box" class="p-4 bg-emerald-50/70 dark:bg-emerald-950/20 rounded-xl border border-emerald-200/60 dark:border-emerald-800/40 text-xs text-stone-700 dark:text-stone-300 flex items-start gap-3">
+              <span class="text-lg">💡</span>
+              <div class="space-y-1 flex-1">
+                <span class="font-bold text-emerald-900 dark:text-emerald-300">Executive Business Insight:</span>
+                <p id="m-insight-text" class="leading-relaxed text-[11px] text-stone-600 dark:text-stone-300">
+                  Konsolidasi All Areas mencapai <strong>Rp 3,11 Miliar</strong> (Pencapaian 89.67% dari Target Rp 3,47 Miliar). Efisiensi UPT melonjak ke <strong>3.81 barang/struk</strong> (+37.5% YoY), dengan unit AWAPARK memimpin pencapaian target (116.7%).
+                </p>
+              </div>
+            </div>
+
+            <div class="p-4 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700">
+              <div class="h-60 sm:h-72 w-full">
+                <canvas id="comparisonChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TAB 3: O2O STRATEGY & MODERN STORYTELLING (CONCEPT & SWOT FOCUS) -->
+        <div id="tab-content-strategy" class="hidden space-y-6">
+          <div class="border-b border-stone-100 dark:border-stone-800 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="text-[11px] font-mono font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Concept & Modern Storytelling</span>
+              <h2 class="text-lg sm:text-xl font-extrabold text-stone-900 dark:text-white mt-0.5">Digital Interactive Counter: Menghilangkan Beban Belanja Fisik di Theme Park</h2>
+            </div>
+            <a href="./docs/DIGITAL INTERACTIVE.pdf" target="_blank" class="px-3.5 py-1.5 bg-stone-900 dark:bg-white text-white dark:text-stone-900 rounded-xl text-xs font-bold hover:opacity-80 transition-all flex items-center gap-1.5 self-start sm:self-auto shadow-2xs">
+              <span>📄 Buka Proposal Deck</span> ↗
+            </a>
+          </div>
+
+          <!-- Narrative Bento (Storytelling Blocks) -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            
+            <!-- Block 1: The Friction -->
+            <div class="p-5 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/70 dark:border-stone-700 space-y-3">
+              <div class="w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-amber-700 dark:text-amber-300 font-bold">⚠️</div>
+              <h3 class="font-bold text-stone-900 dark:text-white text-sm">The Friction: Masalah Klasik Belanja Wisata</h3>
+              <p class="text-stone-600 dark:text-stone-300 leading-relaxed">
+                Pengunjung theme park ingin membawa pulang kenangan berharga (boneka jumbo & apparel tematik). Namun, ada friksi psikologis terbesar: <strong>beban repot membawanya keliling wahana seharian</strong>.
+              </p>
+              <div class="p-2.5 bg-white dark:bg-stone-900 rounded-xl text-[11px] text-stone-500 dark:text-stone-400 border border-stone-200/50 dark:border-stone-800">
+                Akibatnya, niat belanja tertunda hingga sore saat pengunjung sudah lelah dan terburu-buru pulang.
+              </div>
+            </div>
+
+            <!-- Block 2: The Concept -->
+            <div class="p-5 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/70 dark:border-stone-700 space-y-3">
+              <div class="w-8 h-8 rounded-xl bg-pastel-sage dark:bg-emerald-950 flex items-center justify-center text-pastel-sageDark dark:text-emerald-400 font-bold">💡</div>
+              <h3 class="font-bold text-stone-900 dark:text-white text-sm">The Concept: "Online tapi Offline" (O2O)</h3>
+              <p class="text-stone-600 dark:text-stone-300 leading-relaxed">
+                Mengubah konter fisik dari sekadar "tempat simpan stok" menjadi <strong>ruang pamer pengalaman (experiential showroom)</strong>.
+              </p>
+              <div class="p-2.5 bg-white dark:bg-stone-900 rounded-xl font-mono text-[10px] text-stone-700 dark:text-stone-300 border border-stone-200/50 dark:border-stone-800 space-y-1">
+                <div>• Sentuh & coba sampel fisik di konter</div>
+                <div>• Scan QR -> Checkout di 4 E-Commerce</div>
+                <div>• Free Delivery langsung dikirim ke rumah</div>
+              </div>
+            </div>
+
+            <!-- Block 3: The Innovation -->
+            <div class="p-5 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/70 dark:border-stone-700 space-y-3">
+              <div class="w-8 h-8 rounded-xl bg-pastel-lavender dark:bg-purple-950 flex items-center justify-center text-pastel-lavenderDark dark:text-purple-300 font-bold">✨</div>
+              <h3 class="font-bold text-stone-900 dark:text-white text-sm">Virtual Wardrobe & Pojok Live</h3>
+              <p class="text-stone-600 dark:text-stone-300 leading-relaxed">
+                Menghadirkan layar interaktif <strong>"Match Your Style"</strong> bagi pengunjung untuk mencoba topi/baju secara virtual tanpa ganti fisik, plus Pojok Live shopping yang melibatkan pengunjung secara langsung.
+              </p>
+              <div class="p-2.5 bg-white dark:bg-stone-900 rounded-xl text-[10px] text-stone-500 dark:text-stone-400 border border-stone-200/50 dark:border-stone-800">
+                Menjawab tren retail 2025: fashion virtual dan interaktivitas Gen Z.
+              </div>
+            </div>
+
+          </div>
+
+          <!-- S.W.O.T Strategic Framework -->
+          <div class="space-y-3 pt-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-stone-900 dark:text-white uppercase tracking-wider">Pemetaan Strategis: S.W.O.T Analysis</span>
+              <span class="text-[11px] font-mono text-stone-400">Feasibility & Risk Mitigation Framework</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              
+              <!-- Strengths -->
+              <div class="p-4 bg-pastel-sage/35 dark:bg-emerald-950/30 rounded-2xl border border-pastel-sageDark/15 dark:border-emerald-800/30 space-y-2">
+                <div class="flex items-center gap-1.5 font-extrabold text-pastel-sageDark dark:text-emerald-400">
+                  <span>💪</span> STRENGTHS
+                </div>
+                <ul class="text-[11px] text-stone-600 dark:text-stone-300 space-y-1.5 leading-relaxed">
+                  <li>• Membuka aliran omzet online tanpa mengorbankan foot-traffic fisik.</li>
+                  <li>• First-mover advantage: konsep interaktif pionir di kawasan rekreasi.</li>
+                  <li>• Melimpahnya konten UGC & media sosial organik dari interaksi pengunjung.</li>
+                </ul>
+              </div>
+
+              <!-- Weaknesses -->
+              <div class="p-4 bg-pastel-apricot/35 dark:bg-amber-950/30 rounded-2xl border border-pastel-apricotDark/15 dark:border-amber-800/30 space-y-2">
+                <div class="flex items-center gap-1.5 font-extrabold text-pastel-apricotDark dark:text-amber-400">
+                  <span>🧩</span> WEAKNESSES
+                </div>
+                <ul class="text-[11px] text-stone-600 dark:text-stone-300 space-y-1.5 leading-relaxed">
+                  <li>• Kebutuhan anggaran reward suvenir untuk menstimulasi interaksi awal.</li>
+                  <li>• Ketergantungan tinggi pada SDM lapangan yang melek teknologi & komunikatif.</li>
+                </ul>
+              </div>
+
+              <!-- Opportunities -->
+              <div class="p-4 bg-pastel-sky/35 dark:bg-sky-950/30 rounded-2xl border border-pastel-skyDark/15 dark:border-sky-800/30 space-y-2">
+                <div class="flex items-center gap-1.5 font-extrabold text-pastel-skyDark dark:text-sky-400">
+                  <span>🚀</span> OPPORTUNITIES
+                </div>
+                <ul class="text-[11px] text-stone-600 dark:text-stone-300 space-y-1.5 leading-relaxed">
+                  <li>• Selaras dengan tren global 2025: digital fashion & virtual wardrobe.</li>
+                  <li>• Kolaborasi masif dengan influencer Gen Z & aktivasi media sosial.</li>
+                  <li>• Mengonversi non-pembeli tentengan menjadi pelanggan e-commerce setia.</li>
+                </ul>
+              </div>
+
+              <!-- Threats -->
+              <div class="p-4 bg-pastel-lavender/35 dark:bg-purple-950/30 rounded-2xl border border-pastel-lavenderDark/15 dark:border-purple-800/30 space-y-2">
+                <div class="flex items-center gap-1.5 font-extrabold text-pastel-lavenderDark dark:text-purple-400">
+                  <span>🛡️</span> THREATS
+                </div>
+                <ul class="text-[11px] text-stone-600 dark:text-stone-300 space-y-1.5 leading-relaxed">
+                  <li>• Biaya pengembangan Augmented Reality (AR) lanjutan relatif tinggi.</li>
+                  <li>• Potensi replikasi konsep oleh kompetitor retail rekreasi lain.</li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: EXECUTIVE CASES (FOKUS PERFORMA, CAMPAIGN & EVALUASI BULANAN) -->
+        <div id="tab-content-cases" class="hidden space-y-4">
+          
+          <!-- Case 0: Creative Campaign & Video Collaboration (WD WILLY, NICOLO, NRDN) -->
+          <div class="p-5 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700 space-y-4">
+            
+            <!-- Header Case -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200/60 dark:border-stone-700/80 pb-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300">
+                    🎬 Creative Direction &amp; Video Editing • CapCut Pro
+                  </span>
+                  <span class="text-[10px] font-mono text-stone-400">Anniversary IP Campaign</span>
+                </div>
+                <h3 class="font-extrabold text-stone-900 dark:text-white text-base mt-1">
+                  Dufan Anniversary × Brand &amp; Artist Collaboration (WD WILLY × NICOLO NIMOR × NRDN)
+                </h3>
+              </div>
+
+              <!-- Slide 1 (Video) vs Slide 2 (Foto) Switcher -->
+              <div class="flex items-center gap-1 p-1 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/70 dark:border-stone-700 text-xs font-bold self-start sm:self-auto">
+                <button onclick="switchMediaSlide('video')" id="btn-slide-video" class="px-3.5 py-1.5 rounded-lg bg-stone-900 dark:bg-white text-white dark:text-stone-900 shadow-2xs transition-all flex items-center gap-1.5">
+                  <span>🎥 SLIDE 1: Video Kampanye</span>
+                </button>
+                <button onclick="switchMediaSlide('foto')" id="btn-slide-foto" class="px-3.5 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all flex items-center gap-1.5">
+                  <span>🖼️ SLIDE 2: Lookbook Foto</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- SLIDE 1: VIDEO CAMPAIGN SHOWCASE (5 VIDEOS WITH PLAYLIST SELECTOR) -->
+            <div id="media-slide-video" class="space-y-3">
+              <!-- Video Playlist Tabs -->
+              <div class="flex flex-wrap gap-1.5 text-xs font-semibold">
+                <button onclick="playSelectedVideo('nicolo1', './docs/video/NICOLO1.mp4', 'NICOLO NIMOR (Main Teaser)', 'Video teaser peluncuran koleksi eksklusif Dufan x Nicolo Nimor di area wahana.')" id="btn-vid-nicolo1" class="px-3 py-1.5 rounded-xl bg-stone-900 dark:bg-white text-white dark:text-stone-900 font-bold transition-all">
+                  ▶ 1. NICOLO NIMOR 1
+                </button>
+                <button onclick="playSelectedVideo('nicolo2', './docs/video/NICOLO2.mp4', 'NICOLO NIMOR (Vibe & Details)', 'Highlight detail apparel, grafis karakter, dan dynamic pacing.')" id="btn-vid-nicolo2" class="px-3 py-1.5 rounded-xl bg-stone-200/80 dark:bg-stone-700 text-stone-700 dark:text-stone-300 transition-all">
+                  ▶ 2. NICOLO 2
+                </button>
+                <button onclick="playSelectedVideo('nrdn', './docs/video/NRDN.mp4', 'NRDN Collaboration', 'Promosi apparel kasual & streetwear tematik ulang tahun Dufan.')" id="btn-vid-nrdn" class="px-3 py-1.5 rounded-xl bg-stone-200/80 dark:bg-stone-700 text-stone-700 dark:text-stone-300 transition-all">
+                  ▶ 3. NRDN
+                </button>
+                <button onclick="playSelectedVideo('wede', './docs/video/WEDE.mp4', 'WD WILLY (Part 1 - Dufan)', 'Artwork eksploratif WD WILLY yang ikonik & colorful di wahana Dufan.')" id="btn-vid-wede" class="px-3 py-1.5 rounded-xl bg-stone-200/80 dark:bg-stone-700 text-stone-700 dark:text-stone-300 transition-all">
+                  ▶ 4. WD WILLY 1
+                </button>
+                <button onclick="playSelectedVideo('wede2', './docs/video/WEDE2.mp4', 'WD WILLY (Part 2 - Creator Voice)', 'Behind the scene & pesan kreator dalam kolaborasi merchandise.')" id="btn-vid-wede2" class="px-3 py-1.5 rounded-xl bg-stone-200/80 dark:bg-stone-700 text-stone-700 dark:text-stone-300 transition-all">
+                  ▶ 5. WD WILLY 2
+                </button>
+              </div>
+
+              <!-- Main Video Player Frame (Preload None = 100% Light & Zero Initial Lag) -->
+              <div class="relative rounded-2xl overflow-hidden bg-black border border-stone-800 shadow-md">
+                <video 
+                  id="main-campaign-video" 
+                  preload="none" 
+                  controls 
+                  playsinline
+                  class="w-full max-h-[480px] object-contain mx-auto bg-black"
+                  poster="./docs/foto/thumbs/NICOLO.jpeg"
+                >
+                  <source id="video-source-tag" src="./docs/video/NICOLO1.mp4" type="video/mp4">
+                  Browser Anda tidak mendukung tag video.
+                </video>
+              </div>
+
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs pt-1">
+                <div>
+                  <span id="active-video-title" class="font-bold text-stone-900 dark:text-white">NICOLO NIMOR (Main Teaser)</span> — 
+                  <span id="active-video-desc" class="text-stone-500">Video teaser peluncuran koleksi eksklusif Dufan x Nicolo Nimor di area wahana.</span>
+                </div>
+                <span class="text-[11px] font-mono text-purple-600 dark:text-purple-400 font-semibold">Preload: On-Demand</span>
+              </div>
+            </div>
+
+            <!-- SLIDE 2: LOOKBOOK FOTO & ARTWORK GALLERY (5 HIGH-RES IMAGES WITH LIGHTBOX) -->
+            <div id="media-slide-foto" class="hidden space-y-3">
+              <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                
+                <!-- Foto 1: NICOLO -->
+                <div class="group relative rounded-xl overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-900 aspect-3/4 cursor-pointer" onclick="openPhotoModal('./docs/foto/NICOLO.jpeg', 'NICOLO NIMOR × DUFAN', 'Koleksi apparel streetwear edisi spesial dengan model di kawasan Dunia Fantasi.')">
+                  <img src="./docs/foto/thumbs/NICOLO.jpeg" alt="Nicolo Nimor" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300" loading="lazy">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity p-2.5 flex flex-col justify-end text-white text-[11px]">
+                    <span class="font-bold">NICOLO NIMOR</span>
+                    <span class="text-[10px] text-stone-300">Klik Perbesar ↗</span>
+                  </div>
+                </div>
+
+                <!-- Foto 2: WEDE_DUFAN -->
+                <div class="group relative rounded-xl overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-900 aspect-3/4 cursor-pointer" onclick="openPhotoModal('./docs/foto/WEDE_DUFAN.jpeg', 'WD WILLY × DUFAN', 'Artwork khas WD WILLY berpadu dengan nuansa ceria kincir & wahana Dufan.')">
+                  <img src="./docs/foto/thumbs/WEDE_DUFAN.jpeg" alt="WD Willy Dufan" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300" loading="lazy">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity p-2.5 flex flex-col justify-end text-white text-[11px]">
+                    <span class="font-bold">WD WILLY (DUFAN)</span>
+                    <span class="text-[10px] text-stone-300">Klik Perbesar ↗</span>
+                  </div>
+                </div>
+
+                <!-- Foto 3: NRDN -->
+                <div class="group relative rounded-xl overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-900 aspect-3/4 cursor-pointer" onclick="openPhotoModal('./docs/foto/NRDN.jpeg', 'NRDN × DUFAN', 'Koleksi casual apparel & aksesoris eksklusif kolaborasi NRDN.')">
+                  <img src="./docs/foto/thumbs/NRDN.jpeg" alt="NRDN" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300" loading="lazy">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity p-2.5 flex flex-col justify-end text-white text-[11px]">
+                    <span class="font-bold">NRDN</span>
+                    <span class="text-[10px] text-stone-300">Klik Perbesar ↗</span>
+                  </div>
+                </div>
+
+                <!-- Foto 4: WEDE_SWA -->
+                <div class="group relative rounded-xl overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-900 aspect-3/4 cursor-pointer" onclick="openPhotoModal('./docs/foto/WEDE_SWA.jpeg', 'WD WILLY × SEA WORLD & REKREASI', 'Eksplorasi lini merchandise kasual bernuansa akuatik & rekreasi.')">
+                  <img src="./docs/foto/thumbs/WEDE_SWA.jpeg" alt="WD Willy SWA" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300" loading="lazy">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity p-2.5 flex flex-col justify-end text-white text-[11px]">
+                    <span class="font-bold">WD WILLY (SWA)</span>
+                    <span class="text-[10px] text-stone-300">Klik Perbesar ↗</span>
+                  </div>
+                </div>
+
+                <!-- Foto 5: HUGGYBOO_ODS -->
+                <div class="group relative rounded-xl overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-900 aspect-3/4 cursor-pointer" onclick="openPhotoModal('./docs/foto/HUGGYBOO_ODS.jpeg', 'HUGGYBOO × SAMUDRA & REKREASI', 'Koleksi suvenir boneka karakter lucu tematik satwa Samudra Ancol.')">
+                  <img src="./docs/foto/thumbs/HUGGYBOO_ODS.jpeg" alt="Huggyboo ODS" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300" loading="lazy">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity p-2.5 flex flex-col justify-end text-white text-[11px]">
+                    <span class="font-bold">HUGGYBOO (ODS)</span>
+                    <span class="text-[10px] text-stone-300">Klik Perbesar ↗</span>
+                  </div>
+                </div>
+
+              </div>
+              <p class="text-[11px] text-stone-500 italic text-center">💡 Klik pada salah satu foto untuk melihat tampilan resolusi penuh (Full-Res Modal).</p>
+            </div>
+
+            <!-- Commercial Takeaway Bar -->
+            <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/50 dark:border-stone-800 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div class="text-[11px] text-stone-600 dark:text-stone-300">
+                <strong>Commercial Impact:</strong> Mengangkat nilai jual suvenir (*perceived value*) melalui IP Kolaborasi, menaikkan ATV toko suvenir hingga >Rp 150rb, dan memperkuat branding modern Ancol di kalangan Gen Z.
+              </div>
+              <span class="text-[10px] font-mono text-purple-600 dark:text-purple-400 font-bold shrink-0">Omnichannel Visual &amp; POS Driver</span>
+            </div>
+
+          </div>
+
+          <!-- Case 1: Evaluasi Kinerja Bulanan Merch & Resto Kelola Sendiri -->
+          <div class="p-5 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700 space-y-2.5">
+            <div class="flex items-center justify-between text-xs font-mono text-stone-400">
+              <span class="font-bold text-stone-700 dark:text-stone-300">Monthly Operational Review</span>
+              <span>Unit Kelola Sendiri (Merchandise & Resto)</span>
+            </div>
+            <h3 class="font-bold text-stone-900 dark:text-white text-base">Evaluasi Kinerja Bulanan: Optimasi Margin 18 Konter Merchandise & Resto Mandiri</h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+              Setiap awal bulan, divisi retail menjalankan evaluasi berkala untuk membedah kinerja unit operasional mandiri:
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-1">
+              <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/50 dark:border-stone-800 space-y-1">
+                <span class="font-bold text-emerald-700 dark:text-emerald-400">🏬 18 Konter Merchandise Mandiri</span>
+                <p class="text-[11px] text-stone-600 dark:text-stone-400 leading-relaxed">
+                  Mencapai realisasi YTD <strong>Rp 6,78 Miliar</strong>. Sea World Induk (Rp 1,95 M) dan Samudra Induk (Rp 1,14 M) memimpin perolehan margin kotor >50% dan rata-rata spending Rp 117rb–128rb per struk. Evaluasi rutin memfokuskan alokasi stok cepat laku ke outlet satelit Dufan (Kereta Misteri & Arung Jeram).
+                </p>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/50 dark:border-stone-800 space-y-1">
+                <span class="font-bold text-sky-700 dark:text-sky-400">🍽️ Restoran & Kafe Kelola Sendiri</span>
+                <p class="text-[11px] text-stone-600 dark:text-stone-400 leading-relaxed">
+                  Mencatatkan pertumbuhan kuat <strong>+24% YoY (YTD Rp 6,26 Miliar)</strong>, melampaui target anggaran 116%. Ombak Laut Carnaval (Rp 2,01 M) dan Ayam Tepi Laut menjadi lokomotif profit, di mana evaluasi bulanan berfokus pada pengendalian rasio HPP bahan baku (26–31%) dan beban SDM operasional.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-2">
+              <span class="text-[10px] font-mono text-stone-500">Siklus Evaluasi: Audit Bulanan POS -> Pengendalian HPP -> Re-alokasi Manpower</span>
+              <a href="./docs/Monthly Meeting Retail April 2026 1.pdf" target="_blank" class="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline flex items-center gap-1">
+                Buka Dokumen Evaluasi ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- Case 2: 5P Strategy & Supplier Governance -->
+          <div class="p-5 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700 space-y-2.5">
+            <div class="flex items-center justify-between text-xs font-mono text-stone-400">
+              <span class="font-bold text-stone-700 dark:text-stone-300">Merchandising Strategy</span>
+              <span>5P Strategy & Product Lifecycle</span>
+            </div>
+            <h3 class="font-bold text-stone-900 dark:text-white text-base">End-to-End Merchandising Lifecycle & 5P Strategy Ancol Store</h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+              Menerapkan kerangka kerja komprehensif mulai dari Riset Pasar, Perencanaan Desain, Kontrol Produksi Vendor, Distribusi Toko, hingga Evaluasi Penjualan. Mengintegrasikan strategi 5P (Pelayanan, Penataan, Produk Desain, Variasi Produk, Promosi Efektif) untuk menaikkan konversi belanja.
+            </p>
+            <div class="flex items-center justify-between pt-1">
+              <span class="text-[10px] font-mono text-stone-500">Framework: Riset -> Produksi -> QC -> Distribusi -> Evaluasi</span>
+              <a href="./docs/Product Knowledge.pdf" target="_blank" class="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline flex items-center gap-1">
+                Buka Dokumen Product Knowledge ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- Case 3: Enterprise Python & SQLite POS Analytics Engine (NEW) -->
+          <div class="p-5 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700 space-y-2.5">
+            <div class="flex items-center justify-between text-xs font-mono text-stone-400">
+              <span class="font-bold text-emerald-700 dark:text-emerald-400">Data Engineering & Analytics</span>
+              <span>Production Web Dashboard</span>
+            </div>
+            <h3 class="font-bold text-stone-900 dark:text-white text-base">High-Performance POS Analytics Engine (Python, SQLite WAL & Flask)</h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+              Membangun infrastruktur analitik data ritel mandiri tanpa biaya lisensi (Zero-Cost Stack) yang memproses <strong>127.000+ baris transaksi kasir</strong> secara real-time:
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs pt-1">
+              <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/50 dark:border-stone-800 space-y-1">
+                <span class="font-bold text-emerald-700 dark:text-emerald-400">⚡ SQLite WAL Architecture</span>
+                <p class="text-[11px] text-stone-600 dark:text-stone-400 leading-relaxed">
+                  Konfigurasi Write-Ahead Logging & RAM cache 64MB untuk kueri agregasi super cepat (&lt;10ms) dari ratusan ribu baris data tahunan.
+                </p>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/50 dark:border-stone-800 space-y-1">
+                <span class="font-bold text-sky-700 dark:text-sky-400">🎯 5 Hero Executive KPIs</span>
+                <p class="text-[11px] text-stone-600 dark:text-stone-400 leading-relaxed">
+                  Kalkulasi instan Net Sales, Target Revenue MTD/YTD, Transaksi &amp; ATV, Volume Barang &amp; UPT, hingga Pengunjung Wahana &amp; SPH.
+                </p>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/50 dark:border-stone-800 space-y-1">
+                <span class="font-bold text-purple-700 dark:text-purple-400">🔄 Auto-Sync & Dual Ingestion</span>
+                <p class="text-[11px] text-stone-600 dark:text-stone-400 leading-relaxed">
+                  Pipeline otomatis mendeteksi file Excel drop/upload baru serta form input pengunjung harian dengan enkripsi PIN otentikasi.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-2">
+              <span class="text-[10px] font-mono text-stone-500">Tech Stack: Python 3.11 • SQLite WAL • Flask • Tailwind CSS • Chart.js</span>
+              <button onclick="switchTab('pipeline')" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1">
+                Lihat Arsitektur ETL & Code ↗
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: SOURCE FILES VAULT -->
+        <div id="tab-content-vault" class="hidden space-y-5">
+          <div class="border-b border-stone-100 dark:border-stone-800 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="text-[11px] font-mono font-bold text-sky-600 dark:text-sky-400 uppercase tracking-wider">Raw Datasets & Official Decks</span>
+              <h2 class="text-lg sm:text-xl font-extrabold text-stone-900 dark:text-white mt-0.5">Direct Access to Project Files & Raw Data</h2>
+            </div>
+            <span class="text-xs text-stone-500 font-mono">Tersimpan di folder /docs</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
+            
+            <div class="p-4 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700 flex items-center justify-between hover:border-sky-300 transition-all">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-950/60 flex items-center justify-center text-red-600 dark:text-red-400 font-bold text-sm">PDF</div>
+                <div>
+                  <h4 class="font-bold text-stone-900 dark:text-white text-xs">DIGITAL INTERACTIVE.pdf</h4>
+                  <p class="text-[11px] text-stone-500">Feasibility Study & O2O Model</p>
+                </div>
+              </div>
+              <a href="./docs/DIGITAL INTERACTIVE.pdf" target="_blank" class="px-3 py-1.5 bg-stone-200/80 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 rounded-xl text-stone-800 dark:text-stone-200 font-bold text-xs transition-all">
+                Buka ↗
+              </a>
+            </div>
+
+            <div class="p-4 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700 flex items-center justify-between hover:border-sky-300 transition-all">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-950/60 flex items-center justify-center text-red-600 dark:text-red-400 font-bold text-sm">PDF</div>
+                <div>
+                  <h4 class="font-bold text-stone-900 dark:text-white text-xs truncate max-w-[180px]">Monthly Meeting April 2026.pdf</h4>
+                  <p class="text-[11px] text-stone-500">Evaluasi Rutin Bulanan Konter Merch & Resto Mandiri</p>
+                </div>
+              </div>
+              <a href="./docs/Monthly Meeting Retail April 2026 1.pdf" target="_blank" class="px-3 py-1.5 bg-stone-200/80 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 rounded-xl text-stone-800 dark:text-stone-200 font-bold text-xs transition-all">
+                Buka ↗
+              </a>
+            </div>
+
+            <div class="p-4 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700 flex items-center justify-between hover:border-sky-300 transition-all">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-950/60 flex items-center justify-center text-red-600 dark:text-red-400 font-bold text-sm">PDF</div>
+                <div>
+                  <h4 class="font-bold text-stone-900 dark:text-white text-xs">evaluasi merch.pdf</h4>
+                  <p class="text-[11px] text-stone-500">Supplier Dashboard & SKU Tracking</p>
+                </div>
+              </div>
+              <a href="./docs/evaluasi merch.pdf" target="_blank" class="px-3 py-1.5 bg-stone-200/80 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 rounded-xl text-stone-800 dark:text-stone-200 font-bold text-xs transition-all">
+                Buka ↗
+              </a>
+            </div>
+
+            <div class="p-4 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700 flex items-center justify-between hover:border-sky-300 transition-all">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-950/60 flex items-center justify-center text-red-600 dark:text-red-400 font-bold text-sm">PDF</div>
+                <div>
+                  <h4 class="font-bold text-stone-900 dark:text-white text-xs">Product Knowledge.pdf</h4>
+                  <p class="text-[11px] text-stone-500">5P Strategy & Retail Framework</p>
+                </div>
+              </div>
+              <a href="./docs/Product Knowledge.pdf" target="_blank" class="px-3 py-1.5 bg-stone-200/80 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 rounded-xl text-stone-800 dark:text-stone-200 font-bold text-xs transition-all">
+                Buka ↗
+              </a>
+            </div>
+
+            <div class="p-4 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700 flex items-center justify-between hover:border-emerald-300 transition-all">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-emerald-700 dark:text-emerald-400 font-bold text-sm">XLS</div>
+                <div>
+                  <h4 class="font-bold text-stone-900 dark:text-white text-xs truncate max-w-[180px]">MASTER_TARGET_VISITOR_TEMPLATE_V3.xlsx</h4>
+                  <p class="text-[11px] text-stone-500">Target Revenue & Attendance Log</p>
+                </div>
+              </div>
+              <a href="./docs/MASTER_TARGET_VISITOR_TEMPLATE_V3.xlsx" download class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs transition-all flex items-center gap-1">
+                <span>Unduh</span> ↓
+              </a>
+            </div>
+
+            <div class="p-4 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700 flex items-center justify-between hover:border-emerald-300 transition-all">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-emerald-700 dark:text-emerald-400 font-bold text-sm">XLS</div>
+                <div>
+                  <h4 class="font-bold text-stone-900 dark:text-white text-xs">jualan detail 5 agu 26.xlsx</h4>
+                  <p class="text-[11px] text-stone-500">Raw POS Transaction Multi-Cashier</p>
+                </div>
+              </div>
+              <a href="./docs/jualan detail 5 agu 26.xlsx" download class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs transition-all flex items-center gap-1">
+                <span>Unduh</span> ↓
+              </a>
+            </div>
+
+            <div class="p-4 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700 flex items-center justify-between hover:border-emerald-300 transition-all">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-emerald-700 dark:text-emerald-400 font-bold text-sm">XLS</div>
+                <div>
+                  <h4 class="font-bold text-stone-900 dark:text-white text-xs">MASTER_OUTLET_MAPPING.xlsx</h4>
+                  <p class="text-[11px] text-stone-500">Area & Outlet Hierarchy Master</p>
+                </div>
+              </div>
+              <a href="./docs/MASTER_OUTLET_MAPPING.xlsx" download class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs transition-all flex items-center gap-1">
+                <span>Unduh</span> ↓
+              </a>
+            </div>
+
+            <div class="p-4 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700 flex items-center justify-between hover:border-purple-300 transition-all">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-950/60 flex items-center justify-center text-purple-700 dark:text-purple-400 font-bold text-sm">JPG</div>
+                <div>
+                  <h4 class="font-bold text-stone-900 dark:text-white text-xs">SURVEY.jpg</h4>
+                  <p class="text-[11px] text-stone-500">Customer Feedback QR Standee</p>
+                </div>
+              </div>
+              <a href="./docs/SURVEY.jpg" target="_blank" class="px-3 py-1.5 bg-stone-200/80 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 rounded-xl text-stone-800 dark:text-stone-200 font-bold text-xs transition-all">
+                Preview ↗
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- TAB 6: ETL & SQL ARCHITECTURE PIPELINE -->
+        <div id="tab-content-pipeline" class="hidden space-y-4">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-stone-100 dark:border-stone-800 pb-2">
+            <div>
+              <span class="text-[11px] font-mono font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">High-Performance Pipeline</span>
+              <h3 class="text-base font-extrabold text-stone-900 dark:text-white">SQLite WAL-Mode &amp; Automated Financial Reconciliation</h3>
+            </div>
+            <span class="px-2.5 py-1 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 rounded-lg text-xs font-mono font-bold">Python 3.11 • SQLite • 127k+ Rows</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <!-- Code Block 1: ETL & WAL Database Setup -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-[11px] font-mono text-stone-500">
+                <span>📁 database/db_config.py</span>
+                <span class="text-emerald-600 font-semibold">Zero-Cost Fast Engine</span>
+              </div>
+              <div class="bg-stone-900 rounded-xl p-4 text-stone-200 font-mono text-[11px] overflow-x-auto leading-relaxed shadow-inner">
+                <pre><code><span class="text-purple-400">def</span> <span class="text-sky-300">get_connection</span>():
+    <span class="text-stone-500"># 1. B-Tree Storage Engine with WAL Mode</span>
+    conn = sqlite3.connect(DB_PATH, timeout=30.0)
+    conn.execute(<span class="text-amber-200">"PRAGMA journal_mode = WAL;"</span>)
+    conn.execute(<span class="text-amber-200">"PRAGMA synchronous = NORMAL;"</span>)
+    conn.execute(<span class="text-amber-200">"PRAGMA cache_size = -64000;"</span>) <span class="text-stone-500"># 64MB RAM Cache</span>
+    conn.execute(<span class="text-amber-200">"PRAGMA temp_store = MEMORY;"</span>)
+    <span class="text-purple-400">return</span> conn</code></pre>
+              </div>
+            </div>
+
+            <!-- Code Block 2: Financial Aggregation & SPV Calculation -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-[11px] font-mono text-stone-500">
+                <span>📁 database/queries.py</span>
+                <span class="text-sky-600 font-semibold">MTD / YTD Aggregations</span>
+              </div>
+              <div class="bg-stone-900 rounded-xl p-4 text-stone-200 font-mono text-[11px] overflow-x-auto leading-relaxed shadow-inner">
+                <pre><code><span class="text-purple-400">def</span> <span class="text-sky-300">calculate_executive_kpis</span>(conn, date_filter):
+    <span class="text-stone-500"># 2. Fast Query: Net Sales, ATV, UPT & SPH (Spend Per Head)</span>
+    query = <span class="text-amber-200">"""
+    SELECT 
+        SUM(net_sales) AS total_sales,
+        COUNT(DISTINCT invoice) AS total_tx,
+        SUM(qty) AS total_pcs,
+        SUM(net_sales) / NULLIF(COUNT(DISTINCT invoice), 0) AS atv
+    FROM sales_items WHERE date BETWEEN ? AND ?
+    """</span>
+    <span class="text-purple-400">return</span> conn.execute(query, date_filter).fetchone()</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 bg-stone-50 dark:bg-stone-800/50 rounded-xl border border-stone-200/60 dark:border-stone-700 text-xs text-stone-600 dark:text-stone-300 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-base">💡</span>
+              <span><strong>Key Takeaway:</strong> Memungkinkan manajemen membuka dashboard analitik tahunan dengan jutaan data dalam sekejap tanpa lag, tanpa cloud subscription cost bulanan.</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- SCRIPT: TABS, DARK MODE, AND CHART LOGIC -->
+  <script>
+    function switchTab(tabId) {
+      ['overview', 'pythonapp', 'analytics', 'strategy', 'cases', 'vault', 'pipeline'].forEach(t => {
+        const btn = document.getElementById('tab-btn-' + t);
+        const content = document.getElementById('tab-content-' + t);
+        if (btn) {
+          if (t === tabId) {
+            btn.className = "px-3.5 py-1.5 rounded-lg bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-2xs transition-all font-bold";
+          } else {
+            btn.className = "px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all text-stone-500 dark:text-stone-400 font-medium";
+          }
+        }
+        if (content) {
+          content.classList.toggle('hidden', t !== tabId);
+        }
+      });
+      if (tabId === 'analytics' && comparisonChart) {
+        setTimeout(() => comparisonChart.resize(), 50);
+      }
+    }
+
+    // PYTHON LIVE APP SIMULATOR LOGIC
+    function switchAppView(view) {
+      const isDash = view === 'dashboard';
+      document.getElementById('app-view-dashboard').classList.toggle('hidden', !isDash);
+      document.getElementById('app-view-admin').classList.toggle('hidden', isDash);
+      
+      const btnDash = document.getElementById('btn-app-dash');
+      const btnAdmin = document.getElementById('btn-app-admin');
+      
+      if (isDash) {
+        btnDash.className = "px-3.5 py-1.5 rounded-lg bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-2xs transition-all";
+        btnAdmin.className = "px-3.5 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all";
+      } else {
+        btnAdmin.className = "px-3.5 py-1.5 rounded-lg bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-2xs transition-all";
+        btnDash.className = "px-3.5 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all";
+      }
+    }
+
+    function switchAdminSubTab(tab) {
+      const isUpload = tab === 'upload';
+      document.getElementById('adm-tab-upload').classList.toggle('hidden', !isUpload);
+      document.getElementById('adm-tab-visitor').classList.toggle('hidden', isUpload);
+      
+      document.getElementById('btn-adm-upload').className = isUpload 
+        ? "flex-1 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-2xs transition-all"
+        : "flex-1 py-2.5 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 font-bold text-xs hover:bg-stone-200 transition-all";
+      
+      document.getElementById('btn-adm-visitor').className = !isUpload 
+        ? "flex-1 py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs shadow-2xs transition-all"
+        : "flex-1 py-2.5 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 font-bold text-xs hover:bg-stone-200 transition-all";
+    }
+
+    // Dynamic Live Simulation Model
+    const liveSimulationData = {
+      all: {
+        sales: 'Rp 3.110.541.556',
+        sales25: 'Rp 3.897.590.624',
+        growth: '-20.19% (-Rp 787 Jt)',
+        target: 'Rp 3.469.010.382',
+        ach: '89.67%',
+        gap: 'DEFISIT DARI TARGET (-Rp 358.468.826)',
+        tx: '29.286',
+        txGrowth: '-12.59%',
+        atv: 'Rp 106.213',
+        qty: '111.453',
+        qtyGrowth: '+20.17%',
+        upt: '3.81 item',
+        visitor: '1.885.605',
+        sph: 'Rp 1.650',
+        capture: '1.55% (29.286 struk)',
+        summary: 'Total penjualan 2026 tercatat sebesar <strong>Rp 3.110.541.556</strong> (89.67% dari target Rp 3.469.010.382). Performa penjualan tercatat terkoreksi -20.19% dibanding periode yang sama tahun 2025. Rata-rata transaksi per pelanggan (ATV) adalah <strong>Rp 106.213</strong> dengan puncak penjualan pada pukul 16:00.',
+        topOutlets: [
+          { name: '1. SWIN Sea World Induk', sales: 'Rp 873,90 Jt', pct: '(28.1%)' },
+          { name: '2. ODIN Samudra Induk', sales: 'Rp 495,12 Jt', pct: '(15.9%)' },
+          { name: '3. DFIN Dufan Induk', sales: 'Rp 477,30 Jt', pct: '(15.3%)' },
+          { name: '4. DFIL Dufan Induk Lama', sales: 'Rp 288,79 Jt', pct: '(9.3%)' },
+          { name: '5. DFKE Dufan Kereta Misteri', sales: 'Rp 195,02 Jt', pct: '(6.3%)' }
+        ],
+        bottomOutlets: [
+          { name: '! TJOM Merchandise Ombak Laut', sales: 'Rp 5,17 Jt', growth: '+81.5%', pos: true },
+          { name: '! JBIN JBL Induk', sales: 'Rp 12,07 Jt', growth: '+19.7%', pos: true },
+          { name: '! OL01 Online Shop', sales: 'Rp 20,26 Jt', growth: '-25.1%', pos: false },
+          { name: '! DFTO Dufan Tornado', sales: 'Rp 24,00 Jt', growth: '-28.7%', pos: false },
+          { name: '! AWKL AWA Taman Kelapa 2', sales: 'Rp 26,81 Jt', growth: '-5.4%', pos: false }
+        ]
+      },
+      dufan: {
+        sales: 'Rp 1.477.763.005',
+        sales25: 'Rp 1.711.174.009',
+        growth: '-13.64% (-Rp 233 Jt)',
+        target: 'Rp 2.065.000.000',
+        ach: '71.56%',
+        gap: 'DEFISIT DARI TARGET (-Rp 587.236.995)',
+        tx: '15.926',
+        txGrowth: '-8.40%',
+        atv: 'Rp 92.789',
+        qty: '60.700',
+        qtyGrowth: '+18.40%',
+        upt: '3.81 item',
+        visitor: '388.560',
+        sph: 'Rp 3.803',
+        capture: '4.10% (15.926 struk)',
+        summary: 'Area <strong>DUFAN</strong> menyumbang <strong>Rp 1.477.763.005</strong> dengan total 15.926 struk transaksi. Rata-rata belanja per pengunjung (SPH) sangat kuat di angka <strong>Rp 3.803 / head</strong>, dengan konter Dufan Induk dan satelit wahana sebagai penggerak utama.',
+        topOutlets: [
+          { name: '1. DFIN Dufan Induk', sales: 'Rp 477,30 Jt', pct: '(32.3%)' },
+          { name: '2. DFIL Dufan Induk Lama', sales: 'Rp 288,79 Jt', pct: '(19.5%)' },
+          { name: '3. DFKE Dufan Kereta Misteri', sales: 'Rp 195,02 Jt', pct: '(13.2%)' },
+          { name: '4. DFOR Dufan Oriental', sales: 'Rp 180,45 Jt', pct: '(12.2%)' },
+          { name: '5. DFAJ Dufan Arung Jeram', sales: 'Rp 120,15 Jt', pct: '(8.1%)' }
+        ],
+        bottomOutlets: [
+          { name: '! DFTO Dufan Tornado', sales: 'Rp 24,00 Jt', growth: '-28.7%', pos: false },
+          { name: '! DFHY Dufan Hysteria', sales: 'Rp 32,15 Jt', growth: '-18.4%', pos: false },
+          { name: '! DFBL Dufan Baling2', sales: 'Rp 41,20 Jt', growth: '-12.0%', pos: false },
+          { name: '! DFID Dufan Ice Age', sales: 'Rp 48,50 Jt', growth: '-8.5%', pos: false },
+          { name: '! DFGL Dufan Galactica', sales: 'Rp 70,25 Jt', growth: '+5.2%', pos: true }
+        ]
+      },
+      awapark: {
+        sales: 'Rp 1.553.498.494',
+        sales25: 'Rp 2.094.988.829',
+        growth: '-25.85% (-Rp 541 Jt)',
+        target: 'Rp 1.331.010.382',
+        ach: '116.72%',
+        gap: 'SURPLUS TARGET (+Rp 222.488.112) 🏆',
+        tx: '12.451',
+        txGrowth: '-16.20%',
+        atv: 'Rp 124.769',
+        qty: '47.579',
+        qtyGrowth: '+22.60%',
+        upt: '3.82 item',
+        visitor: '402.861',
+        sph: 'Rp 3.856',
+        capture: '3.09% (12.451 struk)',
+        summary: 'Area <strong>AWAPARK</strong> menjadi <strong>Top Achiever</strong> dengan melampaui target anggaran sebesar <strong>116.72%</strong> (Rp 1,55 Miliar vs Target Rp 1,33 M). Menghasilkan ATV tertinggi sebesar <strong>Rp 124.769</strong> dipimpin Sea World & Samudra Induk.',
+        topOutlets: [
+          { name: '1. SWIN Sea World Induk', sales: 'Rp 873,90 Jt', pct: '(56.3%)' },
+          { name: '2. ODIN Samudra Induk', sales: 'Rp 495,12 Jt', pct: '(31.9%)' },
+          { name: '3. ATIN Atlantis Induk', sales: 'Rp 145,60 Jt', pct: '(9.4%)' },
+          { name: '4. JBIN JBL Induk', sales: 'Rp 12,07 Jt', pct: '(0.8%)' },
+          { name: '5. AWKL AWA Taman Kelapa 2', sales: 'Rp 26,81 Jt', pct: '(1.7%)' }
+        ],
+        bottomOutlets: [
+          { name: '! JBIN JBL Induk', sales: 'Rp 12,07 Jt', growth: '+19.7%', pos: true },
+          { name: '! AWKL AWA Taman Kelapa 2', sales: 'Rp 26,81 Jt', growth: '-5.4%', pos: false },
+          { name: '! AT02 Atlantis Plaza', sales: 'Rp 18,30 Jt', growth: '-14.2%', pos: false },
+          { name: '! OD02 Samudra Dolphin', sales: 'Rp 22,10 Jt', growth: '-11.0%', pos: false },
+          { name: '! SW02 Sea World Touchpool', sales: 'Rp 35,40 Jt', growth: '+2.1%', pos: true }
+        ]
+      },
+      beachpark: {
+        sales: 'Rp 79.280.058',
+        sales25: 'Rp 91.427.786',
+        growth: '-13.29% (-Rp 12,1 Jt)',
+        target: 'Rp 73.000.000',
+        ach: '108.60%',
+        gap: 'SURPLUS TARGET (+Rp 6.280.058) 🏆',
+        tx: '909',
+        txGrowth: '-5.10%',
+        atv: 'Rp 87.217',
+        qty: '3.174',
+        qtyGrowth: '+12.40%',
+        upt: '3.49 item',
+        visitor: '1.094.184',
+        sph: 'Rp 72',
+        capture: '0.08% (909 struk)',
+        summary: 'Area <strong>BEACHPARK</strong> sukses mencapai <strong>108.60% dari target</strong> dengan total 909 struk transaksi. Symphony of The Sea dan Merchandise Ombak Laut menjadi penggerak utama pada liburan akhir pekan.',
+        topOutlets: [
+          { name: '1. BPSM Symphony Of The Sea', sales: 'Rp 45,20 Jt', pct: '(57.0%)' },
+          { name: '2. OL01 Online Shop', sales: 'Rp 20,26 Jt', pct: '(25.6%)' },
+          { name: '3. TJOM Merchandise Ombak Laut', sales: 'Rp 5,17 Jt', pct: '(6.5%)' },
+          { name: '4. BPAN Ancol Promenade', sales: 'Rp 4,85 Jt', pct: '(6.1%)' },
+          { name: '5. BPPL Pasar Seni Merch', sales: 'Rp 3,80 Jt', pct: '(4.8%)' }
+        ],
+        bottomOutlets: [
+          { name: '! TJOM Merchandise Ombak Laut', sales: 'Rp 5,17 Jt', growth: '+81.5%', pos: true },
+          { name: '! OL01 Online Shop', sales: 'Rp 20,26 Jt', growth: '-25.1%', pos: false },
+          { name: '! BPPL Pasar Seni Merch', sales: 'Rp 3,80 Jt', growth: '-19.4%', pos: false },
+          { name: '! BPAN Ancol Promenade', sales: 'Rp 4,85 Jt', growth: '-8.2%', pos: false },
+          { name: '! BPSM Symphony Of The Sea', sales: 'Rp 45,20 Jt', growth: '+4.0%', pos: true }
+        ]
+      }
+    };
+
+    function runLiveSimulation() {
+      const area = document.getElementById('app-filter-area').value;
+      const month = document.getElementById('app-filter-month').value;
+      const dateRange = document.getElementById('app-filter-daterange');
+      
+      if (month === 'jan') dateRange.innerText = '01 Jan 2026 - 31 Jan 2026';
+      else if (month === 'feb') dateRange.innerText = '01 Feb 2026 - 28 Feb 2026';
+      else dateRange.innerText = '01 Jan 2026 - 28 Feb 2026';
+
+      const d = liveSimulationData[area] || liveSimulationData.all;
+
+      document.getElementById('app-exec-summary').innerHTML = d.summary;
+      document.getElementById('app-kpi-sales').innerText = d.sales;
+      document.getElementById('app-kpi-sales25').innerText = d.sales25;
+      document.getElementById('app-kpi-growth').innerText = d.growth;
+      document.getElementById('app-kpi-target').innerText = d.target;
+      document.getElementById('app-kpi-ach').innerText = d.ach;
+      document.getElementById('app-kpi-progress').style.width = Math.min(parseFloat(d.ach), 100) + '%';
+      
+      const gapEl = document.getElementById('app-kpi-target-gap');
+      gapEl.innerText = d.gap;
+      if (d.gap.includes('SURPLUS')) {
+        gapEl.className = "text-[10px] text-emerald-600 dark:text-emerald-400 font-bold";
+      } else {
+        gapEl.className = "text-[10px] text-rose-600 dark:text-rose-400 font-semibold";
+      }
+
+      document.getElementById('app-kpi-tx').innerHTML = `${d.tx} <span class="text-xs font-normal text-stone-400">Struk</span>`;
+      document.getElementById('app-kpi-tx-growth').innerText = d.txGrowth;
+      document.getElementById('app-kpi-atv').innerText = d.atv;
+      document.getElementById('app-kpi-qty').innerHTML = `${d.qty} <span class="text-xs font-normal text-stone-400">Pcs</span>`;
+      document.getElementById('app-kpi-qty-growth').innerText = d.qtyGrowth;
+      document.getElementById('app-kpi-upt').innerText = d.upt;
+      document.getElementById('app-kpi-visitor').innerHTML = `${d.visitor} <span class="text-xs font-normal text-stone-400">Orang</span>`;
+      document.getElementById('app-kpi-sph').innerText = d.sph;
+      document.getElementById('app-kpi-capture').innerText = d.capture;
+
+      // Render Top Outlets
+      const topContainer = document.getElementById('app-top-outlets');
+      topContainer.innerHTML = d.topOutlets.map((o, idx) => `
+        <div class="flex justify-between items-center py-1 ${idx < 4 ? 'border-b border-stone-100 dark:border-stone-800' : ''}">
+          <span class="truncate font-medium text-stone-700 dark:text-stone-300">${o.name}</span>
+          <span class="font-mono font-bold text-emerald-600">${o.sales} <span class="text-[10px] text-stone-400">${o.pct}</span></span>
+        </div>
+      `).join('');
+
+      // Render Bottom Outlets
+      const botContainer = document.getElementById('app-bottom-outlets');
+      botContainer.innerHTML = d.bottomOutlets.map((o, idx) => `
+        <div class="flex justify-between items-center py-1 ${idx < 4 ? 'border-b border-stone-100 dark:border-stone-800' : ''}">
+          <span class="truncate font-medium text-stone-700 dark:text-stone-300">${o.name}</span>
+          <span class="font-mono font-bold ${o.pos ? 'text-emerald-600' : 'text-rose-600'}">${o.sales} <span class="text-[10px] ${o.pos ? 'text-emerald-600' : 'text-rose-600'}">${o.growth}</span></span>
+        </div>
+      `).join('');
+    }
+
+    function simulateFileUpload() {
+      document.getElementById('sim-file-status').classList.remove('hidden');
+    }
+
+    function executeSimulatedUpload() {
+      const pin = document.getElementById('sim-pin-upload').value;
+      const alertEl = document.getElementById('admin-sim-alert');
+      alertEl.classList.remove('hidden');
+      
+      if (pin !== '1234') {
+        alertEl.className = "p-3.5 rounded-2xl text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800";
+        alertEl.innerHTML = "❌ <strong>PIN Salah!</strong> Gunakan PIN simulasi <code>1234</code>.";
+        return;
+      }
+
+      alertEl.className = "p-3.5 rounded-2xl text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800";
+      alertEl.innerHTML = "✅ <strong>Berhasil Sinkronisasi SQLite WAL!</strong><br>• File: <code>jualan detail 5 agu 26.xlsx</code><br>• 127.614 Baris Data Transaksi di-ingest dalam <strong>0.14 detik</strong>.<br>• Metrik Dashboard 2026 Otomatis Diperbarui.";
+      
+      setTimeout(() => {
+        switchAppView('dashboard');
+        runLiveSimulation();
+      }, 1500);
+    }
+
+    function executeSimulatedVisitorInput() {
+      const pin = document.getElementById('sim-pin-visitor').value;
+      const unit = document.getElementById('sim-visitor-unit').value;
+      const count = document.getElementById('sim-visitor-count').value;
+      const date = document.getElementById('sim-visitor-date').value;
+      const alertEl = document.getElementById('admin-sim-alert');
+      alertEl.classList.remove('hidden');
+
+      if (pin !== '1234') {
+        alertEl.className = "p-3.5 rounded-2xl text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800";
+        alertEl.innerHTML = "❌ <strong>PIN Salah!</strong> Gunakan PIN simulasi <code>1234</code>.";
+        return;
+      }
+
+      alertEl.className = "p-3.5 rounded-2xl text-xs font-medium bg-sky-50 text-sky-800 border border-sky-200 dark:bg-sky-950/40 dark:text-sky-300 dark:border-sky-800";
+      alertEl.innerHTML = `✅ <strong>Data Pengunjung Berhasil Dicatat!</strong><br>• Tanggal: <code>${date}</code> | Unit: <strong>${unit}</strong><br>• Pengunjung: <strong>${Number(count).toLocaleString('id-ID')} Orang</strong>.<br>• SPH &amp; Capture Rate Terkalkulasi Real-Time.`;
+
+      setTimeout(() => {
+        switchAppView('dashboard');
+        runLiveSimulation();
+      }, 1500);
+    }
+
+    // Looker Studio Screenshot Switcher
+    function switchLookerSS(key) {
+      ['monitoring', 'survey', 'performance'].forEach(k => {
+        const view = document.getElementById('ss-view-' + k);
+        const caption = document.getElementById('ss-caption-' + k);
+        const btn = document.getElementById('btn-ss-' + k);
+        
+        if (k === key) {
+          view.classList.remove('hidden');
+          caption.classList.remove('hidden');
+          caption.classList.add('flex');
+          btn.className = "px-3 py-1.5 rounded-lg bg-stone-900 dark:bg-white text-white dark:text-stone-900 shadow-2xs transition-all";
+        } else {
+          view.classList.add('hidden');
+          caption.classList.add('hidden');
+          caption.classList.remove('flex');
+          btn.className = "px-3 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all";
+        }
+      });
+    }
+
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      document.getElementById('theme-icon').innerText = isDark ? '☀️' : '🌙';
+      if (comparisonChart) {
+        comparisonChart.options.scales.x.ticks.color = isDark ? '#A8A29E' : '#78716C';
+        comparisonChart.options.scales.y.ticks.color = isDark ? '#A8A29E' : '#78716C';
+        comparisonChart.options.scales.y.grid.color = isDark ? '#292524' : '#F1EFEA';
+        comparisonChart.update();
+      }
+    }
+
+    const areaAnalytics = {
+      all: {
+        sales26: 'Rp 3,11 M',
+        growth: '-20.19% YoY',
+        targetTotal: 'Rp 3,47 M',
+        targetAch: 'Ach: 89.67%',
+        txCount: '29.286 Tx',
+        atvVal: 'ATV: Rp 106.213',
+        qtyVal: '111.453 Pcs',
+        uptVal: 'UPT: 3.81 (+37% YoY)',
+        visitorVal: '1,89 Juta',
+        sphVal: 'SPH: Rp 1.650 / pax',
+        insight: 'Konsolidasi <strong>All Areas</strong> mencapai <strong>Rp 3,11 Miliar</strong> dengan pencapaian <strong>89.67%</strong> terhadap target MTD/YTD. Efisiensi konversi belanja melonjak dengan <strong>UPT 3.81 pcs/struk</strong> (+37.5% YoY), dipimpin oleh volume penjualan wahana utama.',
+        labels: ['AWAPARK', 'DUFAN', 'BEACHPARK'],
+        actual25: [2.09, 1.71, 0.09],
+        actual26: [1.55, 1.48, 0.08],
+        targetRev: [1.33, 2.07, 0.07]
+      },
+      dufan: {
+        sales26: 'Rp 1,48 M',
+        growth: '-13.64% YoY',
+        targetTotal: 'Rp 2,07 M',
+        targetAch: 'Ach: 71.56%',
+        txCount: '15.926 Tx',
+        atvVal: 'ATV: Rp 92.789',
+        qtyVal: '60.700 Pcs',
+        uptVal: 'UPT: 3.81 (+35% YoY)',
+        visitorVal: '388,56 Ribu',
+        sphVal: 'SPH: Rp 3.803 / pax',
+        insight: 'Area <strong>DUFAN</strong> menyumbang omzet <strong>Rp 1,48 Miliar</strong> dengan 15.926 struk transaksi. SPH tercatat tinggi di angka <strong>Rp 3.803 per pengunjung</strong>, dengan konter Dufan Induk dan wahana satelit (Kereta Misteri, Arung Jeram) sebagai penopang volume.',
+        labels: ['Dufan Induk', 'Induk Lama', 'WWN', 'K. Misteri', 'Galactica'],
+        actual25: [0.65, 0.32, 0.28, 0.19, 0.15],
+        actual26: [0.58, 0.29, 0.23, 0.18, 0.12],
+        targetRev: [0.85, 0.40, 0.35, 0.25, 0.22]
+      },
+      awapark: {
+        sales26: 'Rp 1,55 M',
+        growth: '-25.85% YoY',
+        targetTotal: 'Rp 1,33 M',
+        targetAch: 'Ach: 116.72% 🏆',
+        txCount: '12.451 Tx',
+        atvVal: 'ATV: Rp 124.769',
+        qtyVal: '47.579 Pcs',
+        uptVal: 'UPT: 3.82 (+40% YoY)',
+        visitorVal: '402,86 Ribu',
+        sphVal: 'SPH: Rp 3.856 / pax',
+        insight: 'Area <strong>AWAPARK</strong> menjadi <strong>Top Performer</strong> dengan melampaui target anggaran sebesar <strong>116.72%</strong> (Rp 1,55 Miliar vs Target Rp 1,33 M). Menghasilkan Average Transaction Value (ATV) tertinggi sebesar <strong>Rp 124.769</strong> dipimpin Sea World & Samudra Induk.',
+        labels: ['Sea World Induk', 'Samudra Induk', 'Atlantis Induk', 'JBL Induk'],
+        actual25: [1.12, 0.58, 0.31, 0.08],
+        actual26: [0.86, 0.42, 0.22, 0.05],
+        targetRev: [0.72, 0.36, 0.20, 0.05]
+      },
+      beachpark: {
+        sales26: 'Rp 79,28 Jt',
+        growth: '-13.29% YoY',
+        targetTotal: 'Rp 73,00 Jt',
+        targetAch: 'Ach: 108.60% 🏆',
+        txCount: '909 Tx',
+        atvVal: 'ATV: Rp 87.217',
+        qtyVal: '3.174 Pcs',
+        uptVal: 'UPT: 3.49 (+28% YoY)',
+        visitorVal: '1,09 Juta',
+        sphVal: 'SPH: Rp 72 / pax',
+        insight: 'Area <strong>BEACHPARK</strong> sukses mencapai <strong>108.60% dari target</strong> melalui konter Symphony of The Sea dan Ombak Laut. Potensi peningkatan konversi terbuka lebar dengan strategi penataan display suvenir outdoor dan integrasi O2O.',
+        labels: ['Symphony Of The Sea', 'Merchandise Ombak Laut', 'Online Shop'],
+        actual25: [0.052, 0.024, 0.015],
+        actual26: [0.045, 0.022, 0.012],
+        targetRev: [0.040, 0.020, 0.013]
+      }
+    };
+
+    const ctx = document.getElementById('comparisonChart').getContext('2d');
+    let comparisonChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: areaAnalytics.all.labels,
+        datasets: [
+          { label: '2025 Actual', data: areaAnalytics.all.actual25, backgroundColor: '#CBD5E1', borderRadius: 4 },
+          { label: '2026 Actual', data: areaAnalytics.all.actual26, backgroundColor: '#2D5A43', borderRadius: 4 },
+          { label: '2026 Target MTD', data: areaAnalytics.all.targetRev, backgroundColor: '#FCE7DC', borderColor: '#8C4320', borderWidth: 1, borderRadius: 4 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11, family: 'Plus Jakarta Sans' } } }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+          y: { grid: { color: '#F1EFEA' }, ticks: { callback: v => 'Rp ' + v + 'M', font: { size: 9 } } }
+        }
+      }
+    });
+
+    function updateAreaFilter(key) {
+      const d = areaAnalytics[key];
+      document.getElementById('m-sales-26').innerText = d.sales26;
+      document.getElementById('m-sales-growth').innerText = d.growth;
+      document.getElementById('m-target-total').innerText = d.targetTotal;
+      document.getElementById('m-target-ach').innerText = d.targetAch;
+      document.getElementById('m-tx-count').innerText = d.txCount;
+      document.getElementById('m-atv-val').innerText = d.atvVal;
+      document.getElementById('m-qty-val').innerText = d.qtyVal;
+      document.getElementById('m-upt-val').innerText = d.uptVal;
+      document.getElementById('m-visitor-val').innerText = d.visitorVal;
+      document.getElementById('m-sph-val').innerText = d.sphVal;
+      document.getElementById('m-insight-text').innerHTML = d.insight;
+
+      ['all', 'dufan', 'awapark', 'beachpark'].forEach(k => {
+        const btn = document.getElementById('btn-' + k);
+        if (k === key) {
+          btn.className = "px-3 py-1.5 rounded-lg bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-2xs font-bold";
+        } else {
+          btn.className = "px-3 py-1.5 rounded-lg text-stone-500 dark:text-stone-400";
+        }
+      });
+
+      comparisonChart.data.labels = d.labels;
+      comparisonChart.data.datasets[0].data = d.actual25;
+      comparisonChart.data.datasets[1].data = d.actual26;
+      comparisonChart.data.datasets[2].data = d.targetRev;
+      comparisonChart.update();
+    }
+
+    // SLIDE 1 (VIDEO) vs SLIDE 2 (FOTO) CONTROLLER
+    function switchMediaSlide(type) {
+      const isVideo = type === 'video';
+      document.getElementById('media-slide-video').classList.toggle('hidden', !isVideo);
+      document.getElementById('media-slide-foto').classList.toggle('hidden', isVideo);
+
+      const btnVid = document.getElementById('btn-slide-video');
+      const btnPic = document.getElementById('btn-slide-foto');
+
+      if (isVideo) {
+        btnVid.className = "px-3.5 py-1.5 rounded-lg bg-stone-900 dark:bg-white text-white dark:text-stone-900 shadow-2xs transition-all flex items-center gap-1.5 font-bold";
+        btnPic.className = "px-3.5 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all flex items-center gap-1.5 font-medium";
+      } else {
+        btnPic.className = "px-3.5 py-1.5 rounded-lg bg-stone-900 dark:bg-white text-white dark:text-stone-900 shadow-2xs transition-all flex items-center gap-1.5 font-bold";
+        btnVid.className = "px-3.5 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all flex items-center gap-1.5 font-medium";
+        // Pause video if currently playing
+        const videoEl = document.getElementById('main-campaign-video');
+        if (videoEl) videoEl.pause();
+      }
+    }
+
+    function playSelectedVideo(key, src, title, desc) {
+      const videoEl = document.getElementById('main-campaign-video');
+      const sourceTag = document.getElementById('video-source-tag');
+      
+      sourceTag.src = src;
+      videoEl.load();
+      videoEl.play().catch(e => console.log('Autoplay prevented:', e));
+
+      document.getElementById('active-video-title').innerText = title;
+      document.getElementById('active-video-desc').innerText = desc;
+
+      ['nicolo1', 'nicolo2', 'nrdn', 'wede', 'wede2'].forEach(k => {
+        const btn = document.getElementById('btn-vid-' + k);
+        if (btn) {
+          if (k === key) {
+            btn.className = "px-3 py-1.5 rounded-xl bg-stone-900 dark:bg-white text-white dark:text-stone-900 font-bold transition-all shadow-xs";
+          } else {
+            btn.className = "px-3 py-1.5 rounded-xl bg-stone-200/80 dark:bg-stone-700 text-stone-700 dark:text-stone-300 transition-all font-semibold";
+          }
+        }
+      });
+    }
+
+    // PHOTO MODAL LIGHTBOX
+    function openPhotoModal(src, title, caption) {
+      document.getElementById('photo-modal-img').src = src;
+      document.getElementById('photo-modal-title').innerText = title;
+      document.getElementById('photo-modal-caption').innerText = caption;
+      document.getElementById('photo-modal').classList.remove('hidden');
+    }
+
+    function closePhotoModal() {
+      document.getElementById('photo-modal').classList.add('hidden');
+    }
+  </script>
+
+  <!-- PHOTO FULLSCREEN LIGHTBOX MODAL -->
+  <div id="photo-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4" onclick="closePhotoModal()">
+    <div class="relative max-w-4xl w-full bg-stone-900 rounded-3xl border border-stone-800 p-4 space-y-3" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between border-b border-stone-800 pb-3">
+        <div>
+          <h3 id="photo-modal-title" class="text-base font-extrabold text-white">Artwork Title</h3>
+          <p id="photo-modal-caption" class="text-xs text-stone-400">Artwork details and campaign caption.</p>
+        </div>
+        <button onclick="closePhotoModal()" class="w-8 h-8 rounded-full bg-stone-800 hover:bg-stone-700 text-white flex items-center justify-center font-bold text-sm">
+          ✕
+        </button>
+      </div>
+      <div class="w-full max-h-[75vh] flex items-center justify-center overflow-hidden rounded-2xl bg-black">
+        <img id="photo-modal-img" src="" alt="Full Artwork" class="max-h-[75vh] w-auto object-contain">
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

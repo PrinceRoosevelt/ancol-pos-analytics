@@ -1,0 +1,11 @@
+# .gitignore — abaikan environment, database runtime, dan folder data mentah
+.venv/
+__pycache__/
+*.pyc
+.vscode/
+data/
+database/*.db
+database/*.db-wal
+database/*.db-shm
+reports/
+config/
