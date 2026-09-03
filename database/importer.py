@@ -69,18 +69,74 @@ def _date(value: Any) -> datetime | None:
     return None
 
 
+MAPPING_FILE_CANDIDATES = [
+    BASE_DIR / "config" / "MASTER_OUTLET_MAPPING_V2.xlsx",
+    BASE_DIR / "config" / "MASTER_OUTLET_MAPPING.xlsx",
+    BASE_DIR / "Porto" / "docs" / "MASTER_OUTLET_MAPPING.xlsx",
+    BASE_DIR / "docs" / "MASTER_OUTLET_MAPPING.xlsx",
+]
+
+BUDGET_FILE_CANDIDATES = [
+    BASE_DIR / "data" / "target 2026" / "BUDGET_MERCH_ONLY_PYTHON_READY.xlsx",
+    BASE_DIR / "data" / "target 2026" / "MASTER_TARGET_VISITOR_TEMPLATE_V3.xlsx",
+    BASE_DIR / "Porto" / "docs" / "MASTER_TARGET_VISITOR_TEMPLATE_V3.xlsx",
+    BASE_DIR / "docs" / "MASTER_TARGET_VISITOR_TEMPLATE_V3.xlsx",
+]
+
+
+def _get_active_mapping_file() -> Path | None:
+    for p in MAPPING_FILE_CANDIDATES:
+        if p.exists():
+            return p
+    return None
+
+
+def _get_active_budget_file() -> Path | None:
+    for p in BUDGET_FILE_CANDIDATES:
+        if p.exists():
+            return p
+    return None
+
+
 def read_outlet_mapping() -> dict[str, str]:
-    if not MAPPING_FILE.exists():
-        return {}
-    wb = load_workbook(MAPPING_FILE, read_only=True, data_only=True)
-    mapping: dict[str, str] = {}
+    mapping: dict[str, str] = {
+        # Default Known Ancol Retail Outlets Fallback
+        "DFIN Dufan Induk": "DUFAN",
+        "DFIL Dufan Induk Lama": "DUFAN",
+        "DFKE Dufan Kereta Misteri": "DUFAN",
+        "DFAR Dufan Arung Jeram": "DUFAN",
+        "DFTO Dufan Tornado": "DUFAN",
+        "DFHL Dufan Halilintar": "DUFAN",
+        "DFOP Dufan Ontang Anting": "DUFAN",
+        "DFHY Dufan Hysteria": "DUFAN",
+        "DFBI Dufan Bianglala": "DUFAN",
+        "DFIC Dufan Ice Cream": "DUFAN",
+        "SWIN Sea World Induk": "AWAPARK",
+        "SWTG Sea World Touchpool": "AWAPARK",
+        "ODIN Samudra Induk": "AWAPARK",
+        "ATIN Atlantis Induk": "AWAPARK",
+        "AWKL AWA Taman Kelapa 2": "AWAPARK",
+        "TJOM Merchandise Ombak Laut": "BEACHPARK",
+        "JBIN JBL Induk": "BEACHPARK",
+        "OL01 Online Shop": "BEACHPARK",
+    }
+    
+    mapping_path = _get_active_mapping_file()
+    if not mapping_path:
+        return mapping
+
     try:
-        sheet = wb["OUTLET_MAPPING"]
-        for outlet, area in sheet.iter_rows(min_row=2, values_only=True):
-            if outlet and area:
-                mapping[str(outlet).strip()] = str(area).strip()
-    finally:
+        wb = load_workbook(mapping_path, read_only=True, data_only=True)
+        sheet = wb["OUTLET_MAPPING"] if "OUTLET_MAPPING" in wb.sheetnames else wb.active
+        for row in sheet.iter_rows(min_row=2, values_only=True):
+            if row and len(row) >= 2 and row[0] and row[1]:
+                outlet_name = str(row[0]).strip()
+                area_name = str(row[1]).strip().upper()
+                mapping[outlet_name] = area_name
         wb.close()
+    except Exception as e:
+        print(f"⚠️ Warning saat membaca outlet mapping: {e}")
+    
     return mapping
 
 
@@ -415,9 +471,11 @@ def sync_database(force: bool = False) -> dict[str, Any]:
                 stats["sales_rows_inserted"] += len(rows)
 
         # 2. Sync Budget & Visitor
-        if BUDGET_FILE.exists():
-            b_stat = BUDGET_FILE.stat()
-            b_key = str(BUDGET_FILE.resolve())
+        active_b_file = _get_active_budget_file()
+        active_m_file = _get_active_mapping_file() or MAPPING_FILE
+        if active_b_file and active_b_file.exists():
+            b_stat = active_b_file.stat()
+            b_key = str(active_b_file.resolve())
             b_mtime = int(b_stat.st_mtime_ns)
             b_size = int(b_stat.st_size)
 
@@ -427,8 +485,8 @@ def sync_database(force: bool = False) -> dict[str, Any]:
             b_meta = cursor.fetchone()
 
             if force or not b_meta or b_meta["file_mtime"] != b_mtime or b_meta["file_size"] != b_size:
-                print("🔄 Sinkronisasi file Budget & Visitor ke DB ...")
-                targets, visitors = parse_budget_and_visitor(BUDGET_FILE, MAPPING_FILE)
+                print(f"🔄 Sinkronisasi file Budget & Visitor ({active_b_file.name}) ke DB ...")
+                targets, visitors = parse_budget_and_visitor(active_b_file, active_m_file)
 
                 conn.execute("BEGIN TRANSACTION;")
                 conn.execute("DELETE FROM budget_daily;")
