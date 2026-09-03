@@ -167,28 +167,33 @@
         </div>
 
         <!-- Toolkit Cards WITH SVG LOGOS & 4/5 SMOOTH STARS -->
+        <!-- Toolkit Cards WITH EXECUTIVE PROFICIENCY TAGS (OPTION 2: NO GENERIC STARS) -->
         <div class="bg-white/80 dark:bg-stone-900/80 backdrop-blur-md p-5 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-3.5 flex-1">
           <div class="flex items-center justify-between">
             <span class="text-[11px] font-bold uppercase tracking-wider text-stone-400 dark:text-stone-500">Core Tools Stack</span>
-            <span class="text-[11px] font-mono text-amber-600 dark:text-amber-400 font-semibold">4.0 / 5.0 (Advanced)</span>
+            <span class="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>Production &amp; Creative Ready</span>
+            </span>
           </div>
 
           <div class="grid grid-cols-2 gap-2.5">
-            <!-- Python & SQLite (Modern Stack) -->
-            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-emerald-300 transition-all">
+            <!-- Python & SQL -->
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-emerald-300 transition-all group">
               <div class="flex items-center gap-2">
                 <div class="w-6 h-6 rounded-md bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center shrink-0">
                   <span class="text-xs">🐍</span>
                 </div>
-                <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">Python & SQL</span>
+                <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">Python &amp; SQL</span>
               </div>
-              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              <div class="flex items-center justify-between pt-2.5 text-[10px]">
+                <span class="font-mono text-stone-500 dark:text-stone-400">ETL &amp; Schema</span>
+                <span class="px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 font-mono font-bold">Advanced</span>
               </div>
             </div>
 
             <!-- Looker Studio -->
-            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-sky-300 transition-all">
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-sky-300 transition-all group">
               <div class="flex items-center gap-2">
                 <div class="w-6 h-6 rounded-md bg-sky-50 dark:bg-sky-950/50 flex items-center justify-center shrink-0">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
@@ -198,13 +203,14 @@
                 </div>
                 <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">Looker Studio</span>
               </div>
-              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              <div class="flex items-center justify-between pt-2.5 text-[10px]">
+                <span class="font-mono text-stone-500 dark:text-stone-400">BI Dashboard</span>
+                <span class="px-1.5 py-0.5 rounded bg-sky-100 dark:bg-sky-950/70 text-sky-700 dark:text-sky-300 font-mono font-bold">Advanced</span>
               </div>
             </div>
 
             <!-- MS Excel -->
-            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-emerald-300 transition-all">
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-emerald-300 transition-all group">
               <div class="flex items-center gap-2">
                 <div class="w-6 h-6 rounded-md bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center shrink-0">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
@@ -214,13 +220,14 @@
                 </div>
                 <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">MS Excel</span>
               </div>
-              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              <div class="flex items-center justify-between pt-2.5 text-[10px]">
+                <span class="font-mono text-stone-500 dark:text-stone-400">Financial Model</span>
+                <span class="px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 font-mono font-bold">Expert</span>
               </div>
             </div>
 
             <!-- VS Code -->
-            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-blue-300 transition-all">
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-blue-300 transition-all group">
               <div class="flex items-center gap-2">
                 <div class="w-6 h-6 rounded-md bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center shrink-0">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
@@ -230,26 +237,28 @@
                 </div>
                 <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">VS Code</span>
               </div>
-              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              <div class="flex items-center justify-between pt-2.5 text-[10px]">
+                <span class="font-mono text-stone-500 dark:text-stone-400">Dev &amp; Scripting</span>
+                <span class="px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300 font-mono font-bold">Daily Driver</span>
               </div>
             </div>
 
             <!-- Photoshop -->
-            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-blue-400 transition-all">
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-indigo-300 transition-all group">
               <div class="flex items-center gap-2">
                 <div class="w-6 h-6 rounded-md bg-[#001E36] flex items-center justify-center shrink-0">
                   <span class="text-[#31A8FF] font-bold text-[10px] font-mono">Ps</span>
                 </div>
                 <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">Photoshop</span>
               </div>
-              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              <div class="flex items-center justify-between pt-2.5 text-[10px]">
+                <span class="font-mono text-stone-500 dark:text-stone-400">Visual Layout</span>
+                <span class="px-1.5 py-0.5 rounded bg-indigo-100 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 font-mono font-bold">Creative</span>
               </div>
             </div>
 
             <!-- CapCut -->
-            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-stone-400 transition-all">
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-stone-400 transition-all group">
               <div class="flex items-center gap-2">
                 <div class="w-6 h-6 rounded-md bg-stone-900 dark:bg-stone-700 flex items-center justify-center shrink-0">
                   <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -258,13 +267,14 @@
                 </div>
                 <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">CapCut Video</span>
               </div>
-              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              <div class="flex items-center justify-between pt-2.5 text-[10px]">
+                <span class="font-mono text-stone-500 dark:text-stone-400">Video Editing</span>
+                <span class="px-1.5 py-0.5 rounded bg-stone-200 dark:bg-stone-700 text-stone-800 dark:text-stone-200 font-mono font-bold">Production</span>
               </div>
             </div>
 
             <!-- PowerPoint -->
-            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-orange-300 transition-all">
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-orange-300 transition-all group">
               <div class="flex items-center gap-2">
                 <div class="w-6 h-6 rounded-md bg-orange-50 dark:bg-orange-950/50 flex items-center justify-center shrink-0">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
@@ -274,21 +284,23 @@
                 </div>
                 <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">PowerPoint</span>
               </div>
-              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              <div class="flex items-center justify-between pt-2.5 text-[10px]">
+                <span class="font-mono text-stone-500 dark:text-stone-400">Executive Deck</span>
+                <span class="px-1.5 py-0.5 rounded bg-orange-100 dark:bg-orange-950/70 text-orange-700 dark:text-orange-300 font-mono font-bold">Storytelling</span>
               </div>
             </div>
 
-            <!-- Adobe Lightroom (3 Stars) -->
-            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-sky-400 transition-all">
+            <!-- Adobe Lightroom -->
+            <div class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/60 dark:border-stone-700/80 flex flex-col justify-between hover:border-sky-400 transition-all group">
               <div class="flex items-center gap-2">
                 <div class="w-6 h-6 rounded-md bg-[#001D26] flex items-center justify-center shrink-0">
                   <span class="text-[#31A8FF] font-bold text-[10px] font-mono">Lr</span>
                 </div>
                 <span class="font-bold text-stone-800 dark:text-stone-200 text-xs truncate">Lightroom</span>
               </div>
-              <div class="flex items-center gap-1 text-amber-400 text-xs pt-2">
-                <span>★</span><span>★</span><span>★</span><span class="text-stone-300 dark:text-stone-600">★</span><span class="text-stone-300 dark:text-stone-600">★</span>
+              <div class="flex items-center justify-between pt-2.5 text-[10px]">
+                <span class="font-mono text-stone-500 dark:text-stone-400">Color Grading</span>
+                <span class="px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300 font-mono font-bold">Aesthetic</span>
               </div>
             </div>
           </div>
