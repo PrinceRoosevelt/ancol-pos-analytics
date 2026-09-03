@@ -93,6 +93,10 @@
         <button onclick="switchTab('analytics')" id="tab-btn-analytics" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all">Looker Studio</button>
         <button onclick="switchTab('strategy')" id="tab-btn-strategy" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all">★ O2O Strategy</button>
         <button onclick="switchTab('cases')" id="tab-btn-cases" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all">Executive Cases</button>
+        <button onclick="switchTab('photo')" id="tab-btn-photo" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all text-purple-700 dark:text-purple-400 font-bold flex items-center gap-1">
+          <span>📸</span>
+          <span>Photography</span>
+        </button>
         <button onclick="switchTab('vault')" id="tab-btn-vault" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all text-sky-700 dark:text-sky-400 font-bold">📁 Files Vault</button>
         <button onclick="switchTab('pipeline')" id="tab-btn-pipeline" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all hidden xl:inline-block">ETL &amp; SQL</button>
       </nav>
@@ -1441,6 +1445,659 @@
           </div>
         </div>
 
+      
+        <!-- TAB 7: COMMERCIAL PHOTOGRAPHY & VISUAL ARTS (RATIO 3:4 COLLAGE) -->
+        <div id="tab-content-photo" class="hidden space-y-6">
+          <div class="border-b border-stone-100 dark:border-stone-800 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-[10px] font-mono font-bold text-purple-600 dark:text-purple-400 uppercase tracking-widest px-2 py-0.5 rounded bg-purple-50 dark:bg-purple-950/60 border border-purple-200/60 dark:border-purple-800/60">Visual &amp; Media Production</span>
+                <span class="text-xs text-stone-400">•</span>
+                <span class="text-xs font-semibold text-stone-500 dark:text-stone-400">Format Foto Ratio 3:4 • 29 Karya Visual</span>
+              </div>
+              <h2 class="text-xl sm:text-2xl font-extrabold text-stone-900 dark:text-white tracking-tight">Commercial Photography &amp; Creative Gallery</h2>
+              <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400 mt-1 max-w-3xl leading-relaxed">
+                Dokumentasi visual komersial, kampanye kolaborasi merchandise artist, lookbook streetwear apparel, display visual merchandising toko, hingga arsitektur atmosfer ritel kawasan Ancol Taman Impian.
+              </p>
+            </div>
+            <div class="flex items-center gap-2 self-start sm:self-auto">
+              <div class="px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/50 border border-purple-200/60 dark:border-purple-800 text-purple-700 dark:text-purple-300 font-mono text-xs font-bold">
+                📷 29 Frames Curated
+              </div>
+            </div>
+          </div>
+
+          <!-- Collage Grid 3:4 -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4.5">
+            <!-- Photo Card 1 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/53270d48-8063-484c-8297-99c4dcd6ca73.jpg', 'Special Edition Collection', 'Limited Merch • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/53270d48-8063-484c-8297-99c4dcd6ca73.jpg" alt="Special Edition Collection" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Limited Merch</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Special Edition Collection</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Special Edition Collection</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Limited Merch</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#01</span>
+              </div>
+            </div>
+            <!-- Photo Card 2 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_0153.JPG', 'Store Visual & Merchandising #2', 'Retail Display • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_0153.JPG" alt="Store Visual & Merchandising #2" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Retail Display</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Store Visual & Merchandising #2</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Store Visual & Merchandising #2</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Retail Display</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#02</span>
+              </div>
+            </div>
+            <!-- Photo Card 3 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_0316.JPG', 'Store Visual & Merchandising #3', 'Retail Display • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_0316.JPG" alt="Store Visual & Merchandising #3" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Retail Display</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Store Visual & Merchandising #3</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Store Visual & Merchandising #3</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Retail Display</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#03</span>
+              </div>
+            </div>
+            <!-- Photo Card 4 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_0408.JPG', 'Store Visual & Merchandising #4', 'Retail Display • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_0408.JPG" alt="Store Visual & Merchandising #4" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Retail Display</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Store Visual & Merchandising #4</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Store Visual & Merchandising #4</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Retail Display</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#04</span>
+              </div>
+            </div>
+            <!-- Photo Card 5 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_1005.JPG', 'Apparel & Lookbook Shoot #5', 'Commercial Fashion • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_1005.JPG" alt="Apparel & Lookbook Shoot #5" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Commercial Fashion</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Apparel & Lookbook Shoot #5</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Apparel & Lookbook Shoot #5</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Commercial Fashion</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#05</span>
+              </div>
+            </div>
+            <!-- Photo Card 6 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_1091.JPG', 'Apparel & Lookbook Shoot #6', 'Commercial Fashion • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_1091.JPG" alt="Apparel & Lookbook Shoot #6" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Commercial Fashion</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Apparel & Lookbook Shoot #6</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Apparel & Lookbook Shoot #6</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Commercial Fashion</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#06</span>
+              </div>
+            </div>
+            <!-- Photo Card 7 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_2077.JPG', 'Product Detail & Texture #7', 'Product Close-Up • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_2077.JPG" alt="Product Detail & Texture #7" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Product Close-Up</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Product Detail & Texture #7</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Product Detail & Texture #7</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Product Close-Up</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#07</span>
+              </div>
+            </div>
+            <!-- Photo Card 8 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_2088.JPG', 'Product Detail & Texture #8', 'Product Close-Up • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_2088.JPG" alt="Product Detail & Texture #8" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Product Close-Up</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Product Detail & Texture #8</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Product Detail & Texture #8</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Product Close-Up</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#08</span>
+              </div>
+            </div>
+            <!-- Photo Card 9 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_2276.JPG', 'Product Detail & Texture #9', 'Product Close-Up • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_2276.JPG" alt="Product Detail & Texture #9" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Product Close-Up</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Product Detail & Texture #9</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Product Detail & Texture #9</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Product Close-Up</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#09</span>
+              </div>
+            </div>
+            <!-- Photo Card 10 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5242.JPG', 'Dufan Artist Collaboration #10', 'Artist Campaign • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5242.JPG" alt="Dufan Artist Collaboration #10" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Artist Campaign</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Dufan Artist Collaboration #10</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Dufan Artist Collaboration #10</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Artist Campaign</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#10</span>
+              </div>
+            </div>
+            <!-- Photo Card 11 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5270.JPG', 'Dufan Artist Collaboration #11', 'Artist Campaign • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5270.JPG" alt="Dufan Artist Collaboration #11" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Artist Campaign</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Dufan Artist Collaboration #11</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Dufan Artist Collaboration #11</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Artist Campaign</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#11</span>
+              </div>
+            </div>
+            <!-- Photo Card 12 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5285.JPG', 'Dufan Artist Collaboration #12', 'Artist Campaign • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5285.JPG" alt="Dufan Artist Collaboration #12" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Artist Campaign</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Dufan Artist Collaboration #12</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Dufan Artist Collaboration #12</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Artist Campaign</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#12</span>
+              </div>
+            </div>
+            <!-- Photo Card 13 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5286.JPG', 'Dufan Artist Collaboration #13', 'Artist Campaign • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5286.JPG" alt="Dufan Artist Collaboration #13" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Artist Campaign</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Dufan Artist Collaboration #13</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Dufan Artist Collaboration #13</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Artist Campaign</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#13</span>
+              </div>
+            </div>
+            <!-- Photo Card 14 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5287.JPG', 'Dufan Artist Collaboration #14', 'Artist Campaign • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5287.JPG" alt="Dufan Artist Collaboration #14" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Artist Campaign</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Dufan Artist Collaboration #14</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Dufan Artist Collaboration #14</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Artist Campaign</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#14</span>
+              </div>
+            </div>
+            <!-- Photo Card 15 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5290.JPG', 'Lifestyle & Streetwear Editorial #15', 'Streetwear Look • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5290.JPG" alt="Lifestyle & Streetwear Editorial #15" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Streetwear Look</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Lifestyle & Streetwear Editorial #15</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Lifestyle & Streetwear Editorial #15</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Streetwear Look</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#15</span>
+              </div>
+            </div>
+            <!-- Photo Card 16 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5291.JPG', 'Lifestyle & Streetwear Editorial #16', 'Streetwear Look • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5291.JPG" alt="Lifestyle & Streetwear Editorial #16" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Streetwear Look</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Lifestyle & Streetwear Editorial #16</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Lifestyle & Streetwear Editorial #16</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Streetwear Look</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#16</span>
+              </div>
+            </div>
+            <!-- Photo Card 17 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5292.JPG', 'Lifestyle & Streetwear Editorial #17', 'Streetwear Look • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5292.JPG" alt="Lifestyle & Streetwear Editorial #17" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Streetwear Look</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Lifestyle & Streetwear Editorial #17</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Lifestyle & Streetwear Editorial #17</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Streetwear Look</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#17</span>
+              </div>
+            </div>
+            <!-- Photo Card 18 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5325.JPG', 'Lifestyle & Streetwear Editorial #18', 'Streetwear Look • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5325.JPG" alt="Lifestyle & Streetwear Editorial #18" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Streetwear Look</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Lifestyle & Streetwear Editorial #18</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Lifestyle & Streetwear Editorial #18</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Streetwear Look</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#18</span>
+              </div>
+            </div>
+            <!-- Photo Card 19 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5421.JPG', 'Lifestyle & Streetwear Editorial #19', 'Streetwear Look • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5421.JPG" alt="Lifestyle & Streetwear Editorial #19" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Streetwear Look</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Lifestyle & Streetwear Editorial #19</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Lifestyle & Streetwear Editorial #19</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Streetwear Look</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#19</span>
+              </div>
+            </div>
+            <!-- Photo Card 20 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5550.JPG', 'Retail Atmosphere & Experience #20', 'Experiential Retail • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5550.JPG" alt="Retail Atmosphere & Experience #20" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Experiential Retail</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Retail Atmosphere & Experience #20</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Retail Atmosphere & Experience #20</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Experiential Retail</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#20</span>
+              </div>
+            </div>
+            <!-- Photo Card 21 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5656.JPG', 'Retail Atmosphere & Experience #21', 'Experiential Retail • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5656.JPG" alt="Retail Atmosphere & Experience #21" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Experiential Retail</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Retail Atmosphere & Experience #21</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Retail Atmosphere & Experience #21</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Experiential Retail</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#21</span>
+              </div>
+            </div>
+            <!-- Photo Card 22 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5657.JPG', 'Retail Atmosphere & Experience #22', 'Experiential Retail • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5657.JPG" alt="Retail Atmosphere & Experience #22" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Experiential Retail</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Retail Atmosphere & Experience #22</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Retail Atmosphere & Experience #22</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Experiential Retail</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#22</span>
+              </div>
+            </div>
+            <!-- Photo Card 23 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5773.JPG', 'Retail Atmosphere & Experience #23', 'Experiential Retail • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5773.JPG" alt="Retail Atmosphere & Experience #23" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Experiential Retail</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Retail Atmosphere & Experience #23</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Retail Atmosphere & Experience #23</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Experiential Retail</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#23</span>
+              </div>
+            </div>
+            <!-- Photo Card 24 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5932.JPG', 'Commercial Production Frame #24', 'Visual Campaign • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5932.JPG" alt="Commercial Production Frame #24" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Visual Campaign</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Commercial Production Frame #24</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Commercial Production Frame #24</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Visual Campaign</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#24</span>
+              </div>
+            </div>
+            <!-- Photo Card 25 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5934.JPG', 'Commercial Production Frame #25', 'Visual Campaign • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_5934.JPG" alt="Commercial Production Frame #25" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Visual Campaign</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Commercial Production Frame #25</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Commercial Production Frame #25</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Visual Campaign</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#25</span>
+              </div>
+            </div>
+            <!-- Photo Card 26 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_9675.JPG', 'Commercial Production Frame #26', 'Visual Campaign • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_9675.JPG" alt="Commercial Production Frame #26" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Visual Campaign</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Commercial Production Frame #26</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Commercial Production Frame #26</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Visual Campaign</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#26</span>
+              </div>
+            </div>
+            <!-- Photo Card 27 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_9676.JPG', 'Commercial Production Frame #27', 'Visual Campaign • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_9676.JPG" alt="Commercial Production Frame #27" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Visual Campaign</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Commercial Production Frame #27</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Commercial Production Frame #27</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Visual Campaign</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#27</span>
+              </div>
+            </div>
+            <!-- Photo Card 28 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_9745.JPG', 'Commercial Production Frame #28', 'Visual Campaign • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_9745.JPG" alt="Commercial Production Frame #28" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Visual Campaign</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Commercial Production Frame #28</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Commercial Production Frame #28</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Visual Campaign</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#28</span>
+              </div>
+            </div>
+            <!-- Photo Card 29 -->
+            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_9892.JPG', 'Commercial Production Frame #29', 'Visual Campaign • High-Resolution 3:4 Commercial Portfolio')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_9892.JPG" alt="Commercial Production Frame #29" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold mb-1">Visual Campaign</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Commercial Production Frame #29</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-emerald-300">Buka Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Commercial Production Frame #29</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Visual Campaign</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#29</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Footer Callout -->
+          <div class="p-5 bg-gradient-to-r from-purple-50 to-stone-50 dark:from-purple-950/30 dark:to-stone-900 rounded-2xl border border-purple-200/60 dark:border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center text-purple-600 dark:text-purple-300 text-lg shrink-0">
+                📸
+              </div>
+              <div>
+                <h4 class="font-bold text-stone-900 dark:text-white text-sm">Commercial Photography &amp; Visual Direction</h4>
+                <p class="text-stone-600 dark:text-stone-400 text-xs mt-0.5">Seluruh aset foto diproduksi, di-grade (Adobe Lightroom), dan dikurasi langsung untuk kebutuhan kampanye retail O2O &amp; e-commerce.</p>
+              </div>
+            </div>
+            <a href="https://wa.me/6282125431312?text=Halo%20Muir,%20saya%20tertarik%20dengan%20hasil%20karya%20Commercial%20Photography%20Anda." target="_blank" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold text-xs transition-all shadow-xs shrink-0 flex items-center gap-1.5">
+              <span>Diskusikan Proyek Visual</span>
+              <span>↗</span>
+            </a>
+          </div>
+        </div>
+
       </section>
 
     </main>
@@ -1450,7 +2107,7 @@
   <!-- SCRIPT: TABS, DARK MODE, AND CHART LOGIC -->
   <script>
     function switchTab(tabId) {
-      ['overview', 'pythonapp', 'analytics', 'strategy', 'cases', 'vault', 'pipeline'].forEach(t => {
+      ['overview', 'pythonapp', 'analytics', 'strategy', 'cases', 'photo', 'vault', 'pipeline'].forEach(t => {
         const btn = document.getElementById('tab-btn-' + t);
         const content = document.getElementById('tab-content-' + t);
         if (btn) {

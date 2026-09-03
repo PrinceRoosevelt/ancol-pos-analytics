@@ -9,3 +9,10 @@ database/*.db-wal
 database/*.db-shm
 reports/
 config/
+cloudflared.exe
+*.log
+docs/photography/*
+!docs/photography/thumbs/
+Porto/docs/photography/*
+!Porto/docs/photography/thumbs/
+scratch/
