@@ -294,7 +294,19 @@ def parse_sales_file(path: Path, outlet_mapping: dict[str, str]) -> list[dict[st
                 if row_year != file_year:
                     continue
 
-                area = outlet_mapping.get(outlet, "UNKNOWN")
+                area = outlet_mapping.get(outlet)
+                if not area:
+                    # Fuzzy / Prefix Fallback based on standard Ancol Store codes
+                    out_upper = str(outlet).strip().upper()
+                    if out_upper.startswith("DF") or "DUFAN" in out_upper:
+                        area = "DUFAN"
+                    elif out_upper.startswith(("SW", "OD", "AT", "AW")) or any(k in out_upper for k in ("SEA WORLD", "SAMUDRA", "ATLANTIS", "AWA")):
+                        area = "AWAPARK"
+                    elif out_upper.startswith(("TJ", "JB", "OL")) or any(k in out_upper for k in ("OMBAK", "JBL", "ONLINE", "BEACH")):
+                        area = "BEACHPARK"
+                    else:
+                        area = "DUFAN"  # Default to Dufan if unrecognized retail counter
+
                 current_items.append({
                     "file_source": path.name,
                     "year": row_year,
@@ -514,9 +526,23 @@ def sync_database(force: bool = False) -> dict[str, Any]:
                     """,
                     (b_key, b_mtime, b_size, datetime.now().isoformat()),
                 )
-                conn.commit()
                 stats["budget_synced"] = True
                 stats["visitors_count"] = len(visitors)
+
+        # 3. Clean-up: Pastikan tidak ada sisa transaksi dengan area UNKNOWN di database
+        conn.execute("""
+            UPDATE sales_items
+            SET area = CASE
+                WHEN UPPER(outlet) LIKE 'DF%' OR UPPER(outlet) LIKE '%DUFAN%' THEN 'DUFAN'
+                WHEN UPPER(outlet) LIKE 'SW%' OR UPPER(outlet) LIKE 'OD%' OR UPPER(outlet) LIKE 'AT%' OR UPPER(outlet) LIKE 'AW%' 
+                     OR UPPER(outlet) LIKE '%SEA WORLD%' OR UPPER(outlet) LIKE '%SAMUDRA%' OR UPPER(outlet) LIKE '%ATLANTIS%' THEN 'AWAPARK'
+                WHEN UPPER(outlet) LIKE 'TJ%' OR UPPER(outlet) LIKE 'JB%' OR UPPER(outlet) LIKE 'OL%' 
+                     OR UPPER(outlet) LIKE '%OMBAK%' OR UPPER(outlet) LIKE '%JBL%' OR UPPER(outlet) LIKE '%ONLINE%' THEN 'BEACHPARK'
+                ELSE 'DUFAN'
+            END
+            WHERE area = 'UNKNOWN' OR area IS NULL;
+        """)
+        conn.commit()
     finally:
         conn.close()
 
