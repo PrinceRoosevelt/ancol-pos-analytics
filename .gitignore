@@ -15,4 +15,11 @@ docs/photography/*
 !docs/photography/thumbs/
 Porto/docs/photography/*
 !Porto/docs/photography/thumbs/
+# Keamanan: Kunci API rahasia & database runtime
+.gemini_key
+*.key
+*.db
+*.db-wal
+*.db-shm
+sales_data.db
 scratch/

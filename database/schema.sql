@@ -61,3 +61,36 @@ CREATE INDEX IF NOT EXISTS idx_visitor_month ON visitor_actual (month);
 CREATE INDEX IF NOT EXISTS idx_visitor_unit ON visitor_actual (unit);
 CREATE INDEX IF NOT EXISTS idx_visitor_area ON visitor_actual (area);
 
+CREATE INDEX IF NOT EXISTS idx_sales_product ON sales_items (product);
+CREATE INDEX IF NOT EXISTS idx_sales_year_month ON sales_items (year, month);
+
+CREATE TABLE IF NOT EXISTS product_lookup (
+    product TEXT PRIMARY KEY,
+    code TEXT,
+    supplier TEXT,
+    category TEXT,
+    jenis TEXT,
+    hpp REAL,
+    harga_jual REAL,
+    maskot TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_pl_supplier ON product_lookup (supplier);
+CREATE INDEX IF NOT EXISTS idx_pl_category ON product_lookup (category);
+CREATE INDEX IF NOT EXISTS idx_pl_jenis ON product_lookup (jenis);
+
+CREATE VIEW IF NOT EXISTS v_sales_analytics AS
+SELECT 
+    s.id, s.year, s.date, s.month, s.hour, s.invoice, s.outlet, s.area,
+    s.product, s.qty, s.item_net_sales, s.net_sales, s.transaction_total, s.invoice_discount,
+    p.code, 
+    COALESCE(p.supplier, 'LAINNYA') AS supplier,
+    COALESCE(p.category, 'LAINNYA') AS category,
+    COALESCE(p.jenis, 'DAGANGAN') AS jenis,
+    COALESCE(p.hpp, 0.0) AS hpp,
+    COALESCE(p.harga_jual, 0.0) AS harga_jual,
+    ROUND(s.net_sales - (COALESCE(p.hpp, 0.0) * s.qty), 2) AS gross_profit
+FROM sales_items s
+LEFT JOIN product_lookup p ON s.product = p.product;
+
+

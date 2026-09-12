@@ -1,12 +1,13 @@
 @echo off  
-title CLOUDFLARE LIVE TUNNEL - ANCOL SERVER  
-color 0B  
+title CLOUDFLARE PERMANENT TUNNEL - ancol-analisa.my.id
+color 0A  
 echo ======================================================================  
-echo             MENYALAKAN SERVER CLOUDFLARE TUNNEL  
+echo       MENYALAKAN CLOUDFLARE PERMANENT TUNNEL (ancol-analisa.my.id)
 echo ======================================================================  
 echo.  
-echo Sedang menghubungkan port 5000 ke internet global...  
-echo LIHAT LINK DI DALAM KOTAK BESAR DI BAWAH INI (https://xxxx.trycloudflare.com)  
+echo Sedang menghubungkan Flask port 5000 ke domain tetap Anda...  
+echo Alamat Web Tetap: https://app.ancol-analisa.my.id
 echo.  
-cloudflared.exe tunnel --url http://127.0.0.1:5000  
+cd /d %~dp0
+cloudflared.exe tunnel run --token eyJhIjoiMTdmY2VhZTg5ZjI0ZmZlNDJjNzk5YWI0NjlkODhiNWYiLCJ0IjoiNjFkZjJjYWMtMzQxNS00MDRkLWE3Y2EtZTc1OWQzZWRjOGZhIiwicyI6Ik4yUm1Nemt5TUdJdE9EVmtZUzAwTkRKa0xXSXhOamd0WlRSaE9HVTVaV05pWkdRNSJ9
 pause 

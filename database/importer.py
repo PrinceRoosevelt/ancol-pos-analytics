@@ -23,6 +23,8 @@ SALES_ROOT_DIR = BASE_DIR / "data"
 SALES_DETAIL_DIR_PATTERN = re.compile(r"^sales\s+detail\s+(\d{4})$", re.I)
 MAPPING_FILE = BASE_DIR / "config" / "MASTER_OUTLET_MAPPING_V2.xlsx"
 BUDGET_FILE = BASE_DIR / "data" / "target 2026" / "BUDGET_MERCH_ONLY_PYTHON_READY.xlsx"
+LOOKUP_FILE = BASE_DIR / "config" / "DATA_LOOKUP.xlsx"
+
 
 SALES_VALUE_COLUMN_INDEX = 8         # Column I (DPP Barang)
 TRANSACTION_TOTAL_COLUMN_INDEX = 17  # Column R (Total Struk)
@@ -412,6 +414,81 @@ def parse_budget_and_visitor(budget_path: Path, mapping_path: Path) -> tuple[lis
     return daily_targets, visitors
 
 
+def sync_lookup_data(conn: sqlite3.Connection, force: bool = False) -> int:
+    """Sinkronisasi data master produk/supplier/kategori dari DATA_LOOKUP.xlsx ke SQLite."""
+    if not LOOKUP_FILE.exists():
+        return 0
+    l_stat = LOOKUP_FILE.stat()
+    l_key = str(LOOKUP_FILE.resolve())
+    l_mtime = int(l_stat.st_mtime_ns)
+    l_size = int(l_stat.st_size)
+
+    cursor = conn.execute(
+        "SELECT file_mtime, file_size FROM sync_meta WHERE file_path = ?", (l_key,)
+    )
+    l_meta = cursor.fetchone()
+
+    cur_count = 0
+    try:
+        cur_count = conn.execute("SELECT COUNT(*) FROM product_lookup").fetchone()[0]
+    except Exception:
+        cur_count = 0
+
+    if force or cur_count == 0 or not l_meta or l_meta["file_mtime"] != l_mtime or l_meta["file_size"] != l_size:
+        wb = load_workbook(LOOKUP_FILE, data_only=True, read_only=True)
+        sheet_name = "DATA JUAL 23-24-25-26"
+        ws = wb[sheet_name] if sheet_name in wb.sheetnames else wb.active
+
+        rows_to_insert = []
+        for row in ws.iter_rows(min_row=2, values_only=True):
+            if not row or not any(row):
+                continue
+            raw_code = row[0]
+            raw_name = row[1]
+            if not raw_name and not raw_code:
+                continue
+
+            clean_code = str(raw_code).strip() if raw_code is not None else ""
+            clean_name = str(raw_name).strip() if raw_name is not None else ""
+            supplier = str(row[2]).strip() if len(row) > 2 and row[2] is not None else "LAINNYA"
+            kategori = str(row[3]).strip() if len(row) > 3 and row[3] is not None else "LAINNYA"
+            jenis = str(row[4]).strip().upper() if len(row) > 4 and row[4] is not None else "DAGANGAN"
+            if "KONSIN" in jenis:
+                jenis = "KONSINYASI"
+            elif "DAGANG" in jenis:
+                jenis = "DAGANGAN"
+            else:
+                jenis = "DAGANGAN"
+
+            hpp_val = _number(row[5]) if len(row) > 5 else 0.0
+            hj_val = _number(row[6]) if len(row) > 6 else 0.0
+            maskot = str(row[7]).strip() if len(row) > 7 and row[7] is not None else ""
+
+            if clean_name:
+                rows_to_insert.append((clean_name, clean_code, supplier, kategori, jenis, hpp_val, hj_val, maskot))
+
+        wb.close()
+
+        conn.execute("BEGIN TRANSACTION;")
+        conn.executemany(
+            """
+            INSERT OR REPLACE INTO product_lookup (product, code, supplier, category, jenis, hpp, harga_jual, maskot)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            rows_to_insert,
+        )
+        conn.execute(
+            """
+            INSERT OR REPLACE INTO sync_meta (file_path, file_type, file_mtime, file_size, last_synced)
+            VALUES (?, 'lookup', ?, ?, ?)
+            """,
+            (l_key, l_mtime, l_size, datetime.now().isoformat()),
+        )
+        conn.commit()
+        return len(rows_to_insert)
+    return 0
+
+
 def sync_database(force: bool = False) -> dict[str, Any]:
     """
     Sinkronisasi file Excel ke SQLite Database secara otomatis & bertahap (incremental).
@@ -419,13 +496,17 @@ def sync_database(force: bool = False) -> dict[str, Any]:
     """
     init_db()
     conn = get_connection()
-    stats = {"sales_files_synced": 0, "sales_rows_inserted": 0, "budget_synced": False, "visitors_count": 0}
+    stats = {"sales_files_synced": 0, "sales_rows_inserted": 0, "budget_synced": False, "visitors_count": 0, "lookup_synced": 0}
 
     try:
+        # Sync Master Lookup
+        stats["lookup_synced"] = sync_lookup_data(conn, force=force)
+
         # Cari semua file sales
         sales_files: list[Path] = []
         if SALES_ROOT_DIR.exists():
             for source_dir in sorted(SALES_ROOT_DIR.iterdir()):
+
                 if not source_dir.is_dir() or not SALES_DETAIL_DIR_PATTERN.match(source_dir.name):
                     continue
                 sales_files.extend(

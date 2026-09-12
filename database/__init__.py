@@ -5,6 +5,7 @@ from database.queries import (
     fetch_all_targets,
     fetch_all_visitors,
     save_visitor_db,
+    execute_analytics_sql,
 )
 
 __all__ = [
@@ -16,5 +17,7 @@ __all__ = [
     "fetch_all_targets",
     "fetch_all_visitors",
     "save_visitor_db",
+    "execute_analytics_sql",
 ]
+
 

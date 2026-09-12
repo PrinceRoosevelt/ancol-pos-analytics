@@ -76,3 +76,40 @@ def save_visitor_db(entry_date: str, unit: str, count: int, area: str = "") -> N
     finally:
         conn.close()
 
+
+def execute_analytics_sql(query: str, params: tuple = (), max_rows: int = 50) -> list[dict[str, Any]]:
+    """
+    Mengeksekusi query SQL analitik secara aman dan terisolasi (Read-Only).
+    Hanya query SELECT / WITH ... SELECT yang diizinkan.
+    """
+    import re
+    q_stripped = query.strip()
+    q_upper = q_stripped.upper()
+    
+    # Validasi awal: Harus SELECT atau WITH
+    if not (q_upper.startswith("SELECT") or q_upper.startswith("WITH")):
+        raise ValueError("Hanya query SELECT atau WITH yang diizinkan untuk analisis data.")
+    
+    # Blokir instruksi DDL/DML berbahaya
+    FORBIDDEN_KEYWORDS = [
+        "INSERT", "UPDATE", "DELETE", "DROP", "ALTER", "CREATE", 
+        "TRUNCATE", "REPLACE", "PRAGMA", "ATTACH", "DETACH", "VACUUM",
+        "GRANT", "REVOKE"
+    ]
+    for kw in FORBIDDEN_KEYWORDS:
+        if re.search(rf"\b{kw}\b", q_upper):
+            raise ValueError(f"Query mengandung instruksi terlarang: {kw}")
+
+    # Enforce limit jika belum ada
+    if "LIMIT" not in q_upper:
+        q_stripped = f"{q_stripped.rstrip(';')} LIMIT {max_rows}"
+
+    conn = get_connection()
+    try:
+        cursor = conn.execute(q_stripped, params)
+        rows = cursor.fetchall()
+        return [dict(row) for row in rows[:max_rows]]
+    finally:
+        conn.close()
+
+
