@@ -2861,31 +2861,221 @@
     }
 
     @media (max-width: 768px) {
-      .app-container { padding: 12px 14px 40px; }
-      .kpi-grid { grid-template-columns: 1fr; }
-      .insights-grid { grid-template-columns: 1fr; }
-      header { flex-direction: column; align-items: flex-start; }
-      .header-controls { width: 100%; justify-content: space-between; }
-      .filter-card {
-        top: 8px;
-        padding: 12px 14px;
+      .app-container { 
+        padding: 10px 12px 60px; 
+        width: 100%;
+        max-width: 100%;
       }
+      
+      /* 1. Header & Brand Row Ergonomics */
+      header { 
+        flex-direction: column; 
+        align-items: stretch; 
+        gap: 12px;
+        margin-bottom: 16px;
+        padding-bottom: 14px;
+      }
+      .header-top-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        width: 100%;
+      }
+      .brand-section {
+        flex: 1 1 200px;
+        gap: 10px;
+      }
+      .brand-logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+      }
+      .brand-logo-img {
+        width: 24px;
+        height: 24px;
+      }
+      .brand-info h1 {
+        font-size: 16px;
+        line-height: 1.25;
+      }
+      .brand-info p {
+        font-size: 11.5px;
+      }
+      .ancol-store-badge {
+        padding: 4px 10px;
+        border-radius: 10px;
+        flex-shrink: 0;
+      }
+      .ancol-store-logo {
+        height: 24px;
+        width: auto;
+      }
+
+      /* 2. Header Controls (Structured Touch Grid) */
+      .header-controls { 
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+      }
+      .header-controls .status-badge {
+        width: 100%;
+        justify-content: center;
+        padding: 5px 12px;
+        font-size: 11px;
+      }
+      .header-controls .btn,
+      .header-controls a.btn {
+        flex: 1 1 calc(50% - 6px);
+        min-height: 38px;
+        justify-content: center;
+        font-size: 11.5px;
+        padding: 8px 10px;
+        text-align: center;
+      }
+      #btnDownloadExcel {
+        flex: 1 1 100%;
+        font-weight: 750;
+      }
+
+      /* 3. Sticky Filter Bar Ergonomics */
+      .filter-card {
+        top: 6px;
+        padding: 10px 12px;
+        max-height: 82vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .filter-header-bar {
+        padding-bottom: 6px;
+        margin-bottom: 8px;
+      }
+      .filter-header-title {
+        font-size: 13px;
+      }
+
+      /* Swipeable Preset Chips Bar */
+      .filter-presets-bar {
+        display: flex;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        flex-wrap: nowrap;
+        gap: 6px;
+        padding: 6px 8px;
+        margin-bottom: 10px;
+        width: 100%;
+      }
+      .filter-presets-bar::-webkit-scrollbar {
+        display: none;
+      }
+      .preset-label {
+        flex-shrink: 0;
+        font-size: 10.5px;
+      }
+      .preset-chip {
+        flex-shrink: 0;
+        padding: 5px 11px;
+        min-height: 32px;
+        font-size: 11.5px;
+      }
+
+      /* Compact Filter Grid Spacing */
+      .filter-grid {
+        gap: 8px;
+      }
+      .filter-label {
+        font-size: 11px;
+        margin-bottom: 2px;
+      }
+      .filter-select,
+      .searchable-trigger {
+        min-height: 38px;
+        font-size: 12px;
+      }
+
+      /* 4. KPI Cards & Business Model Breakdown */
+      .kpi-grid { 
+        grid-template-columns: 1fr; 
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .model-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .insights-grid { 
+        grid-template-columns: 1fr; 
+        gap: 10px;
+      }
+      .charts-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      /* 5. Table Tab Group (Swipeable Tabs & Full-Width Search) */
+      .table-card-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .tab-group {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        white-space: nowrap;
+        padding: 4px;
+      }
+      .tab-group::-webkit-scrollbar {
+        display: none;
+      }
+      .tab-btn {
+        flex-shrink: 0;
+        padding: 6px 12px;
+        font-size: 11.5px;
+      }
+      .table-search {
+        max-width: 100%;
+        width: 100%;
+        min-height: 38px;
+      }
+
+      /* 6. Floating Action Buttons */
       .btn-scroll-top {
-        bottom: 20px;
-        right: 20px;
-        width: 42px;
-        height: 42px;
-        font-size: 18px;
+        bottom: 16px;
+        right: 14px;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        z-index: 1000;
       }
       .btn-ai-float {
-        bottom: 20px;
-        right: 72px;
-        height: 42px;
-        padding: 0 12px;
-        font-size: 12.5px;
+        bottom: 16px;
+        right: 62px;
+        height: 40px;
+        padding: 0 11px;
+        font-size: 12px;
+        z-index: 1000;
       }
       .ai-drawer {
         width: 100vw;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .header-controls .btn,
+      .header-controls a.btn {
+        flex: 1 1 100%;
+      }
+      .brand-info h1 {
+        font-size: 15px;
+      }
+      .filter-grid {
+        grid-template-columns: 1fr;
       }
     }
 
