@@ -58,10 +58,12 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(150, 150, 150, 0.25); border-radius: 9999px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(150, 150, 150, 0.45); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 
-<body class="h-full bg-[#FAF8F5] dark:bg-[#0f1115] text-stone-800 dark:text-stone-200 font-sans antialiased transition-colors duration-300 relative overflow-x-hidden lg:overflow-hidden select-none">
+<body class="min-h-screen lg:h-full bg-[#FAF8F5] dark:bg-[#0f1115] text-stone-800 dark:text-stone-200 font-sans antialiased transition-colors duration-300 relative overflow-x-hidden lg:overflow-hidden select-none">
 
   <!-- BESPOKE ARCHITECTURAL GRID & AMBIENT DEPTH (NON-GENERIC) -->
   <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
@@ -71,52 +73,66 @@
   </div>
 
   <!-- MAIN ULTRA-WIDE CONTAINER -->
-  <div class="relative z-10 h-full flex flex-col max-w-[1700px] w-full mx-auto px-4 sm:px-8 py-4">
+  <div class="relative z-10 min-h-screen lg:h-full flex flex-col max-w-[1700px] w-full mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
 
-    <!-- NAVBAR -->
-    <header class="flex-none bg-white/70 dark:bg-stone-900/70 backdrop-blur-md rounded-2xl px-6 py-3 border border-stone-200/80 dark:border-stone-800 flex items-center justify-between shadow-xs mb-4">
-      <div class="flex items-center gap-3">
-        <span class="w-8 h-8 bg-pastel-sage dark:bg-pastel-sageDark text-pastel-sageDark dark:text-emerald-300 flex items-center justify-center rounded-xl text-xs font-extrabold shadow-2xs">DA</span>
-        <div class="flex items-center gap-2">
-          <span class="font-extrabold tracking-tight text-stone-900 dark:text-white text-base">Muir Portfolio<span class="text-emerald-600 dark:text-emerald-400">.</span></span>
-          <span class="hidden md:inline-block text-xs font-medium text-stone-500 dark:text-stone-400 border-l border-stone-200 dark:border-stone-700 pl-2.5">Commercial Retail & AI Automation Analyst</span>
+    <!-- NAVBAR (RESPONSIVE COCKPIT & SWIPEABLE TABS ON MOBILE) -->
+    <header class="flex-none bg-white/70 dark:bg-stone-900/70 backdrop-blur-md rounded-2xl px-4 sm:px-6 py-3 border border-stone-200/80 dark:border-stone-800 flex flex-col lg:flex-row lg:items-center justify-between gap-3 shadow-xs mb-4">
+      
+      <!-- Brand & Mobile Quick Actions -->
+      <div class="flex items-center justify-between lg:justify-start gap-3 w-full lg:w-auto">
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <span class="w-8 h-8 bg-pastel-sage dark:bg-pastel-sageDark text-pastel-sageDark dark:text-emerald-300 flex items-center justify-center rounded-xl text-xs font-extrabold shadow-2xs">DA</span>
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold tracking-tight text-stone-900 dark:text-white text-base">Muir Portfolio<span class="text-emerald-600 dark:text-emerald-400">.</span></span>
+            <span class="hidden md:inline-block text-xs font-medium text-stone-500 dark:text-stone-400 border-l border-stone-200 dark:border-stone-700 pl-2.5">Commercial Retail &amp; AI Automation Analyst</span>
+          </div>
+        </div>
+
+        <!-- Mobile-Only Action Buttons -->
+        <div class="flex items-center gap-2 lg:hidden">
+          <button onclick="toggleDarkMode()" class="w-8 h-8 flex items-center justify-center rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors" title="Toggle Dark/Light Mode">
+            <span id="theme-icon-mobile">🌙</span>
+          </button>
+          <a href="https://wa.me/6282125431312?text=Halo%20Muhammad%20Iryansyah%20(Muir),%20saya%20melihat%20portfolio%20Anda%20dan%20tertarik%20untuk%20berdiskusi%20lebih%20lanjut." target="_blank" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5">
+            <span>💬</span> <span>WA</span>
+          </a>
         </div>
       </div>
 
-      <!-- Navigation Tabs -->
-      <nav class="flex items-center gap-1.5 bg-stone-100/80 dark:bg-stone-800/80 p-1.5 rounded-xl text-xs font-semibold text-stone-600 dark:text-stone-300">
-        <button onclick="switchTab('overview')" id="tab-btn-overview" class="px-3.5 py-1.5 rounded-lg bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-2xs transition-all font-bold">Overview</button>
-        <button onclick="switchTab('pythonapp')" id="tab-btn-pythonapp" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all text-emerald-700 dark:text-emerald-400 font-extrabold flex items-center gap-1">
+      <!-- Navigation Tabs (Horizontal Swipeable on Mobile, Inline on Desktop) -->
+      <nav class="flex items-center gap-1.5 bg-stone-100/80 dark:bg-stone-800/80 p-1.5 rounded-xl text-xs font-semibold text-stone-600 dark:text-stone-300 overflow-x-auto max-w-full no-scrollbar whitespace-nowrap scroll-smooth w-full lg:w-auto">
+        <button onclick="switchTab('overview')" id="tab-btn-overview" class="shrink-0 px-3.5 py-1.5 rounded-lg bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-2xs transition-all font-bold">Overview</button>
+        <button onclick="switchTab('pythonapp')" id="tab-btn-pythonapp" class="shrink-0 px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all text-emerald-700 dark:text-emerald-400 font-extrabold flex items-center gap-1">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           <span>Live App Engine</span>
         </button>
-        <button onclick="switchTab('analytics')" id="tab-btn-analytics" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all">Looker Studio</button>
-        <button onclick="switchTab('strategy')" id="tab-btn-strategy" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all">★ O2O Strategy</button>
-        <button onclick="switchTab('cases')" id="tab-btn-cases" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all">Executive Cases</button>
-        <button onclick="switchTab('photo')" id="tab-btn-photo" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all text-amber-700 dark:text-amber-400 font-bold flex items-center gap-1">
+        <button onclick="switchTab('analytics')" id="tab-btn-analytics" class="shrink-0 px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all">Looker Studio</button>
+        <button onclick="switchTab('strategy')" id="tab-btn-strategy" class="shrink-0 px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all">★ O2O Strategy</button>
+        <button onclick="switchTab('cases')" id="tab-btn-cases" class="shrink-0 px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all">Executive Cases</button>
+        <button onclick="switchTab('photo')" id="tab-btn-photo" class="shrink-0 px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all text-amber-700 dark:text-amber-400 font-bold flex items-center gap-1">
           <span>📸</span>
           <span>Photography</span>
         </button>
-        <button onclick="switchTab('vault')" id="tab-btn-vault" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all text-sky-700 dark:text-sky-400 font-bold">📁 Files Vault</button>
-        <button onclick="switchTab('pipeline')" id="tab-btn-pipeline" class="px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all hidden xl:inline-block">ETL &amp; SQL</button>
+        <button onclick="switchTab('vault')" id="tab-btn-vault" class="shrink-0 px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all text-sky-700 dark:text-sky-400 font-bold">📁 Files Vault</button>
+        <button onclick="switchTab('pipeline')" id="tab-btn-pipeline" class="shrink-0 px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all hidden xl:inline-block">ETL &amp; SQL</button>
       </nav>
 
-      <!-- Actions -->
-      <div class="flex items-center gap-3">
+      <!-- Desktop Actions (Hidden on Mobile) -->
+      <div class="hidden lg:flex items-center gap-3">
         <button onclick="toggleDarkMode()" class="w-9 h-9 flex items-center justify-center rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors" title="Toggle Dark/Light Mode">
           <span id="theme-icon">🌙</span>
         </button>
-        <a href="https://wa.me/6282125431312?text=Halo%20Muhammad%20Iryansyah%20(Muir),%20saya%20melihat%20portfolio%20Anda%20dan%20tertarik%20untuk%20berdiskusi%20lebih%20lanjut." target="_blank" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs hidden sm:inline-flex items-center gap-1.5">
+        <a href="https://wa.me/6282125431312?text=Halo%20Muhammad%20Iryansyah%20(Muir),%20saya%20melihat%20portfolio%20Anda%20dan%20tertarik%20untuk%20berdiskusi%20lebih%20lanjut." target="_blank" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5">
           <span>💬</span> Hubungi WhatsApp
         </a>
       </div>
     </header>
 
     <!-- ULTRA-WIDE DUAL WORKSPACE -->
-    <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5 min-h-0 overflow-y-auto lg:overflow-hidden pb-2">
+    <main id="main-workspace-grid" class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 min-h-0 lg:overflow-hidden pb-4">
       
       <!-- LEFT PROFILE & TOOLKIT SIDEBAR -->
-      <aside class="lg:col-span-4 xl:col-span-3 flex flex-col gap-4 overflow-y-auto pr-1">
+      <aside class="lg:col-span-4 xl:col-span-3 flex flex-col gap-4 lg:overflow-y-auto pr-0 lg:pr-1">
         
         <!-- Profile Card -->
         <div class="bg-white/80 dark:bg-stone-900/80 backdrop-blur-md p-5 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-4">
@@ -309,7 +325,7 @@
       </aside>
 
       <!-- RIGHT WIDE WORKSPACE: DYNAMIC CONTENT -->
-      <section class="lg:col-span-8 xl:col-span-9 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md rounded-2xl border border-stone-200/80 dark:border-stone-800 p-6 sm:p-8 shadow-xs overflow-y-auto flex flex-col">
+      <section id="workspace-content-section" class="lg:col-span-8 xl:col-span-9 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md rounded-2xl border border-stone-200/80 dark:border-stone-800 p-4 sm:p-6 lg:p-8 shadow-xs lg:overflow-y-auto flex flex-col scroll-mt-4">
         
         <!-- TAB 1: OVERVIEW HERO (GOLDEN RATIO PROPORTIONS & HIGH-END TYPOGRAPHY) -->
         <div id="tab-content-overview" class="space-y-7 my-auto">
@@ -452,19 +468,19 @@
               </div>
             </div>
 
-            <!-- SHORTCUT PRESETS STRIP -->
-            <div class="flex flex-wrap items-center gap-1.5 p-2.5 bg-white/90 dark:bg-stone-900/90 rounded-xl border border-stone-200/80 dark:border-stone-800 text-xs">
-              <span class="text-[10px] font-mono font-bold text-stone-400 dark:text-stone-500 uppercase mr-1">⚡ Pintasan Cepat:</span>
-              <button type="button" onclick="applyPortoPreset('dufan')" class="px-3 py-1 rounded-lg bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200/60 font-semibold text-[11px] hover:bg-rose-100 transition-all flex items-center gap-1">
+            <!-- SHORTCUT PRESETS STRIP (SWIPEABLE ON MOBILE) -->
+            <div class="flex items-center gap-1.5 p-2.5 bg-white/90 dark:bg-stone-900/90 rounded-xl border border-stone-200/80 dark:border-stone-800 text-xs overflow-x-auto no-scrollbar whitespace-nowrap">
+              <span class="shrink-0 text-[10px] font-mono font-bold text-stone-400 dark:text-stone-500 uppercase mr-1">⚡ Pintasan Cepat:</span>
+              <button type="button" onclick="applyPortoPreset('dufan')" class="shrink-0 px-3 py-1 rounded-lg bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200/60 font-semibold text-[11px] hover:bg-rose-100 transition-all flex items-center gap-1">
                 <span>🎢</span> Dufan Weekend
               </button>
-              <button type="button" onclick="applyPortoPreset('awapark')" class="px-3 py-1 rounded-lg bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 border border-sky-200/60 font-semibold text-[11px] hover:bg-sky-100 transition-all flex items-center gap-1">
+              <button type="button" onclick="applyPortoPreset('awapark')" class="shrink-0 px-3 py-1 rounded-lg bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 border border-sky-200/60 font-semibold text-[11px] hover:bg-sky-100 transition-all flex items-center gap-1">
                 <span>🌊</span> Awapark Weekend
               </button>
-              <button type="button" onclick="applyPortoPreset('beachpark')" class="px-3 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200/60 font-semibold text-[11px] hover:bg-amber-100 transition-all flex items-center gap-1">
+              <button type="button" onclick="applyPortoPreset('beachpark')" class="shrink-0 px-3 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200/60 font-semibold text-[11px] hover:bg-amber-100 transition-all flex items-center gap-1">
                 <span>🏖️</span> Beachpark Weekend
               </button>
-              <button type="button" onclick="applyPortoPreset('all')" class="px-3 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 font-semibold text-[11px] hover:bg-emerald-100 transition-all flex items-center gap-1 ml-auto">
+              <button type="button" onclick="applyPortoPreset('all')" class="shrink-0 px-3 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 font-semibold text-[11px] hover:bg-emerald-100 transition-all flex items-center gap-1 ml-auto">
                 <span>🔄</span> Reset Semua
               </button>
             </div>
@@ -1535,15 +1551,15 @@
             </div>
           </div>
 
-                    <!-- Category Mood Filter Bar (Interactive Gallery Curator) -->
-          <div class="flex flex-wrap items-center gap-2 pb-2">
-            <span class="text-[11px] font-bold font-mono text-stone-400 dark:text-stone-500 uppercase tracking-wider mr-1">Filter Mood:</span>
-            <button onclick="filterPhotoCategory('all')" id="pfilter-all" class="photo-filter-btn px-3 py-1 rounded-full text-xs font-bold bg-amber-600 text-white shadow-2xs transition-all">Semua (34)</button>
-            <button onclick="filterPhotoCategory('light')" id="pfilter-light" class="photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Light &amp; Shadow</button>
-            <button onclick="filterPhotoCategory('golden')" id="pfilter-golden" class="photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Golden Hour</button>
-            <button onclick="filterPhotoCategory('street')" id="pfilter-street" class="photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Street &amp; Urban</button>
-            <button onclick="filterPhotoCategory('nature')" id="pfilter-nature" class="photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Nature &amp; Botanical</button>
-            <button onclick="filterPhotoCategory('twilight')" id="pfilter-twilight" class="photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Twilight Reverie</button>
+                    <!-- Category Mood Filter Bar (Interactive Gallery Curator - Swipeable on Mobile) -->
+          <div class="flex items-center gap-2 pb-2 overflow-x-auto no-scrollbar whitespace-nowrap py-1">
+            <span class="shrink-0 text-[11px] font-bold font-mono text-stone-400 dark:text-stone-500 uppercase tracking-wider mr-1">Filter Mood:</span>
+            <button onclick="filterPhotoCategory('all')" id="pfilter-all" class="shrink-0 photo-filter-btn px-3 py-1 rounded-full text-xs font-bold bg-amber-600 text-white shadow-2xs transition-all">Semua (34)</button>
+            <button onclick="filterPhotoCategory('light')" id="pfilter-light" class="shrink-0 photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Light &amp; Shadow</button>
+            <button onclick="filterPhotoCategory('golden')" id="pfilter-golden" class="shrink-0 photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Golden Hour</button>
+            <button onclick="filterPhotoCategory('street')" id="pfilter-street" class="shrink-0 photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Street &amp; Urban</button>
+            <button onclick="filterPhotoCategory('nature')" id="pfilter-nature" class="shrink-0 photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Nature &amp; Botanical</button>
+            <button onclick="filterPhotoCategory('twilight')" id="pfilter-twilight" class="shrink-0 photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Twilight Reverie</button>
           </div>
 
           <!-- Collage Grid 3:4 -->
@@ -2300,9 +2316,9 @@
         const content = document.getElementById('tab-content-' + t);
         if (btn) {
           if (t === tabId) {
-            btn.className = "px-3.5 py-1.5 rounded-lg bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-2xs transition-all font-bold";
+            btn.className = "shrink-0 px-3.5 py-1.5 rounded-lg bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-2xs transition-all font-bold";
           } else {
-            btn.className = "px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all text-stone-500 dark:text-stone-400 font-medium";
+            btn.className = "shrink-0 px-3.5 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white transition-all text-stone-500 dark:text-stone-400 font-medium";
           }
         }
         if (content) {
@@ -2311,6 +2327,16 @@
       });
       if (tabId === 'analytics' && comparisonChart) {
         setTimeout(() => comparisonChart.resize(), 50);
+      }
+
+      // Smooth auto-scroll to active section on mobile
+      if (window.innerWidth < 1024) {
+        const target = (tabId === 'overview') 
+          ? document.getElementById('main-workspace-grid') 
+          : document.getElementById('workspace-content-section');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }
     }
 
@@ -2609,7 +2635,11 @@
 
     function toggleDarkMode() {
       const isDark = document.documentElement.classList.toggle('dark');
-      document.getElementById('theme-icon').innerText = isDark ? '☀️' : '🌙';
+      const icon = isDark ? '☀️' : '🌙';
+      const dIcon = document.getElementById('theme-icon');
+      if (dIcon) dIcon.innerText = icon;
+      const mIcon = document.getElementById('theme-icon-mobile');
+      if (mIcon) mIcon.innerText = icon;
       if (comparisonChart) {
         comparisonChart.options.scales.x.ticks.color = isDark ? '#A8A29E' : '#78716C';
         comparisonChart.options.scales.y.ticks.color = isDark ? '#A8A29E' : '#78716C';
