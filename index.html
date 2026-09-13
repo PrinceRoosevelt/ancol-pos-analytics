@@ -2325,6 +2325,7 @@
           content.classList.toggle('hidden', t !== tabId);
         }
       });
+      setTimeout(updateScrollProgress, 100);
       if (tabId === 'analytics' && comparisonChart) {
         setTimeout(() => comparisonChart.resize(), 50);
       }
@@ -2850,6 +2851,68 @@
       });
     }
 
+    // CIRCULAR SCROLL PROGRESS & BACK TO TOP ENGINE
+    function updateScrollProgress() {
+      const btn = document.getElementById('btn-back-to-top');
+      const ring = document.getElementById('scroll-progress-ring');
+      if (!btn || !ring) return;
+
+      const isDesktop = window.innerWidth >= 1024;
+      let scrollTop = 0;
+      let scrollHeight = 0;
+      let clientHeight = 0;
+
+      if (!isDesktop) {
+        scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+        scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight || 0;
+        clientHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+      } else {
+        const activeSection = document.getElementById('workspace-content-section');
+        if (activeSection) {
+          scrollTop = activeSection.scrollTop;
+          scrollHeight = activeSection.scrollHeight;
+          clientHeight = activeSection.clientHeight;
+        }
+      }
+
+      const maxScroll = scrollHeight - clientHeight;
+      const progress = maxScroll > 0 ? Math.min(Math.max(scrollTop / maxScroll, 0), 1) : 0;
+      
+      // Circumference = 2 * PI * 15 ≈ 94.25
+      const offset = 94.25 - (progress * 94.25);
+      ring.style.strokeDashoffset = offset;
+
+      // Smooth trigger threshold (> 180px)
+      if (scrollTop > 180) {
+        btn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-3');
+        btn.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+      } else {
+        btn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
+        btn.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+      }
+    }
+
+    function scrollToTop() {
+      if (window.innerWidth < 1024) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const activeSection = document.getElementById('workspace-content-section');
+        if (activeSection) {
+          activeSection.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    }
+
+    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+    window.addEventListener('resize', updateScrollProgress, { passive: true });
+    document.addEventListener('DOMContentLoaded', () => {
+      const activeSection = document.getElementById('workspace-content-section');
+      if (activeSection) {
+        activeSection.addEventListener('scroll', updateScrollProgress, { passive: true });
+      }
+      setTimeout(updateScrollProgress, 200);
+    });
+
 </script>
 
   <!-- PHOTO FULLSCREEN LIGHTBOX MODAL -->
@@ -2869,6 +2932,44 @@
       </div>
     </div>
   </div>
+
+  <!-- CIRCULAR SCROLL PROGRESS & BACK TO TOP BUTTON (HARMONIOUS ACCENT) -->
+  <button 
+    id="btn-back-to-top" 
+    onclick="scrollToTop()" 
+    aria-label="Kembali ke atas" 
+    class="fixed bottom-5 right-5 z-40 w-11 h-11 rounded-full bg-white/85 dark:bg-stone-900/85 backdrop-blur-md border border-stone-200/80 dark:border-stone-800 shadow-lg flex items-center justify-center text-stone-700 dark:text-stone-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:scale-105 active:scale-95 transition-all duration-300 opacity-0 pointer-events-none translate-y-3 group cursor-pointer"
+  >
+    <!-- SVG Circular Progress Ring -->
+    <svg class="absolute inset-0 w-full h-full -rotate-90 pointer-events-none p-0.5" viewBox="0 0 36 36">
+      <circle 
+        class="text-stone-200/70 dark:text-stone-800/80" 
+        stroke-width="2.5" 
+        stroke="currentColor" 
+        fill="none" 
+        cx="18" 
+        cy="18" 
+        r="15"
+      />
+      <circle 
+        id="scroll-progress-ring" 
+        class="text-emerald-500 transition-[stroke-dashoffset] duration-75 ease-linear" 
+        stroke-width="2.5" 
+        stroke-dasharray="94.25" 
+        stroke-dashoffset="94.25" 
+        stroke-linecap="round" 
+        stroke="currentColor" 
+        fill="none" 
+        cx="18" 
+        cy="18" 
+        r="15"
+      />
+    </svg>
+    <!-- Up Arrow Icon -->
+    <svg class="w-4 h-4 relative z-10 transition-transform duration-200 group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+    </svg>
+  </button>
 
 </body>
 </html>
