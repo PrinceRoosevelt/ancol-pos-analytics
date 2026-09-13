@@ -473,8 +473,191 @@
     }
 
     .filter-card.is-collapsed .filter-grid,
+    .filter-card.is-collapsed .filter-presets-bar,
     .filter-card.is-collapsed .active-filters {
       display: none !important;
+    }
+
+    /* Filter Presets Bar (Pintasan Cepat Analitik) */
+    .filter-presets-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+      background: rgba(0, 51, 160, 0.03);
+      border: 1px dashed rgba(0, 51, 160, 0.2);
+      border-radius: var(--radius-sm);
+    }
+    :root.dark .filter-presets-bar {
+      background: rgba(255, 255, 255, 0.02);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .filter-card.is-scrolled .filter-presets-bar {
+      padding: 4px 10px;
+      margin-bottom: 8px;
+      gap: 6px;
+    }
+
+    .preset-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-right: 4px;
+      user-select: none;
+    }
+
+    .preset-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 13px;
+      min-height: 34px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+    }
+    .filter-card.is-scrolled .preset-chip {
+      min-height: 28px;
+      padding: 4px 10px;
+      font-size: 11.5px;
+    }
+
+    .preset-chip:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      border-color: var(--brand);
+    }
+
+    /* System Presets Styling */
+    .preset-chip-dufan:hover,
+    .preset-chip-dufan.active {
+      border-color: #DC2626 !important;
+      background: #FEF2F2 !important;
+      color: #991B1B !important;
+    }
+    :root.dark .preset-chip-dufan:hover,
+    :root.dark .preset-chip-dufan.active {
+      background: rgba(220, 38, 38, 0.2) !important;
+      color: #FCA5A5 !important;
+      border-color: #EF4444 !important;
+    }
+
+    .preset-chip-awapark:hover,
+    .preset-chip-awapark.active {
+      border-color: #0284C7 !important;
+      background: #F0F9FF !important;
+      color: #0369A1 !important;
+    }
+    :root.dark .preset-chip-awapark:hover,
+    :root.dark .preset-chip-awapark.active {
+      background: rgba(2, 132, 199, 0.2) !important;
+      color: #7DD3FC !important;
+      border-color: #38BDF8 !important;
+    }
+
+    .preset-chip-beachpark:hover,
+    .preset-chip-beachpark.active {
+      border-color: #D97706 !important;
+      background: #FFFBEB !important;
+      color: #92400E !important;
+    }
+    :root.dark .preset-chip-beachpark:hover,
+    :root.dark .preset-chip-beachpark.active {
+      background: rgba(217, 119, 6, 0.2) !important;
+      color: #FCD34D !important;
+      border-color: #F59E0B !important;
+    }
+
+    .preset-chip-konsinyasi:hover,
+    .preset-chip-konsinyasi.active {
+      border-color: #4F46E5 !important;
+      background: #EEF2FF !important;
+      color: #3730A3 !important;
+    }
+    :root.dark .preset-chip-konsinyasi:hover,
+    :root.dark .preset-chip-konsinyasi.active {
+      background: rgba(79, 70, 229, 0.2) !important;
+      color: #A5B4FC !important;
+      border-color: #6366F1 !important;
+    }
+
+    .preset-chip.active {
+      font-weight: 700;
+      box-shadow: 0 0 0 2px currentColor;
+    }
+
+    /* Custom Presets */
+    .preset-chip-custom {
+      border-color: #059669;
+      background: var(--bg);
+      color: #059669;
+    }
+    .preset-chip-custom:hover,
+    .preset-chip-custom.active {
+      border-color: #059669 !important;
+      background: #ECFDF5 !important;
+      color: #065F46 !important;
+    }
+    :root.dark .preset-chip-custom:hover,
+    :root.dark .preset-chip-custom.active {
+      background: rgba(5, 150, 105, 0.2) !important;
+      color: #6EE7B7 !important;
+      border-color: #10B981 !important;
+    }
+
+    .preset-chip-save {
+      background: transparent;
+      border: 1px dashed var(--panel-border);
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+    .preset-chip-save:hover {
+      border-color: var(--brand);
+      color: var(--brand);
+      background: rgba(0, 51, 160, 0.04);
+    }
+
+    .preset-delete-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      font-size: 10px;
+      border-radius: 50%;
+      margin-left: 4px;
+      opacity: 0.6;
+      transition: all 0.15s;
+    }
+    .preset-delete-btn:hover {
+      opacity: 1;
+      background: rgba(0,0,0,0.15);
+      color: #DC2626;
+    }
+
+    .filter-tag-weekend {
+      background: #FEE2E2 !important;
+      color: #991B1B !important;
+      border-color: #FCA5A5 !important;
+      font-weight: 700 !important;
+    }
+    :root.dark .filter-tag-weekend {
+      background: rgba(220, 38, 38, 0.25) !important;
+      color: #FCA5A5 !important;
+      border-color: rgba(239, 68, 68, 0.5) !important;
     }
 
     /* Custom Searchable Dropdown (Combobox) */
@@ -2785,6 +2968,33 @@
       </div>
     </div>
 
+    <!-- Filter Presets Bar (Pintasan Cepat Symmetrical UX) -->
+    <div class="filter-presets-bar" id="filterPresetsBar">
+      <div class="preset-label">
+        <span>⚡ Pintasan:</span>
+      </div>
+      <button type="button" class="preset-chip preset-chip-dufan" id="presetDufanWeekend" onclick="applySystemPreset('dufan_weekend')" title="Filter otomatis Area Dufan khusus akhir pekan (Sabtu &amp; Minggu)">
+        <span>🎢 Dufan Weekend</span>
+      </button>
+      <button type="button" class="preset-chip preset-chip-awapark" id="presetAwaparkWeekend" onclick="applySystemPreset('awapark_weekend')" title="Filter otomatis Area Awapark khusus akhir pekan (Sabtu &amp; Minggu)">
+        <span>🌊 Awapark Weekend</span>
+      </button>
+      <button type="button" class="preset-chip preset-chip-beachpark" id="presetBeachparkWeekend" onclick="applySystemPreset('beachpark_weekend')" title="Filter otomatis Area Beachpark khusus akhir pekan (Sabtu &amp; Minggu)">
+        <span>🏖️ Beachpark Weekend</span>
+      </button>
+      <button type="button" class="preset-chip preset-chip-konsinyasi" id="presetKonsinyasi" onclick="applySystemPreset('konsinyasi')" title="Filter khusus transaksi Konsinyasi (Rekanan Vendor)">
+        <span>🤝 Audit Konsinyasi</span>
+      </button>
+
+      <!-- Dynamic User Custom Presets -->
+      <div id="customPresetsList" style="display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap;"></div>
+
+      <!-- Save Current Filter Preset Button -->
+      <button type="button" class="preset-chip preset-chip-save" id="btnSavePreset" onclick="saveCurrentFilterAsPreset()" title="Simpan kombinasi filter yang sedang aktif sebagai pintasan kustom">
+        <span>💾 Simpan Filter Ini</span>
+      </button>
+    </div>
+
     <div class="filter-grid" id="filterGrid">
       <div class="filter-group">
         <label class="filter-label">Periode Bulan (2026)</label>
@@ -4010,10 +4220,307 @@
   let currentFilter = {
     month: "{{ selected_month or '' }}",
     date: "{{ selected_date or '' }}",
+    startDate: "",
+    endDate: "",
     area: "{{ selected_area or '' }}",
     outlet: "{{ selected_outlet or '' }}",
-    modelBisnis: "{{ selected_jenis or '' }}"
+    supplier: "",
+    category: "",
+    modelBisnis: "{{ selected_jenis or '' }}",
+    weekendOnly: false,
+    activePresetId: null
   };
+
+  // ----------------------------------------------------
+  // FILTER SHORTCUT PRESETS (Pintasan Cepat UX Engine)
+  // ----------------------------------------------------
+  function isWeekendDate(dateStr) {
+    if (!dateStr || dateStr.length < 10) return false;
+    const y = parseInt(dateStr.substring(0, 4), 10);
+    const m = parseInt(dateStr.substring(5, 7), 10) - 1;
+    const d = parseInt(dateStr.substring(8, 10), 10);
+    const day = new Date(y, m, d).getDay();
+    return day === 0 || day === 6; // 0 = Minggu, 6 = Sabtu
+  }
+
+  function updatePresetButtonsUI() {
+    const systemPresets = ['dufan_weekend', 'awapark_weekend', 'beachpark_weekend', 'konsinyasi'];
+    systemPresets.forEach(pId => {
+      const btn = document.getElementById(
+        pId === 'dufan_weekend' ? 'presetDufanWeekend' :
+        pId === 'awapark_weekend' ? 'presetAwaparkWeekend' :
+        pId === 'beachpark_weekend' ? 'presetBeachparkWeekend' : 'presetKonsinyasi'
+      );
+      if (btn) {
+        if (currentFilter.activePresetId === pId) btn.classList.add('active');
+        else btn.classList.remove('active');
+      }
+    });
+
+    // Custom presets UI buttons
+    document.querySelectorAll('#customPresetsList .preset-chip-custom').forEach(chip => {
+      if (chip.getAttribute('data-id') === currentFilter.activePresetId) chip.classList.add('active');
+      else chip.classList.remove('active');
+    });
+  }
+
+  function checkActivePresetMatch() {
+    if (!currentFilter.activePresetId) return;
+    const pId = currentFilter.activePresetId;
+    if (pId === 'dufan_weekend' && (currentFilter.area !== 'DUFAN' || !currentFilter.weekendOnly)) {
+      currentFilter.activePresetId = null;
+    } else if (pId === 'awapark_weekend' && (currentFilter.area !== 'AWAPARK' || !currentFilter.weekendOnly)) {
+      currentFilter.activePresetId = null;
+    } else if (pId === 'beachpark_weekend' && (currentFilter.area !== 'BEACHPARK' || !currentFilter.weekendOnly)) {
+      currentFilter.activePresetId = null;
+    } else if (pId === 'konsinyasi' && (currentFilter.modelBisnis !== 'KONSINYASI' || currentFilter.weekendOnly)) {
+      currentFilter.activePresetId = null;
+    }
+    updatePresetButtonsUI();
+  }
+
+  function applySystemPreset(presetId) {
+    // Toggle off if already active
+    if (currentFilter.activePresetId === presetId) {
+      resetFilters();
+      return;
+    }
+
+    const areaSelect = document.getElementById('filterArea');
+    const modelSelect = document.getElementById('filterModelBisnis');
+    const suppSelect = document.getElementById('filterSupplier');
+    const catSelect = document.getElementById('filterCategory');
+
+    // Reset Supplier & Category
+    if (suppSelect) suppSelect.value = '';
+    if (catSelect) catSelect.value = '';
+    const suppLabel = document.getElementById('supplierTriggerLabel');
+    if (suppLabel) {
+      const first = document.querySelector('#supplierOptionsList .searchable-option');
+      if (first) suppLabel.textContent = first.textContent.trim();
+    }
+    const catLabel = document.getElementById('categoryTriggerLabel');
+    if (catLabel) {
+      const first = document.querySelector('#categoryOptionsList .searchable-option');
+      if (first) catLabel.textContent = first.textContent.trim();
+    }
+    document.querySelectorAll('#supplierOptionsList .searchable-option, #categoryOptionsList .searchable-option').forEach(opt => {
+      if (opt.getAttribute('data-value')) opt.classList.remove('is-selected');
+      else opt.classList.add('is-selected');
+    });
+
+    if (presetId === 'dufan_weekend') {
+      if (areaSelect) areaSelect.value = 'DUFAN';
+      if (modelSelect) modelSelect.value = '';
+      currentFilter.weekendOnly = true;
+      currentFilter.activePresetId = 'dufan_weekend';
+    } else if (presetId === 'awapark_weekend') {
+      if (areaSelect) areaSelect.value = 'AWAPARK';
+      if (modelSelect) modelSelect.value = '';
+      currentFilter.weekendOnly = true;
+      currentFilter.activePresetId = 'awapark_weekend';
+    } else if (presetId === 'beachpark_weekend') {
+      if (areaSelect) areaSelect.value = 'BEACHPARK';
+      if (modelSelect) modelSelect.value = '';
+      currentFilter.weekendOnly = true;
+      currentFilter.activePresetId = 'beachpark_weekend';
+    } else if (presetId === 'konsinyasi') {
+      if (areaSelect) areaSelect.value = '';
+      if (modelSelect) modelSelect.value = 'KONSINYASI';
+      currentFilter.weekendOnly = false;
+      currentFilter.activePresetId = 'konsinyasi';
+    }
+
+    updatePresetButtonsUI();
+    onAreaChange();
+  }
+
+  function clearWeekendFilter() {
+    currentFilter.weekendOnly = false;
+    currentFilter.activePresetId = null;
+    updatePresetButtonsUI();
+    applyFilters();
+  }
+
+  // Custom Presets Management (localStorage)
+  const CUSTOM_PRESETS_KEY = 'ancol_pos_custom_presets';
+
+  function getCustomPresets() {
+    try {
+      const raw = localStorage.getItem(CUSTOM_PRESETS_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      console.warn('Gagal membaca custom presets:', e);
+      return [];
+    }
+  }
+
+  function saveCustomPresetsToStorage(list) {
+    try {
+      localStorage.setItem(CUSTOM_PRESETS_KEY, JSON.stringify(list));
+    } catch (e) {
+      console.warn('Gagal menyimpan custom presets:', e);
+    }
+  }
+
+  function saveCurrentFilterAsPreset() {
+    const hasAny = currentFilter.month || currentFilter.startDate || currentFilter.endDate || 
+                   currentFilter.area || currentFilter.outlet || currentFilter.supplier || 
+                   currentFilter.category || currentFilter.modelBisnis || currentFilter.weekendOnly;
+    if (!hasAny) {
+      alert('Silakan pilih setidaknya satu filter (misal: Area, Model Bisnis, atau Tanggal) sebelum menyimpan pintasan.');
+      return;
+    }
+
+    let defaultName = '';
+    if (currentFilter.area) defaultName = currentFilter.area + (currentFilter.weekendOnly ? ' Wkd' : '');
+    else if (currentFilter.modelBisnis) defaultName = currentFilter.modelBisnis;
+    else if (currentFilter.supplier) defaultName = currentFilter.supplier.substring(0, 12);
+    else defaultName = 'Pintasan Saya';
+
+    const name = prompt('Beri nama pintasan filter ini (maks. 20 karakter):', defaultName);
+    if (!name || !name.trim()) return;
+    const cleanName = name.trim().substring(0, 20);
+
+    let list = getCustomPresets();
+    if (list.length >= 5) {
+      const confirmReplace = confirm('Slot pintasan kustom sudah maksimal (5 pintasan). Apakah Anda ingin menimpa pintasan terlama?');
+      if (!confirmReplace) return;
+      list.shift();
+    }
+
+    const newPreset = {
+      id: 'cp_' + Date.now(),
+      name: cleanName,
+      filter: {
+        month: currentFilter.month || '',
+        startDate: currentFilter.startDate || '',
+        endDate: currentFilter.endDate || '',
+        area: currentFilter.area || '',
+        outlet: currentFilter.outlet || '',
+        supplier: currentFilter.supplier || '',
+        category: currentFilter.category || '',
+        modelBisnis: currentFilter.modelBisnis || '',
+        weekendOnly: Boolean(currentFilter.weekendOnly)
+      }
+    };
+
+    list.push(newPreset);
+    saveCustomPresetsToStorage(list);
+    currentFilter.activePresetId = newPreset.id;
+    renderCustomPresets();
+    updatePresetButtonsUI();
+  }
+
+  function applyCustomPreset(presetId) {
+    if (currentFilter.activePresetId === presetId) {
+      resetFilters();
+      return;
+    }
+
+    const list = getCustomPresets();
+    const found = list.find(p => p.id === presetId);
+    if (!found) return;
+
+    const f = found.filter;
+    const monthSel = document.getElementById('filterMonth');
+    if (monthSel) monthSel.value = f.month || '';
+
+    const startEl = document.getElementById('filterStartDate');
+    const endEl = document.getElementById('filterEndDate');
+    const dateLabel = document.getElementById('dateRangeDisplayLabel');
+    const clearBtn = document.getElementById('clearDateBtn');
+    if (startEl) startEl.value = f.startDate || '';
+    if (endEl) endEl.value = f.endDate || '';
+    if (f.startDate && f.endDate) {
+      if (dateLabel) dateLabel.textContent = `${formatDisplayDate(f.startDate)} - ${formatDisplayDate(f.endDate)}`;
+      if (clearBtn) clearBtn.style.display = 'flex';
+    } else if (f.startDate) {
+      if (dateLabel) dateLabel.textContent = formatDisplayDate(f.startDate);
+      if (clearBtn) clearBtn.style.display = 'flex';
+    } else {
+      if (dateLabel) dateLabel.textContent = 'Semua Tanggal (YTD)';
+      if (clearBtn) clearBtn.style.display = 'none';
+    }
+
+    const areaSel = document.getElementById('filterArea');
+    if (areaSel) areaSel.value = f.area || '';
+
+    const suppSel = document.getElementById('filterSupplier');
+    if (suppSel) suppSel.value = f.supplier || '';
+    const suppLabel = document.getElementById('supplierTriggerLabel');
+    if (suppLabel) {
+      suppLabel.textContent = f.supplier || document.querySelector('#supplierOptionsList .searchable-option')?.textContent?.trim() || 'Semua Supplier';
+    }
+    document.querySelectorAll('#supplierOptionsList .searchable-option').forEach(opt => {
+      if (opt.getAttribute('data-value') === (f.supplier || '')) opt.classList.add('is-selected');
+      else opt.classList.remove('is-selected');
+    });
+
+    const catSel = document.getElementById('filterCategory');
+    if (catSel) catSel.value = f.category || '';
+    const catLabel = document.getElementById('categoryTriggerLabel');
+    if (catLabel) {
+      catLabel.textContent = f.category || document.querySelector('#categoryOptionsList .searchable-option')?.textContent?.trim() || 'Semua Kategori';
+    }
+    document.querySelectorAll('#categoryOptionsList .searchable-option').forEach(opt => {
+      if (opt.getAttribute('data-value') === (f.category || '')) opt.classList.add('is-selected');
+      else opt.classList.remove('is-selected');
+    });
+
+    const modelSel = document.getElementById('filterModelBisnis');
+    if (modelSel) modelSel.value = f.modelBisnis || '';
+
+    currentFilter.weekendOnly = Boolean(f.weekendOnly);
+    currentFilter.activePresetId = presetId;
+
+    if (f.outlet) {
+      const outletSel = document.getElementById('filterOutlet');
+      if (outletSel) outletSel.value = f.outlet;
+    }
+
+    onAreaChange();
+    updatePresetButtonsUI();
+  }
+
+  function deleteCustomPreset(presetId, event) {
+    if (event) event.stopPropagation();
+    const list = getCustomPresets();
+    const target = list.find(p => p.id === presetId);
+    const name = target ? target.name : 'ini';
+    if (!confirm(`Hapus pintasan '${name}'?`)) return;
+
+    const filtered = list.filter(p => p.id !== presetId);
+    saveCustomPresetsToStorage(filtered);
+    if (currentFilter.activePresetId === presetId) {
+      currentFilter.activePresetId = null;
+    }
+    renderCustomPresets();
+    updatePresetButtonsUI();
+  }
+
+  function renderCustomPresets() {
+    const container = document.getElementById('customPresetsList');
+    if (!container) return;
+    const list = getCustomPresets();
+    if (!list.length) {
+      container.innerHTML = '';
+      return;
+    }
+
+    let html = '';
+    list.forEach(p => {
+      const isActive = currentFilter.activePresetId === p.id;
+      const safeName = p.name.replace(/"/g, '&quot;');
+      html += `
+        <button type="button" class="preset-chip preset-chip-custom ${isActive ? 'active' : ''}" data-id="${p.id}" onclick="applyCustomPreset('${p.id}')" title="Gunakan pintasan: ${safeName}">
+          <span>⭐ ${safeName}</span>
+          <span class="preset-delete-btn" onclick="deleteCustomPreset('${p.id}', event)" title="Hapus pintasan">✕</span>
+        </button>
+      `;
+    });
+    container.innerHTML = html;
+  }
 
   let currentDashboardData = {
     summary: {{ data.summary|tojson }},
@@ -4552,6 +5059,7 @@
     if (currentFilter.supplier) parts.push(`Supplier: ${currentFilter.supplier}`);
     if (currentFilter.category) parts.push(`Kategori: ${currentFilter.category}`);
     if (currentFilter.modelBisnis) parts.push(`Model: ${currentFilter.modelBisnis === 'KONSINYASI' ? 'Konsinyasi' : 'Dagangan'}`);
+    if (currentFilter.weekendOnly) parts.push('Khusus Akhir Pekan (Sabtu-Minggu)');
 
     summary.textContent = '🔍 ' + parts.join(' • ');
   }
@@ -4710,7 +5218,21 @@
       clearDateBtn.style.display = (startDate || endDate) ? 'flex' : 'none';
     }
 
-    currentFilter = { month, startDate, endDate, area, outlet, supplier, category, modelBisnis };
+    currentFilter = { 
+      month, 
+      startDate, 
+      endDate, 
+      area, 
+      outlet, 
+      supplier, 
+      category, 
+      modelBisnis,
+      weekendOnly: Boolean(currentFilter.weekendOnly),
+      activePresetId: currentFilter.activePresetId || null
+    };
+
+    // Validasi apakah konfigurasi saat ini masih cocok dengan preset aktif
+    checkActivePresetMatch();
 
     // Update active filter tags
     updateActiveFilterTags();
@@ -4771,6 +5293,9 @@
       } else if (selMonth) {
         if (rDate.substring(5, 7) !== selMonth) continue;
       }
+
+      // Filter khusus Akhir Pekan (Sabtu & Minggu) jika preset weekend aktif
+      if (currentFilter.weekendOnly && !isWeekendDate(rDate)) continue;
 
       if (area && rArea !== area) continue;
       if (outlet && rOutlet !== outlet) continue;
@@ -4914,6 +5439,9 @@
       } else if (selMonth) {
         if (t.date.substring(5, 7) !== selMonth) continue;
       }
+
+      // Filter target khusus Akhir Pekan jika preset weekend aktif
+      if (currentFilter.weekendOnly && !isWeekendDate(t.date)) continue;
 
       if (outlet && t.outlet !== outlet) continue;
       if (area && t.area !== area) continue;
@@ -5561,6 +6089,12 @@
       const isKonsin = currentFilter.modelBisnis === 'KONSINYASI';
       parts.push({ text: `Model: ${isKonsin ? 'Konsinyasi' : 'Dagangan'}`, cls: isKonsin ? 'badge-model-konsin' : 'badge-model-dagang' });
     }
+    if (currentFilter.weekendOnly) {
+      parts.push({ 
+        text: `📅 Hari: Khusus Akhir Pekan (Sabtu-Minggu) <span style="margin-left:6px; cursor:pointer; font-weight:bold;" onclick="clearWeekendFilter()" title="Hapus filter akhir pekan">✕</span>`, 
+        cls: 'filter-tag-weekend' 
+      });
+    }
 
     if (parts.length) {
       container.style.display = 'flex';
@@ -5577,6 +6111,10 @@
   }
 
   function resetFilters() {
+    currentFilter.weekendOnly = false;
+    currentFilter.activePresetId = null;
+    updatePresetButtonsUI();
+
     document.getElementById('filterMonth').value = '';
     const startEl = document.getElementById('filterStartDate');
     const endEl = document.getElementById('filterEndDate');
@@ -5657,6 +6195,7 @@
     if (currentFilter.supplier) filterDesc += ` | Supplier: ${currentFilter.supplier}`;
     if (currentFilter.category) filterDesc += ` | Kategori: ${currentFilter.category}`;
     if (currentFilter.modelBisnis) filterDesc += ` | Model: ${currentFilter.modelBisnis === 'KONSINYASI' ? 'Konsinyasi' : 'Dagangan'}`;
+    if (currentFilter.weekendOnly) filterDesc += ` | Khusus Akhir Pekan (Sabtu-Minggu)`;
     if (subtitleEl) subtitleEl.textContent = `Analisis pintar otomatis untuk: ${filterDesc}`;
 
     // Overall Health Status
@@ -7080,6 +7619,9 @@
     if (currentFilter && currentFilter.modelBisnis) {
       parts.push(`Model: ${currentFilter.modelBisnis === 'KONSINYASI' ? 'Konsinyasi' : 'Dagangan'}`);
     }
+    if (currentFilter && currentFilter.weekendOnly) {
+      parts.push('Khusus Akhir Pekan (Sabtu-Minggu)');
+    }
     return parts.length > 0 ? parts.join(' • ') : 'Seluruh Data YTD 2026';
   }
 
@@ -7378,7 +7920,9 @@
     sendAIPrompt(val);
   }
 
-  // Check initial AI status
+  // Inisialisasi pintasan kustom & status AI
+  renderCustomPresets();
+  updatePresetButtonsUI();
   checkAIStatus();
 </script>
 </body>

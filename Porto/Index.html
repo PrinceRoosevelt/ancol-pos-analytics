@@ -63,11 +63,11 @@
 
 <body class="h-full bg-[#FAF8F5] dark:bg-[#0f1115] text-stone-800 dark:text-stone-200 font-sans antialiased transition-colors duration-300 relative overflow-x-hidden lg:overflow-hidden select-none">
 
-  <!-- ABSTRACT PASTEL MESH BACKGROUND -->
-  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-70 dark:opacity-25">
-    <div class="absolute -top-32 -left-20 w-[550px] h-[550px] bg-pastel-sage rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen animate-pulse duration-[8000ms]"></div>
-    <div class="absolute top-1/3 -right-24 w-[600px] h-[600px] bg-pastel-lavender rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen animate-pulse duration-[10000ms]"></div>
-    <div class="absolute -bottom-32 left-1/3 w-[550px] h-[550px] bg-pastel-apricot rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen animate-pulse duration-[9000ms]"></div>
+  <!-- BESPOKE ARCHITECTURAL GRID & AMBIENT DEPTH (NON-GENERIC) -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(#d1d5db_1px,transparent_1px)] dark:bg-[radial-gradient(#374151_1px,transparent_1px)] [background-size:24px_24px] opacity-40 dark:opacity-20 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+    <div class="absolute -top-32 right-1/4 w-[500px] h-[500px] bg-emerald-500/10 dark:bg-emerald-500/5 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-10 left-1/4 w-[500px] h-[500px] bg-sky-500/10 dark:bg-sky-500/5 rounded-full blur-3xl"></div>
   </div>
 
   <!-- MAIN ULTRA-WIDE CONTAINER -->
@@ -392,27 +392,83 @@
                 <div class="flex items-center gap-2">
                   <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse mr-1"></span>
-                    127.614 Baris Data Terkoneksi (SQLite WAL)
+                    574.410+ Baris Data POS • Waitress WSGI • Cloudflare Tunnel Zero Downtime
                   </span>
                 </div>
                 <h2 class="text-sm sm:text-base font-extrabold text-stone-900 dark:text-white mt-0.5">Sales Performance &amp; Growth Dashboard Live Simulator</h2>
               </div>
             </div>
 
-            <!-- Sub-Mode Switcher -->
-            <div class="flex items-center gap-1.5 p-1 bg-stone-100 dark:bg-stone-800 rounded-xl text-xs font-bold">
-              <button onclick="switchAppView('dashboard')" id="btn-app-dash" class="px-3.5 py-1.5 rounded-lg bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-2xs transition-all">
-                📈 Executive Dashboard
-              </button>
-              <button onclick="switchAppView('admin')" id="btn-app-admin" class="px-3.5 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all">
-                📤 Admin &amp; Visitor Portal
-              </button>
+            <!-- Sub-Mode Switcher & Live Link -->
+            <div class="flex flex-wrap items-center gap-2">
+              <a href="https://ancol-analisa.my.id" target="_blank" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs flex items-center gap-1.5 transition-all">
+                <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                <span>Buka Production Live</span>
+                <span>↗</span>
+              </a>
+              <div class="flex items-center gap-1 p-1 bg-stone-100 dark:bg-stone-800 rounded-xl text-xs font-bold">
+                <button onclick="switchAppView('dashboard')" id="btn-app-dash" class="px-3 py-1.5 rounded-lg bg-white dark:bg-stone-900 text-stone-900 dark:text-white shadow-2xs transition-all">
+                  📈 Executive Simulator
+                </button>
+                <button onclick="switchAppView('admin')" id="btn-app-admin" class="px-3.5 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all">
+                  📤 Admin Portal
+                </button>
+              </div>
             </div>
           </div>
 
           <!-- SUB-VIEW 1: EXECUTIVE DASHBOARD (PERSIS GAMBAR ASLI) -->
           <div id="app-view-dashboard" class="space-y-4">
             
+            <!-- LATEST 2026 CAPABILITIES SPOTLIGHT -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <div class="p-2.5 bg-white/90 dark:bg-stone-900/90 rounded-xl border border-stone-200/80 dark:border-stone-800 flex items-center gap-2 text-xs">
+                <span class="text-base">⚡</span>
+                <div>
+                  <div class="font-bold text-stone-900 dark:text-white text-[11px]">Pintasan Cepat Filter</div>
+                  <div class="text-[10px] text-stone-500 font-mono">Dufan, Awapark, Konsinyasi</div>
+                </div>
+              </div>
+              <div class="p-2.5 bg-white/90 dark:bg-stone-900/90 rounded-xl border border-stone-200/80 dark:border-stone-800 flex items-center gap-2 text-xs">
+                <span class="text-base">🤖</span>
+                <div>
+                  <div class="font-bold text-stone-900 dark:text-white text-[11px]">Gemini AI Copilot</div>
+                  <div class="text-[10px] text-stone-500 font-mono">Cloud AI &amp; BI Rule Fallback</div>
+                </div>
+              </div>
+              <div class="p-2.5 bg-white/90 dark:bg-stone-900/90 rounded-xl border border-stone-200/80 dark:border-stone-800 flex items-center gap-2 text-xs">
+                <span class="text-base">🤝</span>
+                <div>
+                  <div class="font-bold text-stone-900 dark:text-white text-[11px]">Konsinyasi vs Dagangan</div>
+                  <div class="text-[10px] text-stone-500 font-mono">Margin &amp; COGS 5.945 SKU</div>
+                </div>
+              </div>
+              <div class="p-2.5 bg-white/90 dark:bg-stone-900/90 rounded-xl border border-stone-200/80 dark:border-stone-800 flex items-center gap-2 text-xs">
+                <span class="text-base">📥</span>
+                <div>
+                  <div class="font-bold text-stone-900 dark:text-white text-[11px]">9-Sheet Boardroom Excel</div>
+                  <div class="text-[10px] text-stone-500 font-mono">Dynamic =SUM() Formula</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SHORTCUT PRESETS STRIP -->
+            <div class="flex flex-wrap items-center gap-1.5 p-2.5 bg-white/90 dark:bg-stone-900/90 rounded-xl border border-stone-200/80 dark:border-stone-800 text-xs">
+              <span class="text-[10px] font-mono font-bold text-stone-400 dark:text-stone-500 uppercase mr-1">⚡ Pintasan Cepat:</span>
+              <button type="button" onclick="applyPortoPreset('dufan')" class="px-3 py-1 rounded-lg bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200/60 font-semibold text-[11px] hover:bg-rose-100 transition-all flex items-center gap-1">
+                <span>🎢</span> Dufan Weekend
+              </button>
+              <button type="button" onclick="applyPortoPreset('awapark')" class="px-3 py-1 rounded-lg bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 border border-sky-200/60 font-semibold text-[11px] hover:bg-sky-100 transition-all flex items-center gap-1">
+                <span>🌊</span> Awapark Weekend
+              </button>
+              <button type="button" onclick="applyPortoPreset('beachpark')" class="px-3 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200/60 font-semibold text-[11px] hover:bg-amber-100 transition-all flex items-center gap-1">
+                <span>🏖️</span> Beachpark Weekend
+              </button>
+              <button type="button" onclick="applyPortoPreset('all')" class="px-3 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 font-semibold text-[11px] hover:bg-emerald-100 transition-all flex items-center gap-1 ml-auto">
+                <span>🔄</span> Reset Semua
+              </button>
+            </div>
+
             <!-- HEADER FILTERS BAR -->
             <div class="bg-white/90 dark:bg-stone-900/90 p-4 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-xs grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
               <div>
@@ -1465,7 +1521,7 @@
               <div class="flex items-center gap-2 mb-1">
                 <span class="text-[10px] font-mono font-bold text-amber-600 dark:text-amber-400 uppercase tracking-widest px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/60 border border-amber-200/60 dark:border-amber-800/60">Visual Journal &amp; Personal Lens</span>
                 <span class="text-xs text-stone-400">•</span>
-                <span class="text-xs font-semibold text-stone-500 dark:text-stone-400">Format 3:4 • 29 Selected Frames</span>
+                <span class="text-xs font-semibold text-stone-500 dark:text-stone-400">Format 3:4 • 34 Selected Frames</span>
               </div>
               <h2 class="text-xl sm:text-2xl font-extrabold text-stone-900 dark:text-white tracking-tight">Through My Lens: A Personal Visual Diary</h2>
               <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400 mt-1 max-w-3xl leading-relaxed">
@@ -1474,15 +1530,26 @@
             </div>
             <div class="flex items-center gap-2 self-start sm:self-auto">
               <div class="px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-200/60 dark:border-amber-800 text-amber-700 dark:text-amber-300 font-mono text-xs font-bold">
-                🎞️ 29 Moments Captured
+                🎞️ 34 Moments Captured
               </div>
             </div>
+          </div>
+
+                    <!-- Category Mood Filter Bar (Interactive Gallery Curator) -->
+          <div class="flex flex-wrap items-center gap-2 pb-2">
+            <span class="text-[11px] font-bold font-mono text-stone-400 dark:text-stone-500 uppercase tracking-wider mr-1">Filter Mood:</span>
+            <button onclick="filterPhotoCategory('all')" id="pfilter-all" class="photo-filter-btn px-3 py-1 rounded-full text-xs font-bold bg-amber-600 text-white shadow-2xs transition-all">Semua (34)</button>
+            <button onclick="filterPhotoCategory('light')" id="pfilter-light" class="photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Light &amp; Shadow</button>
+            <button onclick="filterPhotoCategory('golden')" id="pfilter-golden" class="photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Golden Hour</button>
+            <button onclick="filterPhotoCategory('street')" id="pfilter-street" class="photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Street &amp; Urban</button>
+            <button onclick="filterPhotoCategory('nature')" id="pfilter-nature" class="photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Nature &amp; Botanical</button>
+            <button onclick="filterPhotoCategory('twilight')" id="pfilter-twilight" class="photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all">Twilight Reverie</button>
           </div>
 
           <!-- Collage Grid 3:4 -->
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4.5">
             <!-- Photo Card 1 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/53270d48-8063-484c-8297-99c4dcd6ca73.jpg', 'Golden Hour & Solitude #01', 'Light & Shadow • Eksplorasi spektrum cahaya senja dan ketenangan ruang terbuka.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="golden" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/53270d48-8063-484c-8297-99c4dcd6ca73.jpg', 'Golden Hour & Solitude #01', 'Light & Shadow • Eksplorasi spektrum cahaya senja dan ketenangan ruang terbuka.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/53270d48-8063-484c-8297-99c4dcd6ca73.jpg" alt="Golden Hour & Solitude #01" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1503,7 +1570,7 @@
               </div>
             </div>
             <!-- Photo Card 2 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_0153.JPG', 'Urban Silhouette & Mood #02', 'Street Mood • Menangkap kontur arsitektur dan dinamika gerak di ruang publik.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="street" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_0153.JPG', 'Urban Silhouette & Mood #02', 'Street Mood • Menangkap kontur arsitektur dan dinamika gerak di ruang publik.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_0153.JPG" alt="Urban Silhouette & Mood #02" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1524,7 +1591,7 @@
               </div>
             </div>
             <!-- Photo Card 3 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_0316.JPG', 'Framing The Mundane #03', 'Visual Poetry • Mengabadikan objek dan interaksi sederhana menjadi ritme visual.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="nature" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_0316.JPG', 'Framing The Mundane #03', 'Visual Poetry • Mengabadikan objek dan interaksi sederhana menjadi ritme visual.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_0316.JPG" alt="Framing The Mundane #03" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1545,7 +1612,7 @@
               </div>
             </div>
             <!-- Photo Card 4 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_0408.JPG', 'Tone & Atmosphere #04', 'Color Study • Eksperimen kurasi warna dan temperatur visual berkarakter.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="twilight" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_0408.JPG', 'Tone & Atmosphere #04', 'Color Study • Eksperimen kurasi warna dan temperatur visual berkarakter.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_0408.JPG" alt="Tone & Atmosphere #04" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1566,7 +1633,7 @@
               </div>
             </div>
             <!-- Photo Card 5 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_1005.JPG', 'Motion & Stillness #05', 'Long Exposure • Pertemuan antara dinamika gerak cepat dan keheningan lanskap.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="twilight" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_1005.JPG', 'Motion & Stillness #05', 'Long Exposure • Pertemuan antara dinamika gerak cepat dan keheningan lanskap.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_1005.JPG" alt="Motion & Stillness #05" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1587,7 +1654,7 @@
               </div>
             </div>
             <!-- Photo Card 6 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_1091.JPG', 'Geometric Perspective #06', 'Lines & Space • Perspektif simetri, garis pandang, dan sudut struktural.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="street" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_1091.JPG', 'Geometric Perspective #06', 'Lines & Space • Perspektif simetri, garis pandang, dan sudut struktural.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_1091.JPG" alt="Geometric Perspective #06" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1608,7 +1675,7 @@
               </div>
             </div>
             <!-- Photo Card 7 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_2077.JPG', 'Quiet Moments #07', 'Everyday Life • Dokumentasi candid yang intim tentang jeda dan ruang refleksi.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="twilight" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_2077.JPG', 'Quiet Moments #07', 'Everyday Life • Dokumentasi candid yang intim tentang jeda dan ruang refleksi.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_2077.JPG" alt="Quiet Moments #07" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1629,7 +1696,7 @@
               </div>
             </div>
             <!-- Photo Card 8 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_2088.JPG', 'Textures in the Wind #08', 'Natural Details • Eksplorasi kontras tekstur organik, angin, dan elemen sekitar.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="nature" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_2088.JPG', 'Textures in the Wind #08', 'Natural Details • Eksplorasi kontras tekstur organik, angin, dan elemen sekitar.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_2088.JPG" alt="Textures in the Wind #08" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1650,7 +1717,7 @@
               </div>
             </div>
             <!-- Photo Card 9 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_2276.JPG', 'Candid Expressions #09', 'Human Interest • Spontanitas ekspresi manusia tanpa filter atau skenario.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="twilight" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_2276.JPG', 'Candid Expressions #09', 'Human Interest • Spontanitas ekspresi manusia tanpa filter atau skenario.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_2276.JPG" alt="Candid Expressions #09" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1671,7 +1738,7 @@
               </div>
             </div>
             <!-- Photo Card 10 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5242.JPG', 'Twilight Reverie #10', 'Dusk Aesthetic • Gradasi langit petang dan lampu kota yang mulai menyala.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="twilight" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5242.JPG', 'Twilight Reverie #10', 'Dusk Aesthetic • Gradasi langit petang dan lampu kota yang mulai menyala.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5242.JPG" alt="Twilight Reverie #10" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1692,7 +1759,7 @@
               </div>
             </div>
             <!-- Photo Card 11 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5270.JPG', 'Golden Hour & Solitude #11', 'Light & Shadow • Eksplorasi spektrum cahaya senja dan ketenangan ruang terbuka.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="golden" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5270.JPG', 'Golden Hour & Solitude #11', 'Light & Shadow • Eksplorasi spektrum cahaya senja dan ketenangan ruang terbuka.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5270.JPG" alt="Golden Hour & Solitude #11" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1713,7 +1780,7 @@
               </div>
             </div>
             <!-- Photo Card 12 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5285.JPG', 'Urban Silhouette & Mood #12', 'Street Mood • Menangkap kontur arsitektur dan dinamika gerak di ruang publik.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="street" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5285.JPG', 'Urban Silhouette & Mood #12', 'Street Mood • Menangkap kontur arsitektur dan dinamika gerak di ruang publik.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5285.JPG" alt="Urban Silhouette & Mood #12" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1734,7 +1801,7 @@
               </div>
             </div>
             <!-- Photo Card 13 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5286.JPG', 'Framing The Mundane #13', 'Visual Poetry • Mengabadikan objek dan interaksi sederhana menjadi ritme visual.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="nature" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5286.JPG', 'Framing The Mundane #13', 'Visual Poetry • Mengabadikan objek dan interaksi sederhana menjadi ritme visual.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5286.JPG" alt="Framing The Mundane #13" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1755,7 +1822,7 @@
               </div>
             </div>
             <!-- Photo Card 14 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5287.JPG', 'Tone & Atmosphere #14', 'Color Study • Eksperimen kurasi warna dan temperatur visual berkarakter.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="twilight" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5287.JPG', 'Tone & Atmosphere #14', 'Color Study • Eksperimen kurasi warna dan temperatur visual berkarakter.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5287.JPG" alt="Tone & Atmosphere #14" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1776,7 +1843,7 @@
               </div>
             </div>
             <!-- Photo Card 15 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5290.JPG', 'Motion & Stillness #15', 'Long Exposure • Pertemuan antara dinamika gerak cepat dan keheningan lanskap.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="twilight" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5290.JPG', 'Motion & Stillness #15', 'Long Exposure • Pertemuan antara dinamika gerak cepat dan keheningan lanskap.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5290.JPG" alt="Motion & Stillness #15" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1797,7 +1864,7 @@
               </div>
             </div>
             <!-- Photo Card 16 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5291.JPG', 'Geometric Perspective #16', 'Lines & Space • Perspektif simetri, garis pandang, dan sudut struktural.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="street" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5291.JPG', 'Geometric Perspective #16', 'Lines & Space • Perspektif simetri, garis pandang, dan sudut struktural.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5291.JPG" alt="Geometric Perspective #16" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1818,7 +1885,7 @@
               </div>
             </div>
             <!-- Photo Card 17 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5292.JPG', 'Quiet Moments #17', 'Everyday Life • Dokumentasi candid yang intim tentang jeda dan ruang refleksi.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="twilight" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5292.JPG', 'Quiet Moments #17', 'Everyday Life • Dokumentasi candid yang intim tentang jeda dan ruang refleksi.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5292.JPG" alt="Quiet Moments #17" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1839,7 +1906,7 @@
               </div>
             </div>
             <!-- Photo Card 18 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5325.JPG', 'Textures in the Wind #18', 'Natural Details • Eksplorasi kontras tekstur organik, angin, dan elemen sekitar.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="nature" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5325.JPG', 'Textures in the Wind #18', 'Natural Details • Eksplorasi kontras tekstur organik, angin, dan elemen sekitar.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5325.JPG" alt="Textures in the Wind #18" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1860,7 +1927,7 @@
               </div>
             </div>
             <!-- Photo Card 19 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5421.JPG', 'Candid Expressions #19', 'Human Interest • Spontanitas ekspresi manusia tanpa filter atau skenario.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="twilight" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5421.JPG', 'Candid Expressions #19', 'Human Interest • Spontanitas ekspresi manusia tanpa filter atau skenario.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5421.JPG" alt="Candid Expressions #19" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1881,7 +1948,7 @@
               </div>
             </div>
             <!-- Photo Card 20 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5550.JPG', 'Twilight Reverie #20', 'Dusk Aesthetic • Gradasi langit petang dan lampu kota yang mulai menyala.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="twilight" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5550.JPG', 'Twilight Reverie #20', 'Dusk Aesthetic • Gradasi langit petang dan lampu kota yang mulai menyala.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5550.JPG" alt="Twilight Reverie #20" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1902,7 +1969,7 @@
               </div>
             </div>
             <!-- Photo Card 21 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5656.JPG', 'Golden Hour & Solitude #21', 'Light & Shadow • Eksplorasi spektrum cahaya senja dan ketenangan ruang terbuka.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="golden" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5656.JPG', 'Golden Hour & Solitude #21', 'Light & Shadow • Eksplorasi spektrum cahaya senja dan ketenangan ruang terbuka.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5656.JPG" alt="Golden Hour & Solitude #21" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1923,7 +1990,7 @@
               </div>
             </div>
             <!-- Photo Card 22 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5657.JPG', 'Urban Silhouette & Mood #22', 'Street Mood • Menangkap kontur arsitektur dan dinamika gerak di ruang publik.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="street" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5657.JPG', 'Urban Silhouette & Mood #22', 'Street Mood • Menangkap kontur arsitektur dan dinamika gerak di ruang publik.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5657.JPG" alt="Urban Silhouette & Mood #22" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1944,7 +2011,7 @@
               </div>
             </div>
             <!-- Photo Card 23 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5773.JPG', 'Framing The Mundane #23', 'Visual Poetry • Mengabadikan objek dan interaksi sederhana menjadi ritme visual.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="nature" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5773.JPG', 'Framing The Mundane #23', 'Visual Poetry • Mengabadikan objek dan interaksi sederhana menjadi ritme visual.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5773.JPG" alt="Framing The Mundane #23" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1965,7 +2032,7 @@
               </div>
             </div>
             <!-- Photo Card 24 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5932.JPG', 'Tone & Atmosphere #24', 'Color Study • Eksperimen kurasi warna dan temperatur visual berkarakter.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="twilight" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5932.JPG', 'Tone & Atmosphere #24', 'Color Study • Eksperimen kurasi warna dan temperatur visual berkarakter.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5932.JPG" alt="Tone & Atmosphere #24" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -1986,7 +2053,7 @@
               </div>
             </div>
             <!-- Photo Card 25 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5934.JPG', 'Motion & Stillness #25', 'Long Exposure • Pertemuan antara dinamika gerak cepat dan keheningan lanskap.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="twilight" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_5934.JPG', 'Motion & Stillness #25', 'Long Exposure • Pertemuan antara dinamika gerak cepat dan keheningan lanskap.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_5934.JPG" alt="Motion & Stillness #25" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -2007,7 +2074,7 @@
               </div>
             </div>
             <!-- Photo Card 26 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_9675.JPG', 'Geometric Perspective #26', 'Lines & Space • Perspektif simetri, garis pandang, dan sudut struktural.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="street" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_9675.JPG', 'Geometric Perspective #26', 'Lines & Space • Perspektif simetri, garis pandang, dan sudut struktural.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_9675.JPG" alt="Geometric Perspective #26" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -2028,7 +2095,7 @@
               </div>
             </div>
             <!-- Photo Card 27 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_9676.JPG', 'Quiet Moments #27', 'Everyday Life • Dokumentasi candid yang intim tentang jeda dan ruang refleksi.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="twilight" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_9676.JPG', 'Quiet Moments #27', 'Everyday Life • Dokumentasi candid yang intim tentang jeda dan ruang refleksi.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_9676.JPG" alt="Quiet Moments #27" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -2049,7 +2116,7 @@
               </div>
             </div>
             <!-- Photo Card 28 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_9745.JPG', 'Textures in the Wind #28', 'Natural Details • Eksplorasi kontras tekstur organik, angin, dan elemen sekitar.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="nature" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_9745.JPG', 'Textures in the Wind #28', 'Natural Details • Eksplorasi kontras tekstur organik, angin, dan elemen sekitar.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_9745.JPG" alt="Textures in the Wind #28" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -2070,7 +2137,7 @@
               </div>
             </div>
             <!-- Photo Card 29 -->
-            <div class="group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_9892.JPG', 'Candid Expressions #29', 'Human Interest • Spontanitas ekspresi manusia tanpa filter atau skenario.')">
+            <div class="photo-card-item group relative rounded-2xl" data-category="twilight" overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" onclick="openPhotoModal('./docs/photography/thumbs/IMG_9892.JPG', 'Candid Expressions #29', 'Human Interest • Spontanitas ekspresi manusia tanpa filter atau skenario.')">
               <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
                 <img src="./docs/photography/thumbs/IMG_9892.JPG" alt="Candid Expressions #29" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
@@ -2088,6 +2155,115 @@
                   <p class="text-[10px] text-stone-500 dark:text-stone-400">Human Interest</p>
                 </div>
                 <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#29</span>
+              </div>
+            </div>
+                      <!-- Photo Card 30 (NEW) -->
+            <div class="photo-card-item group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" data-category="light" onclick="openPhotoModal('./docs/photography/thumbs/IMG_0221.JPG', 'Morning Rays in the Woods #30', 'Light &amp; Shadow • Sinar fajar menyelinap di antara rimbun pinus dan keheningan alam.')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_0221.JPG" alt="Morning Rays in the Woods #30" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold mb-1">Light &amp; Shadow</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Morning Rays in the Woods #30</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-amber-300">Lihat Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Morning Rays in the Woods #30</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Light &amp; Shadow</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#30</span>
+              </div>
+            </div>
+
+            <!-- Photo Card 31 (NEW) -->
+            <div class="photo-card-item group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" data-category="nature" onclick="openPhotoModal('./docs/photography/thumbs/IMG_0917.JPG', 'Petals Against the Azure #31', 'Botanical Perspective • Kontras kelembutan flora dengan bentang cakrawala biru yang luas.')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_0917.JPG" alt="Petals Against the Azure #31" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold mb-1">Botanical Perspective</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Petals Against the Azure #31</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-amber-300">Lihat Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Petals Against the Azure #31</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Botanical Perspective</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#31</span>
+              </div>
+            </div>
+
+            <!-- Photo Card 32 (NEW) -->
+            <div class="photo-card-item group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" data-category="golden" onclick="openPhotoModal('./docs/photography/thumbs/IMG_2933.JPG', 'Amber Glow by the Window #32', 'Golden Hour • Garis geometris kusen jendela menangkap hangatnya bias senja.')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_2933.JPG" alt="Amber Glow by the Window #32" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold mb-1">Golden Hour</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Amber Glow by the Window #32</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-amber-300">Lihat Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Amber Glow by the Window #32</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Golden Hour</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#32</span>
+              </div>
+            </div>
+
+            <!-- Photo Card 33 (NEW) -->
+            <div class="photo-card-item group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" data-category="twilight" onclick="openPhotoModal('./docs/photography/thumbs/IMG_2938.JPG', 'Dusk Behind the Bars #33', 'Twilight Reverie • Romantisme senja yang terbingkai dalam siluet batas dan bayangan.')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_2938.JPG" alt="Dusk Behind the Bars #33" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold mb-1">Twilight Reverie</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Dusk Behind the Bars #33</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-amber-300">Lihat Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Dusk Behind the Bars #33</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Twilight Reverie</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#33</span>
+              </div>
+            </div>
+
+            <!-- Photo Card 34 (NEW) -->
+            <div class="photo-card-item group relative rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800/90 border border-stone-200/70 dark:border-stone-700/80 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer" data-category="nature" onclick="openPhotoModal('./docs/photography/thumbs/IMG_4255.JPG', 'Verdant Whispers #34', 'Nature &amp; Texture • Kesegaran pucuk daun teh menyatu dalam ritme hijau perbukitan.')">
+              <div class="aspect-[3/4] w-full overflow-hidden bg-stone-200 dark:bg-stone-900 relative">
+                <img src="./docs/photography/thumbs/IMG_4255.JPG" alt="Verdant Whispers #34" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold mb-1">Nature &amp; Texture</span>
+                  <h4 class="font-extrabold text-sm leading-snug drop-shadow-xs">Verdant Whispers #34</h4>
+                  <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/20 text-[11px] text-stone-300">
+                    <span class="font-mono">Ratio 3:4</span>
+                    <span class="font-bold text-white flex items-center gap-1 text-amber-300">Lihat Fullscreen ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                <div class="truncate pr-2">
+                  <h5 class="font-bold text-stone-900 dark:text-white truncate">Verdant Whispers #34</h5>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400">Nature &amp; Texture</p>
+                </div>
+                <span class="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold border border-stone-200/50 dark:border-stone-700">#34</span>
               </div>
             </div>
           </div>
@@ -2173,134 +2349,139 @@
     // Dynamic Live Simulation Model
     const liveSimulationData = {
       all: {
-        sales: 'Rp 3.110.541.556',
-        sales25: 'Rp 3.897.590.624',
-        growth: '-20.19% (-Rp 787 Jt)',
-        target: 'Rp 3.469.010.382',
-        ach: '89.67%',
-        gap: 'DEFISIT DARI TARGET (-Rp 358.468.826)',
-        tx: '29.286',
-        txGrowth: '-12.59%',
-        atv: 'Rp 106.213',
-        qty: '111.453',
-        qtyGrowth: '+20.17%',
-        upt: '3.81 item',
-        visitor: '1.885.605',
-        sph: 'Rp 1.650',
-        capture: '1.55% (29.286 struk)',
-        summary: 'Total penjualan 2026 tercatat sebesar <strong>Rp 3.110.541.556</strong> (89.67% dari target Rp 3.469.010.382). Performa penjualan tercatat terkoreksi -20.19% dibanding periode yang sama tahun 2025. Rata-rata transaksi per pelanggan (ATV) adalah <strong>Rp 106.213</strong> dengan puncak penjualan pada pukul 16:00.',
+        sales: 'Rp 15.628.726.398',
+        sales25: 'Rp 15.714.756.423',
+        growth: '-0.55% (-Rp 86,0 Jt)',
+        target: 'Rp 16.000.000.000',
+        ach: '97.68%',
+        gap: 'DEFISIT DARI TARGET (-Rp 371.273.602)',
+        tx: '143.723',
+        txGrowth: '+3.70%',
+        atv: 'Rp 108.742',
+        qty: '515.210',
+        qtyGrowth: '+21.41%',
+        upt: '3.58 item',
+        visitor: '7.480.000',
+        sph: 'Rp 2.089',
+        capture: '1.92% (143.723 struk)',
+        summary: 'Realisasi omset YTD 2026 tercatat sebesar <strong>Rp 15.628.726.398</strong> (97.68% dari target Rp 16,0 Miliar) dengan Laba Kotor estimasi <strong>Rp 8.94 Miliar (Margin 57.2%)</strong>. Pertumbuhan transaksi naik +3.70% YoY dengan rata-rata belanja (ATV) <strong>Rp 108.742</strong> dan puncak transaksi pada pukul 16:00.',
         topOutlets: [
-          { name: '1. SWIN Sea World Induk', sales: 'Rp 873,90 Jt', pct: '(28.1%)' },
-          { name: '2. ODIN Samudra Induk', sales: 'Rp 495,12 Jt', pct: '(15.9%)' },
-          { name: '3. DFIN Dufan Induk', sales: 'Rp 477,30 Jt', pct: '(15.3%)' },
-          { name: '4. DFIL Dufan Induk Lama', sales: 'Rp 288,79 Jt', pct: '(9.3%)' },
-          { name: '5. DFKE Dufan Kereta Misteri', sales: 'Rp 195,02 Jt', pct: '(6.3%)' }
+          { name: '1. SWIN Sea World Induk', sales: 'Rp 4,23 Miliar', pct: '(27.0%)' },
+          { name: '2. ODIN Samudra Induk', sales: 'Rp 2,60 Miliar', pct: '(16.6%)' },
+          { name: '3. DFIN Dufan Induk', sales: 'Rp 2,12 Miliar', pct: '(13.6%)' },
+          { name: '4. DFIL Dufan Induk Lama', sales: 'Rp 1,46 Miliar', pct: '(9.3%)' },
+          { name: '5. DFWW Dufan WWN', sales: 'Rp 920,39 Jt', pct: '(5.9%)' }
         ],
         bottomOutlets: [
-          { name: '! TJOM Merchandise Ombak Laut', sales: 'Rp 5,17 Jt', growth: '+81.5%', pos: true },
-          { name: '! JBIN JBL Induk', sales: 'Rp 12,07 Jt', growth: '+19.7%', pos: true },
-          { name: '! OL01 Online Shop', sales: 'Rp 20,26 Jt', growth: '-25.1%', pos: false },
-          { name: '! DFTO Dufan Tornado', sales: 'Rp 24,00 Jt', growth: '-28.7%', pos: false },
-          { name: '! AWKL AWA Taman Kelapa 2', sales: 'Rp 26,81 Jt', growth: '-5.4%', pos: false }
+          { name: '! TJOM Merchandise Ombak Laut', sales: 'Rp 38,19 Jt', growth: '+32.4%', pos: true },
+          { name: '! JBIN JBL Induk', sales: 'Rp 72,12 Jt', growth: '+15.8%', pos: true },
+          { name: '! OL01 Online Shop', sales: 'Rp 105,02 Jt', growth: '-18.2%', pos: false },
+          { name: '! AWKL AWA Taman Kelapa 2', sales: 'Rp 140,26 Jt', growth: '-4.1%', pos: false },
+          { name: '! DFSI Dufan Simulator', sales: 'Rp 382,22 Jt', growth: '+8.7%', pos: true }
         ]
       },
       dufan: {
-        sales: 'Rp 1.477.763.005',
-        sales25: 'Rp 1.711.174.009',
-        growth: '-13.64% (-Rp 233 Jt)',
-        target: 'Rp 2.065.000.000',
-        ach: '71.56%',
-        gap: 'DEFISIT DARI TARGET (-Rp 587.236.995)',
-        tx: '15.926',
-        txGrowth: '-8.40%',
-        atv: 'Rp 92.789',
-        qty: '60.700',
-        qtyGrowth: '+18.40%',
-        upt: '3.81 item',
-        visitor: '388.560',
-        sph: 'Rp 3.803',
-        capture: '4.10% (15.926 struk)',
-        summary: 'Area <strong>DUFAN</strong> menyumbang <strong>Rp 1.477.763.005</strong> dengan total 15.926 struk transaksi. Rata-rata belanja per pengunjung (SPH) sangat kuat di angka <strong>Rp 3.803 / head</strong>, dengan konter Dufan Induk dan satelit wahana sebagai penggerak utama.',
+        sales: 'Rp 7.235.062.753',
+        sales25: 'Rp 7.318.196.560',
+        growth: '-1.14% (-Rp 83,1 Jt)',
+        target: 'Rp 8.259.000.000',
+        ach: '87.60%',
+        gap: 'DEFISIT DARI TARGET (-Rp 1.023.937.247)',
+        tx: '77.488',
+        txGrowth: '+5.60%',
+        atv: 'Rp 93.370',
+        qty: '293.982',
+        qtyGrowth: '+16.85%',
+        upt: '3.79 item',
+        visitor: '2.840.000',
+        sph: 'Rp 2.548',
+        capture: '2.73% (77.488 struk)',
+        summary: 'Unit <strong>DUFAN</strong> menyumbang <strong>Rp 7.235.062.753</strong> (46.3% total revenue) dengan total 77.488 struk transaksi. Dufan Induk dan Dufan Induk Lama menjadi motor penggerak utama omset merchandise.',
         topOutlets: [
-          { name: '1. DFIN Dufan Induk', sales: 'Rp 477,30 Jt', pct: '(32.3%)' },
-          { name: '2. DFIL Dufan Induk Lama', sales: 'Rp 288,79 Jt', pct: '(19.5%)' },
-          { name: '3. DFKE Dufan Kereta Misteri', sales: 'Rp 195,02 Jt', pct: '(13.2%)' },
-          { name: '4. DFOR Dufan Oriental', sales: 'Rp 180,45 Jt', pct: '(12.2%)' },
-          { name: '5. DFAJ Dufan Arung Jeram', sales: 'Rp 120,15 Jt', pct: '(8.1%)' }
+          { name: '1. DFIN Dufan Induk', sales: 'Rp 2,12 Miliar', pct: '(29.3%)' },
+          { name: '2. DFIL Dufan Induk Lama', sales: 'Rp 1,46 Miliar', pct: '(20.1%)' },
+          { name: '3. DFWW Dufan WWN', sales: 'Rp 920,39 Jt', pct: '(12.7%)' },
+          { name: '4. DFKE Dufan Kereta Misteri', sales: 'Rp 796,84 Jt', pct: '(11.0%)' },
+          { name: '5. DFAR Dufan Arung Jeram', sales: 'Rp 752,74 Jt', pct: '(10.4%)' }
         ],
         bottomOutlets: [
-          { name: '! DFTO Dufan Tornado', sales: 'Rp 24,00 Jt', growth: '-28.7%', pos: false },
-          { name: '! DFHY Dufan Hysteria', sales: 'Rp 32,15 Jt', growth: '-18.4%', pos: false },
-          { name: '! DFBL Dufan Baling2', sales: 'Rp 41,20 Jt', growth: '-12.0%', pos: false },
-          { name: '! DFID Dufan Ice Age', sales: 'Rp 48,50 Jt', growth: '-8.5%', pos: false },
-          { name: '! DFGL Dufan Galactica', sales: 'Rp 70,25 Jt', growth: '+5.2%', pos: true }
+          { name: '! DFSI Dufan Simulator', sales: 'Rp 382,22 Jt', growth: '+8.7%', pos: true },
+          { name: '! DFTO Dufan Tornado', sales: 'Rp 145,20 Jt', growth: '-14.2%', pos: false },
+          { name: '! DFHY Dufan Hysteria', sales: 'Rp 168,40 Jt', growth: '-10.5%', pos: false },
+          { name: '! DFBL Dufan Baling2', sales: 'Rp 210,15 Jt', growth: '-7.2%', pos: false },
+          { name: '! DFIC Dufan Ice Cream', sales: 'Rp 280,50 Jt', growth: '+3.1%', pos: true }
         ]
       },
       awapark: {
-        sales: 'Rp 1.553.498.494',
-        sales25: 'Rp 2.094.988.829',
-        growth: '-25.85% (-Rp 541 Jt)',
-        target: 'Rp 1.331.010.382',
-        ach: '116.72%',
-        gap: 'SURPLUS TARGET (+Rp 222.488.112) 🏆',
-        tx: '12.451',
-        txGrowth: '-16.20%',
-        atv: 'Rp 124.769',
-        qty: '47.579',
-        qtyGrowth: '+22.60%',
-        upt: '3.82 item',
-        visitor: '402.861',
-        sph: 'Rp 3.856',
-        capture: '3.09% (12.451 struk)',
-        summary: 'Area <strong>AWAPARK</strong> menjadi <strong>Top Achiever</strong> dengan melampaui target anggaran sebesar <strong>116.72%</strong> (Rp 1,55 Miliar vs Target Rp 1,33 M). Menghasilkan ATV tertinggi sebesar <strong>Rp 124.769</strong> dipimpin Sea World & Samudra Induk.',
+        sales: 'Rp 7.899.900.585',
+        sales25: 'Rp 7.974.032.020',
+        growth: '-0.93% (-Rp 74,1 Jt)',
+        target: 'Rp 7.291.000.000',
+        ach: '108.35%',
+        gap: 'SURPLUS TARGET (+Rp 608.900.585) 🏆',
+        tx: '61.658',
+        txGrowth: '+1.41%',
+        atv: 'Rp 128.125',
+        qty: '184.720',
+        qtyGrowth: '+15.93%',
+        upt: '3.00 item',
+        visitor: '2.140.000',
+        sph: 'Rp 3.692',
+        capture: '2.88% (61.658 struk)',
+        summary: 'Area <strong>AWAPARK</strong> melampaui target dengan surplus <strong>+Rp 608,9 Juta (108.35%)</strong>. Menghasilkan ATV tertinggi korporat <strong>Rp 128.125</strong> dengan Sea World Induk sebagai kontributor tunggal terbesar (Rp 4,23 Miliar).',
         topOutlets: [
-          { name: '1. SWIN Sea World Induk', sales: 'Rp 873,90 Jt', pct: '(56.3%)' },
-          { name: '2. ODIN Samudra Induk', sales: 'Rp 495,12 Jt', pct: '(31.9%)' },
-          { name: '3. ATIN Atlantis Induk', sales: 'Rp 145,60 Jt', pct: '(9.4%)' },
-          { name: '4. JBIN JBL Induk', sales: 'Rp 12,07 Jt', pct: '(0.8%)' },
-          { name: '5. AWKL AWA Taman Kelapa 2', sales: 'Rp 26,81 Jt', pct: '(1.7%)' }
+          { name: '1. SWIN Sea World Induk', sales: 'Rp 4,23 Miliar', pct: '(53.5%)' },
+          { name: '2. ODIN Samudra Induk', sales: 'Rp 2,60 Miliar', pct: '(32.9%)' },
+          { name: '3. AWIN Atlantis Induk', sales: 'Rp 861,25 Jt', pct: '(10.9%)' },
+          { name: '4. AWKL AWA Taman Kelapa 2', sales: 'Rp 140,26 Jt', pct: '(1.8%)' },
+          { name: '5. JBIN JBL Induk', sales: 'Rp 72,12 Jt', pct: '(0.9%)' }
         ],
         bottomOutlets: [
-          { name: '! JBIN JBL Induk', sales: 'Rp 12,07 Jt', growth: '+19.7%', pos: true },
-          { name: '! AWKL AWA Taman Kelapa 2', sales: 'Rp 26,81 Jt', growth: '-5.4%', pos: false },
-          { name: '! AT02 Atlantis Plaza', sales: 'Rp 18,30 Jt', growth: '-14.2%', pos: false },
-          { name: '! OD02 Samudra Dolphin', sales: 'Rp 22,10 Jt', growth: '-11.0%', pos: false },
-          { name: '! SW02 Sea World Touchpool', sales: 'Rp 35,40 Jt', growth: '+2.1%', pos: true }
+          { name: '! JBIN JBL Induk', sales: 'Rp 72,12 Jt', growth: '+15.8%', pos: true },
+          { name: '! AWKL AWA Taman Kelapa 2', sales: 'Rp 140,26 Jt', growth: '-4.1%', pos: false },
+          { name: '! SWTG Sea World Touchpool', sales: 'Rp 52,34 Jt', growth: '+6.2%', pos: true },
+          { name: '! AWIN Atlantis Induk', sales: 'Rp 861,25 Jt', growth: '+2.4%', pos: true },
+          { name: '! ODIN Samudra Induk', sales: 'Rp 2,60 Miliar', growth: '-1.8%', pos: false }
         ]
       },
       beachpark: {
-        sales: 'Rp 79.280.058',
-        sales25: 'Rp 91.427.786',
-        growth: '-13.29% (-Rp 12,1 Jt)',
-        target: 'Rp 73.000.000',
-        ach: '108.60%',
-        gap: 'SURPLUS TARGET (+Rp 6.280.058) 🏆',
-        tx: '909',
-        txGrowth: '-5.10%',
-        atv: 'Rp 87.217',
-        qty: '3.174',
-        qtyGrowth: '+12.40%',
-        upt: '3.49 item',
-        visitor: '1.094.184',
-        sph: 'Rp 72',
-        capture: '0.08% (909 struk)',
-        summary: 'Area <strong>BEACHPARK</strong> sukses mencapai <strong>108.60% dari target</strong> dengan total 909 struk transaksi. Symphony of The Sea dan Merchandise Ombak Laut menjadi penggerak utama pada liburan akhir pekan.',
+        sales: 'Rp 493.763.060',
+        sales25: 'Rp 422.527.842',
+        growth: '+16.86% (+Rp 71,2 Jt) 🏆',
+        target: 'Rp 450.000.000',
+        ach: '109.73%',
+        gap: 'SURPLUS TARGET (+Rp 43.763.060) 🏆',
+        tx: '4.577',
+        txGrowth: '+3.76%',
+        atv: 'Rp 107.879',
+        qty: '36.508',
+        qtyGrowth: '+172.1%',
+        upt: '7.98 item',
+        visitor: '2.500.000',
+        sph: 'Rp 198',
+        capture: '0.18% (4.577 struk)',
+        summary: 'Area <strong>BEACHPARK</strong> tumbuh agresif <strong>+16.86% YoY</strong> dan melampaui target anggaran (109.73%). Symphony of The Sea dan Merchandise Ombak Laut mendominasi traffic penjualan merchandise tepi pantai.',
         topOutlets: [
-          { name: '1. BPSM Symphony Of The Sea', sales: 'Rp 45,20 Jt', pct: '(57.0%)' },
-          { name: '2. OL01 Online Shop', sales: 'Rp 20,26 Jt', pct: '(25.6%)' },
-          { name: '3. TJOM Merchandise Ombak Laut', sales: 'Rp 5,17 Jt', pct: '(6.5%)' },
-          { name: '4. BPAN Ancol Promenade', sales: 'Rp 4,85 Jt', pct: '(6.1%)' },
-          { name: '5. BPPL Pasar Seni Merch', sales: 'Rp 3,80 Jt', pct: '(4.8%)' }
+          { name: '1. TJSO Symphony Of The Sea', sales: 'Rp 350,55 Jt', pct: '(71.0%)' },
+          { name: '2. OL01 Online Shop', sales: 'Rp 105,02 Jt', pct: '(21.3%)' },
+          { name: '3. TJOM Merchandise Ombak Laut', sales: 'Rp 38,19 Jt', pct: '(7.7%)' }
         ],
         bottomOutlets: [
-          { name: '! TJOM Merchandise Ombak Laut', sales: 'Rp 5,17 Jt', growth: '+81.5%', pos: true },
-          { name: '! OL01 Online Shop', sales: 'Rp 20,26 Jt', growth: '-25.1%', pos: false },
-          { name: '! BPPL Pasar Seni Merch', sales: 'Rp 3,80 Jt', growth: '-19.4%', pos: false },
-          { name: '! BPAN Ancol Promenade', sales: 'Rp 4,85 Jt', growth: '-8.2%', pos: false },
-          { name: '! BPSM Symphony Of The Sea', sales: 'Rp 45,20 Jt', growth: '+4.0%', pos: true }
+          { name: '! TJOM Merchandise Ombak Laut', sales: 'Rp 38,19 Jt', growth: '+32.4%', pos: true },
+          { name: '! OL01 Online Shop', sales: 'Rp 105,02 Jt', growth: '-18.2%', pos: false },
+          { name: '! TJSO Symphony Of The Sea', sales: 'Rp 350,55 Jt', growth: '+41.2%', pos: true }
         ]
       }
     };
+
+    // Porto Preset Trigger
+    function applyPortoPreset(areaKey) {
+      const areaSelect = document.getElementById('app-filter-area');
+      if (areaSelect) {
+        areaSelect.value = areaKey;
+        runLiveSimulation();
+      }
+    }
 
     function runLiveSimulation() {
       const area = document.getElementById('app-filter-area').value;
@@ -2617,7 +2798,29 @@
     function closePhotoModal() {
       document.getElementById('photo-modal').classList.add('hidden');
     }
-  </script>
+  
+    // Photo Category Filter Engine
+    function filterPhotoCategory(cat) {
+      const items = document.querySelectorAll('.photo-card-item');
+      items.forEach(el => {
+        if (cat === 'all' || el.getAttribute('data-category') === cat) {
+          el.style.display = '';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+
+      // Update button styling
+      document.querySelectorAll('.photo-filter-btn').forEach(btn => {
+        if (btn.id === 'pfilter-' + cat) {
+          btn.className = 'photo-filter-btn px-3 py-1 rounded-full text-xs font-bold bg-amber-600 text-white shadow-2xs transition-all';
+        } else {
+          btn.className = 'photo-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all';
+        }
+      });
+    }
+
+</script>
 
   <!-- PHOTO FULLSCREEN LIGHTBOX MODAL -->
   <div id="photo-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4" onclick="closePhotoModal()">
