@@ -682,6 +682,16 @@ def build_dashboard(
     by_name_lookup = lookup.get("by_name", {})
     by_code_lookup = lookup.get("by_code", {})
 
+    for p in flat_products:
+        p_name = p["name"].strip()
+        lk_meta = by_name_lookup.get(p_name.casefold())
+        if lk_meta and lk_meta.get("harga_jual"):
+            p["harga_jual"] = lk_meta["harga_jual"]
+        elif p["2026"]["qty"] > 0 and p["2026"]["net_sales"] > 0:
+            p["harga_jual"] = round((p["2026"]["net_sales"] / p["2026"]["qty"]) * 1.11)
+        else:
+            p["harga_jual"] = 0.0
+
     total_cogs_2026 = 0.0
     by_supplier: dict[str, dict[str, Any]] = defaultdict(
         lambda: {"qty": 0.0, "net_sales": 0.0, "cogs": 0.0, "gross_profit": 0.0, "jenis": "DAGANGAN", "products": set()}
