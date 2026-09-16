@@ -230,7 +230,10 @@ def parse_sales_file(path: Path, outlet_mapping: dict[str, str]) -> list[dict[st
                         "No. Invoice",
                         "Kode Barang",
                         "Total Struk",
+                        "Total Per Cabang",
+                        "Grand Total",
                     }
+                    and not first.startswith("Total ")
                     and all(value is None for value in cells[1:7])
                 ):
                     if current_items:
@@ -262,24 +265,30 @@ def parse_sales_file(path: Path, outlet_mapping: dict[str, str]) -> list[dict[st
                             else 0
                         )
                         finalize_transaction(total_struk_val, disc_val)
+                        current_invoice = None
                     continue
-
-                if len(cells) > 2 and cells[2] is not None:
-                    parsed_date = _date(cells[2])
-                    if parsed_date:
-                        current_date = parsed_date
-
-                if len(cells) > 4 and cells[4] is not None:
-                    time_text = str(cells[4]).strip()
-                    if ":" in time_text:
-                        current_hour = time_text.split(":")[0].zfill(2)
-
-                if first and not first.startswith("Total "):
-                    current_invoice = first
 
                 product = str(cells[1]).strip() if len(cells) > 1 and cells[1] is not None else ""
+
+                # Jika product kosong, ini adalah baris Header Struk/Invoice kasir
                 if not product:
+                    if first and not first.startswith("Total "):
+                        current_invoice = first
+
+                    if len(cells) > 2 and cells[2] is not None:
+                        parsed_date = _date(cells[2])
+                        if parsed_date:
+                            current_date = parsed_date
+
+                    if len(cells) > 4 and cells[4] is not None:
+                        time_text = str(cells[4]).strip()
+                        if ":" in time_text:
+                            current_hour = time_text.split(":")[0].zfill(2)
                     continue
+
+                # Jika baris item tetapi current_invoice belum terisi (format single-row), fallback ke first
+                if not current_invoice and first and not first.startswith("Total "):
+                    current_invoice = first
 
                 qty = _number(cells[6]) if len(cells) > 6 else 0.0
                 sales_raw = (

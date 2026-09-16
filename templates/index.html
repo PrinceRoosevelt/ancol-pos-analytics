@@ -3028,7 +3028,7 @@
         padding: 8px 10px;
         text-align: center;
       }
-      #btnDownloadExcel {
+      #btnSyncGoogleSheets {
         flex: 1 1 100%;
         font-weight: 750;
       }
@@ -3231,8 +3231,14 @@
       <a href="/upload" class="btn" style="background:#059669; color:#ffffff; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px; border:none;">
         <span>📤</span> <span>Upload &amp; Input Pengunjung</span>
       </a>
-      <button type="button" class="btn btn-primary" id="btnDownloadExcel" onclick="downloadCuratedExcel()">
-        <span>📥</span> <span>Download Laporan (.xlsx)</span>
+      <button type="button" class="btn" id="btnSyncGoogleSheets" onclick="handleSyncGoogleSheets()" style="background:#0F9D58; color:#ffffff; font-weight:700; display:inline-flex; align-items:center; gap:8px; border:none; box-shadow:0 2px 8px rgba(15,157,88,0.25); cursor:pointer; transition:all 0.2s ease;">
+        <span id="syncGSheetIcon">📊</span> <span id="syncGSheetText">Sync ke Google Sheets</span>
+      </button>
+      <a id="btnOpenGoogleSheets" href="#" target="_blank" class="btn" style="display:none; background:#10b981; color:#ffffff; font-weight:700; text-decoration:none; align-items:center; gap:6px; border:none;" title="Buka Spreadsheet di Tab Baru">
+        <span>Buka Sheet ↗</span>
+      </a>
+      <button type="button" class="btn" id="btnGsheetSettings" onclick="openGsheetModal()" style="background:rgba(255,255,255,0.15); color:inherit; border:1px solid rgba(255,255,255,0.2); padding:8px 10px;" title="Pengaturan Google Sheets">
+        <span>⚙️</span>
       </button>
     </div>
   </header>
@@ -3492,7 +3498,46 @@
     </div>
   </div>
 
+  <!-- Google Sheets Live Sync Configuration Modal -->
+  <div id="gsheetModalOverlay" class="cal-overlay" onclick="closeGsheetModal(event)" style="display:none;">
+    <div class="cal-card" onclick="event.stopPropagation()" style="max-width: 540px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:24px;">📊</span>
+          <div>
+            <h3 style="margin:0; font-size:16px; font-weight:750; color:#1e293b;">Google Sheets Live Auto-Sync</h3>
+            <span style="font-size:12px; color:#64748b;">Sinkronisasi Real-time via Google Apps Script (Tanpa Cloud Console)</span>
+          </div>
+        </div>
+        <button type="button" class="cal-btn-close-icon" onclick="closeGsheetModal(event)">✕</button>
+      </div>
+
+      <div id="gsheetStatusCard" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; margin-bottom:16px; font-size:12px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+          <span style="font-weight:600; color:#334155;">Status Koneksi:</span>
+          <span id="gsheetStatusBadge" style="padding:2px 8px; border-radius:999px; font-weight:700; background:#fef3c7; color:#b45309;">Memeriksa...</span>
+        </div>
+        <div id="gsheetCredsInfo" style="color:#64748b; line-height:1.5;"></div>
+      </div>
+
+      <div style="margin-bottom:18px;">
+        <label style="display:block; font-size:12.5px; font-weight:650; color:#334155; margin-bottom:6px;">
+          Masukkan Webhook URL Google Apps Script:
+        </label>
+        <input type="text" id="gsheetInputId" placeholder="https://script.google.com/macros/s/AKfycb.../exec" style="width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:12.5px;" />
+        <span style="font-size:11px; color:#64748b; display:block; margin-top:4px;">Didapatkan dari menu <strong>Extensions ➔ Apps Script ➔ Deploy as Web App</strong> di Google Sheet Anda.</span>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:8px;">
+        <button type="button" class="cal-btn-action cal-btn-close" onclick="closeGsheetModal(event)">Tutup</button>
+        <button type="button" id="btnSaveGsheetId" onclick="saveGsheetConfig()" style="padding:10px 18px; background:#0F9D58; color:#fff; font-weight:700; border:none; border-radius:10px; cursor:pointer;">Simpan Pengaturan</button>
+      </div>
+    </div>
+  </div>
+
+
   <!-- Executive Summary Banner (Auto Narrative) -->
+
   <div class="narrative-banner">
     <div class="narrative-icon">💡</div>
     <div class="narrative-content">
@@ -7121,9 +7166,205 @@
   }
 
   // ----------------------------------------------------
+  // GOOGLE SHEETS LIVE AUTO-SYNC ENGINE
+  // ----------------------------------------------------
+  let gsheetConfig = {
+    is_ready: false,
+    credentials_exist: false,
+    client_email: null,
+    spreadsheet_id: '',
+    sheet_url: ''
+  };
+
+  async function checkGsheetStatus() {
+    try {
+      const res = await fetch('/api/gsheet-status');
+      const data = await res.json();
+      if (data.ok && data.status) {
+        gsheetConfig = data.status;
+        updateGsheetUI();
+      }
+    } catch (err) {
+      console.warn('GSheet status check failed:', err);
+    }
+  }
+
+  function updateGsheetUI() {
+    const badge = document.getElementById('gsheetStatusBadge');
+    const credsInfo = document.getElementById('gsheetCredsInfo');
+    const idInput = document.getElementById('gsheetInputId');
+    const openBtn = document.getElementById('btnOpenGoogleSheets');
+
+    if (idInput && !idInput.value) {
+      idInput.value = gsheetConfig.webhook_url || gsheetConfig.spreadsheet_id || '';
+    }
+    if (badge) {
+      if (gsheetConfig.is_ready) {
+        badge.style.background = '#dcfce7';
+        badge.style.color = '#15803d';
+        badge.textContent = gsheetConfig.mode === 'webhook' ? 'Webhook Aktif' : 'Siap Sinkronisasi';
+      } else {
+        badge.style.background = '#fee2e2';
+        badge.style.color = '#b91c1c';
+        badge.textContent = 'Belum Terhubung';
+      }
+    }
+    if (credsInfo) {
+      if (gsheetConfig.webhook_url) {
+        credsInfo.innerHTML = '✅ Webhook Google Apps Script aktif: <br><code style="word-break:break-all; font-size:11px;">' + gsheetConfig.webhook_url + '</code>';
+      } else if (gsheetConfig.credentials_exist && gsheetConfig.spreadsheet_id) {
+        credsInfo.innerHTML = '✅ Service Account terhubung ke Spreadsheet ID: <strong>' + gsheetConfig.spreadsheet_id + '</strong>';
+      } else {
+        credsInfo.innerHTML = '💡 Tempelkan URL Webhook Google Apps Script di bawah untuk mengaktifkan sinkronisasi otomatis.';
+      }
+    }
+    if (openBtn) {
+      if (gsheetConfig.sheet_url) {
+        openBtn.href = gsheetConfig.sheet_url;
+        openBtn.style.display = 'inline-flex';
+      } else {
+
+        openBtn.style.display = 'none';
+      }
+    }
+  }
+
+  function openGsheetModal() {
+    const overlay = document.getElementById('gsheetModalOverlay');
+    if (overlay) {
+      overlay.style.display = 'flex';
+      checkGsheetStatus();
+    }
+  }
+
+  function closeGsheetModal(e) {
+    if (e && e.target && e.target !== e.currentTarget && !e.target.classList.contains('cal-btn-close-icon') && !e.target.classList.contains('cal-btn-close')) return;
+    const overlay = document.getElementById('gsheetModalOverlay');
+    if (overlay) overlay.style.display = 'none';
+  }
+
+  function copyGsheetEmail() {
+    const email = document.getElementById('gsheetRobotEmail')?.value;
+    if (email && email.includes('@')) {
+      navigator.clipboard.writeText(email).then(() => {
+        alert('Email robot Service Account berhasil disalin:\n' + email + '\n\nSilakan buka Google Sheet Anda dan bagikan (Share) sebagai Editor.');
+      });
+    } else {
+      alert('Email robot belum tersedia karena file config/google_credentials.json belum ditemukan.');
+    }
+  }
+
+  async function saveGsheetConfig() {
+    const input = document.getElementById('gsheetInputId');
+    const val = (input ? input.value : '').trim();
+    if (!val) {
+      alert('Silakan masukkan Spreadsheet ID atau URL Google Sheet.');
+      return;
+    }
+    try {
+      const btn = document.getElementById('btnSaveGsheetId');
+      if (btn) btn.textContent = 'Menyimpan...';
+      const res = await fetch('/api/gsheet-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ spreadsheet_id: val })
+      });
+      const data = await res.json();
+      if (btn) btn.textContent = 'Simpan Pengaturan';
+      if (data.ok) {
+        alert('Pengaturan Google Sheets berhasil disimpan!');
+        checkGsheetStatus();
+        closeGsheetModal({ target: { classList: { contains: () => true } } });
+      } else {
+        alert('Gagal menyimpan: ' + (data.error || 'Unknown error'));
+      }
+    } catch (err) {
+      alert('Error menyimpan pengaturan: ' + err.message);
+    }
+  }
+
+  async function handleSyncGoogleSheets() {
+    const btn = document.getElementById('btnSyncGoogleSheets');
+    const icon = document.getElementById('syncGSheetIcon');
+    const txt = document.getElementById('syncGSheetText');
+
+    // Cek status kesiapan
+    await checkGsheetStatus();
+    if (!gsheetConfig.is_ready) {
+      openGsheetModal();
+      return;
+    }
+
+    // Set status loading
+    if (btn) btn.disabled = true;
+    if (icon) icon.textContent = '⏳';
+    if (txt) txt.textContent = 'Menyinkronkan...';
+
+    try {
+      const payload = {
+        month: currentFilter.month || null,
+        date: currentFilter.date || null,
+        start_date: currentFilter.startDate || null,
+        end_date: currentFilter.endDate || null,
+        outlet: currentFilter.outlet || null,
+        area: currentFilter.area || null,
+        supplier: currentFilter.supplier || null,
+        category: currentFilter.category || null,
+        jenis: currentFilter.modelBisnis || null,
+        weekend_only: Boolean(currentFilter.weekendOnly),
+      };
+
+      const res = await fetch('/api/sync-google-sheets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await res.json();
+
+      if (result.success) {
+        if (icon) icon.textContent = '✅';
+        if (txt) txt.textContent = 'Tersinkron!';
+        const openBtn = document.getElementById('btnOpenGoogleSheets');
+        if (openBtn && result.sheet_url) {
+          openBtn.href = result.sheet_url;
+          openBtn.style.display = 'inline-flex';
+        }
+        setTimeout(() => {
+          if (icon) icon.textContent = '📊';
+          if (txt) txt.textContent = 'Sync ke Google Sheets';
+          if (btn) btn.disabled = false;
+        }, 3000);
+
+        if (confirm(result.message + '\n\nApakah Anda ingin membuka Google Sheet di tab baru sekarang?')) {
+          window.open(result.sheet_url, '_blank');
+        }
+      } else {
+        if (icon) icon.textContent = '⚠️';
+        if (txt) txt.textContent = 'Sync Gagal';
+        if (btn) btn.disabled = false;
+        alert('Gagal Sinkronisasi:\n' + result.message);
+        if (result.error_type === 'NO_CREDENTIALS' || result.error_type === 'NO_SPREADSHEET_ID' || result.error_type === 'OPEN_ERROR') {
+          openGsheetModal();
+        }
+      }
+    } catch (err) {
+      if (icon) icon.textContent = '⚠️';
+      if (txt) txt.textContent = 'Sync Gagal';
+      if (btn) btn.disabled = false;
+      alert('Kendala jaringan saat sinkronisasi: ' + err.message);
+    }
+  }
+
+  // Cek status saat startup
+  if (typeof window !== 'undefined') {
+    window.addEventListener('DOMContentLoaded', checkGsheetStatus);
+  }
+
+  // ----------------------------------------------------
   // DOWNLOAD EXCEL (.xlsx) ENGINE
   // ----------------------------------------------------
   function downloadCuratedExcel() {
+
     // Check if on Flask server
     if (window.location.protocol.startsWith('http')) {
       const params = new URLSearchParams();

@@ -413,26 +413,50 @@ def build_dashboard(
     supplier: str | None = None,
     category: str | None = None,
     jenis: str | None = None,
+    weekend_only: bool = False,
 ) -> dict[str, Any]:
+    # Normalisasi filter
+    if month:
+        m_str = str(month).strip()
+        if len(m_str) <= 2:
+            month = f"2026-{m_str.zfill(2)}"
+        elif not m_str.startswith("2026-") and len(m_str) == 7:
+            month = f"2026-{m_str[-2:]}"
+
+    supp_norm = supplier.strip().casefold() if supplier else None
+    cat_norm = category.strip().casefold() if category else None
+    jenis_norm = jenis.strip().upper() if jenis else None
+    if jenis_norm:
+        if "KONSIN" in jenis_norm:
+            jenis_norm = "KONSINYASI"
+        elif "DAGANG" in jenis_norm:
+            jenis_norm = "DAGANGAN"
+
+    if weekend_only:
+        rows = [
+            r for r in rows
+            if datetime.strptime(r["date"], "%Y-%m-%d").weekday() in (5, 6)
+        ]
+
     # Master lookup integration
     lookup = load_data_lookup()
     compact_lk = lookup.get("compact_lookup", {})
     by_name_lookup = lookup.get("by_name", {})
     by_code_lookup = lookup.get("by_code", {})
 
-    if supplier or category or jenis:
+    if supp_norm or cat_norm or jenis_norm:
         rows = [
             r for r in rows
-            if (not supplier or (compact_lk.get(r["product"]) and compact_lk[r["product"]][1] == supplier))
-            and (not category or (compact_lk.get(r["product"]) and compact_lk[r["product"]][2] == category))
-            and (not jenis or (compact_lk.get(r["product"]) and compact_lk[r["product"]][3] == jenis))
+            if (not supp_norm or (compact_lk.get(r["product"]) and str(compact_lk[r["product"]][1]).strip().casefold() == supp_norm))
+            and (not cat_norm or (compact_lk.get(r["product"]) and str(compact_lk[r["product"]][2]).strip().casefold() == cat_norm))
+            and (not jenis_norm or (compact_lk.get(r["product"]) and str(compact_lk[r["product"]][3]).strip().upper() == jenis_norm))
         ]
 
     # The 2025 comparison must cover exactly the calendar days already
     # available in 2026. This prevents, for example, comparing 1-29 Aug 2026
     # against a full 1-31 Aug 2025 period.
-    start_dm = start_date[5:] if start_date else ""
-    end_dm = end_date[5:] if end_date else ""
+    start_dm = start_date[5:] if start_date and len(start_date) >= 5 else (start_date or "")
+    end_dm = end_date[5:] if end_date and len(end_date) >= 5 else (end_date or "")
 
     current_period_rows = [
         row
@@ -440,7 +464,7 @@ def build_dashboard(
         if row["year"] == 2026
         and (not start_date or row["date"] >= start_date)
         and (not end_date or row["date"] <= end_date)
-        and (start_date or end_date or not month or row["month"] == month)
+        and (start_date or end_date or not month or row["month"] == month or row["month"].endswith(f"-{str(month)[-2:]}"))
         and (not date or row["date"] == date)
     ]
     current_period_dates = {row["date"] for row in current_period_rows}
@@ -515,7 +539,7 @@ def build_dashboard(
             target_group[key][year_key]["qty"] += row["qty"]
             target_group[key][year_key]["net_sales"] += row["net_sales"]
             if row["invoice"]:
-                target_group[key][year_key][f"_inv_{row['invoice']}"] = 1
+                target_group[key][year_key][f"_inv_{row['outlet']}_{row['date']}_{row['invoice']}"] = 1
 
     for target_group in (by_outlet, by_product, by_month, by_day, by_hour, by_area):
         for key in target_group:
@@ -718,30 +742,30 @@ def build_dashboard(
             hpp = item_meta.get("hpp", 0.0)
             cogs = q * hpp
             gp = s - cogs
-            supplier = item_meta.get("supplier", "LAINNYA")
-            kategori = item_meta.get("kategori", "LAINNYA")
-            jenis = item_meta.get("jenis", "DAGANGAN")
+            sp_name = item_meta.get("supplier", "LAINNYA")
+            cat_name = item_meta.get("kategori", "LAINNYA")
+            jn_type = item_meta.get("jenis", "DAGANGAN")
             total_cogs_2026 += cogs
 
-            by_supplier[supplier]["qty"] += q
-            by_supplier[supplier]["net_sales"] += s
-            by_supplier[supplier]["cogs"] += cogs
-            by_supplier[supplier]["gross_profit"] += gp
-            by_supplier[supplier]["jenis"] = jenis
-            by_supplier[supplier]["products"].add(p_name)
+            by_supplier[sp_name]["qty"] += q
+            by_supplier[sp_name]["net_sales"] += s
+            by_supplier[sp_name]["cogs"] += cogs
+            by_supplier[sp_name]["gross_profit"] += gp
+            by_supplier[sp_name]["jenis"] = jn_type
+            by_supplier[sp_name]["products"].add(p_name)
 
-            by_category[kategori]["qty"] += q
-            by_category[kategori]["net_sales"] += s
-            by_category[kategori]["cogs"] += cogs
-            by_category[kategori]["gross_profit"] += gp
-            by_category[kategori]["products"].add(p_name)
+            by_category[cat_name]["qty"] += q
+            by_category[cat_name]["net_sales"] += s
+            by_category[cat_name]["cogs"] += cogs
+            by_category[cat_name]["gross_profit"] += gp
+            by_category[cat_name]["products"].add(p_name)
 
-            if jenis in by_model:
-                by_model[jenis]["qty"] += q
-                by_model[jenis]["net_sales"] += s
-                by_model[jenis]["cogs"] += cogs
-                by_model[jenis]["gross_profit"] += gp
-                by_model[jenis]["products"].add(p_name)
+            if jn_type in by_model:
+                by_model[jn_type]["qty"] += q
+                by_model[jn_type]["net_sales"] += s
+                by_model[jn_type]["cogs"] += cogs
+                by_model[jn_type]["gross_profit"] += gp
+                by_model[jn_type]["products"].add(p_name)
         else:
             if p_name not in unmapped_dict:
                 unmapped_dict[p_name] = {"name": p_name, "qty": 0.0, "net_sales": 0.0, "outlets": set()}
@@ -3243,10 +3267,124 @@ TOP PRODUK PRIORITAS (FAST-MOVING VELOCITY):
     except Exception as e:
         return jsonify({"ok": False, "answer": f"Terjadi kendala saat memproses analisa: {str(e)}"}), 500
 
+# =============================================================================
+
+# GOOGLE SHEETS LIVE AUTO-SYNC ROUTES
+# =============================================================================
+
+@app.route("/api/gsheet-status")
+def api_gsheet_status():
+    """Mengembalikan status kesiapan koneksi Google Sheets & credentials."""
+    try:
+        from services.google_sheets_sync import get_sync_status
+        return jsonify({"ok": True, "status": get_sync_status()})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.route("/api/gsheet-config", methods=["POST"])
+def api_save_gsheet_config():
+    """Menyimpan Webhook URL atau Spreadsheet ID Google Sheet."""
+    try:
+        from services.google_sheets_sync import load_config, save_config
+        data = request.get_json(silent=True) or {}
+        raw_val = (data.get("webhook_url") or data.get("spreadsheet_id") or "").strip()
+        
+        cfg = load_config()
+
+        # Cek apakah ini Webhook Apps Script
+        if "script.google.com" in raw_val:
+            if "/macros/library/" in raw_val:
+                return jsonify({
+                    "ok": False,
+                    "error": "Anda menempelkan URL 'Library', bukan Web App URL. Silakan gunakan URL yang berakhiran '/exec' (dari Deploy ➔ Manage deployments ➔ Web app URL)."
+                }), 400
+            cfg["webhook_url"] = raw_val
+            cfg["mode"] = "webhook"
+
+        else:
+            # Ekstrak ID jika user memasukkan full URL Spreadsheet
+            match = re.search(r"/spreadsheets/d/([a-zA-Z0-9-_]+)", raw_val)
+            spreadsheet_id = match.group(1) if match else raw_val
+            cfg["spreadsheet_id"] = spreadsheet_id
+            if spreadsheet_id:
+                cfg["sheet_url"] = f"https://docs.google.com/spreadsheets/d/{spreadsheet_id}/edit"
+
+        save_config(cfg)
+        return jsonify({
+            "ok": True,
+            "webhook_url": cfg.get("webhook_url", ""),
+            "spreadsheet_id": cfg.get("spreadsheet_id", ""),
+            "sheet_url": cfg.get("sheet_url", "")
+        })
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+
+@app.route("/api/sync-google-sheets", methods=["POST"])
+def api_sync_google_sheets():
+    """Menyinkronkan data terfilter saat ini ke Google Sheets."""
+    try:
+        from services.google_sheets_sync import sync_dashboard_to_sheets
+
+        req_data = request.get_json(silent=True) or {}
+        month = req_data.get("month") or request.args.get("month") or None
+        date = req_data.get("date") or request.args.get("date") or None
+        start_date = req_data.get("start_date") or request.args.get("start_date") or None
+        end_date = req_data.get("end_date") or request.args.get("end_date") or None
+        outlet = req_data.get("outlet") or request.args.get("outlet") or None
+        area = req_data.get("area") or request.args.get("area") or None
+        supplier = req_data.get("supplier") or request.args.get("supplier") or None
+        category = req_data.get("category") or request.args.get("category") or None
+        jenis = req_data.get("jenis") or request.args.get("jenis") or None
+        weekend_only = bool(req_data.get("weekend_only") or request.args.get("weekend_only"))
+
+        all_rows = read_sales()
+        dashboard_data = build_dashboard(
+            all_rows,
+            month,
+            date,
+            outlet,
+            area,
+            include_raw=False,
+            start_date=start_date,
+            end_date=end_date,
+            supplier=supplier,
+            category=category,
+            jenis=jenis,
+            weekend_only=weekend_only,
+        )
+
+        filter_parts = []
+        if month: filter_parts.append(f"Bulan {month}")
+        if start_date or end_date:
+            filter_parts.append(f"Tgl {start_date or 'Awal'} s/d {end_date or 'Akhir'}")
+        elif date:
+            filter_parts.append(f"Tgl {date}")
+        if area: filter_parts.append(f"Area {area}")
+        if outlet: filter_parts.append(f"Outlet {outlet}")
+        if supplier: filter_parts.append(f"Supplier {supplier}")
+        if category: filter_parts.append(f"Kategori {category}")
+        if jenis: filter_parts.append(f"Model {jenis}")
+        if weekend_only: filter_parts.append("Khusus Weekend (Sabtu-Minggu)")
+
+        filter_desc = " - ".join(filter_parts) if filter_parts else "Semua Data (YTD)"
+        result = sync_dashboard_to_sheets(dashboard_data, filter_desc)
+        return jsonify(result)
+
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error_type": "SERVER_ERROR",
+            "message": f"Terjadi kesalahan server saat sinkronisasi: {str(e)}"
+        }), 500
+
 
 
 
 if __name__ == "__main__":
+
     initial_data = build_dashboard(read_sales())
     with app.app_context():
         write_report(

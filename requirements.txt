@@ -1,4 +1,6 @@
-﻿flask
+flask
 openpyxl
 waitress
 werkzeug
+gspread
+google-auth
