@@ -352,14 +352,14 @@
       position: sticky;
       top: 12px;
       z-index: 90;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--panel-border);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(246, 250, 255, 0.94) 50%, rgba(238, 246, 255, 0.90) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 51, 160, 0.14);
       border-radius: 14px;
       padding: 12px 18px;
       margin-bottom: 20px;
-      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 10px 30px -5px rgba(0, 32, 96, 0.07), 0 2px 8px -1px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.95);
       transition: all .25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -367,9 +367,9 @@
     .filter-card.is-scrolled {
       top: 8px;
       padding: 8px 16px;
-      background: rgba(255, 255, 255, 0.96);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 247, 255, 0.95) 100%);
       border-color: rgba(0, 51, 160, 0.3);
-      box-shadow: 0 8px 28px -4px rgba(0, 0, 0, 0.12), 0 3px 8px -2px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 8px 28px -4px rgba(0, 32, 96, 0.12), 0 3px 8px -2px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
     }
 
     .filter-card.is-scrolled .filter-grid {
@@ -389,14 +389,15 @@
     }
 
     :root.dark .filter-card {
-      background: rgba(17, 24, 39, 0.92);
-      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.96) 0%, rgba(13, 27, 49, 0.94) 50%, rgba(10, 24, 44, 0.92) 100%);
+      border-color: rgba(0, 181, 226, 0.25);
+      box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
     :root.dark .filter-card.is-scrolled {
-      background: rgba(17, 24, 39, 0.97);
-      border-color: rgba(59, 130, 246, 0.4);
-      box-shadow: 0 8px 28px -4px rgba(0, 0, 0, 0.7);
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(10, 24, 44, 0.96) 100%);
+      border-color: rgba(0, 181, 226, 0.4);
+      box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
     /* Filter Card Header & Collapse Controls */
@@ -489,20 +490,29 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 8px;
-      padding: 8px 12px;
+      padding: 7px 12px;
       margin-bottom: 12px;
-      background: rgba(0, 51, 160, 0.03);
-      border: 1px dashed rgba(0, 51, 160, 0.2);
+      background: rgba(0, 51, 160, 0.035);
+      border: 1px solid rgba(0, 51, 160, 0.12);
       border-radius: var(--radius-sm);
     }
     :root.dark .filter-presets-bar {
-      background: rgba(255, 255, 255, 0.02);
-      border-color: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.09);
     }
     .filter-card.is-scrolled .filter-presets-bar {
       padding: 4px 10px;
       margin-bottom: 8px;
       gap: 6px;
+    }
+
+    /* Universal Clean Vector SVG Micro-Icon Style */
+    .svg-icon {
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 0;
+      color: currentColor;
+      transition: transform 0.15s ease, color 0.15s ease;
     }
 
     .preset-label {
@@ -1608,6 +1618,9 @@
       font-weight: 650;
       color: var(--text-muted);
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       transition: all 0.15s ease;
     }
     .chart-view-pill:hover {
@@ -2252,6 +2265,9 @@
       background: transparent;
       color: var(--text-muted);
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -3428,11 +3444,11 @@
           <!-- Live Clock & Data Cut-Off Indicator -->
           <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 8px; font-size: 11.5px; font-weight: 500;">
             <div style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 8px; background: rgba(0, 51, 160, 0.08); color: var(--brand); border: 1px solid rgba(0, 51, 160, 0.2);">
-              <span style="font-size: 13px;">🕒</span>
+              <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
               <span id="liveClockWidget" style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-weight: 600;">Memuat waktu...</span>
             </div>
             <div style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 8px; background: rgba(5, 150, 105, 0.08); color: #059669; border: 1px solid rgba(5, 150, 105, 0.2);">
-              <span style="font-size: 13px;">📅</span>
+              <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
               <span>Data ini telah Update sampai dengan <strong>{% if data.latest_date_label %}{{ data.latest_date_label }}{% else %}3 September 2026{% endif %}</strong></span>
             </div>
           </div>
@@ -3452,19 +3468,26 @@
         <span id="rowsCountBadge">{{ data.rows_read }} Baris Data Diolah</span>
       </div>
       <button type="button" class="btn" id="themeToggle">
-        <span id="themeIcon">☀</span> <span id="themeText">Tema</span>
+        <span id="themeIcon">
+          <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+        </span> 
+        <span id="themeText">Tema</span>
       </button>
       <a href="/upload" class="btn" style="background:#059669; color:#ffffff; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px; border:none;">
-        <span>📤</span> <span>Upload &amp; Input Pengunjung</span>
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        <span>Upload &amp; Input Pengunjung</span>
       </a>
       <button type="button" class="btn" id="btnSyncGoogleSheets" onclick="handleSyncGoogleSheets()" style="background:#0F9D58; color:#ffffff; font-weight:700; display:inline-flex; align-items:center; gap:8px; border:none; box-shadow:0 2px 8px rgba(15,157,88,0.25); cursor:pointer; transition:all 0.2s ease;">
-        <span id="syncGSheetIcon">📊</span> <span id="syncGSheetText">Sync ke Google Sheets</span>
+        <span id="syncGSheetIcon">
+          <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+        </span> 
+        <span id="syncGSheetText">Sync ke Google Sheets</span>
       </button>
       <a id="btnOpenGoogleSheets" href="#" target="_blank" class="btn" style="display:none; background:#10b981; color:#ffffff; font-weight:700; text-decoration:none; align-items:center; gap:6px; border:none;" title="Buka Spreadsheet di Tab Baru">
         <span>Buka Sheet ↗</span>
       </a>
       <button type="button" class="btn" id="btnGsheetSettings" onclick="openGsheetModal()" style="background:rgba(255,255,255,0.15); color:inherit; border:1px solid rgba(255,255,255,0.2); padding:8px 10px;" title="Pengaturan Google Sheets">
-        <span>⚙️</span>
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
       </button>
     </div>
   </header>
@@ -3473,12 +3496,18 @@
   <div class="filter-card" id="filterCard">
     <div class="filter-header-bar">
       <div class="filter-header-left">
-        <span class="filter-header-title">⚡ Filter Analitik</span>
+        <span class="filter-header-title">
+          <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+          Filter Analitik
+        </span>
         <span id="filterCollapsedSummary" class="filter-collapsed-summary" style="display:none;" title="Filter yang sedang aktif">Semua Data (YTD)</span>
       </div>
       <div class="filter-header-actions">
         <button type="button" id="toggleFilterCollapseBtn" class="btn-toggle-filter" onclick="toggleFilterBarCollapse()" title="Sembunyikan / Tampilkan Filter">
-          <span id="toggleFilterIcon">▲</span> <span id="toggleFilterText">Sembunyikan Filter</span>
+          <span id="toggleFilterIcon">
+            <svg class="svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg>
+          </span> 
+          <span id="toggleFilterText">Sembunyikan Filter</span>
         </button>
       </div>
     </div>
@@ -3486,19 +3515,24 @@
     <!-- Filter Presets Bar (Pintasan Cepat Symmetrical UX) -->
     <div class="filter-presets-bar" id="filterPresetsBar">
       <div class="preset-label">
-        <span>⚡ Pintasan:</span>
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        <span>Pintasan:</span>
       </div>
       <button type="button" class="preset-chip preset-chip-dufan" id="presetDufanWeekend" onclick="applySystemPreset('dufan_weekend')" title="Filter otomatis Area Dufan khusus akhir pekan (Sabtu &amp; Minggu)">
-        <span>🎢 Dufan Weekend</span>
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+        <span>Dufan Weekend</span>
       </button>
       <button type="button" class="preset-chip preset-chip-awapark" id="presetAwaparkWeekend" onclick="applySystemPreset('awapark_weekend')" title="Filter otomatis Area Awapark khusus akhir pekan (Sabtu &amp; Minggu)">
-        <span>🌊 Awapark Weekend</span>
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c1.5-2 3-3 5-3s3.5 1 5 3 3.5 3 5 3 3.5-1 5-3"></path><path d="M2 17c1.5-2 3-3 5-3s3.5 1 5 3 3.5 3 5 3 3.5-1 5-3"></path></svg>
+        <span>Awapark Weekend</span>
       </button>
       <button type="button" class="preset-chip preset-chip-beachpark" id="presetBeachparkWeekend" onclick="applySystemPreset('beachpark_weekend')" title="Filter otomatis Area Beachpark khusus akhir pekan (Sabtu &amp; Minggu)">
-        <span>🏖️ Beachpark Weekend</span>
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+        <span>Beachpark Weekend</span>
       </button>
       <button type="button" class="preset-chip preset-chip-konsinyasi" id="presetKonsinyasi" onclick="applySystemPreset('konsinyasi')" title="Filter khusus transaksi Konsinyasi (Rekanan Vendor)">
-        <span>🤝 Audit Konsinyasi</span>
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 0 0 1.4 0l4.3-4.3a1 1 0 0 0 0-1.4L15 10"></path><path d="m18 13 3-3a2 2 0 0 0 0-2.8l-2.2-2.2a2 2 0 0 0-2.8 0L13 8"></path><path d="m2 14 5 5 4-4-5-5-4 4z"></path></svg>
+        <span>Audit Konsinyasi</span>
       </button>
 
       <!-- Dynamic User Custom Presets -->
@@ -3506,7 +3540,8 @@
 
       <!-- Save Current Filter Preset Button -->
       <button type="button" class="preset-chip preset-chip-save" id="btnSavePreset" onclick="saveCurrentFilterAsPreset()" title="Simpan kombinasi filter yang sedang aktif sebagai pintasan kustom">
-        <span>💾 Simpan Filter Ini</span>
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path><line x1="12" y1="7" x2="12" y2="13"></line><line x1="9" y1="10" x2="15" y2="10"></line></svg>
+        <span>Simpan Filter Ini</span>
       </button>
     </div>
 
@@ -3525,7 +3560,9 @@
         <label class="filter-label">Rentang Tanggal (Kalender)</label>
         <div class="custom-date-trigger" id="customDateTrigger" onclick="openCalendarModal(event)">
           <div class="trigger-content">
-            <span class="trigger-icon">📅</span>
+            <span class="trigger-icon">
+              <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+            </span>
             <span id="dateRangeDisplayLabel" class="trigger-text">Semua Tanggal (YTD)</span>
           </div>
           <div class="trigger-actions">
@@ -3572,7 +3609,7 @@
           </button>
           <div class="searchable-dropdown-menu" id="supplierDropdownMenu" style="display:none;" onclick="event.stopPropagation()">
             <div class="searchable-search-box">
-              <input type="text" class="searchable-search-input" id="supplierSearchInput" placeholder="🔍 Ketik nama supplier..." oninput="filterSearchableList('supplier')" autocomplete="off">
+              <input type="text" class="searchable-search-input" id="supplierSearchInput" placeholder="Ketik nama supplier..." oninput="filterSearchableList('supplier')" autocomplete="off">
               <button type="button" class="searchable-clear-btn" onclick="clearSearchableInput('supplier')">✕</button>
             </div>
             <div class="searchable-options-list" id="supplierOptionsList">
@@ -3604,7 +3641,7 @@
           </button>
           <div class="searchable-dropdown-menu" id="categoryDropdownMenu" style="display:none;" onclick="event.stopPropagation()">
             <div class="searchable-search-box">
-              <input type="text" class="searchable-search-input" id="categorySearchInput" placeholder="🔍 Ketik kategori..." oninput="filterSearchableList('category')" autocomplete="off">
+              <input type="text" class="searchable-search-input" id="categorySearchInput" placeholder="Ketik nama kategori..." oninput="filterSearchableList('category')" autocomplete="off">
               <button type="button" class="searchable-clear-btn" onclick="clearSearchableInput('category')">✕</button>
             </div>
             <div class="searchable-options-list" id="categoryOptionsList">
@@ -3765,7 +3802,9 @@
   <!-- Executive Summary Banner (Auto Narrative) -->
 
   <div class="narrative-banner">
-    <div class="narrative-icon">💡</div>
+    <div class="narrative-icon">
+      <svg class="svg-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+    </div>
     <div class="narrative-content">
       <h3>Ringkasan Eksekutif & Kinerja Utama</h3>
       <p id="narrativeText">{{ data.executive_narrative }}</p>
@@ -3778,7 +3817,9 @@
     <div class="kpi-card kpi-card-primary">
       <div class="kpi-card-header">
         <span class="kpi-title">Total Net Sales (2026)</span>
-        <div class="kpi-badge-icon" style="background:var(--brand-subtle); color:var(--brand); border:1px solid var(--brand-border);">💰</div>
+        <div class="kpi-badge-icon" style="background:var(--brand-subtle); color:var(--brand); border:1px solid var(--brand-border);">
+          <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        </div>
       </div>
       <div class="kpi-value" id="kpiSales2026">Rp {{ "{:,.0f}".format(data.summary["2026"]["net_sales"]).replace(',', '.') }}</div>
       <div class="kpi-footer">
@@ -3800,7 +3841,9 @@
     <div class="kpi-card" style="border-left: 4px solid #059669;">
       <div class="kpi-card-header">
         <span class="kpi-title">Estimasi Laba Kotor &amp; Margin</span>
-        <div class="kpi-badge-icon" style="background:#ecfdf5; color:#059669;">💵</div>
+        <div class="kpi-badge-icon" style="background:#ecfdf5; color:#059669; border:1px solid rgba(5,150,105,0.2);">
+          <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path></svg>
+        </div>
       </div>
       <div class="kpi-value" id="kpiGrossProfit2026" style="color:#059669;">Rp {{ "{:,.0f}".format(data.gross_profit_2026 or 0).replace(',', '.') }}</div>
       <div class="kpi-footer">
@@ -3819,7 +3862,9 @@
     <div class="kpi-card">
       <div class="kpi-card-header">
         <span class="kpi-title">Target Revenue (2026)</span>
-        <div class="kpi-badge-icon">🎯</div>
+        <div class="kpi-badge-icon" style="background:#fef3c7; color:#d97706; border:1px solid rgba(217,119,6,0.2);">
+          <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+        </div>
       </div>
       <div class="kpi-value" id="kpiTargetRevenue">Rp {{ "{:,.0f}".format(data.target_revenue).replace(',', '.') }}</div>
       <div class="kpi-footer">
@@ -3843,7 +3888,9 @@
     <div class="kpi-card">
       <div class="kpi-card-header">
         <span class="kpi-title">Total Transaksi & ATV</span>
-        <div class="kpi-badge-icon">🧾</div>
+        <div class="kpi-badge-icon" style="background:#f1f5f9; color:#475569; border:1px solid rgba(100,116,139,0.2);">
+          <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1Z"></path><path d="M16 8h-8"></path><path d="M16 12h-8"></path><path d="M16 16h-8"></path></svg>
+        </div>
       </div>
       <div class="kpi-value"><span id="kpiTx2026">{{ "{:,.0f}".format(data.summary["2026"]["transactions"]).replace(',', '.') }}</span> <span style="font-size:14px; font-weight:normal; color:var(--text-muted);">Struk</span></div>
       <div class="kpi-footer">
@@ -3864,7 +3911,9 @@
     <div class="kpi-card">
       <div class="kpi-card-header">
         <span class="kpi-title">Volume Barang (Qty) & UPT</span>
-        <div class="kpi-badge-icon">📦</div>
+        <div class="kpi-badge-icon" style="background:#fffbeb; color:#b45309; border:1px solid rgba(180,83,9,0.2);">
+          <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m16.5 9.4 4.5-2.8L12 2 3 6.6l4.5 2.8"></path><path d="M3 6.6V18L12 22l9-4V6.6"></path><path d="M12 12v10"></path><path d="m12 12 9-5.4"></path><path d="m12 12-9-5.4"></path></svg>
+        </div>
       </div>
       <div class="kpi-value"><span id="kpiQty2026">{{ "{:,.0f}".format(data.summary["2026"]["qty"]).replace(',', '.') }}</span> <span style="font-size:14px; font-weight:normal; color:var(--text-muted);">Pcs</span></div>
       <div class="kpi-footer">
@@ -3885,7 +3934,9 @@
     <div class="kpi-card">
       <div class="kpi-card-header">
         <span class="kpi-title">Pengunjung &amp; SPH (2026)</span>
-        <div class="kpi-badge-icon" style="background:#ecfdf5; color:#059669;">👥</div>
+        <div class="kpi-badge-icon" style="background:#ecfdf5; color:#059669; border:1px solid rgba(5,150,105,0.2);">
+          <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
       </div>
       <div class="kpi-value">
         {% if data.total_visitors and data.total_visitors > 0 %}
@@ -3925,7 +3976,10 @@
     
     <!-- Card 1: Peak Hours -->
     <div class="insight-card">
-      <h3><span>⏰</span> Jam Sibuk Operasional (Peak Hours)</h3>
+      <h3 style="display:inline-flex; align-items:center; gap:6px;">
+        <svg class="svg-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span>Jam Sibuk Operasional (Peak Hours)</span>
+      </h3>
       <div class="insight-list">
         <div class="insight-item">
           <span class="text-muted">Puncak Penjualan (Revenue):</span>
@@ -3936,7 +3990,10 @@
           <strong id="peakTxHour">Pukul {{ data.peak_tx_hour }}:00</strong>
         </div>
         <div class="insight-item" style="background:var(--panel-hover); padding:8px 10px; border-radius:6px; margin-top:4px;">
-          <span style="font-size:12px; color:var(--text-muted);">💡 <em>Tips Operasional:</em> Pastikan antrian kasir dan restock barang siap 30 menit sebelum jam puncak.</span>
+          <span style="font-size:12px; color:var(--text-muted); display:inline-flex; align-items:center; gap:5px;">
+            <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brand); flex-shrink:0;"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+            <span><em>Tips Operasional:</em> Pastikan antrian kasir dan restock barang siap 30 menit sebelum jam puncak.</span>
+          </span>
         </div>
       </div>
     </div>
@@ -3944,7 +4001,10 @@
     <!-- Card 2: Top 5 Outlets -->
     <div class="insight-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <h3 style="margin-bottom:0;"><span>🏆</span> Top 5 Cabang Terbesar</h3>
+        <h3 style="margin-bottom:0; display:inline-flex; align-items:center; gap:6px;">
+          <svg class="svg-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+          <span>Top 5 Cabang Terbesar</span>
+        </h3>
         <span class="badge-growth positive" style="font-size:10px; padding:2px 7px;">2026</span>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid var(--panel-border); padding-bottom:6px;">
@@ -3975,7 +4035,10 @@
     <!-- Card 3: Outlets Needing Evaluation -->
     <div class="insight-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <h3 style="margin-bottom:0;"><span>⚠️</span> Cabang Butuh Evaluasi</h3>
+        <h3 style="margin-bottom:0; display:inline-flex; align-items:center; gap:6px;">
+          <svg class="svg-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          <span>Cabang Butuh Evaluasi</span>
+        </h3>
         <span class="badge-growth negative" style="font-size:10px; padding:2px 7px;">Prioritas</span>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid var(--panel-border); padding-bottom:6px;">
@@ -4012,7 +4075,10 @@
     <!-- Card 4: Priority Products & Sales Velocity (Fast-Moving SKU) -->
     <div class="insight-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <h3 style="margin-bottom:0;"><span>📦</span> Produk Prioritas & Velocity</h3>
+        <h3 style="margin-bottom:0; display:inline-flex; align-items:center; gap:6px;">
+          <svg class="svg-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16.5 9.4 4.5-2.8L12 2 3 6.6l4.5 2.8"></path><path d="M3 6.6V18L12 22l9-4V6.6"></path><path d="M12 12v10"></path><path d="m12 12 9-5.4"></path><path d="m12 12-9-5.4"></path></svg>
+          <span>Produk Prioritas &amp; Velocity</span>
+        </h3>
         <span id="priorityPeriodBadge" class="badge-growth neutral" style="font-size:10px; padding:2px 7px;">YTD</span>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid var(--panel-border); padding-bottom:6px;">
@@ -4046,12 +4112,21 @@
   <!-- Smart Chart View Switcher Bar -->
   <div class="charts-view-bar" id="chartsSection">
     <div class="charts-view-title">
-      <span>📊</span> <span>Fokus Analisis Visual:</span>
+      <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> <span>Fokus Analisis Visual:</span>
     </div>
     <div class="charts-view-pills">
-      <button type="button" class="chart-view-pill active" id="btnViewAllCharts" onclick="switchChartView('all', this)">Semua (4 Grafik)</button>
-      <button type="button" class="chart-view-pill" id="btnViewTrendCharts" onclick="switchChartView('trend', this)">📅 Tren Kalender (YoY &amp; Target)</button>
-      <button type="button" class="chart-view-pill" id="btnViewHourlyCharts" onclick="switchChartView('hourly', this)">⏰ Pola Jam Operasional</button>
+      <button type="button" class="chart-view-pill active" id="btnViewAllCharts" onclick="switchChartView('all', this)">
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="14" rx="1"></rect><rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+        <span>Semua (4 Grafik)</span>
+      </button>
+      <button type="button" class="chart-view-pill" id="btnViewTrendCharts" onclick="switchChartView('trend', this)">
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        <span>Tren Kalender (YoY &amp; Target)</span>
+      </button>
+      <button type="button" class="chart-view-pill" id="btnViewHourlyCharts" onclick="switchChartView('hourly', this)">
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span>Pola Jam Operasional</span>
+      </button>
     </div>
   </div>
 
@@ -4136,10 +4211,22 @@
   <div class="table-section" id="tableSection">
     <div class="table-controls">
       <div class="tab-group">
-        <button type="button" class="tab-btn active" onclick="switchTable('outlets', this)">🏬 Performa Konter / Outlet</button>
-        <button type="button" class="tab-btn" onclick="switchTable('areas', this)">🗺 Performa Area</button>
-        <button type="button" class="tab-btn" onclick="switchTable('products', this)">📦 Top Produk Terlaris</button>
-        <button type="button" class="tab-btn" onclick="switchTable('suppliers', this)">🏷️ Supplier &amp; Kategori</button>
+        <button type="button" class="tab-btn active" onclick="switchTable('outlets', this)">
+          <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"></path><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path><path d="M2 7h20"></path></svg>
+          <span>Performa Konter / Outlet</span>
+        </button>
+        <button type="button" class="tab-btn" onclick="switchTable('areas', this)">
+          <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+          <span>Performa Area</span>
+        </button>
+        <button type="button" class="tab-btn" onclick="switchTable('products', this)">
+          <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16.5 9.4 4.5-2.8L12 2 3 6.6l4.5 2.8"></path><path d="M3 6.6V18L12 22l9-4V6.6"></path><path d="M12 12v10"></path><path d="m12 12 9-5.4"></path><path d="m12 12-9-5.4"></path></svg>
+          <span>Top Produk Terlaris</span>
+        </button>
+        <button type="button" class="tab-btn" onclick="switchTable('suppliers', this)">
+          <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"></path><path d="M7 7h.01"></path></svg>
+          <span>Supplier &amp; Kategori</span>
+        </button>
       </div>
 
       <div class="table-action-bar" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
@@ -4168,19 +4255,27 @@
 
         <!-- Search Input Bar -->
         <div class="search-wrapper" style="position:relative; display:flex; align-items:center; min-width:260px;">
-          <input type="text" id="tableSearchInput" class="table-search" placeholder="🔍 Cari nama konter / outlet..." oninput="onSearchInput(this.value)" style="padding-right:28px;">
-          <button type="button" id="clearSearchBtn" onclick="clearSearch()" style="position:absolute; right:8px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:13px; display:none;" title="Hapus pencarian">✖</button>
+          <input type="text" id="tableSearchInput" class="table-search" placeholder="Cari nama konter / outlet..." oninput="onSearchInput(this.value)" style="padding-right:28px;">
+          <button type="button" id="clearSearchBtn" onclick="clearSearch()" style="position:absolute; right:8px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:13px; display:none; align-items:center; justify-content:center;" title="Hapus pencarian">
+            <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Product Search Info Banner (Muncul otomatis saat kata kunci dicari) -->
     <div id="productSearchSummary" class="product-search-summary" style="display:none; margin-bottom:14px; padding:10px 14px; background:var(--brand-subtle); border:1px solid var(--brand-border); border-radius:var(--radius-sm); font-size:12.5px; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-      <div>
-        <span style="font-weight:700; color:var(--brand);">🔍 Hasil Pencarian Produk:</span>
+      <div style="display:inline-flex; align-items:center; gap:6px;">
+        <span style="font-weight:700; color:var(--brand); display:inline-flex; align-items:center; gap:5px;">
+          <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          Hasil Pencarian Produk:
+        </span>
         <span id="productSearchStats" style="margin-left:4px;"></span>
       </div>
-      <button type="button" onclick="clearSearch()" class="btn" style="padding:2px 8px; font-size:11px; background:var(--panel);">✖ Reset Pencarian</button>
+      <button type="button" onclick="clearSearch()" class="btn" style="padding:3px 9px; font-size:11px; background:var(--panel); display:inline-flex; align-items:center; gap:4px;">
+        <svg class="svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <span>Reset Pencarian</span>
+      </button>
     </div>
 
     <!-- Outlets Table -->
@@ -4332,7 +4427,10 @@
       <div class="model-cards-grid">
         <div class="model-summary-card">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:13px; font-weight:700; color:var(--brand); text-transform:uppercase; letter-spacing:0.04em;">🤝 Model Konsinyasi (Bagi Hasil Vendor)</span>
+            <span style="font-size:13px; font-weight:700; color:var(--brand); text-transform:uppercase; letter-spacing:0.04em; display:inline-flex; align-items:center; gap:6px;">
+              <svg class="svg-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 0 0 1.42 0l4.24-4.24a1 1 0 0 0 0-1.42l-2-2"></path><path d="m7 13-2-2a1 1 0 0 1 0-1.42l4.24-4.24a1 1 0 0 1 1.42 0l2 2"></path><path d="m16 8 2 2"></path><path d="m6 14 2 2"></path></svg>
+              <span>Model Konsinyasi (Bagi Hasil Vendor)</span>
+            </span>
             <span class="badge-model-konsin" id="konsinShareBadge">Porsi: {{ "{:.1f}%".format(data.model_summary.KONSINYASI.share if data.model_summary else 67.1) }}</span>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:4px;">
@@ -4347,7 +4445,10 @@
 
         <div class="model-summary-card">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:13px; font-weight:700; color:#b45309; text-transform:uppercase; letter-spacing:0.04em;">📦 Model Dagangan (Beli Putus / Direct)</span>
+            <span style="font-size:13px; font-weight:700; color:#b45309; text-transform:uppercase; letter-spacing:0.04em; display:inline-flex; align-items:center; gap:6px;">
+              <svg class="svg-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16.5 9.4 4.5-2.8L12 2 3 6.6l4.5 2.8"></path><path d="M3 6.6V18L12 22l9-4V6.6"></path><path d="M12 12v10"></path><path d="m12 12 9-5.4"></path><path d="m12 12-9-5.4"></path></svg>
+              <span>Model Dagangan (Beli Putus / Direct)</span>
+            </span>
             <span class="badge-model-dagang" id="dagangShareBadge">Porsi: {{ "{:.1f}%".format(data.model_summary.DAGANGAN.share if data.model_summary else 32.9) }}</span>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:4px;">
@@ -4363,7 +4464,10 @@
 
       <!-- Section Title: Supplier Ranking -->
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; margin-top:6px;">
-        <h3 style="font-size:15px; font-weight:700; color:var(--text);">🏷️ Peringkat Rekanan / Supplier Vendor</h3>
+        <h3 style="font-size:15px; font-weight:700; color:var(--text); display:inline-flex; align-items:center; gap:6px;">
+          <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"></path><path d="M7 7h.01"></path></svg>
+          <span>Peringkat Rekanan / Supplier Vendor</span>
+        </h3>
         <span style="font-size:12px; color:var(--text-muted);" id="suppliersCountText">Menampilkan {{ data.suppliers|length if data.suppliers else 0 }} rekanan supplier aktif</span>
       </div>
 
@@ -4418,7 +4522,10 @@
 
       <!-- Section Title: Categories Ranking -->
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; margin-top:28px;">
-        <h3 style="font-size:15px; font-weight:700; color:var(--text);">📁 Kategori Barang &amp; Margin Keuntungan</h3>
+        <h3 style="font-size:15px; font-weight:700; color:var(--text); display:inline-flex; align-items:center; gap:6px;">
+          <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path></svg>
+          <span>Kategori Barang &amp; Margin Keuntungan</span>
+        </h3>
         <span style="font-size:12px; color:var(--text-muted);" id="categoriesCountText">{{ data.categories|length if data.categories else 0 }} kategori produk terdaftar</span>
       </div>
 
@@ -4470,7 +4577,8 @@
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
           <div>
             <h4 style="margin:0; font-size:14px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:6px;">
-              <span>📡</span> Radar SKU Baru (Master Data Helper)
+              <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"></circle><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"></path><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"></path><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"></path><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"></path></svg>
+              <span>Radar SKU Baru (Master Data Helper)</span>
             </h4>
             <p id="radarSkuSubtitle" style="margin:4px 0 0; font-size:12.5px; color:var(--text-muted);">
               {% if data.unmapped_count and data.unmapped_count > 0 %}
@@ -4481,8 +4589,9 @@
             </p>
           </div>
           {% if data.unmapped_count and data.unmapped_count > 0 %}
-          <button type="button" id="copySkuBtn" onclick="copyUnmappedSKUs()" class="btn-copy-sku">
-            📋 Salin Daftar SKU Baru
+          <button type="button" id="copySkuBtn" onclick="copyUnmappedSKUs()" class="btn-copy-sku" style="display:inline-flex; align-items:center; gap:6px;">
+            <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+            <span>Salin Daftar SKU Baru</span>
           </button>
           {% endif %}
         </div>
@@ -4521,7 +4630,10 @@
   <div class="business-insight-section" id="businessInsightSection">
     <div class="insight-header-panel">
       <div class="insight-header-left">
-        <div class="insight-badge-tag">📊 STRATEGIC INTELLIGENCE &amp; INSIGHTS</div>
+        <div class="insight-badge-tag" style="display:inline-flex; align-items:center; gap:6px;">
+          <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <span>STRATEGIC INTELLIGENCE &amp; INSIGHTS</span>
+        </div>
         <h2 class="insight-main-title">Executive Business Insights &amp; Operational Review</h2>
         <p class="insight-sub-title" id="insightPeriodSubtitle">Analisis pintar otomatis berdasarkan filter aktif (Periode, Area, dan Outlet)</p>
       </div>
@@ -4543,7 +4655,9 @@
       <!-- Card 1: Revenue Health & Growth Driver -->
       <div class="biz-card">
         <div class="biz-card-head">
-          <div class="biz-card-icon" style="background:var(--brand-subtle); color:var(--brand); border:1px solid var(--brand-border);">💰</div>
+          <div class="biz-card-icon" style="background:var(--brand-subtle); color:var(--brand); border:1px solid var(--brand-border);">
+            <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          </div>
           <div>
             <div class="biz-card-label">Kesehatan Omset &amp; Pencapaian Target</div>
             <div class="biz-card-val" id="bizRevenueTitle">Rp {{ "{:,.0f}".format(data.summary['2026']['net_sales']).replace(',', '.') }} ({{ "{:+.1f}%".format(data.summary.growth.net_sales) if data.summary.growth.net_sales is not none else "-" }} YoY)</div>
@@ -4569,7 +4683,9 @@
       <!-- Card 2: Customer Basket & Ticket Size -->
       <div class="biz-card">
         <div class="biz-card-head">
-          <div class="biz-card-icon" style="background:#f0fdf4; color:#16a34a;">🛒</div>
+          <div class="biz-card-icon" style="background:#f0fdf4; color:#16a34a;">
+            <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg>
+          </div>
           <div>
             <div class="biz-card-label">Perilaku Belanja &amp; Basket Size</div>
             <div class="biz-card-val" id="bizBasketTitle">ATV Rp {{ "{:,.0f}".format(data.summary['2026']['atv']).replace(',', '.') }} | UPT {{ "{:.2f}".format(data.summary['2026']['upt']) }} item</div>
@@ -4594,7 +4710,9 @@
       <!-- Card 3: Outlet & Area Champions / Risks -->
       <div class="biz-card">
         <div class="biz-card-head">
-          <div class="biz-card-icon" style="background:#fef3c7; color:#d97706;">🏬</div>
+          <div class="biz-card-icon" style="background:#fef3c7; color:#d97706;">
+            <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"></path><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path><path d="M2 7h20"></path></svg>
+          </div>
           <div>
             <div class="biz-card-label">Top Performers &amp; Focus Units</div>
             <div class="biz-card-val" id="bizOutletTitle">{{ data.outlets|length }} Konter Aktif Beroperasi</div>
@@ -4623,7 +4741,9 @@
       <!-- Card 4: Operating Hours & Key Action Items -->
       <div class="biz-card">
         <div class="biz-card-head">
-          <div class="biz-card-icon" style="background:#faf5ff; color:#9333ea;">⚡</div>
+          <div class="biz-card-icon" style="background:#faf5ff; color:#9333ea;">
+            <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
           <div>
             <div class="biz-card-label">Jam Sibuk &amp; Rekomendasi Taktis</div>
             <div class="biz-card-val" id="bizActionTitle">Puncak Jam {{ data.peak_sales_hour }}:00 &amp; Rekomendasi</div>
@@ -4655,7 +4775,10 @@
 
   <!-- Glossary / Panduan Istilah -->
   <div class="glossary-card">
-    <strong style="color:var(--text); font-size:13px;">📖 Panduan Istilah & Metrik untuk Pengguna:</strong>
+    <strong style="color:var(--text); font-size:13px; display:inline-flex; align-items:center; gap:6px;">
+      <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
+      <span>Panduan Istilah &amp; Metrik untuk Pengguna:</span>
+    </strong>
     <div class="glossary-grid">
       <div class="glossary-item"><strong>Net Sales:</strong> Total omset penjualan bersih setelah potongan diskon.</div>
       <div class="glossary-item"><strong>Growth YoY:</strong> Pertumbuhan persentase dibanding periode yang sama di tahun 2025.</div>
@@ -4673,16 +4796,19 @@
 <!-- Floating Quick-Jump Dock (Pintasan Meluncur Instan) -->
 <div class="quick-jump-dock" id="quickJumpDock" title="Pintasan Meluncur Cepat">
   <button type="button" class="jump-btn" onclick="quickJumpTo('kpiGridSection')" title="Meluncur ke Ringkasan Utama">
-    <span>📊</span> <span>KPI</span>
+    <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
+    <span>KPI</span>
   </button>
   <button type="button" class="jump-btn" onclick="quickJumpTo('chartsSection')" title="Meluncur ke Visual Grafik">
-    <span>📈</span> <span>Tren</span>
+    <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+    <span>Tren</span>
   </button>
   <button type="button" class="jump-btn" onclick="quickJumpTo('tableSection')" title="Meluncur ke Tabel Rincian Data">
-    <span>🏬</span> <span>Tabel</span>
+    <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"></path><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M3 9h18"></path><path d="M3 15h18"></path></svg>
+    <span>Tabel</span>
   </button>
   <button type="button" class="jump-btn jump-btn-top" onclick="scrollToTop()" title="Kembali ke Paling Atas">
-    <span>▲</span>
+    <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
   </button>
 </div>
 
@@ -4697,7 +4823,7 @@
 
 <!-- Floating Tanya AI Button -->
 <button type="button" id="btnAIAssistant" class="btn-ai-float" onclick="toggleAIChat()" title="Tanya AI Ancol (Asisten Analisis Bisnis)" aria-label="Tanya AI Ancol">
-  <span class="ai-btn-sparkle">✨</span>
+  <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>
   <span>Tanya AI</span>
   <span class="ai-badge-live">LIVE</span>
 </button>
@@ -4708,7 +4834,9 @@
   <!-- Header -->
   <div class="ai-drawer-header">
     <div class="ai-header-left">
-      <div class="ai-header-avatar">✨</div>
+      <div class="ai-header-avatar">
+        <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg>
+      </div>
       <div>
         <div id="aiDrawerTitle" class="ai-header-title">Ancol AI Executive</div>
         <div class="ai-header-sub">
@@ -4720,9 +4848,15 @@
       </div>
     </div>
     <div class="ai-header-actions">
-      <button type="button" class="ai-icon-btn" onclick="clearAIChat()" title="Mulai Obrolan Baru (Reset Memori)" aria-label="Reset Obrolan">🔄</button>
-      <button type="button" class="ai-icon-btn" onclick="toggleAISettings()" title="Pengaturan Gemini API Key" aria-label="Pengaturan">⚙️</button>
-      <button type="button" class="ai-icon-btn" onclick="closeAIChat()" title="Tutup" aria-label="Tutup">✕</button>
+      <button type="button" class="ai-icon-btn" onclick="clearAIChat()" title="Mulai Obrolan Baru (Reset Memori)" aria-label="Reset Obrolan">
+        <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
+      </button>
+      <button type="button" class="ai-icon-btn" onclick="toggleAISettings()" title="Pengaturan Gemini API Key" aria-label="Pengaturan">
+        <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </button>
+      <button type="button" class="ai-icon-btn" onclick="closeAIChat()" title="Tutup" aria-label="Tutup">
+        <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
     </div>
   </div>
 
@@ -4744,29 +4878,39 @@
   <!-- Boomer & Senior Management Quick Shortcut Chips -->
   <div class="ai-chips-section">
     <div class="ai-chips-label">
-      <span>💡 Rekomendasi Pertanyaan Cepat:</span>
+      <span style="display:inline-flex; align-items:center; gap:5px;">
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brand);"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+        <span>Rekomendasi Pertanyaan Cepat:</span>
+      </span>
     </div>
     <div class="ai-chips-container">
       <button type="button" class="ai-chip" onclick="askQuickPrompt('Ringkasan bahan rapat direksi dan kesimpulan eksekutif')">
-        <span>📊</span> Ringkasan Rapat Direksi
+        <svg class="svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        <span>Ringkasan Rapat Direksi</span>
       </button>
       <button type="button" class="ai-chip" onclick="askQuickPrompt('Cabang mana yang omsetnya turun atau jeblok dan butuh evaluasi?')">
-        <span>⚠️</span> Cabang Butuh Evaluasi
+        <svg class="svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        <span>Cabang Butuh Evaluasi</span>
       </button>
       <button type="button" class="ai-chip" onclick="askQuickPrompt('Barang apa yang paling laris dan harus direstock untuk persiapan weekend?')">
-        <span>📦</span> Rekomendasi Restock Weekend
+        <svg class="svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><path d="m16.5 9.4 4.5-2.8L12 2 3 6.6l4.5 2.8"></path><path d="M3 6.6V18L12 22l9-4V6.6"></path><path d="M12 12v10"></path><path d="m12 12 9-5.4"></path><path d="m12 12-9-5.4"></path></svg>
+        <span>Rekomendasi Restock Weekend</span>
       </button>
       <button type="button" class="ai-chip" onclick="askQuickPrompt('Bagaimana posisi target omset saat ini, surplus atau defisit?')">
-        <span>🎯</span> Posisi Target Penjualan
+        <svg class="svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+        <span>Posisi Target Penjualan</span>
       </button>
       <button type="button" class="ai-chip" onclick="askQuickPrompt('Kapan jam paling sibuk penjualan dan bagaimana strategi kasirnya?')">
-        <span>⏰</span> Jam Sibuk & Strategi Kasir
+        <svg class="svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span>Jam Sibuk &amp; Strategi Kasir</span>
       </button>
       <button type="button" class="ai-chip" onclick="askQuickPrompt('Apa 5 produk teratas dengan laju penjualan tertinggi?')">
-        <span>🏆</span> Top 5 Produk Velocity
+        <svg class="svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+        <span>Top 5 Produk Velocity</span>
       </button>
       <button type="button" class="ai-chip" onclick="askQuickPrompt('Berapa estimasi laba kotor, margin %, dan supplier mana yang paling menguntungkan saat ini?')">
-        <span>💰</span> Margin &amp; Supplier Terlaris
+        <svg class="svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><line x1="12" y1="2" x2="12" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        <span>Margin &amp; Supplier Terlaris</span>
       </button>
     </div>
   </div>
@@ -5123,7 +5267,8 @@
       const safeName = p.name.replace(/"/g, '&quot;');
       html += `
         <button type="button" class="preset-chip preset-chip-custom ${isActive ? 'active' : ''}" data-id="${p.id}" onclick="applyCustomPreset('${p.id}')" title="Gunakan pintasan: ${safeName}">
-          <span>⭐ ${safeName}</span>
+          <svg class="svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+          <span>${safeName}</span>
           <span class="preset-delete-btn" onclick="deleteCustomPreset('${p.id}', event)" title="Hapus pintasan">✕</span>
         </button>
       `;
@@ -5175,7 +5320,9 @@
   function applyTheme(theme) {
     const isDark = theme === 'dark';
     root.classList.toggle('dark', isDark);
-    themeIcon.textContent = isDark ? '☀' : '☾';
+    themeIcon.innerHTML = isDark 
+      ? '<svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>'
+      : '<svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>';
     themeText.textContent = isDark ? 'Terang' : 'Gelap';
     setTimeout(redrawAllCharts, 50);
   }
@@ -5214,13 +5361,13 @@
     if (tabName === 'products') {
       if (productLimitWrapper) productLimitWrapper.style.display = 'flex';
       if (supplierLimitWrapper) supplierLimitWrapper.style.display = 'none';
-      if (searchInput) searchInput.placeholder = '🔍 Cari kata kunci produk (misal: jas, sandal, prima, botol)...';
+      if (searchInput) searchInput.placeholder = 'Cari kata kunci produk (misal: jas, sandal, prima, botol)...';
       renderProductsTable(currentDashboardData.products);
     } else if (tabName === 'suppliers') {
       if (productLimitWrapper) productLimitWrapper.style.display = 'none';
       if (supplierLimitWrapper) supplierLimitWrapper.style.display = 'flex';
       if (summaryEl) summaryEl.style.display = 'none';
-      if (searchInput) searchInput.placeholder = '🔍 Cari nama rekanan supplier atau kategori...';
+      if (searchInput) searchInput.placeholder = 'Cari nama rekanan supplier atau kategori...';
       renderSuppliersTable(currentDashboardData.suppliers || []);
       renderCategoriesTable(currentDashboardData.categories || []);
     } else {
@@ -5228,7 +5375,7 @@
       if (supplierLimitWrapper) supplierLimitWrapper.style.display = 'none';
       if (summaryEl) summaryEl.style.display = 'none';
       if (searchInput) {
-        searchInput.placeholder = tabName === 'outlets' ? '🔍 Cari nama konter / outlet...' : '🔍 Cari nama area...';
+        searchInput.placeholder = tabName === 'outlets' ? 'Cari nama konter / outlet...' : 'Cari nama area...';
       }
       filterTable();
     }
@@ -5632,13 +5779,13 @@
 
     const isCollapsed = filterCard.classList.toggle('is-collapsed');
     if (isCollapsed) {
-      if (icon) icon.textContent = '▼';
+      if (icon) icon.innerHTML = '<svg class="svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>';
       if (text) text.textContent = 'Buka Filter';
       if (summary) summary.style.display = 'inline-block';
       closeAllSearchableDropdowns();
       updateCollapsedSummary();
     } else {
-      if (icon) icon.textContent = '▲';
+      if (icon) icon.innerHTML = '<svg class="svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg>';
       if (text) text.textContent = 'Sembunyikan Filter';
       if (summary) summary.style.display = 'none';
     }
@@ -5670,7 +5817,7 @@
     if (currentFilter.modelBisnis) parts.push(`Model: ${currentFilter.modelBisnis === 'KONSINYASI' ? 'Konsinyasi' : 'Dagangan'}`);
     if (currentFilter.weekendOnly) parts.push('Khusus Akhir Pekan (Sabtu-Minggu)');
 
-    summary.textContent = '🔍 ' + parts.join(' • ');
+    summary.innerHTML = '<svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px; vertical-align:middle;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><span>' + parts.join(' • ') + '</span>';
   }
 
   // ----------------------------------------------------
