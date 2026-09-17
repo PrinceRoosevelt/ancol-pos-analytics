@@ -2269,6 +2269,20 @@
     .table-responsive {
       width: 100%;
       overflow-x: auto;
+      max-height: 620px;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .table-responsive thead th {
+      position: sticky;
+      top: 0;
+      z-index: 6;
+      background: var(--bg);
+      box-shadow: 0 1px 0 var(--panel-border);
+    }
+    :root.dark .table-responsive thead th {
+      background: #0f172a;
     }
 
     table {
@@ -2311,6 +2325,60 @@
       margin-left: 4px;
       font-size: 11px;
       transition: transform 0.15s ease, color 0.15s ease;
+    }
+
+    /* 1-Click Interactive Row Entity Filter */
+    .clickable-row-entity {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text);
+      font-weight: 600;
+      transition: color 0.15s ease;
+    }
+    .clickable-row-entity:hover {
+      color: var(--brand);
+      text-decoration: underline;
+    }
+    .clickable-row-entity .filter-hover-icon {
+      font-size: 10px;
+      opacity: 0;
+      color: var(--brand);
+      transition: opacity 0.15s ease;
+    }
+    .clickable-row-entity:hover .filter-hover-icon {
+      opacity: 0.85;
+    }
+
+    /* Toast Notification for Instant Cross-Filtering */
+    .filter-toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 9999;
+      background: rgba(15, 23, 42, 0.94);
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 650;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transform: translateY(-12px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .filter-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    :root.dark .filter-toast {
+      background: rgba(30, 41, 59, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     th.text-right, td.text-right {
@@ -4135,7 +4203,11 @@
           {% for item in data.outlets %}
           <tr>
             <td class="text-center" style="color:var(--text-muted);">{{ loop.index }}</td>
-            <td style="font-weight:600;">{{ item.name }}</td>
+            <td>
+              <span class="clickable-row-entity" onclick="quickFilterOutlet('{{ item.name|escape }}')" title="Klik untuk filter seluruh dashboard ke konter ini">
+                {{ item.name }} <span class="filter-hover-icon">🔍</span>
+              </span>
+            </td>
             <td class="text-right">
               <div class="bar-container">
                 <div class="data-bar" style="width: {{ (item['2026']['net_sales'] / max_outlet_sales * 100)|round(1) }}%;"></div>
@@ -4301,8 +4373,12 @@
             <th>No</th>
             <th>Nama Rekanan / Supplier</th>
             <th>Model Bisnis</th>
-            <th class="text-right">Qty Terjual</th>
-            <th class="text-right">Net Sales 2026</th>
+            <th class="text-right sortable-header" id="thSupplierSortQty" onclick="setSupplierSort('qty')" title="Klik untuk urutkan berdasarkan Qty Terjual">
+              Qty Terjual <span id="sortIconSupplierQty" class="sort-icon" style="opacity:0.35;">⇅</span>
+            </th>
+            <th class="text-right sortable-header is-active" id="thSupplierSortSales" onclick="setSupplierSort('sales')" title="Klik untuk urutkan berdasarkan Omset Rupiah (Net Sales 2026)">
+              Net Sales 2026 <span id="sortIconSupplierSales" class="sort-icon" style="color:var(--brand);">▼</span>
+            </th>
             <th class="text-right">Kontribusi</th>
             <th class="text-right">Estimasi Laba Kotor</th>
             <th class="text-right">Gross Margin</th>
@@ -4313,7 +4389,11 @@
           {% for item in data.suppliers %}
           <tr>
             <td class="text-center" style="color:var(--text-muted);">{{ loop.index }}</td>
-            <td style="font-weight:600;">{{ item.name }}</td>
+            <td>
+              <span class="clickable-row-entity" onclick="quickFilterSupplier('{{ item.name|escape }}')" title="Klik untuk filter seluruh dashboard ke supplier ini">
+                {{ item.name }} <span class="filter-hover-icon">🔍</span>
+              </span>
+            </td>
             <td>
               <span class="{% if item.jenis == 'KONSINYASI' %}badge-model-konsin{% else %}badge-model-dagang{% endif %}">
                 {{ item.jenis }}
@@ -4347,8 +4427,12 @@
           <tr>
             <th>No</th>
             <th>Kategori Produk</th>
-            <th class="text-right">Qty Terjual</th>
-            <th class="text-right">Net Sales 2026</th>
+            <th class="text-right sortable-header" id="thCategorySortQty" onclick="setCategorySort('qty')" title="Klik untuk urutkan berdasarkan Qty Terjual">
+              Qty Terjual <span id="sortIconCategoryQty" class="sort-icon" style="opacity:0.35;">⇅</span>
+            </th>
+            <th class="text-right sortable-header is-active" id="thCategorySortSales" onclick="setCategorySort('sales')" title="Klik untuk urutkan berdasarkan Omset Rupiah (Net Sales 2026)">
+              Net Sales 2026 <span id="sortIconCategorySales" class="sort-icon" style="color:var(--brand);">▼</span>
+            </th>
             <th class="text-right">Kontribusi</th>
             <th class="text-right">Estimasi Laba Kotor</th>
             <th class="text-right">Gross Margin</th>
@@ -4359,7 +4443,11 @@
           {% for item in data.categories %}
           <tr>
             <td class="text-center" style="color:var(--text-muted);">{{ loop.index }}</td>
-            <td style="font-weight:600;">{{ item.name }}</td>
+            <td>
+              <span class="clickable-row-entity" onclick="quickFilterCategory('{{ item.name|escape }}')" title="Klik untuk filter seluruh dashboard ke kategori ini">
+                {{ item.name }} <span class="filter-hover-icon">🔍</span>
+              </span>
+            </td>
             <td class="text-right">{{ "{:,.0f}".format(item.qty).replace(',', '.') }}</td>
             <td class="text-right">
               <div class="bar-container">
@@ -6885,7 +6973,11 @@
       html += `
         <tr>
           <td class="text-center" style="color:var(--text-muted);">${i + 1}</td>
-          <td style="font-weight:600;">${o.name}</td>
+          <td>
+            <span class="clickable-row-entity" onclick="quickFilterOutlet('${escapeJs(o.name)}')" title="Klik untuk filter seluruh dashboard ke konter ini">
+              ${o.name} <span class="filter-hover-icon">🔍</span>
+            </span>
+          </td>
           <td class="text-right">
             <div class="bar-container">
               <div class="data-bar" style="width: ${barPct}%;"></div>
@@ -7158,6 +7250,154 @@
     tbody.innerHTML = html;
   }
 
+  // Supplier Table Sorting State (Net Sales vs Qty)
+  let currentSupplierSortCol = 'sales'; // 'sales' | 'qty'
+  let currentSupplierSortDir = 'desc';  // 'desc' | 'asc'
+
+  function setSupplierSort(col) {
+    if (currentSupplierSortCol === col) {
+      currentSupplierSortDir = currentSupplierSortDir === 'desc' ? 'asc' : 'desc';
+    } else {
+      currentSupplierSortCol = col;
+      currentSupplierSortDir = 'desc';
+    }
+    updateSupplierSortUI();
+    const suppliers = (currentDashboardData && currentDashboardData.suppliers) ? currentDashboardData.suppliers : [];
+    renderSuppliersTable(suppliers);
+  }
+
+  function updateSupplierSortUI() {
+    const thSales = document.getElementById('thSupplierSortSales');
+    const thQty = document.getElementById('thSupplierSortQty');
+    const iconSales = document.getElementById('sortIconSupplierSales');
+    const iconQty = document.getElementById('sortIconSupplierQty');
+
+    if (currentSupplierSortCol === 'qty') {
+      if (thQty) thQty.classList.add('is-active');
+      if (thSales) thSales.classList.remove('is-active');
+      if (iconQty) {
+        iconQty.textContent = currentSupplierSortDir === 'desc' ? '▼' : '▲';
+        iconQty.style.opacity = '1';
+        iconQty.style.color = 'var(--brand)';
+      }
+      if (iconSales) {
+        iconSales.textContent = '⇅';
+        iconSales.style.opacity = '0.35';
+        iconSales.style.color = '';
+      }
+    } else {
+      if (thSales) thSales.classList.add('is-active');
+      if (thQty) thQty.classList.remove('is-active');
+      if (iconSales) {
+        iconSales.textContent = currentSupplierSortDir === 'desc' ? '▼' : '▲';
+        iconSales.style.opacity = '1';
+        iconSales.style.color = 'var(--brand)';
+      }
+      if (iconQty) {
+        iconQty.textContent = '⇅';
+        iconQty.style.opacity = '0.35';
+        iconQty.style.color = '';
+      }
+    }
+  }
+
+  // Category Table Sorting State (Net Sales vs Qty)
+  let currentCategorySortCol = 'sales'; // 'sales' | 'qty'
+  let currentCategorySortDir = 'desc';  // 'desc' | 'asc'
+
+  function setCategorySort(col) {
+    if (currentCategorySortCol === col) {
+      currentCategorySortDir = currentCategorySortDir === 'desc' ? 'asc' : 'desc';
+    } else {
+      currentCategorySortCol = col;
+      currentCategorySortDir = 'desc';
+    }
+    updateCategorySortUI();
+    const categories = (currentDashboardData && currentDashboardData.categories) ? currentDashboardData.categories : [];
+    renderCategoriesTable(categories);
+  }
+
+  function updateCategorySortUI() {
+    const thSales = document.getElementById('thCategorySortSales');
+    const thQty = document.getElementById('thCategorySortQty');
+    const iconSales = document.getElementById('sortIconCategorySales');
+    const iconQty = document.getElementById('sortIconCategoryQty');
+
+    if (currentCategorySortCol === 'qty') {
+      if (thQty) thQty.classList.add('is-active');
+      if (thSales) thSales.classList.remove('is-active');
+      if (iconQty) {
+        iconQty.textContent = currentCategorySortDir === 'desc' ? '▼' : '▲';
+        iconQty.style.opacity = '1';
+        iconQty.style.color = 'var(--brand)';
+      }
+      if (iconSales) {
+        iconSales.textContent = '⇅';
+        iconSales.style.opacity = '0.35';
+        iconSales.style.color = '';
+      }
+    } else {
+      if (thSales) thSales.classList.add('is-active');
+      if (thQty) thQty.classList.remove('is-active');
+      if (iconSales) {
+        iconSales.textContent = currentCategorySortDir === 'desc' ? '▼' : '▲';
+        iconSales.style.opacity = '1';
+        iconSales.style.color = 'var(--brand)';
+      }
+      if (iconQty) {
+        iconQty.textContent = '⇅';
+        iconQty.style.opacity = '0.35';
+        iconQty.style.color = '';
+      }
+    }
+  }
+
+  function escapeJs(str) {
+    if (!str) return '';
+    return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  }
+
+  function showFilterToast(msg) {
+    let toast = document.getElementById('filterToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'filterToast';
+      toast.className = 'filter-toast';
+      document.body.appendChild(toast);
+    }
+    toast.innerHTML = `<span>⚡</span> <span>${msg}</span>`;
+    toast.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2800);
+  }
+
+  function quickFilterSupplier(supplierName) {
+    if (!supplierName) return;
+    selectSearchableOption('supplier', supplierName, supplierName);
+    showFilterToast(`Filter aktif: Rekanan <strong>${supplierName}</strong>`);
+    quickJumpTo('kpiGridSection');
+  }
+
+  function quickFilterCategory(catName) {
+    if (!catName) return;
+    selectSearchableOption('category', catName, catName);
+    showFilterToast(`Filter aktif: Kategori <strong>${catName}</strong>`);
+    quickJumpTo('kpiGridSection');
+  }
+
+  function quickFilterOutlet(outletName) {
+    if (!outletName) return;
+    const filterOutletEl = document.getElementById('filterOutlet');
+    if (filterOutletEl) {
+      filterOutletEl.value = outletName;
+      applyFilters();
+      showFilterToast(`Filter aktif: Konter <strong>${outletName}</strong>`);
+      quickJumpTo('kpiGridSection');
+    }
+  }
+
   function renderSuppliersTable(list) {
     const tbody = document.getElementById('suppliersTableBody');
     const countText = document.getElementById('suppliersCountText');
@@ -7170,6 +7410,22 @@
       filtered = filtered.filter(x => (x.name || '').toLowerCase().includes(rawQuery));
     }
 
+    // Sort based on active sort column and direction
+    filtered = [...filtered].sort((a, b) => {
+      const s26A = a.net_sales !== undefined ? a.net_sales : (a.s26 || 0);
+      const s26B = b.net_sales !== undefined ? b.net_sales : (b.s26 || 0);
+      const q26A = a.qty !== undefined ? a.qty : (a.q26 || 0);
+      const q26B = b.qty !== undefined ? b.qty : (b.q26 || 0);
+
+      if (currentSupplierSortCol === 'qty') {
+        const diff = currentSupplierSortDir === 'asc' ? (q26A - q26B) : (q26B - q26A);
+        return diff !== 0 ? diff : (s26B - s26A);
+      } else {
+        const diff = currentSupplierSortDir === 'asc' ? (s26A - s26B) : (s26B - s26A);
+        return diff !== 0 ? diff : (q26B - q26A);
+      }
+    });
+
     const totalCount = filtered.length;
     let displayed = filtered;
     if (limitVal !== 'all') {
@@ -7178,14 +7434,21 @@
 
     if (countText) {
       if (limitVal !== 'all' && totalCount > displayed.length) {
-        countText.textContent = `Menampilkan Top ${displayed.length} dari ${totalCount} rekanan supplier aktif`;
+        countText.textContent = `Menampilkan Top ${displayed.length} dari ${totalCount} rekanan supplier aktif (${currentSupplierSortCol === 'qty' ? 'Urutan Qty' : 'Urutan Omset'})`;
       } else {
-        countText.textContent = `Menampilkan ${displayed.length} rekanan supplier aktif`;
+        countText.textContent = `Menampilkan ${displayed.length} rekanan supplier aktif (${currentSupplierSortCol === 'qty' ? 'Urutan Qty' : 'Urutan Omset'})`;
       }
     }
     if (!tbody) return;
 
-    const maxSales = (displayed && displayed.length) ? Math.max(...displayed.map(x => x.net_sales || x.s26 || 0), 1) : 1;
+    if (displayed.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" class="text-center" style="padding:24px 16px; color:var(--text-muted);">Tidak ada data supplier yang sesuai pencarian "<strong>${rawQuery}</strong>".<br><button type="button" onclick="clearSearch()" class="btn" style="margin-top:8px; font-size:11.5px; padding:4px 12px; background:var(--panel);">↺ Reset Pencarian</button></td></tr>`;
+      return;
+    }
+
+    const maxSales = Math.max(...displayed.map(x => x.net_sales || x.s26 || 0), 1);
+    const maxQty = Math.max(...displayed.map(x => x.qty || x.q26 || 0), 1);
+
     let html = '';
     displayed.forEach((item, i) => {
       const s26 = item.net_sales !== undefined ? item.net_sales : (item.s26 || 0);
@@ -7195,22 +7458,30 @@
       const contrib = item.contrib !== undefined ? item.contrib : 0;
       const jenis = item.jenis || 'KONSINYASI';
       const badgeClass = jenis === 'KONSINYASI' ? 'badge-model-konsin' : 'badge-model-dagang';
-      const barPct = (s26 / maxSales * 100).toFixed(1);
-
+      
+      const barSalesPct = (s26 / maxSales * 100).toFixed(1);
+      const barQtyPct = (q26 / maxQty * 100).toFixed(1);
       const marginClass = margin >= 40 ? 'badge-margin-high' : (margin >= 25 ? 'badge-margin-mid' : 'badge-margin-low');
+
+      const qtyCell = currentSupplierSortCol === 'qty'
+        ? `<div class="bar-container"><div class="data-bar" style="width: ${barQtyPct}%;"></div><span class="bar-value">${formatNum(q26)}</span></div>`
+        : formatNum(q26);
+
+      const salesCell = currentSupplierSortCol === 'sales'
+        ? `<div class="bar-container"><div class="data-bar" style="width: ${barSalesPct}%;"></div><span class="bar-value">${formatRp(s26)}</span></div>`
+        : formatRp(s26);
 
       html += `
         <tr>
           <td class="text-center" style="color:var(--text-muted);">${i + 1}</td>
-          <td style="font-weight:600;">${item.name}</td>
-          <td><span class="${badgeClass}">${jenis}</span></td>
-          <td class="text-right">${formatNum(q26)}</td>
-          <td class="text-right">
-            <div class="bar-container">
-              <div class="data-bar" style="width: ${barPct}%;"></div>
-              <span class="bar-value">${formatRp(s26)}</span>
-            </div>
+          <td>
+            <span class="clickable-row-entity" onclick="quickFilterSupplier('${escapeJs(item.name)}')" title="Klik untuk filter seluruh dashboard ke supplier ini">
+              ${item.name} <span class="filter-hover-icon">🔍</span>
+            </span>
           </td>
+          <td><span class="${badgeClass}">${jenis}</span></td>
+          <td class="text-right">${qtyCell}</td>
+          <td class="text-right">${salesCell}</td>
           <td class="text-right"><strong>${contrib.toFixed(1)}%</strong></td>
           <td class="text-right" style="color:#059669; font-weight:600;">${formatRp(grossProfit)}</td>
           <td class="text-right">
@@ -7218,7 +7489,7 @@
           </td>
         </tr>`;
     });
-    tbody.innerHTML = html || '<tr><td colspan="8" class="text-center" style="padding:20px; color:var(--text-muted);">Tidak ada data supplier yang sesuai</td></tr>';
+    tbody.innerHTML = html;
   }
 
   function renderCategoriesTable(list) {
@@ -7233,6 +7504,22 @@
       filtered = filtered.filter(x => (x.name || '').toLowerCase().includes(rawQuery));
     }
 
+    // Sort based on active sort column and direction
+    filtered = [...filtered].sort((a, b) => {
+      const s26A = a.net_sales !== undefined ? a.net_sales : (a.s26 || 0);
+      const s26B = b.net_sales !== undefined ? b.net_sales : (b.s26 || 0);
+      const q26A = a.qty !== undefined ? a.qty : (a.q26 || 0);
+      const q26B = b.qty !== undefined ? b.qty : (b.q26 || 0);
+
+      if (currentCategorySortCol === 'qty') {
+        const diff = currentCategorySortDir === 'asc' ? (q26A - q26B) : (q26B - q26A);
+        return diff !== 0 ? diff : (s26B - s26A);
+      } else {
+        const diff = currentCategorySortDir === 'asc' ? (s26A - s26B) : (s26B - s26A);
+        return diff !== 0 ? diff : (q26B - q26A);
+      }
+    });
+
     const totalCount = filtered.length;
     let displayed = filtered;
     if (limitVal !== 'all') {
@@ -7241,14 +7528,21 @@
 
     if (countText) {
       if (limitVal !== 'all' && totalCount > displayed.length) {
-        countText.textContent = `Menampilkan Top ${displayed.length} dari ${totalCount} kategori produk terdaftar`;
+        countText.textContent = `Menampilkan Top ${displayed.length} dari ${totalCount} kategori produk terdaftar (${currentCategorySortCol === 'qty' ? 'Urutan Qty' : 'Urutan Omset'})`;
       } else {
-        countText.textContent = `${displayed.length} kategori produk terdaftar`;
+        countText.textContent = `${displayed.length} kategori produk terdaftar (${currentCategorySortCol === 'qty' ? 'Urutan Qty' : 'Urutan Omset'})`;
       }
     }
     if (!tbody) return;
 
-    const maxSales = (displayed && displayed.length) ? Math.max(...displayed.map(x => x.net_sales || x.s26 || 0), 1) : 1;
+    if (displayed.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" class="text-center" style="padding:24px 16px; color:var(--text-muted);">Tidak ada data kategori yang sesuai pencarian "<strong>${rawQuery}</strong>".<br><button type="button" onclick="clearSearch()" class="btn" style="margin-top:8px; font-size:11.5px; padding:4px 12px; background:var(--panel);">↺ Reset Pencarian</button></td></tr>`;
+      return;
+    }
+
+    const maxSales = Math.max(...displayed.map(x => x.net_sales || x.s26 || 0), 1);
+    const maxQty = Math.max(...displayed.map(x => x.qty || x.q26 || 0), 1);
+
     let html = '';
     displayed.forEach((item, i) => {
       const s26 = item.net_sales !== undefined ? item.net_sales : (item.s26 || 0);
@@ -7256,20 +7550,29 @@
       const grossProfit = item.gross_profit !== undefined ? item.gross_profit : (item.profit || 0);
       const margin = item.margin !== undefined ? item.margin : 0;
       const contrib = item.contrib !== undefined ? item.contrib : 0;
-      const barPct = (s26 / maxSales * 100).toFixed(1);
+
+      const barSalesPct = (s26 / maxSales * 100).toFixed(1);
+      const barQtyPct = (q26 / maxQty * 100).toFixed(1);
       const marginClass = margin >= 40 ? 'badge-margin-high' : (margin >= 25 ? 'badge-margin-mid' : 'badge-margin-low');
+
+      const qtyCell = currentCategorySortCol === 'qty'
+        ? `<div class="bar-container"><div class="data-bar" style="width: ${barQtyPct}%;"></div><span class="bar-value">${formatNum(q26)}</span></div>`
+        : formatNum(q26);
+
+      const salesCell = currentCategorySortCol === 'sales'
+        ? `<div class="bar-container"><div class="data-bar" style="width: ${barSalesPct}%;"></div><span class="bar-value">${formatRp(s26)}</span></div>`
+        : formatRp(s26);
 
       html += `
         <tr>
           <td class="text-center" style="color:var(--text-muted);">${i + 1}</td>
-          <td style="font-weight:600;">${item.name}</td>
-          <td class="text-right">${formatNum(q26)}</td>
-          <td class="text-right">
-            <div class="bar-container">
-              <div class="data-bar" style="width: ${barPct}%;"></div>
-              <span class="bar-value">${formatRp(s26)}</span>
-            </div>
+          <td>
+            <span class="clickable-row-entity" onclick="quickFilterCategory('${escapeJs(item.name)}')" title="Klik untuk filter seluruh dashboard ke kategori ini">
+              ${item.name} <span class="filter-hover-icon">🔍</span>
+            </span>
           </td>
+          <td class="text-right">${qtyCell}</td>
+          <td class="text-right">${salesCell}</td>
           <td class="text-right"><strong>${contrib.toFixed(1)}%</strong></td>
           <td class="text-right" style="color:#059669; font-weight:600;">${formatRp(grossProfit)}</td>
           <td class="text-right">
@@ -7277,7 +7580,7 @@
           </td>
         </tr>`;
     });
-    tbody.innerHTML = html || '<tr><td colspan="7" class="text-center" style="padding:20px; color:var(--text-muted);">Tidak ada data kategori yang sesuai</td></tr>';
+    tbody.innerHTML = html;
   }
 
   function renderRadarSku(unmappedList) {
@@ -8695,6 +8998,45 @@
     aiChatInput.value = '';
     sendAIPrompt(val);
   }
+
+  // Keyboard Shortcuts (Desktop / Laptop Ergonomics)
+  window.addEventListener('keydown', function(e) {
+    const activeEl = document.activeElement;
+    const isInput = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'SELECT');
+
+    // Shortcut: '/' untuk langsung fokus ke input pencarian tabel
+    if (e.key === '/' && !isInput) {
+      e.preventDefault();
+      const searchInput = document.getElementById('tableSearchInput');
+      if (searchInput) {
+        searchInput.focus();
+        searchInput.select();
+      }
+      return;
+    }
+
+    // Shortcut: 'Escape' untuk bersihkan search atau tutup drawer/dropdown
+    if (e.key === 'Escape') {
+      const searchInput = document.getElementById('tableSearchInput');
+      if (searchInput && searchInput.value) {
+        clearSearch();
+        searchInput.blur();
+        return;
+      }
+      if (typeof closeAIDrawer === 'function') closeAIDrawer();
+      if (typeof closeAllSearchableDropdowns === 'function') closeAllSearchableDropdowns();
+      return;
+    }
+
+    // Shortcut: 'd' atau 'D' untuk toggle Dark/Light mode (hanya jika tidak sedang mengetik)
+    if ((e.key === 'd' || e.key === 'D') && !isInput && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      const themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        themeToggle.click();
+      }
+      return;
+    }
+  });
 
   // Inisialisasi pintasan kustom & status AI
   renderCustomPresets();
