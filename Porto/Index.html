@@ -13,11 +13,12 @@
   <meta property="og:image" content="./Muir.jpg" />
   <meta property="og:type" content="website" />
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="./logo/favicon-32.png?v=3">
-  <link rel="icon" type="image/png" sizes="16x16" href="./logo/favicon-16.png?v=3">
-  <link rel="apple-touch-icon" sizes="180x180" href="./logo/M.png?v=3">
-  <link rel="shortcut icon" href="./logo/favicon.ico?v=3">
+  <!-- Favicon (Inline Base64 Data URI for Instant Tab Loading + Fallback Files) -->
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAPWSURBVFhH7ZY5b9RQEMct2PXzcgiaUAASCIGirJ+9SUCIU9BTcIsGhKBI4ms34U6EEpBANMAXoAI+AA2ioqThlBBHSUWBREFFQxHzn3njY4kXlAilykijXfuN3/u9/8wb21qyJVtU23iiofzO7bqOT8udxbNac3Sn7cXvneHrad2NvsjtxTHbDS/bOvml/IlUeZ1UueEnGSrMaYb7lD+eyOV/MdV/drPSyTPVupQCILXdaJYBmsFHCSkMlG+dHdMgTJ5a/edXy+0Fm6Oj3bbX/q5aF2lheDjLAP44FIg+SFhhCHjNEg1eTvHgO2cg3CRDC7K6O3ZTDV5NlY544cwFoFKBl7bHg7NGsvbXBgpHhudtmG+Kds/z8eJdClQBRC9JAQ5CsPIvUMH8tHVwRELmYTPLbB1fE/lnSQUDkQHEFQDN6JWCAgagFEzeDGMJ+6s1+qP1gH7caE1ssN2g0wXAqcDGjMo9ALBYJhU7PURVi5TUveiOhFZa3U3O2P74N4pdtTXpswfCNv3PNmPmJWUJoOoUNEMAUApMYO66DRVQnC0Up44fWdtHVsgjbGpbsKXuJU94tyaF6Up/bJ2tCQD38iIsAei44hRoUqAMANm8Dv2fwmQv6HSooUnqYjfkEQtHNsL5/mEbqXNngEwBkT6fkxXocQqKFHAwdo5CdKOD1oGZGhZ6qNBGodQDa2uikOPnclrkGVooZgCM9+UK5POZGGpE+O2VAgDkkhkALHRMQqBSMg35btUHQtfIywtm8UgXruGrBosaMGMGgIvRFHqvIjTHUNwAeMlhCTG2a6LhuKN7eSdlAALHNQBLAKYGslPAzir/E4DlMgA6ntMHKgEYwihgEUCpCLsAjAIVRZgD5PkSgOiohOTmuDEAkHud9XhxAeg6BeVxOIFDpV5FWALA5LKDuQDNkX1VACQ/eXEKTCvuiiGAagWyPmAegFxQANdVKeBXN/oD7bg0OSsA5agR4ZWbMABkN3NSiqgG0FN6nwIMFvnqXQOZAlgsA8bzAhD+ARDzfAaSAMbRSyo+SMpFSLLBeypQ4yLEBwanoJg8U4D7QJYC2RDvntycgsoUvOlSIANwo+MSkpszMLafFECcABjnlODLZ6V/Me+EgKL7AmgA6jr6LFMVZjeDN87wZOpQ+yRy8qFrmCA4JCG51fTIDh6n9lyOH7wC6E66ptVZi/km6QPUjBcxzvAU1cDcFBhZO3fxLXAPb6u7+Ja7j9Z6hRqPhBR28uRypYNzjm7PYKHpzOnacYNTFFJzgz3Km7iB44gYcsTgv+O3Z2r4XON5lmzJLMv6DfJJlWH0u05PAAAAAElFTkSuQmCC">
+  <link rel="icon" type="image/png" sizes="32x32" href="./logo/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./logo/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./logo/M.png">
+  <link rel="shortcut icon" href="./logo/favicon.ico">
 
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -84,7 +85,9 @@
       <!-- Brand & Mobile Quick Actions -->
       <div class="flex items-center justify-between lg:justify-start gap-3 w-full lg:w-auto">
         <div class="flex items-center gap-2.5 sm:gap-3">
-          <span class="w-8 h-8 bg-pastel-sage dark:bg-pastel-sageDark text-pastel-sageDark dark:text-emerald-300 flex items-center justify-center rounded-xl text-xs font-extrabold shadow-2xs">DA</span>
+          <div class="w-8 h-8 rounded-xl bg-white dark:bg-white/95 border border-stone-200/80 dark:border-stone-700/80 p-1 flex items-center justify-center shrink-0 shadow-2xs overflow-hidden">
+            <img src="./logo/favicon-64.png" alt="Muir Brand Logo" class="w-full h-full object-contain" onerror="if(!this.tried){this.tried=true;this.src='./Porto/logo/favicon-64.png';}" />
+          </div>
           <div class="flex items-center gap-2">
             <span class="font-extrabold tracking-tight text-stone-900 dark:text-white text-base">Muir Portfolio<span class="text-emerald-600 dark:text-emerald-400">.</span></span>
             <span class="hidden md:inline-block text-xs font-medium text-stone-500 dark:text-stone-400 border-l border-stone-200 dark:border-stone-700 pl-2.5">Commercial Retail &amp; AI Automation Analyst</span>
