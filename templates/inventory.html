@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Inventory &amp; Balancing Engine — Ancol POS Analytics</title>
+  <link rel="icon" type="image/png" href="/static/logo_A_saja.png">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f7fc;
+      --panel: #ffffff;
+      --panel-hover: #eff5fc;
+      --panel-border: #dbe4f0;
+      --text: #00205B;
+      --text-muted: #536b88;
+      --text-light: #8ca2bc;
+      --brand: #0033A0;
+      --brand-deep: #00205B;
+      --brand-sky: #00B5E2;
+      --brand-hover: #002575;
+      --brand-subtle: #eaf1fc;
+      --brand-border: #bcd3f7;
+      --success: #059669;
+      --success-brand: #80E0A7;
+      --success-subtle: #ecfdf5;
+      --success-border: #a7f3d0;
+      --warning: #d97706;
+      --warning-brand: #FED141;
+      --warning-subtle: #fffbeb;
+      --warning-border: #fde68a;
+      --danger: #dc2626;
+      --danger-brand: #F8485E;
+      --danger-subtle: #fef2f2;
+      --danger-border: #fecaca;
+      --purple: #5C068C;
+      --purple-subtle: #f5f3ff;
+      --purple-border: #ddd6fe;
+
+      --shadow-sm: 0 1px 3px 0 rgb(0 32 91 / 0.06);
+      --shadow: 0 4px 10px -1px rgb(0 32 91 / 0.08), 0 2px 5px -2px rgb(0 32 91 / 0.05);
+      --shadow-md: 0 12px 20px -3px rgb(0 32 91 / 0.10), 0 4px 8px -4px rgb(0 32 91 / 0.06);
+      --radius-sm: 6px;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+    }
+
+    :root.dark {
+      color-scheme: dark;
+      --bg: #040914;
+      --panel: #0a1324;
+      --panel-hover: #101e38;
+      --panel-border: #182846;
+      --text: #f0f5fc;
+      --text-muted: #8ea4c2;
+      --text-light: #5c7494;
+      --brand: #00B5E2;
+      --brand-deep: #0033A0;
+      --brand-sky: #38c8ee;
+      --brand-hover: #009ec4;
+      --brand-subtle: rgba(0, 181, 226, 0.12);
+      --brand-border: rgba(0, 181, 226, 0.35);
+      --success: #10b981;
+      --success-brand: #80E0A7;
+      --success-subtle: #064e3b;
+      --success-border: #047857;
+      --warning: #f59e0b;
+      --warning-brand: #FED141;
+      --warning-subtle: #78350f;
+      --warning-border: #b45309;
+      --danger: #F8485E;
+      --danger-brand: #F8485E;
+      --danger-subtle: #4c0519;
+      --danger-border: #9f1239;
+      --purple: #a855f7;
+      --purple-subtle: rgba(168, 85, 247, 0.15);
+      --purple-border: rgba(168, 85, 247, 0.3);
+
+      --shadow-sm: 0 1px 3px 0 rgba(0,0,0,0.5);
+      --shadow: 0 4px 10px -1px rgba(0,0,0,0.6);
+      --shadow-md: 0 12px 20px -3px rgba(0,0,0,0.7);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 16px 24px 60px 24px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .container { max-width: 1440px; margin: 0 auto; }
+    .svg-icon { display: inline-block; vertical-align: middle; flex-shrink: 0; color: currentColor; }
+
+    /* Header */
+    .header-card {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-lg);
+      padding: 18px 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand-section { display: flex; align-items: center; gap: 14px; }
+    .brand-logo-img { width: 44px; height: 44px; object-fit: contain; }
+    .brand-badge {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      background: rgba(0, 51, 160, 0.1);
+      color: var(--brand);
+      border: 1px solid var(--brand-border);
+    }
+    .header-title { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1.2; }
+    .header-sub { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+
+    .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      min-height: 38px;
+    }
+    .btn-brand { background: var(--brand); color: #fff; border: none; }
+    .btn-brand:hover { filter: brightness(1.1); }
+    .btn-success { background: var(--success); color: #fff; border: none; }
+    .btn-success:hover { filter: brightness(1.1); }
+    .btn-secondary { background: var(--panel-hover); color: var(--text); border: 1px solid var(--panel-border); }
+    .btn-secondary:hover { background: var(--panel-border); }
+    .btn-amber { background: var(--warning); color: #fff; border: none; }
+
+    /* Snapshot status bar */
+    .snapshot-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--panel-border);
+      font-size: 12px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+    .snapshot-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background: var(--brand-subtle);
+      color: var(--brand);
+      font-weight: 600;
+      border: 1px solid var(--brand-border);
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .kpi-card {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .kpi-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+    .kpi-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+    .kpi-icon-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .kpi-value { font-size: 28px; font-weight: 800; line-height: 1.1; margin-bottom: 4px; }
+    .kpi-desc { font-size: 11.5px; color: var(--text-muted); }
+
+    .kpi-red { border-left: 4px solid var(--danger); }
+    .kpi-red .kpi-icon-badge { background: var(--danger-subtle); color: var(--danger); }
+    .kpi-red .kpi-value { color: var(--danger); }
+
+    .kpi-amber { border-left: 4px solid var(--warning); }
+    .kpi-amber .kpi-icon-badge { background: var(--warning-subtle); color: var(--warning); }
+    .kpi-amber .kpi-value { color: var(--warning); }
+
+    .kpi-blue { border-left: 4px solid var(--brand); }
+    .kpi-blue .kpi-icon-badge { background: var(--brand-subtle); color: var(--brand); }
+    .kpi-blue .kpi-value { color: var(--brand); }
+
+    .kpi-purple { border-left: 4px solid var(--purple); }
+    .kpi-purple .kpi-icon-badge { background: var(--purple-subtle); color: var(--purple); }
+    .kpi-purple .kpi-value { color: var(--purple); }
+
+    .kpi-emerald { border-left: 4px solid var(--success); }
+    .kpi-emerald .kpi-icon-badge { background: var(--success-subtle); color: var(--success); }
+    .kpi-emerald .kpi-value { color: var(--success); }
+
+    /* Filter & Controls Bar */
+    .controls-bar {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      padding: 12px 18px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .filter-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .input-field, .select-field {
+      height: 38px;
+      padding: 0 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--panel-border);
+      background: var(--panel);
+      color: var(--text);
+      font-size: 12.5px;
+      outline: none;
+      transition: border 0.15s ease;
+    }
+    .input-field:focus, .select-field:focus { border-color: var(--brand); }
+    .search-box { position: relative; width: 280px; }
+    .search-box input { width: 100%; padding-left: 32px; }
+    .search-icon { position: absolute; left: 10px; top: 11px; color: var(--text-light); }
+
+    /* Tabs */
+    .tab-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid var(--panel-border);
+      padding-bottom: 6px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 8px 8px 0 0;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover { color: var(--text); background: var(--panel-hover); }
+    .tab-btn.active {
+      color: var(--brand);
+      background: var(--panel);
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.04);
+    }
+    .tab-btn.active::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--brand);
+      border-radius: 3px 3px 0 0;
+    }
+    .tab-badge {
+      font-size: 10.5px;
+      padding: 2px 6px;
+      border-radius: var(--radius-full);
+      background: var(--panel-hover);
+      color: inherit;
+    }
+    .tab-btn.active .tab-badge {
+      background: var(--brand-subtle);
+      color: var(--brand);
+    }
+
+    /* Tab Content Panels */
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Tables */
+    .table-container {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left; }
+    thead th {
+      background: var(--panel-hover);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--panel-border);
+      white-space: nowrap;
+    }
+    tbody td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--panel-border);
+      color: var(--text);
+    }
+    tbody tr:hover { background: var(--panel-hover); }
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
+    .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      white-space: nowrap;
+    }
+    .badge-red { background: var(--danger-subtle); color: var(--danger); border: 1px solid var(--danger-border); }
+    .badge-amber { background: var(--warning-subtle); color: var(--warning); border: 1px solid var(--warning-border); }
+    .badge-blue { background: var(--brand-subtle); color: var(--brand); border: 1px solid var(--brand-border); }
+    .badge-green { background: var(--success-subtle); color: var(--success); border: 1px solid var(--success-border); }
+    .badge-purple { background: var(--purple-subtle); color: var(--purple); border: 1px solid var(--purple-border); }
+
+    /* Upload Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 580px;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--panel-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 { font-size: 16px; font-weight: 800; color: var(--text); }
+    .modal-body { padding: 24px; }
+    .modal-footer {
+      padding: 14px 24px;
+      background: var(--panel-hover);
+      border-top: 1px solid var(--panel-border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .dropzone {
+      border: 2px dashed var(--brand-border);
+      background: var(--brand-subtle);
+      border-radius: var(--radius);
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 16px;
+    }
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--brand);
+      background: var(--panel-hover);
+    }
+    .dropzone-icon { color: var(--brand); margin-bottom: 8px; }
+    .file-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1e293b;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      font-size: 13px;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      z-index: 2000;
+    }
+    .toast.active { display: flex; animation: slideUp 0.25s ease; }
+    @keyframes slideUp { from { transform: translateY(15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    /* Layman explanation callout */
+    .callout {
+      background: var(--brand-subtle);
+      border: 1px solid var(--brand-border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 14px;
+      font-size: 12.5px;
+      color: var(--text);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .callout-purple {
+      background: var(--purple-subtle);
+      border-color: var(--purple-border);
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 768px) {
+      body { padding: 12px; }
+      .search-box { width: 100%; }
+      .controls-bar { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <header class="header-card">
+    <div class="header-top">
+      <div class="brand-section">
+        <img src="/static/logo_A_saja.png" alt="Ancol Logo" class="brand-logo-img">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 3px;">
+            <span class="brand-badge">ANCOL RETAIL &amp; MERCHANDISE</span>
+            <span class="badge badge-purple">SIBE v1.0 • MODULAR ENGINE</span>
+          </div>
+          <h1 class="header-title">Smart Inventory &amp; Balancing Intelligence</h1>
+          <p class="header-sub">Engine Penyeimbangan Stok Antar Konter, Rekomendasi Restock Gudang, &amp; Radar Overstock</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Back to Sales Dashboard button -->
+        <a href="/" class="btn btn-secondary" title="Kembali ke Dashboard Penjualan">
+          <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <span>Dashboard Penjualan</span>
+        </a>
+
+        <!-- Export Excel Work Order -->
+        <button type="button" class="btn btn-success" id="btnExportExcel" onclick="handleExportExcel()" title="Unduh File SPK Kerja Excel Lengkap (5 Sheet)">
+          <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span>Unduh SPK Kerja (Excel)</span>
+        </button>
+
+        <!-- Upload New Snapshot Modal Trigger -->
+        <button type="button" class="btn btn-brand" onclick="openUploadModal()">
+          <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <span>Upload File Stok Baru</span>
+        </button>
+
+        <!-- Dark/Light Theme Toggle -->
+        <button type="button" class="btn btn-secondary" id="themeToggle" onclick="toggleTheme()" title="Ganti Mode Gelap / Terang">
+          <span id="themeIcon">
+            <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Active Snapshot Status & Parameter Bar -->
+    <div class="snapshot-bar">
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <span class="snapshot-pill" id="snapshotBadge">
+          <svg class="svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+          <span id="snapshotLabel">Memuat snapshot data...</span>
+        </span>
+        <span id="snapshotMetaText"></span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <label for="selectSafetyDays" style="font-weight: 600; font-size: 11.5px;">Safety Stock Buffer:</label>
+        <select id="selectSafetyDays" class="select-field" onchange="handleSafetyDaysChange()" style="height: 32px; padding: 0 8px; font-size: 11.5px;">
+          <option value="3">3 Hari (Lead Time Cepat)</option>
+          <option value="7" selected>7 Hari (Standar Weekend Aman)</option>
+          <option value="14">14 Hari (2 Minggu Siaga)</option>
+        </select>
+        <button type="button" class="btn btn-secondary" onclick="loadAnalysis(currentSnapshotId)" style="min-height: 32px; padding: 4px 10px; font-size: 11.5px;" title="Hitung Ulang Rekomendasi">
+          <svg class="svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+          <span>Hitung Ulang</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 5 Executive KPI Summary Cards -->
+  <section class="kpi-grid">
+    <!-- 1. Stockout -->
+    <div class="kpi-card kpi-red" onclick="switchTab('tabStockout')" style="cursor: pointer;">
+      <div class="kpi-card-header">
+        <span class="kpi-label">Barang Habis (Stockout)</span>
+        <div class="kpi-icon-badge">
+          <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+        </div>
+      </div>
+      <div class="kpi-value" id="kpiStockoutCount">0</div>
+      <div class="kpi-desc">Item laku stok 0 di konter (kehilangan omset harian)</div>
+    </div>
+
+    <!-- 2. Critical -->
+    <div class="kpi-card kpi-amber" onclick="switchTab('tabStockout')" style="cursor: pointer;">
+      <div class="kpi-card-header">
+        <span class="kpi-label">Stok Kritis (&lt; 48 Jam)</span>
+        <div class="kpi-icon-badge">
+          <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        </div>
+      </div>
+      <div class="kpi-value" id="kpiCriticalCount">0</div>
+      <div class="kpi-desc">Sisa stok kurang dari 2 hari penjualan</div>
+    </div>
+
+    <!-- 3. Restock Gudang -->
+    <div class="kpi-card kpi-blue" onclick="switchTab('tabRestock')" style="cursor: pointer;">
+      <div class="kpi-card-header">
+        <span class="kpi-label">Rekomendasi Kirim Gudang</span>
+        <div class="kpi-icon-badge">
+          <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        </div>
+      </div>
+      <div class="kpi-value" id="kpiRestockUnits">0 <span style="font-size: 16px; font-weight: 600;">Pcs</span></div>
+      <div class="kpi-desc" id="kpiRestockSkus">0 SKU siap diangkut ke konter</div>
+    </div>
+
+    <!-- 4. Cross Transfer -->
+    <div class="kpi-card kpi-purple" onclick="switchTab('tabTransfer')" style="cursor: pointer;">
+      <div class="kpi-card-header">
+        <span class="kpi-label">Pindah Antar Konter</span>
+        <div class="kpi-icon-badge">
+          <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+        </div>
+      </div>
+      <div class="kpi-value" id="kpiTransferUnits">0 <span style="font-size: 16px; font-weight: 600;">Pcs</span></div>
+      <div class="kpi-desc" id="kpiTransferRecs">0 rekomendasi mutasi seimbang</div>
+    </div>
+
+    <!-- 5. Overstock -->
+    <div class="kpi-card kpi-emerald" onclick="switchTab('tabOverstock')" style="cursor: pointer;">
+      <div class="kpi-card-header">
+        <span class="kpi-label">Barang Menumpuk (Overstock)</span>
+        <div class="kpi-icon-badge">
+          <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+        </div>
+      </div>
+      <div class="kpi-value" id="kpiOverstockCount">0</div>
+      <div class="kpi-desc">SKU perputaran lambat butuh tindakan retail</div>
+    </div>
+  </section>
+
+  <!-- Interactive Tab Navigation -->
+  <nav class="tab-nav">
+    <button type="button" class="tab-btn active" id="tabBtn-tabRestock" onclick="switchTab('tabRestock')">
+      <svg class="svg-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+      <span>🚚 SPK Restock Gudang &rarr; Konter</span>
+      <span class="tab-badge" id="tabBadgeRestock">0</span>
+    </button>
+    <button type="button" class="tab-btn" id="tabBtn-tabTransfer" onclick="switchTab('tabTransfer')">
+      <svg class="svg-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+      <span>🔄 Mutasi Antar Konter (Balancing)</span>
+      <span class="tab-badge" id="tabBadgeTransfer">0</span>
+    </button>
+    <button type="button" class="tab-btn" id="tabBtn-tabStockout" onclick="switchTab('tabStockout')">
+      <svg class="svg-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+      <span>🚨 Radar Habis &amp; Kritis</span>
+      <span class="tab-badge" id="tabBadgeAlerts">0</span>
+    </button>
+    <button type="button" class="tab-btn" id="tabBtn-tabOverstock" onclick="switchTab('tabOverstock')">
+      <svg class="svg-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+      <span>🏷️ Panduan Barang Overstock</span>
+      <span class="tab-badge" id="tabBadgeOverstock">0</span>
+    </button>
+    <button type="button" class="tab-btn" id="tabBtn-tabPriority" onclick="switchTab('tabPriority')">
+      <svg class="svg-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+      <span>🏢 Prioritas Konter (Store Matrix)</span>
+      <span class="tab-badge">22</span>
+    </button>
+  </nav>
+
+  <!-- Filter and Search Bar -->
+  <div class="controls-bar">
+    <div class="filter-group">
+      <div class="search-box">
+        <svg class="svg-icon search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" class="input-field" placeholder="Cari Nama Barang / Kode SKU..." oninput="applyFilters()">
+      </div>
+
+      <select id="filterOutlet" class="select-field" onchange="applyFilters()">
+        <option value="">Semua Konter (22 Lokasi)</option>
+      </select>
+
+      <select id="filterSupplier" class="select-field" onchange="applyFilters()">
+        <option value="">Semua Supplier</option>
+      </select>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <button type="button" class="btn btn-secondary" onclick="copyWhatsAppOrder()" title="Salin Rencana Kirim Terpilih ke Format WhatsApp Group Toko">
+        <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+        <span>Salin ke WhatsApp</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- TAB 1: RESTOCK GUDANG -> KONTER -->
+  <div class="tab-pane active" id="pane-tabRestock">
+    <div class="callout">
+      <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brand);"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+      <div>
+        <strong>Petunjuk Operasional:</strong> Daftar barang di bawah ini dihitung otomatis berdasarkan perputaran penjualan harian real-time konter Anda. Konter dengan prioritas traffic tinggi (seperti Dufan Induk, Sea World, Atlantis) dialokasikan terlebih dahulu dari stok gudang utama yang tersedia.
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Kode SKU</th>
+            <th>Nama Barang</th>
+            <th>Supplier</th>
+            <th>Konter Tujuan</th>
+            <th class="text-right">Rekomendasi Kirim</th>
+            <th class="text-right">Stok Konter Saat Ini</th>
+            <th class="text-right">Kecepatan Jual</th>
+            <th class="text-right">Target Stok Aman</th>
+            <th class="text-right">Sisa Stok Gudang</th>
+            <th>Status Pemenuhan</th>
+          </tr>
+        </thead>
+        <tbody id="tableBodyRestock">
+          <tr><td colspan="10" class="text-center" style="padding: 30px;">Memuat data rekomendasi restock...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 2: MUTASI ANTAR KONTER (CROSS-TRANSFER) -->
+  <div class="tab-pane" id="pane-tabTransfer">
+    <div class="callout callout-purple">
+      <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--purple);"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+      <div>
+        <strong>Smart Balancing Engine:</strong> Jika Konter A menumpuk stok barang yang kurang laku, sementara Konter B sedang kehabisan barang tersebut, engine menyarankan pemindahan langsung antar konter. Cara ini menghemat waktu pengiriman gudang dan menyeimbangkan omset antar outlet!
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Kode SKU</th>
+            <th>Nama Barang</th>
+            <th>Supplier</th>
+            <th>Konter Asal (Kelebihan)</th>
+            <th class="text-right">Stok Asal</th>
+            <th>Konter Tujuan (Kekurangan)</th>
+            <th class="text-right">Stok Tujuan</th>
+            <th class="text-right">Qty Mutasi</th>
+            <th>Alasan Mutasi &amp; Rekomendasi</th>
+          </tr>
+        </thead>
+        <tbody id="tableBodyTransfer">
+          <tr><td colspan="9" class="text-center" style="padding: 30px;">Memuat data mutasi antar konter...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 3: RADAR STOK KRITIS & HABIS -->
+  <div class="tab-pane" id="pane-tabStockout">
+    <div class="callout" style="background:var(--danger-subtle); border-color:var(--danger-border);">
+      <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--danger);"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+      <div>
+        <strong>Peringatan Kehilangan Omset:</strong> Barang di bawah ini memiliki rekam jejak penjualan yang aktif namun saat ini stoknya habis total atau tersisa kurang dari 48 jam. Segera tindaklanjuti untuk mencegah potensi pendapatan hilang (*opportunity loss*).
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Status Urgensi</th>
+            <th>Kode SKU</th>
+            <th>Nama Barang</th>
+            <th>Supplier</th>
+            <th>Konter Terdampak</th>
+            <th class="text-right">Stok Saat Ini</th>
+            <th class="text-right">Kecepatan Jual</th>
+            <th class="text-center">Sisa Ketahanan</th>
+            <th class="text-right">Potensi Omset Hilang/Hari</th>
+          </tr>
+        </thead>
+        <tbody id="tableBodyStockout">
+          <tr><td colspan="9" class="text-center" style="padding: 30px;">Memuat radar stok kritis &amp; habis...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 4: PANDUAN BARANG OVERSTOCK -->
+  <div class="tab-pane" id="pane-tabOverstock">
+    <div class="callout callout-purple">
+      <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--purple);"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+      <div>
+        <strong>Panduan Strategi Retail:</strong> Barang di bawah ini memiliki stok menumpuk lebih dari 21 hari penjualan atau sama sekali tidak terjual. Pilih aksi taktis yang direkomendasikan sistem: retur konsinyasi, bundling promo, posisikan di depan kasir, atau bekukan pesanan baru ke supplier.
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Rekomendasi Tindakan</th>
+            <th>Kode SKU</th>
+            <th>Nama Barang</th>
+            <th>Supplier</th>
+            <th>Kategori</th>
+            <th class="text-right">Total Stok Menumpuk</th>
+            <th>Konter Terdampak</th>
+            <th>Detail Instruksi Operasional</th>
+          </tr>
+        </thead>
+        <tbody id="tableBodyOverstock">
+          <tr><td colspan="8" class="text-center" style="padding: 30px;">Memuat panduan penanganan overstock...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 5: PRIORITAS KONTER (STORE PRIORITY MATRIX) -->
+  <div class="tab-pane" id="pane-tabPriority">
+    <div class="callout">
+      <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brand);"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+      <div>
+        <strong>Store Priority Matrix:</strong> Peringkat 22 konter dan outlet Ancol berdasarkan akumulasi volume penjualan, rata-rata harian, dan throughput kasir. Konter Tier 1 selalu mendapatkan prioritas utama dalam alokasi pengiriman stok dari gudang.
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th class="text-center">Peringkat</th>
+            <th>Kode</th>
+            <th>Nama Konter / Outlet</th>
+            <th>Area</th>
+            <th>Klasifikasi Traffic</th>
+            <th class="text-center">Skor Prioritas</th>
+            <th class="text-right">Rata-rata Unit / Hari</th>
+            <th class="text-right">Rata-rata Omset / Hari</th>
+            <th class="text-right">Total Unit Terjual</th>
+          </tr>
+        </thead>
+        <tbody id="tableBodyPriority">
+          <tr><td colspan="9" class="text-center" style="padding: 30px;">Memuat prioritas konter...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Upload Excel Modal -->
+<div class="modal-overlay" id="uploadModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Unggah File Stok Excel (Gudang &amp; Konter)</h3>
+      <button type="button" onclick="closeUploadModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:18px;">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 16px;">
+        Anda dapat mengunggah 1 atau 2 file Excel sekaligus. Engine akan otomatis membaca kolom stok akhir gudang (Kolom M) dan 22 kolom konter cabang (Kolom I–AD).
+      </p>
+
+      <!-- Dropzone Stok Gudang -->
+      <div class="dropzone" id="dropzoneGudang" onclick="document.getElementById('inputGudang').click()">
+        <svg class="svg-icon dropzone-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        <div style="font-weight: 700; font-size: 13px;">1. File Stok Gudang Utama</div>
+        <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Tarik file ke sini atau klik untuk memilih file (.xlsx)</div>
+        <input type="file" id="inputGudang" accept=".xlsx,.xls" style="display:none;" onchange="handleFileSelected(this, 'chipGudang')">
+        <div id="chipGudang" class="file-chip" style="display:none;">
+          <span id="nameGudang"></span>
+          <button type="button" onclick="clearFile(event, 'inputGudang', 'chipGudang')" style="background:none; border:none; color:var(--danger); cursor:pointer; font-weight:700;">&times;</button>
+        </div>
+      </div>
+
+      <!-- Dropzone Stok Konter -->
+      <div class="dropzone" id="dropzoneKonter" onclick="document.getElementById('inputKonter').click()">
+        <svg class="svg-icon dropzone-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+        <div style="font-weight: 700; font-size: 13px;">2. File Stok Gabungan Konter Cabang</div>
+        <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Tarik file ke sini atau klik untuk memilih file (.xlsx)</div>
+        <input type="file" id="inputKonter" accept=".xlsx,.xls" style="display:none;" onchange="handleFileSelected(this, 'chipKonter')">
+        <div id="chipKonter" class="file-chip" style="display:none;">
+          <span id="nameKonter"></span>
+          <button type="button" onclick="clearFile(event, 'inputKonter', 'chipKonter')" style="background:none; border:none; color:var(--danger); cursor:pointer; font-weight:700;">&times;</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" onclick="closeUploadModal()">Batal</button>
+      <button type="button" class="btn btn-brand" id="btnSubmitUpload" onclick="submitUpload()">
+        <span id="btnUploadText">Mulai Analisis &amp; Simpan</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toastBox">
+  <span id="toastMsg">Pesan</span>
+</div>
+
+<script>
+  let currentSnapshotId = null;
+  let rawAnalysisData = null;
+  let activeTab = 'tabRestock';
+
+  // Formatters
+  function formatNumber(num) {
+    if (num === null || num === undefined || isNaN(num)) return '0';
+    return new Intl.NumberFormat('id-ID').format(num);
+  }
+  function formatCurrency(num) {
+    if (num === null || num === undefined || isNaN(num)) return 'Rp 0';
+    return 'Rp ' + new Intl.NumberFormat('id-ID').format(Math.round(num));
+  }
+
+  function showToast(msg, duration = 3000) {
+    const t = document.getElementById('toastBox');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('active');
+    setTimeout(() => t.classList.remove('active'), duration);
+  }
+
+  // Theme Toggle
+  function toggleTheme() {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    updateThemeIcon();
+  }
+  function updateThemeIcon() {
+    const isDark = document.documentElement.classList.contains('dark');
+    document.getElementById('themeIcon').innerHTML = isDark
+      ? '<svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>'
+      : '<svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>';
+  }
+
+  // Tabs Switching
+  function switchTab(tabId) {
+    activeTab = tabId;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+
+    const btn = document.getElementById('tabBtn-' + tabId);
+    const pane = document.getElementById('pane-' + tabId);
+    if (btn) btn.classList.add('active');
+    if (pane) pane.classList.add('active');
+  }
+
+  // Upload Modal Handlers
+  function openUploadModal() { document.getElementById('uploadModal').classList.add('active'); }
+  function closeUploadModal() { document.getElementById('uploadModal').classList.remove('active'); }
+
+  function handleFileSelected(input, chipId) {
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const chip = document.getElementById(chipId);
+      chip.style.display = 'flex';
+      chip.querySelector('span').textContent = `${file.name} (${Math.round(file.size/1024)} KB)`;
+    }
+  }
+  function clearFile(e, inputId, chipId) {
+    e.stopPropagation();
+    const input = document.getElementById(inputId);
+    input.value = '';
+    document.getElementById(chipId).style.display = 'none';
+  }
+
+  async function submitUpload() {
+    const fileG = document.getElementById('inputGudang').files[0];
+    const fileK = document.getElementById('inputKonter').files[0];
+
+    if (!fileG && !fileK) {
+      alert('Silakan pilih minimal 1 file Excel (Stok Gudang atau Stok Konter).');
+      return;
+    }
+
+    const formData = new FormData();
+    if (fileG) formData.append('file_gudang', fileG);
+    if (fileK) formData.append('file_konter', fileK);
+
+    const btn = document.getElementById('btnSubmitUpload');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Sedang Memproses Excel...';
+
+    try {
+      const res = await fetch('/api/inventory/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || 'Gagal memproses file.');
+
+      showToast(`Sukses! Snapshot #${data.snapshot_id} berhasil dibuat.`);
+      closeUploadModal();
+      currentSnapshotId = data.snapshot_id;
+      await loadAnalysis(currentSnapshotId);
+    } catch (err) {
+      alert('Error saat upload: ' + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<span>Mulai Analisis &amp; Simpan</span>';
+    }
+  }
+
+  // Load Analysis Engine
+  async function loadAnalysis(snapshotId) {
+    const safetyDays = document.getElementById('selectSafetyDays').value;
+    try {
+      const res = await fetch(`/api/inventory/analysis/${snapshotId}?safety_days=${safetyDays}`);
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || 'Gagal memuat analitik.');
+
+      rawAnalysisData = json.data;
+      renderAnalysis(rawAnalysisData);
+    } catch (err) {
+      console.error(err);
+      showToast('Gagal memuat analitik: ' + err.message);
+    }
+  }
+
+  function handleSafetyDaysChange() {
+    if (currentSnapshotId) loadAnalysis(currentSnapshotId);
+  }
+
+  function handleExportExcel() {
+    if (!currentSnapshotId) {
+      alert('Belum ada snapshot data yang aktif.');
+      return;
+    }
+    const safetyDays = document.getElementById('selectSafetyDays').value;
+    window.location.href = `/api/inventory/export/${currentSnapshotId}?safety_days=${safetyDays}`;
+  }
+
+  // Render Data
+  function renderAnalysis(data) {
+    if (!data) return;
+
+    // Snapshot bar text
+    const meta = data.meta;
+    document.getElementById('snapshotLabel').textContent = `Snapshot #${meta.id} • ${meta.created_at}`;
+    const fileInfo = [meta.filename_gudang, meta.filename_konter].filter(Boolean).join(' & ');
+    document.getElementById('snapshotMetaText').textContent = fileInfo ? `(${fileInfo})` : '';
+
+    // KPIs
+    const k = data.kpis;
+    document.getElementById('kpiStockoutCount').textContent = formatNumber(k.total_stockout_alerts);
+    document.getElementById('kpiCriticalCount').textContent = formatNumber(k.total_critical_alerts);
+    document.getElementById('kpiRestockUnits').innerHTML = `${formatNumber(k.total_restock_pcs)} <span style="font-size:16px; font-weight:600;">Pcs</span>`;
+    document.getElementById('kpiRestockSkus').textContent = `${formatNumber(k.total_restock_skus)} SKU siap diangkut ke konter`;
+    document.getElementById('kpiTransferUnits').innerHTML = `${formatNumber(k.total_transfer_pcs)} <span style="font-size:16px; font-weight:600;">Pcs</span>`;
+    document.getElementById('kpiTransferRecs').textContent = `${formatNumber(k.total_transfer_recommendations)} mutasi seimbang antar konter`;
+    document.getElementById('kpiOverstockCount').textContent = formatNumber(k.total_overstocked_skus);
+
+    // Tab Badges
+    document.getElementById('tabBadgeRestock').textContent = formatNumber(k.total_restock_skus);
+    document.getElementById('tabBadgeTransfer').textContent = formatNumber(k.total_transfer_recommendations);
+    document.getElementById('tabBadgeAlerts').textContent = formatNumber(k.total_stockout_alerts + k.total_critical_alerts);
+    document.getElementById('tabBadgeOverstock').textContent = formatNumber(k.total_overstocked_skus);
+
+    // Populate Filters
+    populateFilterDropdowns(data);
+
+    // Render Tables
+    applyFilters();
+  }
+
+  function populateFilterDropdowns(data) {
+    const selOutlet = document.getElementById('filterOutlet');
+    const selSupp = document.getElementById('filterSupplier');
+
+    const currOutlet = selOutlet.value;
+    const currSupp = selSupp.value;
+
+    // Unique Outlets
+    const outletSet = new Map();
+    data.store_priority_matrix.forEach(o => outletSet.set(o.outlet_code, o.outlet_name));
+    selOutlet.innerHTML = '<option value="">Semua Konter (22 Lokasi)</option>';
+    outletSet.forEach((name, code) => {
+      selOutlet.innerHTML += `<option value="${code}" ${code === currOutlet ? 'selected' : ''}>${code} - ${name}</option>`;
+    });
+
+    // Unique Suppliers
+    const suppSet = new Set();
+    data.restock_actionable.forEach(r => { if (r.supplier) suppSet.add(r.supplier); });
+    data.overstock_advisory.forEach(o => { if (o.supplier) suppSet.add(o.supplier); });
+    selSupp.innerHTML = '<option value="">Semua Supplier</option>';
+    Array.from(suppSet).sort().forEach(s => {
+      selSupp.innerHTML += `<option value="${s}" ${s === currSupp ? 'selected' : ''}>${s}</option>`;
+    });
+  }
+
+  function applyFilters() {
+    if (!rawAnalysisData) return;
+
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const selOutlet = document.getElementById('filterOutlet').value;
+    const selSupp = document.getElementById('filterSupplier').value;
+
+    const filterItem = (item, outletCodeField = 'outlet_code') => {
+      const matchQ = !q || (item.sku_code && item.sku_code.toLowerCase().includes(q)) || (item.nama_barang && item.nama_barang.toLowerCase().includes(q));
+      const matchOutlet = !selOutlet || item[outletCodeField] === selOutlet || (item.affected_outlets && item.affected_outlets.includes(selOutlet));
+      const matchSupp = !selSupp || item.supplier === selSupp;
+      return matchQ && matchOutlet && matchSupp;
+    };
+
+    // 1. Render Restock
+    const restockFiltered = rawAnalysisData.restock_actionable.filter(r => filterItem(r, 'outlet_code'));
+    renderRestockTable(restockFiltered);
+
+    // 2. Render Transfers
+    const transferFiltered = rawAnalysisData.cross_transfers.filter(t => {
+      const matchQ = !q || (t.sku_code && t.sku_code.toLowerCase().includes(q)) || (t.nama_barang && t.nama_barang.toLowerCase().includes(q));
+      const matchOutlet = !selOutlet || t.from_outlet_code === selOutlet || t.to_outlet_code === selOutlet;
+      const matchSupp = !selSupp || t.supplier === selSupp;
+      return matchQ && matchOutlet && matchSupp;
+    });
+    renderTransferTable(transferFiltered);
+
+    // 3. Render Alerts (Stockout + Critical)
+    const stockoutFiltered = rawAnalysisData.stockout_alerts.filter(s => filterItem(s, 'outlet_code'));
+    const criticalFiltered = rawAnalysisData.critical_alerts.filter(c => filterItem(c, 'outlet_code'));
+    renderAlertsTable(stockoutFiltered, criticalFiltered);
+
+    // 4. Render Overstock
+    const overstockFiltered = rawAnalysisData.overstock_advisory.filter(o => filterItem(o, 'affected_outlets'));
+    renderOverstockTable(overstockFiltered);
+
+    // 5. Render Priority
+    renderPriorityTable(rawAnalysisData.store_priority_matrix);
+  }
+
+  function renderRestockTable(rows) {
+    const tbody = document.getElementById('tableBodyRestock');
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="10" class="text-center" style="padding: 24px; color: var(--text-muted);">Tidak ada rekomendasi kirim yang sesuai filter.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td class="font-mono font-bold">${r.sku_code}</td>
+        <td><strong>${r.nama_barang}</strong></td>
+        <td>${r.supplier || '-'}</td>
+        <td><span class="badge badge-blue">${r.outlet_code}</span> ${r.outlet_name}</td>
+        <td class="text-right"><strong style="color:var(--brand); font-size:14px;">${formatNumber(r.recommended_send_qty)}</strong> Pcs</td>
+        <td class="text-right font-mono">${formatNumber(r.current_stock)}</td>
+        <td class="text-right font-mono">${r.daily_velocity} /hr</td>
+        <td class="text-right font-mono">${formatNumber(r.target_stock)}</td>
+        <td class="text-right font-mono">${formatNumber(r.gudang_stock_left)}</td>
+        <td><span class="badge ${r.recommended_send_qty >= r.deficit ? 'badge-green' : 'badge-amber'}">${r.status}</span></td>
+      </tr>
+    `).join('');
+  }
+
+  function renderTransferTable(rows) {
+    const tbody = document.getElementById('tableBodyTransfer');
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="9" class="text-center" style="padding: 24px; color: var(--text-muted);">Tidak ada rekomendasi mutasi antar konter yang sesuai filter.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map(t => `
+      <tr>
+        <td class="font-mono font-bold">${t.sku_code}</td>
+        <td><strong>${t.nama_barang}</strong></td>
+        <td>${t.supplier || '-'}</td>
+        <td><span class="badge badge-amber">${t.from_outlet_code}</span> ${t.from_outlet_name}</td>
+        <td class="text-right font-mono">${formatNumber(t.from_current_stock)}</td>
+        <td><span class="badge badge-green">${t.to_outlet_code}</span> ${t.to_outlet_name}</td>
+        <td class="text-right font-mono">${formatNumber(t.to_current_stock)}</td>
+        <td class="text-right"><strong style="color:var(--purple); font-size:14px;">${formatNumber(t.transfer_qty)}</strong> Pcs</td>
+        <td style="font-size:11.5px; color:var(--text-muted);">${t.reason}</td>
+      </tr>
+    `).join('');
+  }
+
+  function renderAlertsTable(stockouts, criticals) {
+    const tbody = document.getElementById('tableBodyStockout');
+    const combined = [
+      ...stockouts.map(s => ({ ...s, alertType: 'HABIS', badgeClass: 'badge-red' })),
+      ...criticals.map(c => ({ ...c, alertType: 'KRITIS', badgeClass: 'badge-amber' })),
+    ];
+    if (!combined.length) {
+      tbody.innerHTML = '<tr><td colspan="9" class="text-center" style="padding: 24px; color: var(--text-muted);">Tidak ada alert stok habis atau kritis saat ini.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = combined.map(a => `
+      <tr>
+        <td><span class="badge ${a.badgeClass}">${a.urgency_label}</span></td>
+        <td class="font-mono font-bold">${a.sku_code}</td>
+        <td><strong>${a.nama_barang}</strong></td>
+        <td>${a.supplier || '-'}</td>
+        <td><span class="badge badge-blue">${a.outlet_code}</span> ${a.outlet_name}</td>
+        <td class="text-right font-mono"><strong>${formatNumber(a.stok_qty)}</strong></td>
+        <td class="text-right font-mono">${a.daily_velocity} /hr</td>
+        <td class="text-center font-mono">${a.alertType === 'HABIS' ? '<span style="color:var(--danger); font-weight:700;">HABIS (0 Hr)</span>' : `${a.runway_hours} Jam`}</td>
+        <td class="text-right font-mono" style="color:var(--danger); font-weight:700;">${formatCurrency(a.lost_daily_sales_est || 0)}</td>
+      </tr>
+    `).join('');
+  }
+
+  function renderOverstockTable(rows) {
+    const tbody = document.getElementById('tableBodyOverstock');
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="8" class="text-center" style="padding: 24px; color: var(--text-muted);">Tidak ada barang overstock yang sesuai filter.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map(o => `
+      <tr>
+        <td><strong style="color:${o.action_color}; font-size:12px;">${o.action_title}</strong></td>
+        <td class="font-mono font-bold">${o.sku_code}</td>
+        <td><strong>${o.nama_barang}</strong></td>
+        <td>${o.supplier || '-'}</td>
+        <td class="text-center"><span class="badge badge-blue">${o.kategori || 'Dagangan'}</span></td>
+        <td class="text-right font-mono"><strong style="font-size:13px;">${formatNumber(o.total_excess_units)}</strong> Pcs</td>
+        <td style="font-size:11.5px;">${o.affected_outlets}</td>
+        <td style="font-size:11.5px; color:var(--text-muted);">${o.action_detail}</td>
+      </tr>
+    `).join('');
+  }
+
+  function renderPriorityTable(rows) {
+    const tbody = document.getElementById('tableBodyPriority');
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="9" class="text-center" style="padding: 24px; color: var(--text-muted);">Tidak ada data konter.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map(p => `
+      <tr>
+        <td class="text-center font-bold">#${p.rank}</td>
+        <td class="font-mono font-bold">${p.outlet_code}</td>
+        <td><strong>${p.outlet_name}</strong></td>
+        <td><span class="badge badge-blue">${p.area}</span></td>
+        <td><span class="badge" style="background:${p.tier_color}18; color:${p.tier_color}; border:1px solid ${p.tier_color}40;">${p.tier_badge}</span></td>
+        <td class="text-center font-bold">${p.priority_score}</td>
+        <td class="text-right font-mono"><strong>${formatNumber(p.avg_daily_units)}</strong> Unit</td>
+        <td class="text-right font-mono">${formatCurrency(p.avg_daily_revenue)}</td>
+        <td class="text-right font-mono">${formatNumber(p.total_units_sold)}</td>
+      </tr>
+    `).join('');
+  }
+
+  // Copy to WhatsApp format
+  function copyWhatsAppOrder() {
+    if (!rawAnalysisData) return;
+    const selOutlet = document.getElementById('filterOutlet').value;
+    const targetRows = rawAnalysisData.restock_actionable.filter(r => !selOutlet || r.outlet_code === selOutlet);
+
+    if (!targetRows.length) {
+      alert('Tidak ada data restock untuk disalin ke WhatsApp.');
+      return;
+    }
+
+    const outletLabel = selOutlet ? `UNTUK KONTER: ${selOutlet}` : 'SEMUA KONTER ANCOL';
+    let text = `📦 *SPK RESTOCK MERCHANDISE ANCOL*\n`;
+    text += `🎯 *${outletLabel}*\n`;
+    text += `📅 Tanggal: ${new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}\n`;
+    text += `------------------------------------\n`;
+
+    targetRows.slice(0, 30).forEach((r, idx) => {
+      text += `${idx + 1}. [${r.outlet_code}] *${r.nama_barang}* (${r.sku_code})\n`;
+      text += `   👉 Kirim: *${r.recommended_send_qty} Pcs* (Sisa Gudang: ${r.gudang_stock_left})\n`;
+    });
+
+    if (targetRows.length > 30) {
+      text += `\n...dan ${targetRows.length - 30} item lainnya (lihat detail di dashboard/excel).\n`;
+    }
+    text += `------------------------------------\n`;
+    text += `Generated by Ancol Smart Inventory Engine\n`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('Berhasil disalin! Tinggal tempel (paste) ke grup WhatsApp.');
+    }).catch(err => {
+      alert('Gagal menyalin ke clipboard: ' + err);
+    });
+  }
+
+  // Init on load
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+    updateThemeIcon();
+
+    // Fetch latest snapshot
+    try {
+      const res = await fetch('/api/inventory/snapshots');
+      const json = await res.json();
+      if (json.success && json.latest_id) {
+        currentSnapshotId = json.latest_id;
+        await loadAnalysis(currentSnapshotId);
+      } else {
+        document.getElementById('snapshotLabel').textContent = 'Belum ada snapshot data. Silakan upload file.';
+      }
+    } catch (err) {
+      console.error(err);
+      document.getElementById('snapshotLabel').textContent = 'Koneksi ke server bermasalah.';
+    }
+  });
+</script>
+
+</body>
+</html>
+

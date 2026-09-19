@@ -71,6 +71,8 @@ INVOICE_DISCOUNT_COLUMN_INDEX = 13   # N, informational only
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.jinja_env.auto_reload = True
+from inventory_engine import inventory_bp
+app.register_blueprint(inventory_bp)
 _sales_cache: list[dict[str, Any]] | None = None
 _sales_cache_signature: tuple[tuple[str, int, int], ...] = ()
 _sales_cache_mapping_signature: tuple[int, int] | None = None
