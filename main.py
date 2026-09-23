@@ -73,6 +73,19 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.jinja_env.auto_reload = True
 from inventory_engine import inventory_bp
 app.register_blueprint(inventory_bp)
+
+@app.template_filter("compact_rp")
+def format_compact_rp(val: float | None) -> str:
+    if val is None or val == 0:
+        return "Rp 0"
+    abs_val = abs(val)
+    if abs_val >= 1_000_000_000:
+        return f"Rp {val / 1_000_000_000:.2f}".replace(".", ",") + " M"
+    elif abs_val >= 1_000_000:
+        return f"Rp {val / 1_000_000:.1f}".replace(".", ",") + " Jt"
+    elif abs_val >= 1_000:
+        return f"Rp {val / 1_000:.0f}".replace(".", ",") + " Rb"
+    return f"Rp {round(val):,}".replace(",", ".")
 _sales_cache: list[dict[str, Any]] | None = None
 _sales_cache_signature: tuple[tuple[str, int, int], ...] = ()
 _sales_cache_mapping_signature: tuple[int, int] | None = None
@@ -397,6 +410,92 @@ def summarize(rows: list[dict[str, Any]], year: int) -> dict[str, Any]:
     }
 
 
+def compute_unit_benchmarks(
+    rows: list[dict[str, Any]],
+    visitors: list[dict[str, Any]],
+    current_dates: set[str],
+    comparison_day_months: set[str],
+) -> dict[str, Any]:
+    """Menghitung performa 4 unit rekreasi (Dufan, SeaWorld, Samudra, Atlantis) secara mandiri."""
+    u_sales_26: dict[str, float] = defaultdict(float)
+    u_sales_25: dict[str, float] = defaultdict(float)
+    u_tx_26: dict[str, set] = defaultdict(set)
+    u_tx_25: dict[str, set] = defaultdict(set)
+
+    def get_unit(outlet: str, area: str) -> str | None:
+        o = (outlet or "").upper()
+        a = (area or "").upper()
+        if a == "DUFAN" or o.startswith("DF"):
+            return "Dufan"
+        if "SWIN" in o or "SEA WORLD" in o:
+            return "SeaWorld"
+        if "ODIN" in o or "JBIN" in o or "JBL" in o or a == "SAMUDRA":
+            return "Samudra"
+        if "AWIN" in o or "AWKL" in o or "AWA" in o or a == "ATLANTIS":
+            return "Atlantis"
+        return None
+
+    for r in rows:
+        u = get_unit(r.get("outlet", ""), r.get("area", ""))
+        if not u:
+            continue
+        if r["year"] == 2026:
+            if not current_dates or r["date"] in current_dates:
+                u_sales_26[u] += r["net_sales"]
+                if r.get("invoice"):
+                    u_tx_26[u].add((r["outlet"], r["date"], r["invoice"]))
+        elif r["year"] == 2025:
+            if not comparison_day_months or r["date"][5:] in comparison_day_months:
+                u_sales_25[u] += r["net_sales"]
+                if r.get("invoice"):
+                    u_tx_25[u].add((r["outlet"], r["date"], r["invoice"]))
+
+    u_vis_26: dict[str, int] = defaultdict(int)
+    u_vis_25: dict[str, int] = defaultdict(int)
+    for v in visitors:
+        u = v["unit"]
+        v_year = v["date"][:4]
+        v_dm = v["date"][5:]
+        if v_year == "2026":
+            if not current_dates or v["date"] in current_dates:
+                u_vis_26[u] += v["visitors"]
+        elif v_year == "2025":
+            if not comparison_day_months or v_dm in comparison_day_months:
+                u_vis_25[u] += v["visitors"]
+
+    res = {}
+    for u in ("Dufan", "SeaWorld", "Samudra", "Atlantis"):
+        s26 = u_sales_26[u]
+        s25 = u_sales_25[u]
+        v26 = u_vis_26[u]
+        v25 = u_vis_25[u]
+        tx26 = len(u_tx_26[u])
+        tx25 = len(u_tx_25[u])
+        sph26 = (s26 / v26) if v26 > 0 else 0.0
+        sph25 = (s25 / v25) if v25 > 0 else 0.0
+        cap26 = (tx26 / v26 * 100) if v26 > 0 else 0.0
+        cap25 = (tx25 / v25 * 100) if v25 > 0 else 0.0
+        g_sales = growth_percent(s26, s25)
+        g_vis = growth_percent(v26, v25)
+        g_sph = growth_percent(sph26, sph25)
+        res[u] = {
+            "sales_2026": s26,
+            "sales_2025": s25,
+            "growth_sales": g_sales,
+            "visitors_2026": v26,
+            "visitors_2025": v25,
+            "growth_visitors": g_vis,
+            "sph_2026": sph26,
+            "sph_2025": sph25,
+            "growth_sph": g_sph,
+            "capture_rate_2026": cap26,
+            "capture_rate_2025": cap25,
+            "transactions_2026": tx26,
+            "transactions_2025": tx25,
+        }
+    return res
+
+
 def growth_percent(current: float, previous: float) -> float | None:
     if previous == 0:
         return None
@@ -418,6 +517,7 @@ def build_dashboard(
     weekend_only: bool = False,
 ) -> dict[str, Any]:
     # Normalisasi filter
+    outlets_set = {o.strip() for o in outlet.split(",") if o.strip()} if outlet else set()
     if month:
         m_str = str(month).strip()
         if len(m_str) <= 2:
@@ -489,7 +589,7 @@ def build_dashboard(
             )
         )
         and (not date or row["date"][5:] == date[5:])
-        and (not outlet or row["outlet"] == outlet)
+        and (not outlets_set or row["outlet"] in outlets_set)
         and (not area or row["area"] == area)
         and (row["year"] == 2026 or row["date"][5:] in comparison_day_months)
     ]
@@ -867,7 +967,24 @@ def build_dashboard(
     vis_25_by_day: dict[str, int] = {}
 
     matched_visitor_unit = None
-    if outlet and outlet in OUTLET_TO_VISITOR_UNIT:
+    if outlets_set:
+        detected_units = set()
+        for o_item in outlets_set:
+            u_found = OUTLET_TO_VISITOR_UNIT.get(o_item)
+            if not u_found:
+                if "SEA WORLD" in o_item.upper():
+                    u_found = "SeaWorld"
+                elif "DUFAN" in o_item.upper():
+                    u_found = "Dufan"
+                elif any(k in o_item.upper() for k in ["SAMUDRA", "ODIN", "JBL", "JBIN"]):
+                    u_found = "Samudra"
+                elif any(k in o_item.upper() for k in ["ATLANTIS", "AWIN", "AWKL", "AWA"]):
+                    u_found = "Atlantis"
+            if u_found:
+                detected_units.add(u_found)
+        if len(detected_units) == 1:
+            matched_visitor_unit = next(iter(detected_units))
+    elif outlet and outlet in OUTLET_TO_VISITOR_UNIT:
         matched_visitor_unit = OUTLET_TO_VISITOR_UNIT[outlet]
     elif outlet and "SEA WORLD" in outlet.upper():
         matched_visitor_unit = "SeaWorld"
@@ -970,8 +1087,11 @@ def build_dashboard(
             "visitors_2025": v25,
         })
 
+    unit_benchmarks = compute_unit_benchmarks(rows, all_raw_visitors, current_period_dates, comparison_day_months)
+
     return {
         "summary": summary,
+        "unit_benchmarks": unit_benchmarks,
         "total_cogs_2026": total_cogs_2026,
         "gross_profit_2026": gross_profit_2026,
         "gross_margin_2026": gross_margin_2026,
@@ -1823,7 +1943,7 @@ def index():
     date = request.args.get("date") or None
     start_date = request.args.get("start_date") or None
     end_date = request.args.get("end_date") or None
-    outlet = request.args.get("outlet") or None
+    outlet = request.args.get("outlet") or request.args.get("outlets") or None
     area = request.args.get("area") or None
     jenis = request.args.get("jenis") or None
     html = render_template(
@@ -1854,7 +1974,7 @@ def download_excel():
     date = request.args.get("date") or None
     start_date = request.args.get("start_date") or None
     end_date = request.args.get("end_date") or None
-    outlet = request.args.get("outlet") or None
+    outlet = request.args.get("outlet") or request.args.get("outlets") or None
     area = request.args.get("area") or None
     supplier = request.args.get("supplier") or None
     category = request.args.get("category") or None

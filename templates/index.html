@@ -2142,6 +2142,232 @@
       transition: width .4s ease-out;
     }
 
+    /* 4 Unit Executive Benchmark Grid (Solid Color & Real-World Theme Park Analytics) */
+    .unit-benchmark-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin: 16px 0 22px 0;
+    }
+    @media (max-width: 1024px) {
+      .unit-benchmark-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 640px) {
+      .unit-benchmark-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .unit-benchmark-card {
+      border-radius: 14px;
+      padding: 16px 18px;
+      color: #ffffff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 6px 20px -2px rgba(0, 32, 91, 0.12);
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+    }
+    .unit-benchmark-card:hover {
+      transform: translateY(-3px);
+    }
+    .unit-benchmark-card:active {
+      transform: scale(0.98);
+    }
+    .unit-benchmark-card.is-unit-focused {
+      outline: 3px solid rgba(255, 255, 255, 0.95);
+      outline-offset: 2px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45) !important;
+      transform: translateY(-2px);
+    }
+    /* Solid Brand Backgrounds */
+    .unit-benchmark-card.card-dufan {
+      background: #E0004D !important;
+      box-shadow: 0 8px 24px -2px rgba(224, 0, 77, 0.38);
+    }
+    .unit-benchmark-card.card-seaworld {
+      background: #006EB3 !important;
+      box-shadow: 0 8px 24px -2px rgba(0, 110, 179, 0.38);
+    }
+    .unit-benchmark-card.card-samudra {
+      background: #00A497 !important;
+      box-shadow: 0 8px 24px -2px rgba(0, 164, 151, 0.38);
+    }
+    .unit-benchmark-card.card-atlantis {
+      background: #5C068C !important;
+      box-shadow: 0 8px 24px -2px rgba(92, 6, 140, 0.38);
+    }
+    .unit-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .unit-logo-box {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 8px;
+      padding: 4px 10px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    .unit-logo-img {
+      max-height: 22px;
+      max-width: 82px;
+      object-fit: contain;
+    }
+    .unit-card-badge {
+      background: rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.02em;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(4px);
+    }
+    .unit-metric-label {
+      font-size: 10px;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(255, 255, 255, 0.88);
+      margin-bottom: 2px;
+    }
+    .unit-metric-val {
+      font-size: 24px;
+      font-weight: 850;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.15;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+    .unit-metric-sub {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.92);
+      font-variant-numeric: tabular-nums;
+      margin-top: 3px;
+      font-weight: 550;
+    }
+    .unit-card-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 11px 0 10px 0;
+    }
+    .unit-card-stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 10px;
+    }
+    .unit-stat-col {
+      display: flex;
+      flex-direction: column;
+    }
+    .unit-stat-label {
+      font-size: 9.5px;
+      font-weight: 650;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.78);
+    }
+    .unit-stat-col strong {
+      font-size: 13.5px;
+      font-weight: 750;
+      color: #ffffff;
+      margin-top: 1px;
+    }
+    .unit-stat-sub {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.88);
+    }
+    .unit-card-footer-pill {
+      background: rgba(0, 0, 0, 0.18);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      font-variant-numeric: tabular-nums;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .unit-card-footer-pill strong {
+      color: #ffffff;
+    }
+
+    /* Multi-Select Outlet Dropdown Styling */
+    .outlet-multiselect-dropdown {
+      width: 320px;
+      max-width: 92vw;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 14px 36px -4px rgba(0, 32, 91, 0.22);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      z-index: 1050;
+    }
+    :root.dark .outlet-multiselect-dropdown {
+      background: #0f1c34;
+      border-color: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.6);
+    }
+    .outlet-group-header {
+      padding: 7px 12px 5px 12px;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.025);
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .outlet-group-header:first-child {
+      border-top: none;
+    }
+    :root.dark .outlet-group-header {
+      background: rgba(255, 255, 255, 0.035);
+      border-top-color: rgba(255, 255, 255, 0.07);
+    }
+    .outlet-group-header:hover {
+      color: var(--brand);
+    }
+    .outlet-item-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 12px;
+      font-size: 12px;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: background 0.15s;
+      min-height: 38px;
+    }
+    .outlet-item-label:hover {
+      background: rgba(0, 51, 160, 0.06);
+    }
+    :root.dark .outlet-item-label:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .outlet-checkbox {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--brand);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
     /* Operational Insights 4-column Grid - Modern Card Tiles */
     .insights-grid {
       display: grid;
@@ -3764,14 +3990,120 @@
         </select>
       </div>
 
-      <div class="filter-group">
+      <div class="filter-group" id="filterGroupOutlet">
         <label class="filter-label">Lokasi Konter / Outlet</label>
-        <select id="filterOutlet" onchange="applyFilters()">
+        <select id="filterOutlet" onchange="applyFilters()" style="display:none;">
           <option value="">Semua Outlet ({{ data.outlet_options|length }})</option>
           {% for o in data.outlet_options %}
           <option value="{{ o }}" {% if o == selected_outlet %}selected{% endif %}>{{ o }}</option>
           {% endfor %}
         </select>
+        <div class="searchable-select" id="customOutletSelect">
+          <button type="button" class="searchable-trigger" id="outletTriggerBtn" onclick="toggleOutletDropdown(event)" aria-haspopup="listbox" aria-expanded="false">
+            <span class="searchable-trigger-text" id="outletTriggerLabel">Semua Outlet ({{ data.outlet_options|length }})</span>
+            <span class="searchable-trigger-arrow">▾</span>
+          </button>
+          <div class="searchable-dropdown-menu outlet-multiselect-dropdown" id="outletDropdownMenu" style="display:none;" onclick="event.stopPropagation()">
+            <div class="searchable-search-box">
+              <input type="text" class="searchable-search-input" id="outletSearchInput" placeholder="Cari nama konter..." oninput="filterOutletList()" autocomplete="off">
+              <button type="button" class="searchable-clear-btn" onclick="clearOutletSearch()">✕</button>
+            </div>
+            <div class="outlet-quick-toolbar" style="display:flex; justify-content:space-between; align-items:center; padding:7px 12px; border-bottom:1px solid rgba(0,0,0,0.06); font-size:11px; background:var(--bg-subtle, #f8fafc);">
+              <span id="outletCountSelected" style="font-weight:700; color:var(--brand, #0033a0);">Semua Dipilih</span>
+              <div style="display:flex; gap:10px; align-items:center;">
+                <button type="button" onclick="selectAllOutlets(true)" style="background:none; border:none; color:var(--brand, #0033a0); font-size:11px; cursor:pointer; font-weight:700; padding:0;">Pilih Semua</button>
+                <span style="color:#cbd5e1;">|</span>
+                <button type="button" onclick="selectAllOutlets(false)" style="background:none; border:none; color:#ef4444; font-size:11px; cursor:pointer; font-weight:700; padding:0;">Reset</button>
+              </div>
+            </div>
+            <div class="outlet-options-scroll" id="outletOptionsContainer" style="max-height:280px; overflow-y:auto; padding:4px 0;">
+              <!-- DUFAN -->
+              <div class="outlet-group-header" onclick="toggleOutletGroup('Dufan')">
+                <span style="display:flex; align-items:center; gap:6px;">
+                  <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#E0004D;"></span>
+                  <span>DUFAN (10 Konter)</span>
+                </span>
+                <span style="font-size:10px; opacity:0.8; font-weight:600;">Klik Pilih/Batal</span>
+              </div>
+              <div class="outlet-group-items" data-group="Dufan">
+                {% for o in data.outlet_options if o.startswith('DF') or 'DUFAN' in o|upper %}
+                <label class="outlet-item-label" data-name="{{ o|lower }}">
+                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" onchange="onOutletCheckboxChange()" checked>
+                  <span>{{ o }}</span>
+                </label>
+                {% endfor %}
+              </div>
+
+              <!-- ATLANTIS -->
+              <div class="outlet-group-header" onclick="toggleOutletGroup('Atlantis')">
+                <span style="display:flex; align-items:center; gap:6px;">
+                  <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#5C068C;"></span>
+                  <span>ATLANTIS (2 Konter)</span>
+                </span>
+                <span style="font-size:10px; opacity:0.8; font-weight:600;">Klik Pilih/Batal</span>
+              </div>
+              <div class="outlet-group-items" data-group="Atlantis">
+                {% for o in data.outlet_options if o.startswith('AW') or 'ATLANTIS' in o|upper or 'AWA' in o|upper %}
+                <label class="outlet-item-label" data-name="{{ o|lower }}">
+                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" onchange="onOutletCheckboxChange()" checked>
+                  <span>{{ o }}</span>
+                </label>
+                {% endfor %}
+              </div>
+
+              <!-- SAMUDRA -->
+              <div class="outlet-group-header" onclick="toggleOutletGroup('Samudra')">
+                <span style="display:flex; align-items:center; gap:6px;">
+                  <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#00A497;"></span>
+                  <span>SAMUDRA (2 Konter)</span>
+                </span>
+                <span style="font-size:10px; opacity:0.8; font-weight:600;">Klik Pilih/Batal</span>
+              </div>
+              <div class="outlet-group-items" data-group="Samudra">
+                {% for o in data.outlet_options if o.startswith('ODIN') or o.startswith('JB') or 'SAMUDRA' in o|upper %}
+                <label class="outlet-item-label" data-name="{{ o|lower }}">
+                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" onchange="onOutletCheckboxChange()" checked>
+                  <span>{{ o }}</span>
+                </label>
+                {% endfor %}
+              </div>
+
+              <!-- SEAWORLD -->
+              <div class="outlet-group-header" onclick="toggleOutletGroup('SeaWorld')">
+                <span style="display:flex; align-items:center; gap:6px;">
+                  <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#006EB3;"></span>
+                  <span>SEAWORLD (1 Konter)</span>
+                </span>
+                <span style="font-size:10px; opacity:0.8; font-weight:600;">Klik Pilih/Batal</span>
+              </div>
+              <div class="outlet-group-items" data-group="SeaWorld">
+                {% for o in data.outlet_options if o.startswith('SWIN') or 'SEA WORLD' in o|upper %}
+                <label class="outlet-item-label" data-name="{{ o|lower }}">
+                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" onchange="onOutletCheckboxChange()" checked>
+                  <span>{{ o }}</span>
+                </label>
+                {% endfor %}
+              </div>
+
+              <!-- BEACHPARK & PUBLIK -->
+              <div class="outlet-group-header" onclick="toggleOutletGroup('Beachpark')">
+                <span style="display:flex; align-items:center; gap:6px;">
+                  <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#f59e0b;"></span>
+                  <span>BEACHPARK / PUBLIK (3 Konter)</span>
+                </span>
+                <span style="font-size:10px; opacity:0.8; font-weight:600;">Klik Pilih/Batal</span>
+              </div>
+              <div class="outlet-group-items" data-group="Beachpark">
+                {% for o in data.outlet_options if o.startswith('OL') or o.startswith('TJ') or 'BEACH' in o|upper or 'OMBAK' in o|upper or 'SYMPHONY' in o|upper %}
+                <label class="outlet-item-label" data-name="{{ o|lower }}">
+                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" onchange="onOutletCheckboxChange()" checked>
+                  <span>{{ o }}</span>
+                </label>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="filter-group">
@@ -4197,6 +4529,143 @@
       </div>
     </div>
 
+  </div>
+
+  <!-- 4 Unit Executive Benchmark Cards (Solid Color & Official Logos) -->
+  {% set ub = data.unit_benchmarks or {} %}
+  {% set dufan_b = ub.get('Dufan', {}) %}
+  {% set seaworld_b = ub.get('SeaWorld', {}) %}
+  {% set samudra_b = ub.get('Samudra', {}) %}
+  {% set atlantis_b = ub.get('Atlantis', {}) %}
+
+  <div class="unit-benchmark-grid" id="unitBenchmarkGrid">
+    <!-- Card 1: Dufan -->
+    <div class="unit-benchmark-card card-dufan" id="unitCardDufan" onclick="filterByUnit('DUFAN')" title="Klik untuk fokus filter ke Unit Dufan">
+      <div class="unit-card-header">
+        <div class="unit-logo-box">
+          <img src="/static/logos/dufan.png" alt="Dufan" class="unit-logo-img">
+        </div>
+        <span class="unit-card-badge">10 Konter</span>
+      </div>
+      <div class="unit-card-metric-block">
+        <div class="unit-metric-label">Revenue Merchandise</div>
+        <div class="unit-metric-val" id="dufanRevVal" title="Net Sales: Rp {{ '{:,.0f}'.format(dufan_b.get('sales_2026', 0)).replace(',', '.') }}">{{ dufan_b.get('sales_2026', 0)|compact_rp }}</div>
+        <div class="unit-metric-sub" id="dufanRevYoY">vs 2025: {{ dufan_b.get('sales_2025', 0)|compact_rp }} ({% if dufan_b.get('growth_sales') is not none %}{{ '{:+.1f}% YoY'.format(dufan_b.growth_sales) }}{% else %}-{% endif %})</div>
+      </div>
+      <div class="unit-card-divider"></div>
+      <div class="unit-card-stats-row">
+        <div class="unit-stat-col">
+          <span class="unit-stat-label">Pengunjung:</span>
+          <strong id="dufanVisVal">{{ '{:,.0f}'.format(dufan_b.get('visitors_2026', 0)).replace(',', '.') }} Org</strong>
+          <span class="unit-stat-sub" id="dufanVisYoY">{% if dufan_b.get('growth_visitors') is not none %}{{ '{:+.1f}% YoY'.format(dufan_b.growth_visitors) }}{% else %}-{% endif %}</span>
+        </div>
+        <div class="unit-stat-col">
+          <span class="unit-stat-label">SPH (Belanja):</span>
+          <strong id="dufanSphVal">Rp {{ '{:,.0f}'.format(dufan_b.get('sph_2026', 0)).replace(',', '.') }}</strong>
+          <span class="unit-stat-sub" id="dufanSphYoY">{% if dufan_b.get('growth_sph') is not none %}{{ '{:+.1f}%'.format(dufan_b.growth_sph) }}{% else %}-{% endif %}</span>
+        </div>
+      </div>
+      <div class="unit-card-footer-pill">
+        <span>Capture Rate: <strong id="dufanCapVal">{{ '{:.2f}%'.format(dufan_b.get('capture_rate_2026', 0)) }}</strong></span>
+        <span id="dufanTxVal">({{ '{:,.0f}'.format(dufan_b.get('transactions_2026', 0)).replace(',', '.') }} struk)</span>
+      </div>
+    </div>
+
+    <!-- Card 2: SeaWorld -->
+    <div class="unit-benchmark-card card-seaworld" id="unitCardSeaWorld" onclick="filterByUnit('SEAWORLD')" title="Klik untuk fokus filter ke Unit Sea World">
+      <div class="unit-card-header">
+        <div class="unit-logo-box">
+          <img src="/static/logos/seaworld.png" alt="Sea World" class="unit-logo-img">
+        </div>
+        <span class="unit-card-badge">1 Konter (SWIN)</span>
+      </div>
+      <div class="unit-card-metric-block">
+        <div class="unit-metric-label">Revenue Merchandise</div>
+        <div class="unit-metric-val" id="seaworldRevVal" title="Net Sales: Rp {{ '{:,.0f}'.format(seaworld_b.get('sales_2026', 0)).replace(',', '.') }}">{{ seaworld_b.get('sales_2026', 0)|compact_rp }}</div>
+        <div class="unit-metric-sub" id="seaworldRevYoY">vs 2025: {{ seaworld_b.get('sales_2025', 0)|compact_rp }} ({% if seaworld_b.get('growth_sales') is not none %}{{ '{:+.1f}% YoY'.format(seaworld_b.growth_sales) }}{% else %}-{% endif %})</div>
+      </div>
+      <div class="unit-card-divider"></div>
+      <div class="unit-card-stats-row">
+        <div class="unit-stat-col">
+          <span class="unit-stat-label">Pengunjung:</span>
+          <strong id="seaworldVisVal">{{ '{:,.0f}'.format(seaworld_b.get('visitors_2026', 0)).replace(',', '.') }} Org</strong>
+          <span class="unit-stat-sub" id="seaworldVisYoY">{% if seaworld_b.get('growth_visitors') is not none %}{{ '{:+.1f}% YoY'.format(seaworld_b.growth_visitors) }}{% else %}-{% endif %}</span>
+        </div>
+        <div class="unit-stat-col">
+          <span class="unit-stat-label">SPH (Belanja):</span>
+          <strong id="seaworldSphVal">Rp {{ '{:,.0f}'.format(seaworld_b.get('sph_2026', 0)).replace(',', '.') }}</strong>
+          <span class="unit-stat-sub" id="seaworldSphYoY">{% if seaworld_b.get('growth_sph') is not none %}{{ '{:+.1f}%'.format(seaworld_b.growth_sph) }}{% else %}-{% endif %}</span>
+        </div>
+      </div>
+      <div class="unit-card-footer-pill">
+        <span>Capture Rate: <strong id="seaworldCapVal">{{ '{:.2f}%'.format(seaworld_b.get('capture_rate_2026', 0)) }}</strong></span>
+        <span id="seaworldTxVal">({{ '{:,.0f}'.format(seaworld_b.get('transactions_2026', 0)).replace(',', '.') }} struk)</span>
+      </div>
+    </div>
+
+    <!-- Card 3: Samudra -->
+    <div class="unit-benchmark-card card-samudra" id="unitCardSamudra" onclick="filterByUnit('SAMUDRA')" title="Klik untuk fokus filter ke Unit Samudra">
+      <div class="unit-card-header">
+        <div class="unit-logo-box">
+          <img src="/static/logos/samudra.png" alt="Samudra" class="unit-logo-img">
+        </div>
+        <span class="unit-card-badge">2 Konter (ODIN, JBL)</span>
+      </div>
+      <div class="unit-card-metric-block">
+        <div class="unit-metric-label">Revenue Merchandise</div>
+        <div class="unit-metric-val" id="samudraRevVal" title="Net Sales: Rp {{ '{:,.0f}'.format(samudra_b.get('sales_2026', 0)).replace(',', '.') }}">{{ samudra_b.get('sales_2026', 0)|compact_rp }}</div>
+        <div class="unit-metric-sub" id="samudraRevYoY">vs 2025: {{ samudra_b.get('sales_2025', 0)|compact_rp }} ({% if samudra_b.get('growth_sales') is not none %}{{ '{:+.1f}% YoY'.format(samudra_b.growth_sales) }}{% else %}-{% endif %})</div>
+      </div>
+      <div class="unit-card-divider"></div>
+      <div class="unit-card-stats-row">
+        <div class="unit-stat-col">
+          <span class="unit-stat-label">Pengunjung:</span>
+          <strong id="samudraVisVal">{{ '{:,.0f}'.format(samudra_b.get('visitors_2026', 0)).replace(',', '.') }} Org</strong>
+          <span class="unit-stat-sub" id="samudraVisYoY">{% if samudra_b.get('growth_visitors') is not none %}{{ '{:+.1f}% YoY'.format(samudra_b.growth_visitors) }}{% else %}-{% endif %}</span>
+        </div>
+        <div class="unit-stat-col">
+          <span class="unit-stat-label">SPH (Belanja):</span>
+          <strong id="samudraSphVal">Rp {{ '{:,.0f}'.format(samudra_b.get('sph_2026', 0)).replace(',', '.') }}</strong>
+          <span class="unit-stat-sub" id="samudraSphYoY">{% if samudra_b.get('growth_sph') is not none %}{{ '{:+.1f}%'.format(samudra_b.growth_sph) }}{% else %}-{% endif %}</span>
+        </div>
+      </div>
+      <div class="unit-card-footer-pill">
+        <span>Capture Rate: <strong id="samudraCapVal">{{ '{:.2f}%'.format(samudra_b.get('capture_rate_2026', 0)) }}</strong></span>
+        <span id="samudraTxVal">({{ '{:,.0f}'.format(samudra_b.get('transactions_2026', 0)).replace(',', '.') }} struk)</span>
+      </div>
+    </div>
+
+    <!-- Card 4: Atlantis -->
+    <div class="unit-benchmark-card card-atlantis" id="unitCardAtlantis" onclick="filterByUnit('ATLANTIS')" title="Klik untuk fokus filter ke Unit Atlantis">
+      <div class="unit-card-header">
+        <div class="unit-logo-box">
+          <img src="/static/logos/atlantis.png" alt="Atlantis" class="unit-logo-img">
+        </div>
+        <span class="unit-card-badge">2 Konter (AWIN, AWKL)</span>
+      </div>
+      <div class="unit-card-metric-block">
+        <div class="unit-metric-label">Revenue Merchandise</div>
+        <div class="unit-metric-val" id="atlantisRevVal" title="Net Sales: Rp {{ '{:,.0f}'.format(atlantis_b.get('sales_2026', 0)).replace(',', '.') }}">{{ atlantis_b.get('sales_2026', 0)|compact_rp }}</div>
+        <div class="unit-metric-sub" id="atlantisRevYoY">vs 2025: {{ atlantis_b.get('sales_2025', 0)|compact_rp }} ({% if atlantis_b.get('growth_sales') is not none %}{{ '{:+.1f}% YoY'.format(atlantis_b.growth_sales) }}{% else %}-{% endif %})</div>
+      </div>
+      <div class="unit-card-divider"></div>
+      <div class="unit-card-stats-row">
+        <div class="unit-stat-col">
+          <span class="unit-stat-label">Pengunjung:</span>
+          <strong id="atlantisVisVal">{{ '{:,.0f}'.format(atlantis_b.get('visitors_2026', 0)).replace(',', '.') }} Org</strong>
+          <span class="unit-stat-sub" id="atlantisVisYoY">{% if atlantis_b.get('growth_visitors') is not none %}{{ '{:+.1f}% YoY'.format(atlantis_b.growth_visitors) }}{% else %}-{% endif %}</span>
+        </div>
+        <div class="unit-stat-col">
+          <span class="unit-stat-label">SPH (Belanja):</span>
+          <strong id="atlantisSphVal">Rp {{ '{:,.0f}'.format(atlantis_b.get('sph_2026', 0)).replace(',', '.') }}</strong>
+          <span class="unit-stat-sub" id="atlantisSphYoY">{% if atlantis_b.get('growth_sph') is not none %}{{ '{:+.1f}%'.format(atlantis_b.growth_sph) }}{% else %}-{% endif %}</span>
+        </div>
+      </div>
+      <div class="unit-card-footer-pill">
+        <span>Capture Rate: <strong id="atlantisCapVal">{{ '{:.2f}%'.format(atlantis_b.get('capture_rate_2026', 0)) }}</strong></span>
+        <span id="atlantisTxVal">({{ '{:,.0f}'.format(atlantis_b.get('transactions_2026', 0)).replace(',', '.') }} struk)</span>
+      </div>
+    </div>
   </div>
 
   <!-- Operational Insights Grid -->
@@ -5733,18 +6202,34 @@
       }
     });
 
-    const currentOutletVal = outletSelect.value;
-    outletSelect.innerHTML = `<option value="">Semua Outlet (${availableOutlets.size})</option>`;
-    Array.from(availableOutlets).sort().forEach(o => {
-      const opt = document.createElement('option');
-      opt.value = o;
-      opt.textContent = o;
-      if (o === currentOutletVal && availableOutlets.has(currentOutletVal)) {
-        opt.selected = true;
-      }
-      outletSelect.appendChild(opt);
-    });
+    const cbs = document.querySelectorAll('.outlet-checkbox');
+    if (areaVal) {
+      cbs.forEach(cb => {
+        cb.checked = availableOutlets.has(cb.value);
+      });
+    } else {
+      cbs.forEach(cb => {
+        cb.checked = true;
+      });
+    }
 
+    if (outletSelect) {
+      const currentOutletVal = outletSelect.value;
+      outletSelect.innerHTML = `<option value="">Semua Outlet (${availableOutlets.size})</option>`;
+      Array.from(availableOutlets).sort().forEach(o => {
+        const opt = document.createElement('option');
+        opt.value = o;
+        opt.textContent = o;
+        if (o === currentOutletVal && availableOutlets.has(currentOutletVal)) {
+          opt.selected = true;
+        }
+        outletSelect.appendChild(opt);
+      });
+    }
+
+    if (typeof updateOutletTriggerLabel === 'function') {
+      updateOutletTriggerLabel();
+    }
     applyFilters();
   }
 
@@ -6140,6 +6625,9 @@
       if (menu) menu.style.display = 'none';
       if (trigger) trigger.classList.remove('is-open');
     });
+    if (typeof closeOutletDropdown === 'function') {
+      closeOutletDropdown();
+    }
   }
 
   function filterSearchableList(type) {
@@ -6242,6 +6730,208 @@
     }
   });
 
+  // ----------------------------------------------------
+  // COMPACT CURRENCY FORMATTER (M & Jt with Tabular Stability)
+  // ----------------------------------------------------
+  function formatCompactRp(val) {
+    if (val === null || val === undefined || isNaN(val)) return 'Rp 0';
+    const num = Math.abs(val);
+    const sign = val < 0 ? '-' : '';
+    if (num >= 1e9) {
+      const formatted = (num / 1e9).toFixed(2).replace('.', ',');
+      return `${sign}Rp ${formatted} M`;
+    } else if (num >= 1e6) {
+      const formatted = (num / 1e6).toFixed(1).replace('.', ',');
+      return `${sign}Rp ${formatted} Jt`;
+    } else if (num >= 1e3) {
+      const formatted = (num / 1e3).toFixed(0).replace('.', ',');
+      return `${sign}Rp ${formatted} Rb`;
+    }
+    return `${sign}Rp ${Math.round(num).toLocaleString('id-ID')}`;
+  }
+
+  // ----------------------------------------------------
+  // MULTI-SELECT OUTLET DROPDOWN ENGINE
+  // ----------------------------------------------------
+  window.selectedOutlets = new Set();
+
+  function toggleOutletDropdown(event) {
+    if (event) event.stopPropagation();
+    const menu = document.getElementById('outletDropdownMenu');
+    const trigger = document.getElementById('outletTriggerBtn');
+    if (!menu) return;
+
+    const isCurrentlyOpen = menu.style.display === 'block' || menu.style.display === 'flex';
+
+    // Close all searchable dropdowns first
+    closeAllSearchableDropdowns();
+
+    if (!isCurrentlyOpen) {
+      menu.style.display = 'block';
+      if (trigger) trigger.classList.add('is-open');
+      const searchInput = document.getElementById('outletSearchInput');
+      if (searchInput) {
+        setTimeout(() => searchInput.focus(), 50);
+      }
+    }
+  }
+
+  function closeOutletDropdown() {
+    const menu = document.getElementById('outletDropdownMenu');
+    const trigger = document.getElementById('outletTriggerBtn');
+    if (menu) menu.style.display = 'none';
+    if (trigger) trigger.classList.remove('is-open');
+  }
+
+  function filterOutletList() {
+    const input = document.getElementById('outletSearchInput');
+    const q = (input ? input.value : '').toLowerCase().trim();
+    const labels = document.querySelectorAll('#outletOptionsContainer .outlet-item-label');
+
+    labels.forEach(lbl => {
+      const name = lbl.getAttribute('data-name') || '';
+      lbl.style.display = (!q || name.includes(q)) ? 'flex' : 'none';
+    });
+
+    document.querySelectorAll('#outletOptionsContainer .outlet-group-items').forEach(group => {
+      const visibleChildren = group.querySelectorAll('.outlet-item-label:not([style*="display: none"])');
+      const header = group.previousElementSibling;
+      if (header && header.classList.contains('outlet-group-header')) {
+        header.style.display = visibleChildren.length > 0 ? 'flex' : 'none';
+      }
+      group.style.display = visibleChildren.length > 0 ? 'block' : 'none';
+    });
+  }
+
+  function clearOutletSearch() {
+    const input = document.getElementById('outletSearchInput');
+    if (input) {
+      input.value = '';
+      filterOutletList();
+      input.focus();
+    }
+  }
+
+  function selectAllOutlets(check) {
+    const cbs = document.querySelectorAll('.outlet-checkbox');
+    cbs.forEach(cb => { cb.checked = check; });
+    onOutletCheckboxChange();
+  }
+
+  function toggleOutletGroup(groupName) {
+    const container = document.querySelector(`.outlet-group-items[data-group="${groupName}"]`);
+    if (!container) return;
+    const cbs = container.querySelectorAll('.outlet-checkbox');
+    if (!cbs.length) return;
+    const allChecked = Array.from(cbs).every(cb => cb.checked);
+    cbs.forEach(cb => { cb.checked = !allChecked; });
+    onOutletCheckboxChange();
+  }
+
+  function updateOutletTriggerLabel() {
+    const cbs = document.querySelectorAll('.outlet-checkbox');
+    const total = cbs.length || 18;
+    const triggerLabel = document.getElementById('outletTriggerLabel');
+    const countSelected = document.getElementById('outletCountSelected');
+    const nativeSelect = document.getElementById('filterOutlet');
+
+    window.selectedOutlets = new Set();
+    cbs.forEach(cb => {
+      if (cb.checked) window.selectedOutlets.add(cb.value);
+    });
+
+    const count = window.selectedOutlets.size;
+    if (count === total) {
+      if (triggerLabel) triggerLabel.textContent = `Semua Outlet (${total})`;
+      if (countSelected) countSelected.textContent = `Semua Dipilih (${total})`;
+      if (nativeSelect) nativeSelect.value = '';
+    } else if (count === 0) {
+      if (triggerLabel) triggerLabel.textContent = '0 Outlet Dipilih';
+      if (countSelected) countSelected.textContent = '0 Dipilih';
+      if (nativeSelect) nativeSelect.value = '__NONE__';
+    } else if (count === 1) {
+      const singleName = Array.from(window.selectedOutlets)[0];
+      if (triggerLabel) triggerLabel.textContent = singleName;
+      if (countSelected) countSelected.textContent = `1 dari ${total} Dipilih`;
+      if (nativeSelect) nativeSelect.value = singleName;
+    } else {
+      if (triggerLabel) triggerLabel.textContent = `${count} Outlet Dipilih`;
+      if (countSelected) countSelected.textContent = `${count} dari ${total} Dipilih`;
+      if (nativeSelect) nativeSelect.value = Array.from(window.selectedOutlets).join(',');
+    }
+  }
+
+  function onOutletCheckboxChange() {
+    updateOutletTriggerLabel();
+    applyFilters();
+  }
+
+  function initOutletMultiselect() {
+    const initialOutletStr = "{{ selected_outlet or '' }}";
+    const cbs = document.querySelectorAll('.outlet-checkbox');
+    window.selectedOutlets = new Set();
+
+    if (initialOutletStr && initialOutletStr !== '__NONE__') {
+      const initialList = initialOutletStr.split(',').map(s => s.trim()).filter(Boolean);
+      const initialSet = new Set(initialList);
+      cbs.forEach(cb => {
+        if (initialSet.has(cb.value)) {
+          cb.checked = true;
+          window.selectedOutlets.add(cb.value);
+        } else {
+          cb.checked = false;
+        }
+      });
+    } else {
+      cbs.forEach(cb => {
+        cb.checked = true;
+        window.selectedOutlets.add(cb.value);
+      });
+    }
+    updateOutletTriggerLabel();
+  }
+
+  function filterByUnit(unitKey) {
+    const cbs = document.querySelectorAll('.outlet-checkbox');
+    if (!cbs.length) return;
+
+    const targetKey = unitKey.toUpperCase();
+    let isCurrentlyExclusive = true;
+    let matchesCount = 0;
+    cbs.forEach(cb => {
+      const u = (OUTLET_TO_VISITOR_MAP[cb.value] || '').toUpperCase();
+      const isMatch = (u === targetKey);
+      if (isMatch) {
+        matchesCount++;
+        if (!cb.checked) isCurrentlyExclusive = false;
+      } else {
+        if (cb.checked) isCurrentlyExclusive = false;
+      }
+    });
+
+    if (isCurrentlyExclusive && matchesCount > 0) {
+      cbs.forEach(cb => { cb.checked = true; });
+      updateOutletTriggerLabel();
+      applyFilters();
+      if (typeof showFilterToast === 'function') {
+        showFilterToast(`Menampilkan <strong>Semua Unit &amp; Outlet</strong>`);
+      }
+    } else {
+      cbs.forEach(cb => {
+        const u = (OUTLET_TO_VISITOR_MAP[cb.value] || '').toUpperCase();
+        cb.checked = (u === targetKey);
+      });
+      updateOutletTriggerLabel();
+      applyFilters();
+      if (typeof showFilterToast === 'function') {
+        showFilterToast(`Filter aktif: Unit <strong>${unitKey}</strong>`);
+      }
+      if (typeof quickJumpTo === 'function') {
+        quickJumpTo('kpiGridSection');
+      }
+    }
+  }
+
   // Instant Client-Side Filter Engine
   function applyFilters() {
     const month = document.getElementById('filterMonth').value;
@@ -6255,6 +6945,11 @@
     const category = categoryEl ? categoryEl.value : '';
     const modelBisnisEl = document.getElementById('filterModelBisnis');
     const modelBisnis = modelBisnisEl ? modelBisnisEl.value : '';
+
+    const allOutletCbs = document.querySelectorAll('.outlet-checkbox');
+    const totalOutletCount = allOutletCbs.length || 18;
+    const isMultiOutletActive = window.selectedOutlets && (window.selectedOutlets.size < totalOutletCount);
+    const isNoOutletSelected = window.selectedOutlets && (window.selectedOutlets.size === 0 && totalOutletCount > 0);
 
     const clearDateBtn = document.getElementById('clearDateBtn');
     if (clearDateBtn) {
@@ -6297,6 +6992,14 @@
     const konsinSkus = new Set();
     const dagangSkus = new Set();
     const unmappedSKUsMap = {};
+
+    // 4 Solid Unit Executive Benchmarks
+    const unitSales = {
+      "Dufan": { s26: 0, s25: 0, tx26: new Set(), tx25: new Set() },
+      "SeaWorld": { s26: 0, s25: 0, tx26: new Set(), tx25: new Set() },
+      "Samudra": { s26: 0, s25: 0, tx26: new Set(), tx25: new Set() },
+      "Atlantis": { s26: 0, s25: 0, tx26: new Set(), tx25: new Set() }
+    };
     
     const byOutlet = {}, byArea = {}, byProduct = {}, byHour = {}, byDay = {}, byMonth = {};
     const hourTx26 = {}, hourTx25 = {};
@@ -6340,9 +7043,6 @@
       // Filter khusus Akhir Pekan (Sabtu & Minggu) jika preset weekend aktif
       if (currentFilter.weekendOnly && !isWeekendDate(rDate)) continue;
 
-      if (area && rArea !== area) continue;
-      if (outlet && rOutlet !== outlet) continue;
-
       // Match Supplier, Category & Model Bisnis criteria
       const lk = (typeof COMPACT_LOOKUP !== 'undefined') ? COMPACT_LOOKUP[rProduct] : null;
       const rSupplier = lk ? (lk[1] || 'LAIN-LAIN') : '';
@@ -6355,6 +7055,28 @@
       if (modelBisnis && rJenis !== modelBisnis) continue;
 
       const txId = rOutlet + '_' + rDate + '_' + rInvoice;
+
+      // Accumulate 4 Unit Executive Benchmarks (Dufan, SeaWorld, Samudra, Atlantis)
+      const rUnit = OUTLET_TO_VISITOR_MAP[rOutlet];
+      if (rUnit && unitSales[rUnit]) {
+        if (rYear === 2026) {
+          unitSales[rUnit].s26 += rSales;
+          unitSales[rUnit].tx26.add(txId);
+        } else if (rYear === 2025) {
+          unitSales[rUnit].s25 += rSales;
+          unitSales[rUnit].tx25.add(txId);
+        }
+      }
+
+      // Filter by Outlet & Area for Main Dashboard
+      if (isNoOutletSelected) continue;
+      if (isMultiOutletActive) {
+        if (!window.selectedOutlets.has(rOutlet)) continue;
+      } else if (outlet && outlet !== '__NONE__' && rOutlet !== outlet) {
+        continue;
+      }
+      if (area && rArea !== area) continue;
+
       const mKey = rMonth.substring(5, 7);
       if (!byMonth[mKey]) byMonth[mKey] = { s26: 0, s25: 0 };
 
@@ -6486,7 +7208,12 @@
       // Filter target khusus Akhir Pekan jika preset weekend aktif
       if (currentFilter.weekendOnly && !isWeekendDate(t.date)) continue;
 
-      if (outlet && t.outlet !== outlet) continue;
+      if (isNoOutletSelected) continue;
+      if (isMultiOutletActive) {
+        if (!window.selectedOutlets.has(t.outlet)) continue;
+      } else if (outlet && outlet !== '__NONE__' && t.outlet !== outlet) {
+        continue;
+      }
       if (area && t.area !== area) continue;
 
       targetTotal += t.target;
@@ -6587,7 +7314,30 @@
     let totalVisitors26 = 0, totalVisitors25 = 0;
     let indiv26 = 0, rl26 = 0, ra26 = 0;
     let ib26 = 0, tb26 = 0;
-    const matchedVisitorUnit = outlet ? (OUTLET_TO_VISITOR_MAP[outlet] || null) : null;
+    let matchedVisitorUnit = null;
+    if (isMultiOutletActive) {
+      const unitsFound = new Set();
+      window.selectedOutlets.forEach(o => {
+        const u = OUTLET_TO_VISITOR_MAP[o];
+        if (u) unitsFound.add(u);
+      });
+      if (unitsFound.size === 1) {
+        const singleUnit = Array.from(unitsFound)[0];
+        if (singleUnit !== 'Beachpark') {
+          matchedVisitorUnit = singleUnit;
+        }
+      }
+    } else if (outlet && outlet !== '__NONE__') {
+      matchedVisitorUnit = OUTLET_TO_VISITOR_MAP[outlet] || null;
+      if (matchedVisitorUnit === 'Beachpark') matchedVisitorUnit = null;
+    }
+
+    const unitVisitors = {
+      "Dufan": { v26: 0, v25: 0 },
+      "SeaWorld": { v26: 0, v25: 0 },
+      "Samudra": { v26: 0, v25: 0 },
+      "Atlantis": { v26: 0, v25: 0 }
+    };
 
     const vis26ByMonth = {};
     const vis25ByMonth = {};
@@ -6612,6 +7362,16 @@
 
       // Filter khusus Akhir Pekan jika preset weekend aktif
       if (currentFilter.weekendOnly && !isWeekendDate(v.date)) continue;
+
+      // Accumulate 4 Unit Turnstile Visitors (Strict day-matched for 2025)
+      const vUnit = v.unit;
+      if (vYear === '2026') {
+        if (unitVisitors[vUnit]) unitVisitors[vUnit].v26 += v.visitors;
+      } else if (vYear === '2025') {
+        if (active26DatesDm.size === 0 || active26DatesDm.has(vDm)) {
+          if (unitVisitors[vUnit]) unitVisitors[vUnit].v25 += v.visitors;
+        }
+      }
 
       if (matchedVisitorUnit) {
         if (v.unit.toLowerCase() !== matchedVisitorUnit.toLowerCase()) continue;
@@ -6809,6 +7569,73 @@
         kpiCapStrukEl.textContent = '';
       }
     }
+
+    // Update 4 Solid Unit Executive Benchmark Cards (Dufan, SeaWorld, Samudra, Atlantis)
+    const UNIT_BENCHMARK_ITEMS = [
+      { key: 'Dufan', cardId: 'unitCardDufan', pfx: 'dufan' },
+      { key: 'SeaWorld', cardId: 'unitCardSeaWorld', pfx: 'seaworld' },
+      { key: 'Samudra', cardId: 'unitCardSamudra', pfx: 'samudra' },
+      { key: 'Atlantis', cardId: 'unitCardAtlantis', pfx: 'atlantis' }
+    ];
+
+    UNIT_BENCHMARK_ITEMS.forEach(u => {
+      const s = unitSales[u.key] || { s26: 0, s25: 0, tx26: new Set(), tx25: new Set() };
+      const vis = unitVisitors[u.key] || { v26: 0, v25: 0 };
+      const uSales26 = s.s26;
+      const uSales25 = s.s25;
+      const uVis26 = vis.v26;
+      const uVis25 = vis.v25;
+      const uTx26 = s.tx26.size;
+
+      const uGrowthSales = uSales25 > 0 ? ((uSales26 - uSales25) / uSales25 * 100) : null;
+      const uGrowthVis = uVis25 > 0 ? ((uVis26 - uVis25) / uVis25 * 100) : null;
+      const uSph26 = uVis26 > 0 ? (uSales26 / uVis26) : 0;
+      const uSph25 = uVis25 > 0 ? (uSales25 / uVis25) : 0;
+      const uGrowthSph = (uSph25 > 0 && uSph26 > 0) ? ((uSph26 - uSph25) / uSph25 * 100) : null;
+      const uCapRate26 = uVis26 > 0 ? (uTx26 / uVis26 * 100) : 0;
+
+      const revValEl = document.getElementById(u.pfx + 'RevVal');
+      const revYoYEl = document.getElementById(u.pfx + 'RevYoY');
+      const visValEl = document.getElementById(u.pfx + 'VisVal');
+      const visYoYEl = document.getElementById(u.pfx + 'VisYoY');
+      const sphValEl = document.getElementById(u.pfx + 'SphVal');
+      const sphYoYEl = document.getElementById(u.pfx + 'SphYoY');
+      const capValEl = document.getElementById(u.pfx + 'CapVal');
+      const txValEl = document.getElementById(u.pfx + 'TxVal');
+
+      if (revValEl) {
+        revValEl.textContent = formatCompactRp(uSales26);
+        revValEl.title = `Net Sales: Rp ${formatNum(uSales26)}`;
+      }
+      if (revYoYEl) {
+        const gStr = uGrowthSales !== null ? `${uGrowthSales >= 0 ? '+' : ''}${uGrowthSales.toFixed(1)}% YoY` : '-';
+        revYoYEl.textContent = `vs 2025: ${formatCompactRp(uSales25)} (${gStr})`;
+      }
+      if (visValEl) {
+        visValEl.textContent = `${formatNum(uVis26)} Org`;
+      }
+      if (visYoYEl) {
+        visYoYEl.textContent = uGrowthVis !== null ? `${uGrowthVis >= 0 ? '+' : ''}${uGrowthVis.toFixed(1)}% YoY` : '-';
+      }
+      if (sphValEl) {
+        sphValEl.textContent = `Rp ${formatNum(Math.round(uSph26))}`;
+      }
+      if (sphYoYEl) {
+        sphYoYEl.textContent = uGrowthSph !== null ? `${uGrowthSph >= 0 ? '+' : ''}${uGrowthSph.toFixed(1)}%` : '-';
+      }
+      if (capValEl) {
+        capValEl.textContent = `${uCapRate26.toFixed(2)}%`;
+      }
+      if (txValEl) {
+        txValEl.textContent = `(${formatNum(uTx26)} struk)`;
+      }
+
+      const cardEl = document.getElementById(u.cardId);
+      if (cardEl) {
+        const isCardFocused = (matchedVisitorUnit && matchedVisitorUnit.toLowerCase() === u.key.toLowerCase());
+        cardEl.classList.toggle('is-unit-focused', Boolean(isCardFocused));
+      }
+    });
 
     // Outlets Flatten & Sort
     const outletList = Object.entries(byOutlet).map(([name, v]) => ({
@@ -7395,7 +8222,15 @@
       const unitCls = getSubBrandUnitClass(currentFilter.area);
       parts.push({ text: `Area: ${currentFilter.area}`, cls: unitCls });
     }
-    if (currentFilter.outlet) parts.push({ text: `Outlet: ${currentFilter.outlet}`, cls: '' });
+    if (window.selectedOutlets && window.selectedOutlets.size > 0 && window.selectedOutlets.size < 18) {
+      if (window.selectedOutlets.size === 1) {
+        parts.push({ text: `Outlet: ${Array.from(window.selectedOutlets)[0]}`, cls: '' });
+      } else {
+        parts.push({ text: `Outlet: ${window.selectedOutlets.size} Konter Dipilih`, cls: '' });
+      }
+    } else if (currentFilter.outlet && currentFilter.outlet !== '__NONE__') {
+      parts.push({ text: `Outlet: ${currentFilter.outlet}`, cls: '' });
+    }
     if (currentFilter.supplier) parts.push({ text: `Supplier: ${currentFilter.supplier}`, cls: '' });
     if (currentFilter.category) parts.push({ text: `Kategori: ${currentFilter.category}`, cls: '' });
     if (currentFilter.modelBisnis) {
@@ -7442,6 +8277,13 @@
     if (catEl) catEl.value = '';
     const modelEl = document.getElementById('filterModelBisnis');
     if (modelEl) modelEl.value = '';
+
+    // Reset multi-select outlet checkboxes
+    if (typeof selectAllOutlets === 'function') {
+      selectAllOutlets(true);
+    }
+    const oInput = document.getElementById('outletSearchInput');
+    if (oInput) { oInput.value = ''; if (typeof filterOutletList === 'function') filterOutletList(); }
 
     // Reset searchable select triggers and selections
     const suppLabel = document.getElementById('supplierTriggerLabel');
@@ -8093,11 +8935,23 @@
 
   function quickFilterOutlet(outletName) {
     if (!outletName) return;
+    const cbs = document.querySelectorAll('.outlet-checkbox');
+    if (cbs.length) {
+      cbs.forEach(cb => {
+        cb.checked = (cb.value === outletName);
+      });
+      if (typeof updateOutletTriggerLabel === 'function') {
+        updateOutletTriggerLabel();
+      }
+    }
     const filterOutletEl = document.getElementById('filterOutlet');
-    if (filterOutletEl) {
-      filterOutletEl.value = outletName;
-      applyFilters();
+    if (filterOutletEl) filterOutletEl.value = outletName;
+
+    applyFilters();
+    if (typeof showFilterToast === 'function') {
       showFilterToast(`Filter aktif: Konter <strong>${outletName}</strong>`);
+    }
+    if (typeof quickJumpTo === 'function') {
       quickJumpTo('kpiGridSection');
     }
   }
@@ -10230,7 +11084,8 @@
     }
   });
 
-  // Inisialisasi pintasan kustom & status AI
+  // Inisialisasi pintasan kustom, multi-select outlet, & status AI
+  initOutletMultiselect();
   renderCustomPresets();
   updatePresetButtonsUI();
   checkAIStatus();
