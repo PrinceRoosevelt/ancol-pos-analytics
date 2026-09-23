@@ -125,7 +125,7 @@ OUTLET_TO_VISITOR_UNIT = {
     "ODIN Samudra Induk": "Samudra",
     "AWIN Atlantis Induk": "Atlantis",
     "AWKL AWA Taman Kelapa 2": "Atlantis",
-    "JBIN JBL Induk": "Samudra",
+    "JBIN JBL Induk": "Beachpark",
     "DFAR Dufan Arung Jeram": "Dufan",
     "DFGA Dufan Galactica": "Dufan",
     "DFIC Dufan Ice Age": "Dufan",
@@ -429,7 +429,7 @@ def compute_unit_benchmarks(
             return "Dufan"
         if "SWIN" in o or "SEA WORLD" in o:
             return "SeaWorld"
-        if "ODIN" in o or "JBIN" in o or "JBL" in o or a == "SAMUDRA":
+        if "ODIN" in o or (a == "SAMUDRA" and "JB" not in o):
             return "Samudra"
         if "AWIN" in o or "AWKL" in o or "AWA" in o or a == "ATLANTIS":
             return "Atlantis"
@@ -976,7 +976,7 @@ def build_dashboard(
                     u_found = "SeaWorld"
                 elif "DUFAN" in o_item.upper():
                     u_found = "Dufan"
-                elif any(k in o_item.upper() for k in ["SAMUDRA", "ODIN", "JBL", "JBIN"]):
+                elif "ODIN" in o_item.upper() or ("SAMUDRA" in o_item.upper() and "JB" not in o_item.upper()):
                     u_found = "Samudra"
                 elif any(k in o_item.upper() for k in ["ATLANTIS", "AWIN", "AWKL", "AWA"]):
                     u_found = "Atlantis"
@@ -990,7 +990,7 @@ def build_dashboard(
         matched_visitor_unit = "SeaWorld"
     elif outlet and "DUFAN" in outlet.upper():
         matched_visitor_unit = "Dufan"
-    elif outlet and ("SAMUDRA" in outlet.upper() or "ODIN" in outlet.upper() or "JBL" in outlet.upper() or "JBIN" in outlet.upper()):
+    elif outlet and ("ODIN" in outlet.upper() or ("SAMUDRA" in outlet.upper() and "JB" not in outlet.upper())):
         matched_visitor_unit = "Samudra"
     elif outlet and ("ATLANTIS" in outlet.upper() or "AWIN" in outlet.upper() or "AWKL" in outlet.upper() or "AWA" in outlet.upper()):
         matched_visitor_unit = "Atlantis"

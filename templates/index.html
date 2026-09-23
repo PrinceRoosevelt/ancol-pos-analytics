@@ -2209,17 +2209,17 @@
     }
     .unit-logo-box {
       background: rgba(255, 255, 255, 0.96);
-      border-radius: 8px;
-      padding: 4px 10px;
-      height: 32px;
+      border-radius: 9px;
+      padding: 5px 12px;
+      height: 38px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
     .unit-logo-img {
-      max-height: 22px;
-      max-width: 82px;
+      max-height: 28px;
+      max-width: 96px;
       object-fit: contain;
     }
     .unit-card-badge {
@@ -4055,12 +4055,12 @@
               <div class="outlet-group-header" onclick="toggleOutletGroup('Samudra')">
                 <span style="display:flex; align-items:center; gap:6px;">
                   <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#00A497;"></span>
-                  <span>SAMUDRA (2 Konter)</span>
+                  <span>SAMUDRA (1 Konter)</span>
                 </span>
                 <span style="font-size:10px; opacity:0.8; font-weight:600;">Klik Pilih/Batal</span>
               </div>
               <div class="outlet-group-items" data-group="Samudra">
-                {% for o in data.outlet_options if o.startswith('ODIN') or o.startswith('JB') or 'SAMUDRA' in o|upper %}
+                {% for o in data.outlet_options if o.startswith('ODIN') or ('SAMUDRA' in o|upper and 'JB' not in o|upper) %}
                 <label class="outlet-item-label" data-name="{{ o|lower }}">
                   <input type="checkbox" class="outlet-checkbox" value="{{ o }}" onchange="onOutletCheckboxChange()" checked>
                   <span>{{ o }}</span>
@@ -4089,12 +4089,12 @@
               <div class="outlet-group-header" onclick="toggleOutletGroup('Beachpark')">
                 <span style="display:flex; align-items:center; gap:6px;">
                   <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#f59e0b;"></span>
-                  <span>BEACHPARK / PUBLIK (3 Konter)</span>
+                  <span>BEACHPARK & PUBLIK (4 Konter)</span>
                 </span>
                 <span style="font-size:10px; opacity:0.8; font-weight:600;">Klik Pilih/Batal</span>
               </div>
               <div class="outlet-group-items" data-group="Beachpark">
-                {% for o in data.outlet_options if o.startswith('OL') or o.startswith('TJ') or 'BEACH' in o|upper or 'OMBAK' in o|upper or 'SYMPHONY' in o|upper %}
+                {% for o in data.outlet_options if o.startswith('OL') or o.startswith('TJ') or o.startswith('JB') or 'JBL' in o|upper or 'BEACH' in o|upper or 'OMBAK' in o|upper or 'SYMPHONY' in o|upper %}
                 <label class="outlet-item-label" data-name="{{ o|lower }}">
                   <input type="checkbox" class="outlet-checkbox" value="{{ o }}" onchange="onOutletCheckboxChange()" checked>
                   <span>{{ o }}</span>
@@ -4609,7 +4609,7 @@
         <div class="unit-logo-box">
           <img src="/static/logos/samudra.png" alt="Samudra" class="unit-logo-img">
         </div>
-        <span class="unit-card-badge">2 Konter (ODIN, JBL)</span>
+        <span class="unit-card-badge">1 Konter (ODIN)</span>
       </div>
       <div class="unit-card-metric-block">
         <div class="unit-metric-label">Revenue Merchandise</div>
@@ -5690,7 +5690,7 @@
     "ODIN Samudra Induk": "Samudra",
     "AWIN Atlantis Induk": "Atlantis",
     "AWKL AWA Taman Kelapa 2": "Atlantis",
-    "JBIN JBL Induk": "Samudra",
+    "JBIN JBL Induk": "Beachpark",
     "DFAR Dufan Arung Jeram": "Dufan",
     "DFGA Dufan Galactica": "Dufan",
     "DFIC Dufan Ice Age": "Dufan",
@@ -7421,7 +7421,7 @@
     const isSeaWorldActive = (outlet && (outlet.toUpperCase().includes('SWIN') || outlet.toUpperCase().includes('SEA WORLD'))) ||
                              (area && area.toUpperCase().includes('SEAWORLD')) ||
                              (matchedVisitorUnit && matchedVisitorUnit.toLowerCase() === 'seaworld');
-    const isSamudraActive = (outlet && (outlet.toUpperCase().includes('ODIN') || outlet.toUpperCase().includes('SAMUDRA') || outlet.toUpperCase().includes('JBIN') || outlet.toUpperCase().includes('JBL'))) ||
+    const isSamudraActive = (outlet && (outlet.toUpperCase().includes('ODIN') || (outlet.toUpperCase().includes('SAMUDRA') && !outlet.toUpperCase().includes('JB')))) ||
                             (area && area.toUpperCase().includes('SAMUDRA')) ||
                             (matchedVisitorUnit && matchedVisitorUnit.toLowerCase() === 'samudra');
     const isAtlantisActive = (outlet && (outlet.toUpperCase().includes('AWIN') || outlet.toUpperCase().includes('ATLANTIS') || outlet.toUpperCase().includes('AWKL') || outlet.toUpperCase().includes('AWA'))) ||
