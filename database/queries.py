@@ -49,6 +49,8 @@ def fetch_all_visitors() -> list[dict[str, Any]]:
             """
             SELECT date, month, unit, area, visitors,
                    COALESCE(visitors_individu, 0) AS visitors_individu,
+                   COALESCE(visitors_individu_bayar, 0) AS visitors_individu_bayar,
+                   COALESCE(visitors_tidak_bayar, 0) AS visitors_tidak_bayar,
                    COALESCE(visitors_rombongan_langsung, 0) AS visitors_rombongan_langsung,
                    COALESCE(visitors_rombongan_agen, 0) AS visitors_rombongan_agen,
                    COALESCE(visitors_rombongan_total, 0) AS visitors_rombongan_total

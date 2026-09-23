@@ -4148,12 +4148,16 @@
       <div id="kpiTrafficMixContainer" style="margin: 6px 0 10px 0; {% if not data.total_visitors or data.total_visitors == 0 %}display:none;{% endif %}">
         <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); margin-bottom:4px; font-weight:600;">
           <span>Segmen Profil:</span>
-          <span id="kpiTrafficMixLabel">{{ "{:.0f}% Indiv • {:.0f}% R.Dir • {:.0f}% Agen".format(data.pct_individu or 0, data.pct_romb_langsung or 0, data.pct_romb_agen or 0) }}</span>
+          <span id="kpiTrafficMixLabel" title="Individu: {{ '{:,.0f}'.format(data.visitors_individu_bayar or 0).replace(',', '.') }} Bayar | {{ '{:,.0f}'.format(data.visitors_tidak_bayar or 0).replace(',', '.') }} Free">{{ "{:.0f}% Indiv • {:.0f}% R.Dir • {:.0f}% Agen".format(data.pct_individu or 0, data.pct_romb_langsung or 0, data.pct_romb_agen or 0) }}</span>
         </div>
-        <div class="progress-bar" style="height:6px; border-radius:3px; display:flex; overflow:hidden; background:rgba(0,0,0,0.06); gap:1px;">
-          <div id="barIndiv" class="traffic-bar-indiv" style="height:100%; width:{{ data.pct_individu or 0 }}%; background:var(--brand); transition:width 0.3s;" title="Individu (FIT): {{ '{:,.0f}'.format(data.visitors_individu or 0).replace(',', '.') }}"></div>
-          <div id="barRl" class="traffic-bar-rl" style="height:100%; width:{{ data.pct_romb_langsung or 0 }}%; background:#00b5e2; transition:width 0.3s;" title="Rombongan Langsung: {{ '{:,.0f}'.format(data.visitors_rombongan_langsung or 0).replace(',', '.') }}"></div>
-          <div id="barRa" class="traffic-bar-ra" style="height:100%; width:{{ data.pct_romb_agen or 0 }}%; background:#f59e0b; transition:width 0.3s;" title="Rombongan Agen: {{ '{:,.0f}'.format(data.visitors_rombongan_agen or 0).replace(',', '.') }}"></div>
+        <div class="progress-bar" style="height:6px; border-radius:3px; display:flex; overflow:hidden; background:rgba(0,0,0,0.06); gap:1px;" title="Komposisi Traffic Pengunjung">
+          <div id="barIndiv" class="traffic-bar-indiv" style="height:100%; width:{{ data.pct_individu or 0 }}%; background:var(--brand); transition:width 0.3s; cursor:help;" title="Individu (FIT): {{ '{:,.0f}'.format(data.visitors_individu or 0).replace(',', '.') }} ({{ '{:.1f}%'.format(data.pct_individu or 0) }})&#10;• Bayar: {{ '{:,.0f}'.format(data.visitors_individu_bayar or 0).replace(',', '.') }} ({{ '{:.1f}%'.format(data.pct_individu_bayar or 0) }})&#10;• Free/Complimentary: {{ '{:,.0f}'.format(data.visitors_tidak_bayar or 0).replace(',', '.') }} ({{ '{:.1f}%'.format(data.pct_tidak_bayar or 0) }})"></div>
+          <div id="barRl" class="traffic-bar-rl" style="height:100%; width:{{ data.pct_romb_langsung or 0 }}%; background:#00b5e2; transition:width 0.3s; cursor:help;" title="Rombongan Langsung: {{ '{:,.0f}'.format(data.visitors_rombongan_langsung or 0).replace(',', '.') }} ({{ '{:.1f}%'.format(data.pct_romb_langsung or 0) }})"></div>
+          <div id="barRa" class="traffic-bar-ra" style="height:100%; width:{{ data.pct_romb_agen or 0 }}%; background:#f59e0b; transition:width 0.3s; cursor:help;" title="Rombongan Agen: {{ '{:,.0f}'.format(data.visitors_rombongan_agen or 0).replace(',', '.') }} ({{ '{:.1f}%'.format(data.pct_romb_agen or 0) }})"></div>
+        </div>
+        <div id="kpiTrafficBreakdownDetail" style="display:flex; justify-content:space-between; align-items:center; font-size:10px; color:var(--text-muted); margin-top:3px; font-variant-numeric:tabular-nums;">
+          <span>Indiv: <strong id="kpiIbCount" style="color:inherit; font-weight:600;">{{ '{:,.0f}'.format(data.visitors_individu_bayar or 0).replace(',', '.') }}</strong> Byr / <span id="kpiTbCount">{{ '{:,.0f}'.format(data.visitors_tidak_bayar or 0).replace(',', '.') }}</span> Free</span>
+          <span id="kpiRombDetail">Romb: {{ '{:,.0f}'.format((data.visitors_rombongan_langsung or 0) + (data.visitors_rombongan_agen or 0)).replace(',', '.') }}</span>
         </div>
       </div>
 
@@ -5545,6 +5549,23 @@
     total_cogs_2026: {{ data.total_cogs_2026 or 0 }},
     gross_profit_2026: {{ data.gross_profit_2026 or 0 }},
     gross_margin_2026: {{ data.gross_margin_2026 or 0 }},
+    total_visitors: {{ data.total_visitors or 0 }},
+    total_visitors_2025: {{ data.total_visitors_2025 or 0 }},
+    sph: {{ data.sph or 0 }},
+    sph_2025: {{ data.sph_2025 or 0 }},
+    sph_growth: {{ data.sph_growth|tojson }},
+    visitor_growth: {{ data.visitor_growth|tojson }},
+    capture_rate: {{ data.capture_rate or 0 }},
+    visitors_individu: {{ data.visitors_individu or 0 }},
+    visitors_individu_bayar: {{ data.visitors_individu_bayar or 0 }},
+    visitors_tidak_bayar: {{ data.visitors_tidak_bayar or 0 }},
+    visitors_rombongan_langsung: {{ data.visitors_rombongan_langsung or 0 }},
+    visitors_rombongan_agen: {{ data.visitors_rombongan_agen or 0 }},
+    pct_individu: {{ data.pct_individu or 0 }},
+    pct_individu_bayar: {{ data.pct_individu_bayar or 0 }},
+    pct_tidak_bayar: {{ data.pct_tidak_bayar or 0 }},
+    pct_romb_langsung: {{ data.pct_romb_langsung or 0 }},
+    pct_romb_agen: {{ data.pct_romb_agen or 0 }},
     suppliers: {{ data.suppliers|tojson if data.suppliers else '[]' }},
     categories: {{ data.categories|tojson if data.categories else '[]' }},
     model_summary: {{ data.model_summary|tojson if data.model_summary else '{}' }},
@@ -6565,6 +6586,7 @@
     // Filter Visitor Actuals (2026 & 2025 YoY day-matched)
     let totalVisitors26 = 0, totalVisitors25 = 0;
     let indiv26 = 0, rl26 = 0, ra26 = 0;
+    let ib26 = 0, tb26 = 0;
     const matchedVisitorUnit = outlet ? (OUTLET_TO_VISITOR_MAP[outlet] || null) : null;
 
     const vis26ByMonth = {};
@@ -6600,6 +6622,8 @@
       if (vYear === '2026') {
         totalVisitors26 += v.visitors;
         indiv26 += (v.visitors_individu || 0);
+        ib26 += (v.visitors_individu_bayar || 0);
+        tb26 += (v.visitors_tidak_bayar || 0);
         rl26 += (v.visitors_rombongan_langsung || 0);
         ra26 += (v.visitors_rombongan_agen || 0);
         const vM = v.date.substring(5, 7);
@@ -6625,6 +6649,8 @@
 
     // Traffic Quality percentages
     const pctIndiv = totalVisitors26 > 0 ? (indiv26 / totalVisitors26 * 100) : 0;
+    const pctIb = totalVisitors26 > 0 ? (ib26 / totalVisitors26 * 100) : 0;
+    const pctTb = totalVisitors26 > 0 ? (tb26 / totalVisitors26 * 100) : 0;
     const pctRl = totalVisitors26 > 0 ? (rl26 / totalVisitors26 * 100) : 0;
     const pctRa = totalVisitors26 > 0 ? (ra26 / totalVisitors26 * 100) : 0;
 
@@ -6717,15 +6743,20 @@
     const barIndiv = document.getElementById('barIndiv');
     const barRl = document.getElementById('barRl');
     const barRa = document.getElementById('barRa');
+    const ibCountEl = document.getElementById('kpiIbCount');
+    const tbCountEl = document.getElementById('kpiTbCount');
+    const rombDetailEl = document.getElementById('kpiRombDetail');
+
     if (trafficContainer) {
       if (totalVisitors26 > 0) {
         trafficContainer.style.display = 'block';
         if (trafficLabel) {
           trafficLabel.textContent = `${pctIndiv.toFixed(0)}% Indiv • ${pctRl.toFixed(0)}% R.Dir • ${pctRa.toFixed(0)}% Agen`;
+          trafficLabel.title = `Individu: ${formatNum(ib26)} Bayar (${pctIb.toFixed(1)}%) | ${formatNum(tb26)} Free (${pctTb.toFixed(1)}%)`;
         }
         if (barIndiv) {
           barIndiv.style.width = pctIndiv.toFixed(1) + '%';
-          barIndiv.title = `Individu (FIT): ${formatNum(indiv26)} orang (${pctIndiv.toFixed(1)}%)`;
+          barIndiv.title = `Individu (FIT): ${formatNum(indiv26)} orang (${pctIndiv.toFixed(1)}%)\n• Bayar: ${formatNum(ib26)} (${pctIb.toFixed(1)}%)\n• Free/Complimentary: ${formatNum(tb26)} (${pctTb.toFixed(1)}%)`;
         }
         if (barRl) {
           barRl.style.width = pctRl.toFixed(1) + '%';
@@ -6735,6 +6766,9 @@
           barRa.style.width = pctRa.toFixed(1) + '%';
           barRa.title = `Rombongan Agen: ${formatNum(ra26)} orang (${pctRa.toFixed(1)}%)`;
         }
+        if (ibCountEl) ibCountEl.textContent = formatNum(ib26);
+        if (tbCountEl) tbCountEl.textContent = formatNum(tb26);
+        if (rombDetailEl) rombDetailEl.textContent = `Romb: ${formatNum(rl26 + ra26)}`;
       } else {
         trafficContainer.style.display = 'none';
       }
@@ -7287,6 +7321,23 @@
       gross_profit_2026: grossProfit26,
       gross_margin_2026: grossMargin26,
       total_cogs_2026: totalCogs26,
+      total_visitors: totalVisitors26,
+      total_visitors_2025: totalVisitors25,
+      sph: sph26,
+      sph_2025: sph25,
+      sph_growth: sphGrowth,
+      visitor_growth: visGrowth,
+      capture_rate: captureRate26,
+      visitors_individu: indiv26,
+      visitors_individu_bayar: ib26,
+      visitors_tidak_bayar: tb26,
+      visitors_rombongan_langsung: rl26,
+      visitors_rombongan_agen: ra26,
+      pct_individu: pctIndiv,
+      pct_individu_bayar: pctIb,
+      pct_tidak_bayar: pctTb,
+      pct_romb_langsung: pctRl,
+      pct_romb_agen: pctRa,
       target_revenue: targetTotal,
       target_achievement: targetAchieve,
       target_gap: targetGap,
@@ -10038,6 +10089,23 @@
     try {
       const summaryContext = {
         summary: currentDashboardData.summary,
+        total_visitors: currentDashboardData.total_visitors || 0,
+        total_visitors_2025: currentDashboardData.total_visitors_2025 || 0,
+        sph: currentDashboardData.sph || 0,
+        sph_2025: currentDashboardData.sph_2025 || 0,
+        sph_growth: currentDashboardData.sph_growth,
+        visitor_growth: currentDashboardData.visitor_growth,
+        capture_rate: currentDashboardData.capture_rate || 0,
+        visitors_individu: currentDashboardData.visitors_individu || 0,
+        visitors_individu_bayar: currentDashboardData.visitors_individu_bayar || 0,
+        visitors_tidak_bayar: currentDashboardData.visitors_tidak_bayar || 0,
+        visitors_rombongan_langsung: currentDashboardData.visitors_rombongan_langsung || 0,
+        visitors_rombongan_agen: currentDashboardData.visitors_rombongan_agen || 0,
+        pct_individu: currentDashboardData.pct_individu || 0,
+        pct_individu_bayar: currentDashboardData.pct_individu_bayar || 0,
+        pct_tidak_bayar: currentDashboardData.pct_tidak_bayar || 0,
+        pct_romb_langsung: currentDashboardData.pct_romb_langsung || 0,
+        pct_romb_agen: currentDashboardData.pct_romb_agen || 0,
         target_revenue: currentDashboardData.target_revenue,
         target_achievement: currentDashboardData.target_achievement,
         target_gap: currentDashboardData.target_gap,

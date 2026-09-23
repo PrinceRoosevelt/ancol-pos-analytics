@@ -856,6 +856,8 @@ def build_dashboard(
     total_visitors_2026 = 0
     total_visitors_2025 = 0
     visitors_indiv_2026 = 0
+    visitors_ib_2026 = 0
+    visitors_tb_2026 = 0
     visitors_rl_2026 = 0
     visitors_ra_2026 = 0
 
@@ -912,6 +914,8 @@ def build_dashboard(
         if v_year == "2026":
             total_visitors_2026 += v["visitors"]
             visitors_indiv_2026 += v.get("visitors_individu", 0)
+            visitors_ib_2026 += v.get("visitors_individu_bayar", 0)
+            visitors_tb_2026 += v.get("visitors_tidak_bayar", 0)
             visitors_rl_2026 += v.get("visitors_rombongan_langsung", 0)
             visitors_ra_2026 += v.get("visitors_rombongan_agen", 0)
             vis_26_by_month[v_month] = vis_26_by_month.get(v_month, 0) + v["visitors"]
@@ -931,6 +935,8 @@ def build_dashboard(
     capture_growth = growth_percent(capture_rate, capture_rate_2025)
 
     pct_indiv_2026 = (visitors_indiv_2026 / total_visitors_2026 * 100) if total_visitors_2026 > 0 else 0.0
+    pct_ib_2026 = (visitors_ib_2026 / total_visitors_2026 * 100) if total_visitors_2026 > 0 else 0.0
+    pct_tb_2026 = (visitors_tb_2026 / total_visitors_2026 * 100) if total_visitors_2026 > 0 else 0.0
     pct_rl_2026 = (visitors_rl_2026 / total_visitors_2026 * 100) if total_visitors_2026 > 0 else 0.0
     pct_ra_2026 = (visitors_ra_2026 / total_visitors_2026 * 100) if total_visitors_2026 > 0 else 0.0
 
@@ -1008,9 +1014,13 @@ def build_dashboard(
         "capture_rate_2025": capture_rate_2025,
         "capture_growth": capture_growth,
         "visitors_individu": visitors_indiv_2026,
+        "visitors_individu_bayar": visitors_ib_2026,
+        "visitors_tidak_bayar": visitors_tb_2026,
         "visitors_rombongan_langsung": visitors_rl_2026,
         "visitors_rombongan_agen": visitors_ra_2026,
         "pct_individu": pct_indiv_2026,
+        "pct_individu_bayar": pct_ib_2026,
+        "pct_tidak_bayar": pct_tb_2026,
         "pct_romb_langsung": pct_rl_2026,
         "pct_romb_agen": pct_ra_2026,
         "peak_sales_hour": peak_sales_hour,
@@ -1182,8 +1192,13 @@ def build_excel_report(data: dict[str, Any], filter_desc: str = "") -> BytesIO:
         ("ATV (Average Transaction Value)", data["summary"]["2026"]["atv"], data["summary"]["2025"]["atv"], data["summary"]["growth"]["atv"], data["summary"]["diff"]["atv"], "currency"),
         ("UPT (Units Per Transaction)", data["summary"]["2026"]["upt"], data["summary"]["2025"]["upt"], data["summary"]["growth"]["upt"], None, "decimal"),
         ("ASP (Average Selling Price)", data["summary"]["2026"]["asp"], data["summary"]["2025"]["asp"], data["summary"]["growth"]["asp"], None, "currency"),
-        ("Total Pengunjung Rekreasi", data.get("total_visitors", 0), None, None, None, "number"),
-        ("Spending Per Head (SPH)", data.get("sph", 0), None, None, None, "currency"),
+        ("Total Pengunjung Rekreasi", data.get("total_visitors", 0), data.get("total_visitors_2025", 0), data.get("visitor_growth"), (data.get("total_visitors", 0) - data.get("total_visitors_2025", 0)) if data.get("total_visitors") and data.get("total_visitors_2025") else None, "number"),
+        ("  - Individu Total (FIT)", data.get("visitors_individu", 0), None, None, None, "number"),
+        ("    * Individu Bayar", data.get("visitors_individu_bayar", 0), None, None, None, "number"),
+        ("    * Individu Free / Complimentary", data.get("visitors_tidak_bayar", 0), None, None, None, "number"),
+        ("  - Rombongan Langsung (Direct)", data.get("visitors_rombongan_langsung", 0), None, None, None, "number"),
+        ("  - Rombongan Agen (Travel Agent)", data.get("visitors_rombongan_agen", 0), None, None, None, "number"),
+        ("Spending Per Head (SPH)", data.get("sph", 0), data.get("sph_2025", 0), data.get("sph_growth"), (data.get("sph", 0) - data.get("sph_2025", 0)) if data.get("sph") and data.get("sph_2025") else None, "currency"),
         ("Capture Rate Pengunjung (%)", (data.get("capture_rate", 0) / 100) if data.get("capture_rate") else 0, None, None, None, "percent"),
     ]
 
@@ -2799,8 +2814,12 @@ def api_ask_ai():
                 f"- Capture Rate: {cap_rate_val:.2f}% (persentase pengunjung wahana yang membeli merchandise di toko kita)\n"
             )
             if dash.get("visitors_individu", 0) > 0:
+                ib_val = dash.get("visitors_individu_bayar", 0)
+                tb_val = dash.get("visitors_tidak_bayar", 0)
+                pct_ib = dash.get("pct_individu_bayar", 0)
+                pct_tb = dash.get("pct_tidak_bayar", 0)
                 visitor_metric_text += (
-                    f"  * Komposisi Traffic Pengunjung: Individu {dash['visitors_individu']:,.0f} orang ({dash.get('pct_individu', 0):.1f}%), "
+                    f"  * Komposisi Traffic Pengunjung: Individu {dash['visitors_individu']:,.0f} orang ({dash.get('pct_individu', 0):.1f}%, rincian: {ib_val:,.0f} Bayar [{pct_ib:.1f}%], {tb_val:,.0f} Free/Complimentary [{pct_tb:.1f}%]), "
                     f"Rombongan Langsung {dash.get('visitors_rombongan_langsung', 0):,.0f} orang ({dash.get('pct_romb_langsung', 0):.1f}%), "
                     f"Rombongan Agen {dash.get('visitors_rombongan_agen', 0):,.0f} orang ({dash.get('pct_romb_agen', 0):.1f}%)\n"
                 )

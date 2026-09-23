@@ -559,7 +559,9 @@ def parse_dufan_visitor_file(file_path: Path, year: int, max_month: int = 12) ->
 
                 cell_indiv = ws.cell(row_map['INDIV'], col).value if 'INDIV' in row_map else 0
                 cell_tdk_byr = ws.cell(row_map['TDK_BYR'], col).value if 'TDK_BYR' in row_map else 0
-                indiv = int(_number(cell_indiv)) + int(_number(cell_tdk_byr))
+                indiv_byr = int(_number(cell_indiv))
+                tdk_byr = int(_number(cell_tdk_byr))
+                indiv = indiv_byr + tdk_byr
 
                 rl_keys = ['RL1', 'RL2', 'RL3', 'RL4']
                 rl = sum(int(_number(ws.cell(row_map[k], col).value)) for k in rl_keys if k in row_map)
@@ -575,6 +577,8 @@ def parse_dufan_visitor_file(file_path: Path, year: int, max_month: int = 12) ->
                     'unit': 'Dufan',
                     'area': 'DUFAN',
                     'visitors_individu': indiv,
+                    'visitors_individu_bayar': indiv_byr,
+                    'visitors_tidak_bayar': tdk_byr,
                     'visitors_rombongan_langsung': rl,
                     'visitors_rombongan_agen': ra,
                     'visitors_rombongan_total': rl + ra,
@@ -659,7 +663,9 @@ def parse_seaworld_visitor_file(file_path: Path, year: int, max_month: int = 12)
 
                 cell_indiv = sh.cell_value(row_map['INDIV'], col) if 'INDIV' in row_map else 0
                 cell_tdk_byr = sh.cell_value(row_map['TDK_BYR'], col) if 'TDK_BYR' in row_map else 0
-                indiv = int(_number(cell_indiv)) + int(_number(cell_tdk_byr))
+                indiv_byr = int(_number(cell_indiv))
+                tdk_byr = int(_number(cell_tdk_byr))
+                indiv = indiv_byr + tdk_byr
 
                 cell_rl = sh.cell_value(row_map['RL'], col) if 'RL' in row_map else 0
                 rl = int(_number(cell_rl))
@@ -675,6 +681,8 @@ def parse_seaworld_visitor_file(file_path: Path, year: int, max_month: int = 12)
                     'unit': 'SeaWorld',
                     'area': 'AWAPARK',
                     'visitors_individu': indiv,
+                    'visitors_individu_bayar': indiv_byr,
+                    'visitors_tidak_bayar': tdk_byr,
                     'visitors_rombongan_langsung': rl,
                     'visitors_rombongan_agen': ra,
                     'visitors_rombongan_total': rl + ra,
@@ -759,7 +767,9 @@ def parse_samudra_visitor_file(file_path: Path, year: int, max_month: int = 12) 
 
                 cell_indiv = ws.cell(row_map['INDIV'], col).value if 'INDIV' in row_map else 0
                 cell_tdk_byr = ws.cell(row_map['TDK_BYR'], col).value if 'TDK_BYR' in row_map else 0
-                indiv = int(_number(cell_indiv)) + int(_number(cell_tdk_byr))
+                indiv_byr = int(_number(cell_indiv))
+                tdk_byr = int(_number(cell_tdk_byr))
+                indiv = indiv_byr + tdk_byr
 
                 cell_rl = ws.cell(row_map['RL'], col).value if 'RL' in row_map else 0
                 rl = int(_number(cell_rl))
@@ -775,6 +785,8 @@ def parse_samudra_visitor_file(file_path: Path, year: int, max_month: int = 12) 
                     'unit': 'Samudra',
                     'area': 'AWAPARK',
                     'visitors_individu': indiv,
+                    'visitors_individu_bayar': indiv_byr,
+                    'visitors_tidak_bayar': tdk_byr,
                     'visitors_rombongan_langsung': rl,
                     'visitors_rombongan_agen': ra,
                     'visitors_rombongan_total': rl + ra,
@@ -861,7 +873,9 @@ def parse_atlantis_visitor_file(file_path: Path, year: int, max_month: int = 12)
 
                 cell_indiv = ws.cell(row_map['INDIV_BYR'], col).value if 'INDIV_BYR' in row_map else 0
                 cell_tdk_byr = ws.cell(row_map['TDK_BYR'], col).value if 'TDK_BYR' in row_map else 0
-                indiv = int(_number(cell_indiv)) + int(_number(cell_tdk_byr))
+                indiv_byr = int(_number(cell_indiv))
+                tdk_byr = int(_number(cell_tdk_byr))
+                indiv = indiv_byr + tdk_byr
 
                 cell_rl = ws.cell(row_map['RL'], col).value if 'RL' in row_map else 0
                 rl = int(_number(cell_rl))
@@ -877,6 +891,8 @@ def parse_atlantis_visitor_file(file_path: Path, year: int, max_month: int = 12)
                     'unit': 'Atlantis',
                     'area': 'AWAPARK',
                     'visitors_individu': indiv,
+                    'visitors_individu_bayar': indiv_byr,
+                    'visitors_tidak_bayar': tdk_byr,
                     'visitors_rombongan_langsung': rl,
                     'visitors_rombongan_agen': ra,
                     'visitors_rombongan_total': rl + ra,
@@ -931,6 +947,15 @@ def sync_visitor_data(conn: sqlite3.Connection, force: bool = False) -> int:
             if not p.name.startswith("~$"):
                 visitor_jobs.append(("Atlantis", p, 2026))
 
+    try:
+        conn.execute("ALTER TABLE visitor_actual ADD COLUMN visitors_individu_bayar INTEGER DEFAULT 0;")
+    except Exception:
+        pass
+    try:
+        conn.execute("ALTER TABLE visitor_actual ADD COLUMN visitors_tidak_bayar INTEGER DEFAULT 0;")
+    except Exception:
+        pass
+
     for unit, f_path, year in visitor_jobs:
         f_stat = f_path.stat()
         f_key = str(f_path.resolve())
@@ -966,19 +991,21 @@ def sync_visitor_data(conn: sqlite3.Connection, force: bool = False) -> int:
                     """
                     INSERT INTO visitor_actual (
                         date, month, unit, area, visitors,
-                        visitors_individu, visitors_rombongan_langsung,
-                        visitors_rombongan_agen, visitors_rombongan_total
+                        visitors_individu, visitors_individu_bayar, visitors_tidak_bayar,
+                        visitors_rombongan_langsung, visitors_rombongan_agen, visitors_rombongan_total
                     )
                     VALUES (
                         :date, :month, :unit, :area, :visitors,
-                        :visitors_individu, :visitors_rombongan_langsung,
-                        :visitors_rombongan_agen, :visitors_rombongan_total
+                        :visitors_individu, :visitors_individu_bayar, :visitors_tidak_bayar,
+                        :visitors_rombongan_langsung, :visitors_rombongan_agen, :visitors_rombongan_total
                     )
                     ON CONFLICT(date, unit) DO UPDATE SET
                         month = excluded.month,
                         area = excluded.area,
                         visitors = excluded.visitors,
                         visitors_individu = excluded.visitors_individu,
+                        visitors_individu_bayar = excluded.visitors_individu_bayar,
+                        visitors_tidak_bayar = excluded.visitors_tidak_bayar,
                         visitors_rombongan_langsung = excluded.visitors_rombongan_langsung,
                         visitors_rombongan_agen = excluded.visitors_rombongan_agen,
                         visitors_rombongan_total = excluded.visitors_rombongan_total
