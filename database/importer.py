@@ -786,10 +786,112 @@ def parse_samudra_visitor_file(file_path: Path, year: int, max_month: int = 12) 
     return results
 
 
+def parse_atlantis_visitor_file(file_path: Path, year: int, max_month: int = 12) -> list[dict[str, Any]]:
+    """
+    Parser universal untuk file Rekap Harian Atlantis (.xlsx) (2025, 2026, dst).
+    Menggunakan Dynamic Label Matching dan Column Scanning untuk membaca data harian secara presisi.
+    Formula:
+      - visitor_individu = Baris JUMLAH PENGUNJUNG INDIVIDU BAYAR + Baris JUMLAH PENGUNJUNG TIDAK BAYAR
+      - visitors_rombongan_langsung = Baris JUMLAH PENGUNJUNG JABODETABEK
+      - visitors_rombongan_agen = Baris JUMLAH PENGUNJUNG ROMB. AGEN
+      - visitors_rombongan_total = Langsung + Agen
+      - visitors = visitor_individu + visitors_rombongan_total
+    """
+    wb = load_workbook(file_path, data_only=True)
+    results: list[dict[str, Any]] = []
+
+    month_aliases = {
+        1: ['JAN', 'JAN WD', 'JANUARI'], 2: ['FEB', 'FEB WD', 'FEBRUARI'], 3: ['MARET', 'MARET WD', 'MAR'],
+        4: ['APRIL', 'APRIL WD', 'APR'], 5: ['MEI', 'MEI WD'], 6: ['JUNI', 'JUN', 'JUN WD'],
+        7: ['JULI', 'JULI WD', 'JUL'], 8: ['AGUST', 'AGUST WD', 'AGUSTUS', 'AGT'], 9: ['SEPT', 'SEPT WD', 'SEPTEMBER', 'SEP'],
+        10: ['OKT', 'OKT WD', 'OKTOBER'], 11: ['NOV', 'NOV WD', 'NOVEMBER'], 12: ['DES', 'DES WD', 'DESEMBER']
+    }
+
+    try:
+        for m in range(1, max_month + 1):
+            target_sheet = None
+            aliases = month_aliases.get(m, [])
+            for sname in wb.sheetnames:
+                if sname.strip().upper() in aliases:
+                    target_sheet = wb[sname]
+                    break
+            if not target_sheet:
+                continue
+
+            ws = target_sheet
+            # Dynamic Label Matching across columns 1..6
+            row_map: dict[str, int] = {}
+            for r in range(1, min(75, ws.max_row + 1)):
+                row_txt = " ".join(str(ws.cell(r, c).value or "").strip().upper() for c in range(1, min(6, ws.max_column + 1)))
+                if "JUMLAH PENGUNJUNG INDIVIDU BAYAR" in row_txt or ("INDIVIDU" in row_txt and "BAYAR" in row_txt and "JUMLAH" in row_txt):
+                    if "INDIV_BYR" not in row_map: row_map["INDIV_BYR"] = r
+                elif "TIDAK BAYAR" in row_txt and "JUMLAH" in row_txt:
+                    if "TDK_BYR" not in row_map: row_map["TDK_BYR"] = r
+                elif "JUMLAH" in row_txt and "JABODETABEK" in row_txt:
+                    if "RL" not in row_map: row_map["RL"] = r
+                elif "JUMLAH" in row_txt and "AGEN" in row_txt and ("ROMB" in row_txt or "PENGUNJUNG" in row_txt):
+                    if "RA" not in row_map: row_map["RA"] = r
+
+            if "INDIV_BYR" not in row_map:
+                continue
+
+            # Dynamic Column Matching for Days 1..31
+            day_cols: dict[int, int] = {}
+            for r in range(3, 8):
+                cols: dict[int, int] = {}
+                for c in range(1, ws.max_column + 1):
+                    val = ws.cell(r, c).value
+                    try:
+                        if isinstance(val, (int, float)) and int(val) == val and 1 <= int(val) <= 31:
+                            cols[int(val)] = c
+                        elif isinstance(val, str) and val.strip().isdigit() and 1 <= int(val.strip()) <= 31:
+                            cols[int(val.strip())] = c
+                    except Exception:
+                        pass
+                if 1 in cols and 2 in cols:
+                    day_cols = cols
+                    break
+
+            _, days_in_m = calendar.monthrange(year, m)
+            for d in range(1, days_in_m + 1):
+                if d not in day_cols:
+                    continue
+                col = day_cols[d]
+                date_str = f"{year}-{m:02d}-{d:02d}"
+
+                cell_indiv = ws.cell(row_map['INDIV_BYR'], col).value if 'INDIV_BYR' in row_map else 0
+                cell_tdk_byr = ws.cell(row_map['TDK_BYR'], col).value if 'TDK_BYR' in row_map else 0
+                indiv = int(_number(cell_indiv)) + int(_number(cell_tdk_byr))
+
+                cell_rl = ws.cell(row_map['RL'], col).value if 'RL' in row_map else 0
+                rl = int(_number(cell_rl))
+
+                cell_ra = ws.cell(row_map['RA'], col).value if 'RA' in row_map else 0
+                ra = int(_number(cell_ra))
+
+                tot = indiv + rl + ra
+
+                results.append({
+                    'date': date_str,
+                    'month': f"{year}-{m:02d}",
+                    'unit': 'Atlantis',
+                    'area': 'AWAPARK',
+                    'visitors_individu': indiv,
+                    'visitors_rombongan_langsung': rl,
+                    'visitors_rombongan_agen': ra,
+                    'visitors_rombongan_total': rl + ra,
+                    'visitors': tot
+                })
+    finally:
+        wb.close()
+
+    return results
+
+
 def sync_visitor_data(conn: sqlite3.Connection, force: bool = False) -> int:
     """
     Sinkronisasi data pengunjung terkurasi dari folder data/visitor/ ke tabel visitor_actual.
-    Mendukung unit: DUFAN, SEAWORLD, dan SAMUDRA (2025 & 2026).
+    Mendukung unit: DUFAN, SEAWORLD, SAMUDRA, dan ATLANTIS (2025 & 2026).
     """
     if not VISITOR_ROOT_DIR.exists():
         return 0
@@ -809,6 +911,9 @@ def sync_visitor_data(conn: sqlite3.Connection, force: bool = False) -> int:
         for p in dir_2025.glob("*SAMUDRA*.xls*"):
             if not p.name.startswith("~$"):
                 visitor_jobs.append(("Samudra", p, 2025))
+        for p in dir_2025.glob("*ATLANTIS*.xls*"):
+            if not p.name.startswith("~$"):
+                visitor_jobs.append(("Atlantis", p, 2025))
 
     # 2. Visitor 2026
     dir_2026 = VISITOR_ROOT_DIR / "2026"
@@ -822,6 +927,9 @@ def sync_visitor_data(conn: sqlite3.Connection, force: bool = False) -> int:
         for p in dir_2026.glob("*SAMUDRA*.xls*"):
             if not p.name.startswith("~$"):
                 visitor_jobs.append(("Samudra", p, 2026))
+        for p in dir_2026.glob("*ATLANTIS*.xls*"):
+            if not p.name.startswith("~$"):
+                visitor_jobs.append(("Atlantis", p, 2026))
 
     for unit, f_path, year in visitor_jobs:
         f_stat = f_path.stat()
@@ -847,6 +955,8 @@ def sync_visitor_data(conn: sqlite3.Connection, force: bool = False) -> int:
                 records = parse_seaworld_visitor_file(f_path, year, max_month=12)
             elif unit == "Samudra":
                 records = parse_samudra_visitor_file(f_path, year, max_month=12)
+            elif unit == "Atlantis":
+                records = parse_atlantis_visitor_file(f_path, year, max_month=12)
             else:
                 records = []
 

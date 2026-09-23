@@ -1991,6 +1991,42 @@
       background: #38bdf8 !important;
     }
 
+    /* Atlantis Water Adventure Brand Theme for KPI Card 5 */
+    .kpi-card-atlantis {
+      background: linear-gradient(180deg, rgba(92, 6, 140, 0.08) 0%, rgba(255, 255, 255, 0.92) 100%) !important;
+      border: 1.5px solid rgba(92, 6, 140, 0.42) !important;
+      box-shadow: 0 6px 20px -2px rgba(92, 6, 140, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+      transition: all 0.3s ease;
+    }
+    :root.dark .kpi-card-atlantis {
+      background: linear-gradient(180deg, rgba(155, 60, 219, 0.16) 0%, rgba(10, 19, 36, 0.88) 100%) !important;
+      border-color: rgba(155, 60, 219, 0.5) !important;
+      box-shadow: 0 6px 20px -2px rgba(155, 60, 219, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+    .kpi-card-atlantis .kpi-title {
+      color: var(--unit-atlantis) !important;
+      font-weight: 700;
+    }
+    .kpi-card-atlantis .kpi-badge-icon {
+      background: rgba(92, 6, 140, 0.12) !important;
+      color: var(--unit-atlantis) !important;
+      border: 1px solid rgba(92, 6, 140, 0.3) !important;
+    }
+    :root.dark .kpi-card-atlantis .kpi-badge-icon {
+      background: rgba(155, 60, 219, 0.2) !important;
+      color: var(--unit-atlantis) !important;
+      border-color: rgba(155, 60, 219, 0.4) !important;
+    }
+    .kpi-card-atlantis .traffic-bar-indiv {
+      background: var(--unit-atlantis) !important;
+    }
+    .kpi-card-atlantis .traffic-bar-rl {
+      background: #a855f7 !important;
+    }
+    .kpi-card-atlantis .traffic-bar-ra {
+      background: #c084fc !important;
+    }
+
     .kpi-card-header {
       display: flex;
       justify-content: space-between;
@@ -4075,7 +4111,7 @@
     </div>
 
     <!-- KPI 5: Pengunjung & SPH (Spending per Head) -->
-    <div class="kpi-card {% if (selected_area and 'DUFAN' in selected_area|upper) or (selected_outlet and 'DF' in selected_outlet|upper) %}kpi-card-dufan{% elif (selected_outlet and ('SWIN' in selected_outlet|upper or 'SEA WORLD' in selected_outlet|upper)) or (selected_area and 'SEAWORLD' in selected_area|upper) %}kpi-card-seaworld{% elif (selected_outlet and ('ODIN' in selected_outlet|upper or 'SAMUDRA' in selected_outlet|upper or 'JBIN' in selected_outlet|upper or 'JBL' in selected_outlet|upper)) or (selected_area and 'SAMUDRA' in selected_area|upper) %}kpi-card-samudra{% endif %}" id="kpiCardVisitor">
+    <div class="kpi-card {% if (selected_area and 'DUFAN' in selected_area|upper) or (selected_outlet and 'DF' in selected_outlet|upper) %}kpi-card-dufan{% elif (selected_outlet and ('SWIN' in selected_outlet|upper or 'SEA WORLD' in selected_outlet|upper)) or (selected_area and 'SEAWORLD' in selected_area|upper) %}kpi-card-seaworld{% elif (selected_outlet and ('ODIN' in selected_outlet|upper or 'SAMUDRA' in selected_outlet|upper or 'JBIN' in selected_outlet|upper or 'JBL' in selected_outlet|upper)) or (selected_area and 'SAMUDRA' in selected_area|upper) %}kpi-card-samudra{% elif (selected_outlet and ('AWIN' in selected_outlet|upper or 'ATLANTIS' in selected_outlet|upper or 'AWKL' in selected_outlet|upper or 'AWA' in selected_outlet|upper)) or (selected_area and 'ATLANTIS' in selected_area|upper) %}kpi-card-atlantis{% endif %}" id="kpiCardVisitor">
       <div class="kpi-card-header">
         <div style="display:flex; align-items:center; gap:6px;">
           <span class="kpi-title" id="kpiVisitorTitle">Pengunjung &amp; SPH</span>
@@ -4085,6 +4121,8 @@
           <span id="kpiVisitorUnitBadge" class="unit-indicator unit-seaworld" style="display:inline-block; font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; letter-spacing:0.02em; color:var(--unit-seaworld); background:rgba(0,110,179,0.12); border:1px solid rgba(0,110,179,0.25);">SEAWORLD</span>
           {% elif (selected_outlet and ('ODIN' in selected_outlet|upper or 'SAMUDRA' in selected_outlet|upper or 'JBIN' in selected_outlet|upper or 'JBL' in selected_outlet|upper)) or (selected_area and 'SAMUDRA' in selected_area|upper) %}
           <span id="kpiVisitorUnitBadge" class="unit-indicator unit-samudra" style="display:inline-block; font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; letter-spacing:0.02em; color:var(--unit-samudra); background:rgba(0,164,151,0.12); border:1px solid rgba(0,164,151,0.25);">SAMUDRA</span>
+          {% elif (selected_outlet and ('AWIN' in selected_outlet|upper or 'ATLANTIS' in selected_outlet|upper or 'AWKL' in selected_outlet|upper or 'AWA' in selected_outlet|upper)) or (selected_area and 'ATLANTIS' in selected_area|upper) %}
+          <span id="kpiVisitorUnitBadge" class="unit-indicator unit-atlantis" style="display:inline-block; font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; letter-spacing:0.02em; color:var(--unit-atlantis); background:rgba(92,6,140,0.12); border:1px solid rgba(92,6,140,0.25);">ATLANTIS</span>
           {% else %}
           <span id="kpiVisitorUnitBadge" class="unit-indicator" style="display:none; font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; letter-spacing:0.02em;"></span>
           {% endif %}
@@ -6590,7 +6628,7 @@
     const pctRl = totalVisitors26 > 0 ? (rl26 / totalVisitors26 * 100) : 0;
     const pctRa = totalVisitors26 > 0 ? (ra26 / totalVisitors26 * 100) : 0;
 
-    // Dynamic Brand Styling for Dufan, SeaWorld & Samudra
+    // Dynamic Brand Styling for Dufan, SeaWorld, Samudra & Atlantis
     const isDufanActive = (area && area.toUpperCase().includes('DUFAN')) || 
                           (outlet && outlet.toUpperCase().includes('DF')) ||
                           (matchedVisitorUnit && matchedVisitorUnit.toLowerCase() === 'dufan');
@@ -6600,11 +6638,14 @@
     const isSamudraActive = (outlet && (outlet.toUpperCase().includes('ODIN') || outlet.toUpperCase().includes('SAMUDRA') || outlet.toUpperCase().includes('JBIN') || outlet.toUpperCase().includes('JBL'))) ||
                             (area && area.toUpperCase().includes('SAMUDRA')) ||
                             (matchedVisitorUnit && matchedVisitorUnit.toLowerCase() === 'samudra');
+    const isAtlantisActive = (outlet && (outlet.toUpperCase().includes('AWIN') || outlet.toUpperCase().includes('ATLANTIS') || outlet.toUpperCase().includes('AWKL') || outlet.toUpperCase().includes('AWA'))) ||
+                             (area && area.toUpperCase().includes('ATLANTIS')) ||
+                             (matchedVisitorUnit && matchedVisitorUnit.toLowerCase() === 'atlantis');
 
     const kpiCardVis = document.getElementById('kpiCardVisitor');
     const kpiVisBadge = document.getElementById('kpiVisitorUnitBadge');
     if (kpiCardVis) {
-      kpiCardVis.classList.remove('kpi-card-dufan', 'kpi-card-seaworld', 'kpi-card-samudra');
+      kpiCardVis.classList.remove('kpi-card-dufan', 'kpi-card-seaworld', 'kpi-card-samudra', 'kpi-card-atlantis');
       if (isDufanActive) {
         kpiCardVis.classList.add('kpi-card-dufan');
         if (kpiVisBadge) {
@@ -6634,6 +6675,16 @@
           kpiVisBadge.style.color = 'var(--unit-samudra)';
           kpiVisBadge.style.background = 'rgba(0,164,151,0.12)';
           kpiVisBadge.style.borderColor = 'rgba(0,164,151,0.25)';
+        }
+      } else if (isAtlantisActive) {
+        kpiCardVis.classList.add('kpi-card-atlantis');
+        if (kpiVisBadge) {
+          kpiVisBadge.style.display = 'inline-block';
+          kpiVisBadge.className = 'unit-indicator unit-atlantis';
+          kpiVisBadge.textContent = 'ATLANTIS';
+          kpiVisBadge.style.color = 'var(--unit-atlantis)';
+          kpiVisBadge.style.background = 'rgba(92,6,140,0.12)';
+          kpiVisBadge.style.borderColor = 'rgba(92,6,140,0.25)';
         }
       } else {
         if (kpiVisBadge) kpiVisBadge.style.display = 'none';
@@ -9190,7 +9241,9 @@
                        (currentFilter.area && currentFilter.area.toUpperCase().includes('SEAWORLD'));
     const isSamudra = (currentFilter.outlet && (currentFilter.outlet.toUpperCase().includes('ODIN') || currentFilter.outlet.toUpperCase().includes('SAMUDRA') || currentFilter.outlet.toUpperCase().includes('JBIN') || currentFilter.outlet.toUpperCase().includes('JBL'))) ||
                       (currentFilter.area && currentFilter.area.toUpperCase().includes('SAMUDRA'));
-    const visColor = isDufan ? '#E0004D' : (isSeaWorld ? (isDark ? '#1a96e8' : '#006EB3') : (isSamudra ? (isDark ? '#1fc7b7' : '#00A497') : '#059669'));
+    const isAtlantis = (currentFilter.outlet && (currentFilter.outlet.toUpperCase().includes('AWIN') || currentFilter.outlet.toUpperCase().includes('ATLANTIS') || currentFilter.outlet.toUpperCase().includes('AWKL') || currentFilter.outlet.toUpperCase().includes('AWA'))) ||
+                       (currentFilter.area && currentFilter.area.toUpperCase().includes('ATLANTIS'));
+    const visColor = isDufan ? '#E0004D' : (isSeaWorld ? (isDark ? '#1a96e8' : '#006EB3') : (isSamudra ? (isDark ? '#1fc7b7' : '#00A497') : (isAtlantis ? (isDark ? '#9b3cdb' : '#5C068C') : '#059669')));
     const revColor = isDark ? '#00B5E2' : '#0033A0';
 
     const maxRev = Math.max(...chartData.map(x => x.revenue_2026 || 0), 1000000);
@@ -9352,7 +9405,9 @@
                            (currentFilter.area && currentFilter.area.toUpperCase().includes('SEAWORLD'));
         const isSamudra = (currentFilter.outlet && (currentFilter.outlet.toUpperCase().includes('ODIN') || currentFilter.outlet.toUpperCase().includes('SAMUDRA') || currentFilter.outlet.toUpperCase().includes('JBIN') || currentFilter.outlet.toUpperCase().includes('JBL'))) ||
                           (currentFilter.area && currentFilter.area.toUpperCase().includes('SAMUDRA'));
-        const visColor = isDufan ? '#f43f5e' : (isSeaWorld ? '#38bdf8' : (isSamudra ? '#2dd4bf' : '#10b981'));
+        const isAtlantis = (currentFilter.outlet && (currentFilter.outlet.toUpperCase().includes('AWIN') || currentFilter.outlet.toUpperCase().includes('ATLANTIS') || currentFilter.outlet.toUpperCase().includes('AWKL') || currentFilter.outlet.toUpperCase().includes('AWA'))) ||
+                           (currentFilter.area && currentFilter.area.toUpperCase().includes('ATLANTIS'));
+        const visColor = isDufan ? '#f43f5e' : (isSeaWorld ? '#38bdf8' : (isSamudra ? '#2dd4bf' : (isAtlantis ? '#c084fc' : '#10b981')));
 
         let titleHtml = '';
         if (!it.is_monthly && it.date && it.date.length >= 10) {
@@ -9418,7 +9473,9 @@
                        (currentFilter.area && currentFilter.area.toUpperCase().includes('SEAWORLD'));
     const isSamudra = (currentFilter.outlet && (currentFilter.outlet.toUpperCase().includes('ODIN') || currentFilter.outlet.toUpperCase().includes('SAMUDRA') || currentFilter.outlet.toUpperCase().includes('JBIN') || currentFilter.outlet.toUpperCase().includes('JBL'))) ||
                       (currentFilter.area && currentFilter.area.toUpperCase().includes('SAMUDRA'));
-    const vis26Color = isDufan ? '#E0004D' : (isSeaWorld ? (isDark ? '#1a96e8' : '#006EB3') : (isSamudra ? (isDark ? '#1fc7b7' : '#00A497') : (isDark ? '#00B5E2' : '#0033A0')));
+    const isAtlantis = (currentFilter.outlet && (currentFilter.outlet.toUpperCase().includes('AWIN') || currentFilter.outlet.toUpperCase().includes('ATLANTIS') || currentFilter.outlet.toUpperCase().includes('AWKL') || currentFilter.outlet.toUpperCase().includes('AWA'))) ||
+                       (currentFilter.area && currentFilter.area.toUpperCase().includes('ATLANTIS'));
+    const vis26Color = isDufan ? '#E0004D' : (isSeaWorld ? (isDark ? '#1a96e8' : '#006EB3') : (isSamudra ? (isDark ? '#1fc7b7' : '#00A497') : (isAtlantis ? (isDark ? '#9b3cdb' : '#5C068C') : (isDark ? '#00B5E2' : '#0033A0'))));
 
     const maxVis = Math.max(...trendData.flatMap(x => [x.visitors_2026 || 0, x.visitors_2025 || 0]), 100);
     const left = 60, bottom = 36, top = 20, right = 16;
@@ -9560,7 +9617,9 @@
                            (currentFilter.area && currentFilter.area.toUpperCase().includes('SEAWORLD'));
         const isSamudra = (currentFilter.outlet && (currentFilter.outlet.toUpperCase().includes('ODIN') || currentFilter.outlet.toUpperCase().includes('SAMUDRA') || currentFilter.outlet.toUpperCase().includes('JBIN') || currentFilter.outlet.toUpperCase().includes('JBL'))) ||
                           (currentFilter.area && currentFilter.area.toUpperCase().includes('SAMUDRA'));
-        const vis26Color = isDufan ? '#f43f5e' : (isSeaWorld ? '#38bdf8' : (isSamudra ? '#2dd4bf' : '#60a5fa'));
+        const isAtlantis = (currentFilter.outlet && (currentFilter.outlet.toUpperCase().includes('AWIN') || currentFilter.outlet.toUpperCase().includes('ATLANTIS') || currentFilter.outlet.toUpperCase().includes('AWKL') || currentFilter.outlet.toUpperCase().includes('AWA'))) ||
+                           (currentFilter.area && currentFilter.area.toUpperCase().includes('ATLANTIS'));
+        const vis26Color = isDufan ? '#f43f5e' : (isSeaWorld ? '#38bdf8' : (isSamudra ? '#2dd4bf' : (isAtlantis ? '#c084fc' : '#60a5fa')));
 
         let titleHtml = '';
         let row26Label = '● 2026 (Aktual):';

@@ -873,6 +873,18 @@ def build_dashboard(
         matched_visitor_unit = "Dufan"
     elif outlet and ("SAMUDRA" in outlet.upper() or "ODIN" in outlet.upper() or "JBL" in outlet.upper() or "JBIN" in outlet.upper()):
         matched_visitor_unit = "Samudra"
+    elif outlet and ("ATLANTIS" in outlet.upper() or "AWIN" in outlet.upper() or "AWKL" in outlet.upper() or "AWA" in outlet.upper()):
+        matched_visitor_unit = "Atlantis"
+
+    if not matched_visitor_unit and area:
+        if area.upper() in ["ATLANTIS"]:
+            matched_visitor_unit = "Atlantis"
+        elif area.upper() in ["SAMUDRA"]:
+            matched_visitor_unit = "Samudra"
+        elif area.upper() in ["SEAWORLD"]:
+            matched_visitor_unit = "SeaWorld"
+        elif area.upper() in ["DUFAN"]:
+            matched_visitor_unit = "Dufan"
 
     for v in all_raw_visitors:
         v_date = v["date"]
