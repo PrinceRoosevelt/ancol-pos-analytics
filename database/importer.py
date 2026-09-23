@@ -1,3 +1,4 @@
+import calendar
 import math
 import os
 import re
@@ -24,6 +25,7 @@ SALES_DETAIL_DIR_PATTERN = re.compile(r"^sales\s+detail\s+(\d{4})$", re.I)
 MAPPING_FILE = BASE_DIR / "config" / "MASTER_OUTLET_MAPPING_V2.xlsx"
 BUDGET_FILE = BASE_DIR / "data" / "target 2026" / "BUDGET_MERCH_ONLY_PYTHON_READY.xlsx"
 LOOKUP_FILE = BASE_DIR / "config" / "DATA_LOOKUP.xlsx"
+VISITOR_ROOT_DIR = BASE_DIR / "data" / "visitor"
 
 
 SALES_VALUE_COLUMN_INDEX = 8         # Column I (DPP Barang)
@@ -498,6 +500,287 @@ def sync_lookup_data(conn: sqlite3.Connection, force: bool = False) -> int:
     return 0
 
 
+def parse_dufan_visitor_file(file_path: Path, year: int, max_month: int = 12) -> list[dict[str, Any]]:
+    """
+    Parser universal untuk file Rekap Harian Dufan (2025, 2026, dst).
+    Menggunakan Dynamic Label Matching untuk menemukan letak baris tanpa hardcode row index.
+    """
+    wb = load_workbook(file_path, data_only=True)
+    results: list[dict[str, Any]] = []
+
+    month_aliases = {
+        1: ['JANUARI', 'JAN'], 2: ['FEBRUARI', 'FEB'], 3: ['MARET', 'MAR'],
+        4: ['APRIL', 'APR'], 5: ['MEI'], 6: ['JUNI', 'JUN'],
+        7: ['JULI', 'JUL'], 8: ['AGUSTUS', 'AGUST', 'AGT'], 9: ['SEPTEMBER', 'SEPT', 'SEP'],
+        10: ['OKTOBER', 'OKT'], 11: ['NOVEMBER', 'NOV'], 12: ['DESEMBER', 'DES']
+    }
+
+    try:
+        for m in range(1, max_month + 1):
+            target_sheet = None
+            for alias in month_aliases.get(m, []):
+                for sname in wb.sheetnames:
+                    if sname.strip().upper() == alias:
+                        target_sheet = wb[sname]
+                        break
+                if target_sheet:
+                    break
+            if not target_sheet:
+                continue
+
+            ws = target_sheet
+            row_map: dict[str, int] = {}
+            for r in range(1, min(65, ws.max_row + 1)):
+                val = str(ws.cell(r, 2).value or '').strip().upper()
+                if 'JUMLAH INDIVIDU (A+B+C+D)' in val:
+                    row_map['INDIV'] = r
+                elif 'PENGUNJUNG TIDAK BAYAR' in val:
+                    row_map['TDK_BYR'] = r
+                elif 'ROMBONGAN LANGSUNG UMUM' in val:
+                    row_map['RL1'] = r
+                elif 'ROMBONGAN LANGSUNG PELAJAR' in val:
+                    row_map['RL2'] = r
+                elif 'ROMBONGAN DIRECT DAERAH UMUM' in val:
+                    row_map['RL3'] = r
+                elif 'ROMBONGAN DIRECT DAERAH PELAJAR' in val:
+                    row_map['RL4'] = r
+                elif 'ROMBONGAN AGEN UMUM' in val:
+                    row_map['RA1'] = r
+                elif 'ROMBONGAN AGEN PELAJAR' in val:
+                    row_map['RA2'] = r
+
+            if 'INDIV' not in row_map:
+                continue
+
+            _, days_in_m = calendar.monthrange(year, m)
+            for d in range(1, days_in_m + 1):
+                col = 2 + d
+                date_str = f"{year}-{m:02d}-{d:02d}"
+
+                cell_indiv = ws.cell(row_map['INDIV'], col).value if 'INDIV' in row_map else 0
+                cell_tdk_byr = ws.cell(row_map['TDK_BYR'], col).value if 'TDK_BYR' in row_map else 0
+                indiv = int(_number(cell_indiv)) + int(_number(cell_tdk_byr))
+
+                rl_keys = ['RL1', 'RL2', 'RL3', 'RL4']
+                rl = sum(int(_number(ws.cell(row_map[k], col).value)) for k in rl_keys if k in row_map)
+
+                ra_keys = ['RA1', 'RA2']
+                ra = sum(int(_number(ws.cell(row_map[k], col).value)) for k in ra_keys if k in row_map)
+
+                tot = indiv + rl + ra
+
+                results.append({
+                    'date': date_str,
+                    'month': f"{year}-{m:02d}",
+                    'unit': 'Dufan',
+                    'area': 'DUFAN',
+                    'visitors_individu': indiv,
+                    'visitors_rombongan_langsung': rl,
+                    'visitors_rombongan_agen': ra,
+                    'visitors_rombongan_total': rl + ra,
+                    'visitors': tot
+                })
+    finally:
+        wb.close()
+    return results
+
+
+def parse_seaworld_visitor_file(file_path: Path, year: int, max_month: int = 12) -> list[dict[str, Any]]:
+    """
+    Parser universal untuk file Rekap Harian SeaWorld (.xls) (2025, 2026, dst).
+    Menggunakan Dynamic Label Matching dan Column Scanning untuk membaca data harian secara presisi.
+    Formula:
+      - visitor_individu = Baris JUMLAI PENGUNJUNG INDIVIDU + Baris JUMLAI PENGUNJUNG TIDAK BAYAR
+      - visitors_rombongan_langsung = Baris JumlAI Pengunjung Romb. Langsung
+      - visitors_rombongan_agen = Baris JumlAI Pengunjung Romb. Agen
+      - visitors_rombongan_total = Langsung + Agen
+      - visitors = visitor_individu + visitors_rombongan_total
+    """
+    import xlrd
+    wb = xlrd.open_workbook(str(file_path))
+    results: list[dict[str, Any]] = []
+
+    month_aliases = {
+        1: ['JANUARI', 'JAN'], 2: ['FEBRUARI', 'FEB'], 3: ['MARET', 'MAR'],
+        4: ['APRIL', 'APR'], 5: ['MEI'], 6: ['JUNI', 'JUN'],
+        7: ['JULI', 'JUL'], 8: ['AGUSTUS', 'AGUST', 'AGT'], 9: ['SEPTEMBER', 'SEPT', 'SEP'],
+        10: ['OKTOBER', 'OKT'], 11: ['NOVEMBER', 'NOV'], 12: ['DESEMBER', 'DES']
+    }
+
+    try:
+        for m in range(1, max_month + 1):
+            target_sheet = None
+            aliases = month_aliases.get(m, [])
+            for sname in wb.sheet_names():
+                if sname.strip().upper() in aliases:
+                    target_sheet = wb.sheet_by_name(sname)
+                    break
+            if not target_sheet:
+                continue
+
+            sh = target_sheet
+            # Dynamic Label Matching across columns 0..4
+            row_map: dict[str, int] = {}
+            for r in range(min(70, sh.nrows)):
+                row_txt = ' '.join(str(sh.cell_value(r, c)).strip().upper() for c in range(min(5, sh.ncols)))
+                if 'JUMLA' in row_txt and 'INDIVIDU' in row_txt:
+                    row_map['INDIV'] = r
+                elif 'JUMLA' in row_txt and 'TIDAK BAYAR' in row_txt:
+                    row_map['TDK_BYR'] = r
+                elif 'JUMLA' in row_txt and 'LANGSUNG' in row_txt and 'ROMB' in row_txt:
+                    row_map['RL'] = r
+                elif 'JUMLA' in row_txt and 'AGEN' in row_txt and 'ROMB' in row_txt:
+                    row_map['RA'] = r
+
+            if 'INDIV' not in row_map:
+                continue
+
+            # Dynamic Column Matching for Days 1..31
+            day_cols: dict[int, int] = {}
+            for r in range(1, 6):
+                cols: dict[int, int] = {}
+                for c in range(sh.ncols):
+                    val = sh.cell_value(r, c)
+                    try:
+                        if isinstance(val, (int, float)) and int(val) == val and 1 <= int(val) <= 31:
+                            cols[int(val)] = c
+                    except Exception:
+                        pass
+                if 1 in cols and 2 in cols:
+                    day_cols = cols
+                    break
+
+            _, days_in_m = calendar.monthrange(year, m)
+            for d in range(1, days_in_m + 1):
+                if d not in day_cols:
+                    continue
+                col = day_cols[d]
+                date_str = f"{year}-{m:02d}-{d:02d}"
+
+                cell_indiv = sh.cell_value(row_map['INDIV'], col) if 'INDIV' in row_map else 0
+                cell_tdk_byr = sh.cell_value(row_map['TDK_BYR'], col) if 'TDK_BYR' in row_map else 0
+                indiv = int(_number(cell_indiv)) + int(_number(cell_tdk_byr))
+
+                cell_rl = sh.cell_value(row_map['RL'], col) if 'RL' in row_map else 0
+                rl = int(_number(cell_rl))
+
+                cell_ra = sh.cell_value(row_map['RA'], col) if 'RA' in row_map else 0
+                ra = int(_number(cell_ra))
+
+                tot = indiv + rl + ra
+
+                results.append({
+                    'date': date_str,
+                    'month': f"{year}-{m:02d}",
+                    'unit': 'SeaWorld',
+                    'area': 'AWAPARK',
+                    'visitors_individu': indiv,
+                    'visitors_rombongan_langsung': rl,
+                    'visitors_rombongan_agen': ra,
+                    'visitors_rombongan_total': rl + ra,
+                    'visitors': tot
+                })
+    finally:
+        pass
+
+    return results
+
+
+def sync_visitor_data(conn: sqlite3.Connection, force: bool = False) -> int:
+    """
+    Sinkronisasi data pengunjung terkurasi dari folder data/visitor/ ke tabel visitor_actual.
+    Mendukung unit: DUFAN (2025 & 2026) dan SEAWORLD (2025 & 2026).
+    """
+    if not VISITOR_ROOT_DIR.exists():
+        return 0
+
+    total_synced = 0
+    visitor_jobs: list[tuple[str, Path, int]] = []
+
+    # 1. Visitor 2025
+    dir_2025 = VISITOR_ROOT_DIR / "2025"
+    if dir_2025.exists():
+        for p in dir_2025.glob("*DUFAN*.xls*"):
+            if not p.name.startswith("~$"):
+                visitor_jobs.append(("Dufan", p, 2025))
+        for p in dir_2025.glob("*SEAWORLD*.xls*"):
+            if not p.name.startswith("~$"):
+                visitor_jobs.append(("SeaWorld", p, 2025))
+
+    # 2. Visitor 2026
+    dir_2026 = VISITOR_ROOT_DIR / "2026"
+    if dir_2026.exists():
+        for p in dir_2026.glob("*DUFAN*.xls*"):
+            if not p.name.startswith("~$"):
+                visitor_jobs.append(("Dufan", p, 2026))
+        for p in dir_2026.glob("*SEAWORLD*.xls*"):
+            if not p.name.startswith("~$"):
+                visitor_jobs.append(("SeaWorld", p, 2026))
+
+    for unit, f_path, year in visitor_jobs:
+        f_stat = f_path.stat()
+        f_key = str(f_path.resolve())
+        f_mtime = int(f_stat.st_mtime_ns)
+        f_size = int(f_stat.st_size)
+
+        cursor = conn.execute(
+            "SELECT file_mtime, file_size FROM sync_meta WHERE file_path = ?", (f_key,)
+        )
+        v_meta = cursor.fetchone()
+
+        db_count = conn.execute(
+            "SELECT COUNT(*) FROM visitor_actual WHERE unit = ? AND date LIKE ?",
+            (unit, f"{year}%")
+        ).fetchone()[0]
+
+        if force or db_count == 0 or not v_meta or v_meta["file_mtime"] != f_mtime or v_meta["file_size"] != f_size:
+            print(f"🔄 Sinkronisasi pengunjung {unit} {year} ({f_path.name}) ke DB ...")
+            if unit == "Dufan":
+                records = parse_dufan_visitor_file(f_path, year, max_month=12)
+            elif unit == "SeaWorld":
+                records = parse_seaworld_visitor_file(f_path, year, max_month=12)
+            else:
+                records = []
+
+            if records:
+                conn.execute("BEGIN TRANSACTION;")
+                conn.executemany(
+                    """
+                    INSERT INTO visitor_actual (
+                        date, month, unit, area, visitors,
+                        visitors_individu, visitors_rombongan_langsung,
+                        visitors_rombongan_agen, visitors_rombongan_total
+                    )
+                    VALUES (
+                        :date, :month, :unit, :area, :visitors,
+                        :visitors_individu, :visitors_rombongan_langsung,
+                        :visitors_rombongan_agen, :visitors_rombongan_total
+                    )
+                    ON CONFLICT(date, unit) DO UPDATE SET
+                        month = excluded.month,
+                        area = excluded.area,
+                        visitors = excluded.visitors,
+                        visitors_individu = excluded.visitors_individu,
+                        visitors_rombongan_langsung = excluded.visitors_rombongan_langsung,
+                        visitors_rombongan_agen = excluded.visitors_rombongan_agen,
+                        visitors_rombongan_total = excluded.visitors_rombongan_total
+                    """,
+                    records,
+                )
+                conn.execute(
+                    """
+                    INSERT OR REPLACE INTO sync_meta (file_path, file_type, file_mtime, file_size, last_synced)
+                    VALUES (?, 'visitor', ?, ?, ?)
+                    """,
+                    (f_key, f_mtime, f_size, datetime.now().isoformat()),
+                )
+                conn.commit()
+                total_synced += len(records)
+
+    cur_total = conn.execute("SELECT COUNT(*) FROM visitor_actual").fetchone()[0]
+    return cur_total
+
+
 def sync_database(force: bool = False) -> dict[str, Any]:
     """
     Sinkronisasi file Excel ke SQLite Database secara otomatis & bertahap (incremental).
@@ -515,7 +798,6 @@ def sync_database(force: bool = False) -> dict[str, Any]:
         sales_files: list[Path] = []
         if SALES_ROOT_DIR.exists():
             for source_dir in sorted(SALES_ROOT_DIR.iterdir()):
-
                 if not source_dir.is_dir() or not SALES_DETAIL_DIR_PATTERN.match(source_dir.name):
                     continue
                 sales_files.extend(
@@ -541,10 +823,7 @@ def sync_database(force: bool = False) -> dict[str, Any]:
                 rows = parse_sales_file(s_file, outlet_mapping)
 
                 conn.execute("BEGIN TRANSACTION;")
-                # Hapus data lama dari file ini jika ada
                 conn.execute("DELETE FROM sales_items WHERE file_source = ?", (s_file.name,))
-                
-                # Batch insert
                 conn.executemany(
                     """
                     INSERT INTO sales_items (
@@ -560,7 +839,6 @@ def sync_database(force: bool = False) -> dict[str, Any]:
                     rows,
                 )
 
-                # Update sync metadata
                 conn.execute(
                     """
                     INSERT OR REPLACE INTO sync_meta (file_path, file_type, file_mtime, file_size, last_synced)
@@ -572,7 +850,7 @@ def sync_database(force: bool = False) -> dict[str, Any]:
                 stats["sales_files_synced"] += 1
                 stats["sales_rows_inserted"] += len(rows)
 
-        # 2. Sync Budget & Visitor
+        # 2. Sync Budget Targets
         active_b_file = _get_active_budget_file()
         active_m_file = _get_active_mapping_file() or MAPPING_FILE
         if active_b_file and active_b_file.exists():
@@ -587,8 +865,8 @@ def sync_database(force: bool = False) -> dict[str, Any]:
             b_meta = cursor.fetchone()
 
             if force or not b_meta or b_meta["file_mtime"] != b_mtime or b_meta["file_size"] != b_size:
-                print(f"🔄 Sinkronisasi file Budget & Visitor ({active_b_file.name}) ke DB ...")
-                targets, visitors = parse_budget_and_visitor(active_b_file, active_m_file)
+                print(f"🔄 Sinkronisasi file Budget ({active_b_file.name}) ke DB ...")
+                targets, _ = parse_budget_and_visitor(active_b_file, active_m_file)
 
                 conn.execute("BEGIN TRANSACTION;")
                 conn.execute("DELETE FROM budget_daily;")
@@ -600,15 +878,6 @@ def sync_database(force: bool = False) -> dict[str, Any]:
                     targets,
                 )
 
-                conn.execute("DELETE FROM visitor_actual;")
-                conn.executemany(
-                    """
-                    INSERT INTO visitor_actual (date, month, unit, area, visitors)
-                    VALUES (:date, :month, :unit, :area, :visitors)
-                    """,
-                    visitors,
-                )
-
                 conn.execute(
                     """
                     INSERT OR REPLACE INTO sync_meta (file_path, file_type, file_mtime, file_size, last_synced)
@@ -616,10 +885,13 @@ def sync_database(force: bool = False) -> dict[str, Any]:
                     """,
                     (b_key, b_mtime, b_size, datetime.now().isoformat()),
                 )
+                conn.commit()
                 stats["budget_synced"] = True
-                stats["visitors_count"] = len(visitors)
 
-        # 3. Clean-up: Pastikan tidak ada sisa transaksi dengan area UNKNOWN di database
+        # 3. Sync Curated Visitor Data (Dufan 2025 & 2026, dst)
+        stats["visitors_count"] = sync_visitor_data(conn, force=force)
+
+        # 4. Clean-up: Pastikan tidak ada sisa transaksi dengan area UNKNOWN di database
         conn.execute("""
             UPDATE sales_items
             SET area = CASE

@@ -47,7 +47,11 @@ def fetch_all_visitors() -> list[dict[str, Any]]:
     try:
         cursor = conn.execute(
             """
-            SELECT date, month, unit, area, visitors
+            SELECT date, month, unit, area, visitors,
+                   COALESCE(visitors_individu, 0) AS visitors_individu,
+                   COALESCE(visitors_rombongan_langsung, 0) AS visitors_rombongan_langsung,
+                   COALESCE(visitors_rombongan_agen, 0) AS visitors_rombongan_agen,
+                   COALESCE(visitors_rombongan_total, 0) AS visitors_rombongan_total
             FROM visitor_actual
             ORDER BY date ASC
             """
@@ -57,20 +61,37 @@ def fetch_all_visitors() -> list[dict[str, Any]]:
         conn.close()
 
 
-def save_visitor_db(entry_date: str, unit: str, count: int, area: str = "") -> None:
+def save_visitor_db(
+    entry_date: str,
+    unit: str,
+    count: int,
+    area: str = "",
+    individu: int = 0,
+    rombongan_langsung: int = 0,
+    rombongan_agen: int = 0,
+) -> None:
     """Simpan/Update pengunjung langsung ke tabel visitor_actual."""
     conn = get_connection()
     try:
         month_str = entry_date[:7]
+        romb_total = rombongan_langsung + rombongan_agen
         conn.execute(
             """
-            INSERT INTO visitor_actual (date, month, unit, area, visitors)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO visitor_actual (
+                date, month, unit, area, visitors,
+                visitors_individu, visitors_rombongan_langsung,
+                visitors_rombongan_agen, visitors_rombongan_total
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(date, unit) DO UPDATE SET
                 visitors = excluded.visitors,
-                area = CASE WHEN excluded.area != '' THEN excluded.area ELSE visitor_actual.area END
+                area = CASE WHEN excluded.area != '' THEN excluded.area ELSE visitor_actual.area END,
+                visitors_individu = excluded.visitors_individu,
+                visitors_rombongan_langsung = excluded.visitors_rombongan_langsung,
+                visitors_rombongan_agen = excluded.visitors_rombongan_agen,
+                visitors_rombongan_total = excluded.visitors_rombongan_total
             """,
-            (entry_date, month_str, unit, area, count),
+            (entry_date, month_str, unit, area, count, individu, rombongan_langsung, rombongan_agen, romb_total),
         )
         conn.commit()
     finally:

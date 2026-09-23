@@ -854,22 +854,38 @@ def build_dashboard(
     # Visitor Actual Data Integration
     all_raw_visitors = read_all_visitors()
     total_visitors_2026 = 0
+    total_visitors_2025 = 0
+    visitors_indiv_2026 = 0
+    visitors_rl_2026 = 0
+    visitors_ra_2026 = 0
+
+    vis_26_by_month: dict[str, int] = {}
+    vis_25_by_month: dict[str, int] = {}
+    vis_26_by_day: dict[str, int] = {}
+    vis_25_by_day: dict[str, int] = {}
+
     matched_visitor_unit = None
     if outlet and outlet in OUTLET_TO_VISITOR_UNIT:
         matched_visitor_unit = OUTLET_TO_VISITOR_UNIT[outlet]
+    elif outlet and "SEA WORLD" in outlet.upper():
+        matched_visitor_unit = "SeaWorld"
+    elif outlet and "DUFAN" in outlet.upper():
+        matched_visitor_unit = "Dufan"
 
     for v in all_raw_visitors:
         v_date = v["date"]
+        v_year = v_date[:4]
+        v_month = v["month"]
         v_dm = v_date[5:]
         if start_date or end_date:
             if start_dm and v_dm < start_dm:
                 continue
             if end_dm and v_dm > end_dm:
                 continue
-        elif month and v["month"] != month:
+        elif month and v["month"][-2:] != str(month)[-2:]:
             continue
 
-        if date and v_date != date:
+        if date and v_date != date and v_dm != str(date)[5:]:
             continue
 
         if matched_visitor_unit:
@@ -879,10 +895,60 @@ def build_dashboard(
             if v["area"].casefold() != area.casefold():
                 continue
 
-        total_visitors_2026 += v["visitors"]
+        if v_year == "2026":
+            total_visitors_2026 += v["visitors"]
+            visitors_indiv_2026 += v.get("visitors_individu", 0)
+            visitors_rl_2026 += v.get("visitors_rombongan_langsung", 0)
+            visitors_ra_2026 += v.get("visitors_rombongan_agen", 0)
+            vis_26_by_month[v_month] = vis_26_by_month.get(v_month, 0) + v["visitors"]
+            vis_26_by_day[v_dm] = vis_26_by_day.get(v_dm, 0) + v["visitors"]
+        elif v_year == "2025":
+            if not comparison_day_months or v_dm in comparison_day_months:
+                total_visitors_2025 += v["visitors"]
+            vis_25_by_month[v_month] = vis_25_by_month.get(v_month, 0) + v["visitors"]
+            vis_25_by_day[v_dm] = vis_25_by_day.get(v_dm, 0) + v["visitors"]
 
     sph_2026 = (actual_revenue / total_visitors_2026) if total_visitors_2026 > 0 else 0.0
+    sph_2025 = (summary["2025"]["net_sales"] / total_visitors_2025) if total_visitors_2025 > 0 else 0.0
+    sph_growth = growth_percent(sph_2026, sph_2025)
+    visitor_growth = growth_percent(total_visitors_2026, total_visitors_2025)
     capture_rate = (summary["2026"]["transactions"] / total_visitors_2026 * 100) if total_visitors_2026 > 0 else 0.0
+    capture_rate_2025 = (summary["2025"]["transactions"] / total_visitors_2025 * 100) if total_visitors_2025 > 0 else 0.0
+    capture_growth = growth_percent(capture_rate, capture_rate_2025)
+
+    pct_indiv_2026 = (visitors_indiv_2026 / total_visitors_2026 * 100) if total_visitors_2026 > 0 else 0.0
+    pct_rl_2026 = (visitors_rl_2026 / total_visitors_2026 * 100) if total_visitors_2026 > 0 else 0.0
+    pct_ra_2026 = (visitors_ra_2026 / total_visitors_2026 * 100) if total_visitors_2026 > 0 else 0.0
+
+    # Build SSR datasets for Chart 5 (Revenue vs Visitor) & Chart 6 (Visitor YoY Trend)
+    visitor_revenue_chart = []
+    visitor_trend_chart = []
+    for item in daily_chart:
+        d_val = item["date"]
+        d_key = d_val if item.get("is_monthly") else d_val[5:]
+        comp_d_val = item.get("comparison_date", "")
+        comp_d_key = comp_d_val if item.get("is_monthly") else (comp_d_val[5:] if comp_d_val else "")
+
+        v26 = vis_26_by_month.get(d_key, 0) if item.get("is_monthly") else vis_26_by_day.get(d_key, 0)
+        v25 = vis_25_by_month.get(comp_d_key, 0) if item.get("is_monthly") else vis_25_by_day.get(comp_d_key, 0)
+
+        visitor_revenue_chart.append({
+            "date": d_val,
+            "label": item["label"],
+            "short_label": item.get("short_label", item["label"]),
+            "is_monthly": item.get("is_monthly", False),
+            "revenue_2026": item.get("2026", 0),
+            "visitors_2026": v26,
+        })
+        visitor_trend_chart.append({
+            "date": d_val,
+            "comparison_date": comp_d_val,
+            "label": item["label"],
+            "short_label": item.get("short_label", item["label"]),
+            "is_monthly": item.get("is_monthly", False),
+            "visitors_2026": v26,
+            "visitors_2025": v25,
+        })
 
     return {
         "summary": summary,
@@ -919,8 +985,20 @@ def build_dashboard(
         "target_gap": target_gap,
         "target_status": status_text,
         "total_visitors": total_visitors_2026,
+        "total_visitors_2025": total_visitors_2025,
+        "visitor_growth": visitor_growth,
         "sph": sph_2026,
+        "sph_2025": sph_2025,
+        "sph_growth": sph_growth,
         "capture_rate": capture_rate,
+        "capture_rate_2025": capture_rate_2025,
+        "capture_growth": capture_growth,
+        "visitors_individu": visitors_indiv_2026,
+        "visitors_rombongan_langsung": visitors_rl_2026,
+        "visitors_rombongan_agen": visitors_ra_2026,
+        "pct_individu": pct_indiv_2026,
+        "pct_romb_langsung": pct_rl_2026,
+        "pct_romb_agen": pct_ra_2026,
         "peak_sales_hour": peak_sales_hour,
         "peak_tx_hour": peak_tx_hour,
         "priority_products": priority_products,
@@ -962,6 +1040,8 @@ def build_dashboard(
         "total_outlets": len({row["outlet"] for row in filtered}),
         "daily_chart": daily_chart,
         "target_chart": target_chart,
+        "visitor_revenue_chart": visitor_revenue_chart,
+        "visitor_trend_chart": visitor_trend_chart,
         "comparison_period": {
             "current": period(2026),
             "comparison": period(2025),
@@ -2697,11 +2777,19 @@ def api_ask_ai():
         upt_val = (summary_26['qty'] / summary_26['transactions']) if summary_26.get('transactions', 0) > 0 else 0.0
 
         if total_visitors_val > 0:
+            sph_growth_val = dash.get("sph_growth")
+            sph_growth_str = f" ({sph_growth_val:+.1f}% YoY)" if sph_growth_val is not None else ""
             visitor_metric_text = (
                 f"- Total Pengunjung Masuk Wahana (Visitors): {total_visitors_val:,.0f} orang\n"
-                f"- Spending per Head (SpH): Rp {sph_val:,.0f} per orang (rata-rata belanja merchandise tiap pengunjung wahana)\n"
-                f"- Capture Rate: {cap_rate_val:.2f}% (persentase pengunjung wahana yang membeli barang di toko kita)\n"
+                f"- Spending per Head (SpH): Rp {sph_val:,.0f} per orang{sph_growth_str} (rata-rata belanja merchandise tiap pengunjung wahana)\n"
+                f"- Capture Rate: {cap_rate_val:.2f}% (persentase pengunjung wahana yang membeli merchandise di toko kita)\n"
             )
+            if dash.get("visitors_individu", 0) > 0:
+                visitor_metric_text += (
+                    f"  * Komposisi Traffic Pengunjung: Individu {dash['visitors_individu']:,.0f} orang ({dash.get('pct_individu', 0):.1f}%), "
+                    f"Rombongan Langsung {dash.get('visitors_rombongan_langsung', 0):,.0f} orang ({dash.get('pct_romb_langsung', 0):.1f}%), "
+                    f"Rombongan Agen {dash.get('visitors_rombongan_agen', 0):,.0f} orang ({dash.get('pct_romb_agen', 0):.1f}%)\n"
+                )
         else:
             visitor_metric_text = (
                 "- Data Pengunjung Masuk Wahana (Visitors): Belum terpetakan spesifik untuk filter kombinasi ini\n"

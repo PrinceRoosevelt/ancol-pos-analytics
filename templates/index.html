@@ -323,6 +323,16 @@
       box-shadow: var(--shadow);
     }
 
+    .btn:active {
+      transform: scale(0.98);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
+    }
+
     .btn-primary {
       background: var(--brand);
       color: #ffffff !important;
@@ -554,6 +564,15 @@
       transform: translateY(-1px);
       box-shadow: 0 2px 6px rgba(0,0,0,0.08);
       border-color: var(--brand);
+    }
+
+    .preset-chip:active {
+      transform: scale(0.96);
+    }
+
+    .preset-chip:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
     }
 
     /* System Presets Styling */
@@ -1626,6 +1645,14 @@
     .chart-view-pill:hover {
       color: var(--text);
       border-color: var(--brand-border);
+      transform: translateY(-1px);
+    }
+    .chart-view-pill:active {
+      transform: scale(0.96);
+    }
+    .chart-view-pill:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
     }
     .chart-view-pill.active {
       background: var(--brand);
@@ -1856,6 +1883,78 @@
       font-weight: 700;
     }
 
+    /* Dufan Vibrant Brand Theme for KPI Card 5 */
+    .kpi-card-dufan {
+      background: linear-gradient(180deg, rgba(224, 0, 77, 0.08) 0%, rgba(255, 255, 255, 0.92) 100%) !important;
+      border: 1.5px solid rgba(224, 0, 77, 0.42) !important;
+      box-shadow: 0 6px 20px -2px rgba(224, 0, 77, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+      transition: all 0.3s ease;
+    }
+    :root.dark .kpi-card-dufan {
+      background: linear-gradient(180deg, rgba(255, 43, 116, 0.16) 0%, rgba(10, 19, 36, 0.88) 100%) !important;
+      border-color: rgba(255, 43, 116, 0.5) !important;
+      box-shadow: 0 6px 20px -2px rgba(255, 43, 116, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+    .kpi-card-dufan .kpi-title {
+      color: var(--unit-dufan) !important;
+      font-weight: 700;
+    }
+    .kpi-card-dufan .kpi-badge-icon {
+      background: rgba(224, 0, 77, 0.12) !important;
+      color: var(--unit-dufan) !important;
+      border: 1px solid rgba(224, 0, 77, 0.3) !important;
+    }
+    :root.dark .kpi-card-dufan .kpi-badge-icon {
+      background: rgba(255, 43, 116, 0.2) !important;
+      color: var(--unit-dufan) !important;
+      border-color: rgba(255, 43, 116, 0.4) !important;
+    }
+    .kpi-card-dufan .traffic-bar-indiv {
+      background: var(--unit-dufan) !important;
+    }
+    .kpi-card-dufan .traffic-bar-rl {
+      background: #fb7185 !important;
+    }
+    .kpi-card-dufan .traffic-bar-ra {
+      background: #c084fc !important;
+    }
+
+    /* SeaWorld Marine Ocean Brand Theme for KPI Card 5 */
+    .kpi-card-seaworld {
+      background: linear-gradient(180deg, rgba(0, 110, 179, 0.08) 0%, rgba(255, 255, 255, 0.92) 100%) !important;
+      border: 1.5px solid rgba(0, 110, 179, 0.42) !important;
+      box-shadow: 0 6px 20px -2px rgba(0, 110, 179, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+      transition: all 0.3s ease;
+    }
+    :root.dark .kpi-card-seaworld {
+      background: linear-gradient(180deg, rgba(26, 150, 232, 0.16) 0%, rgba(10, 19, 36, 0.88) 100%) !important;
+      border-color: rgba(26, 150, 232, 0.5) !important;
+      box-shadow: 0 6px 20px -2px rgba(26, 150, 232, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+    .kpi-card-seaworld .kpi-title {
+      color: var(--unit-seaworld) !important;
+      font-weight: 700;
+    }
+    .kpi-card-seaworld .kpi-badge-icon {
+      background: rgba(0, 110, 179, 0.12) !important;
+      color: var(--unit-seaworld) !important;
+      border: 1px solid rgba(0, 110, 179, 0.3) !important;
+    }
+    :root.dark .kpi-card-seaworld .kpi-badge-icon {
+      background: rgba(26, 150, 232, 0.2) !important;
+      color: var(--unit-seaworld) !important;
+      border-color: rgba(26, 150, 232, 0.4) !important;
+    }
+    .kpi-card-seaworld .traffic-bar-indiv {
+      background: var(--unit-seaworld) !important;
+    }
+    .kpi-card-seaworld .traffic-bar-rl {
+      background: #38bdf8 !important;
+    }
+    .kpi-card-seaworld .traffic-bar-ra {
+      background: #818cf8 !important;
+    }
+
     .kpi-card-header {
       display: flex;
       justify-content: space-between;
@@ -1887,6 +1986,11 @@
       letter-spacing: -0.025em;
       margin-bottom: 8px;
       line-height: 1.2;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .kpi-value, .kpi-footer strong, .badge-growth, .metric-value, .table-card td {
+      font-variant-numeric: tabular-nums;
     }
 
     .kpi-card-primary .kpi-value {
@@ -3935,40 +4039,80 @@
     </div>
 
     <!-- KPI 5: Pengunjung & SPH (Spending per Head) -->
-    <div class="kpi-card">
+    <div class="kpi-card {% if (selected_area and 'DUFAN' in selected_area|upper) or (selected_outlet and 'DF' in selected_outlet|upper) %}kpi-card-dufan{% elif (selected_outlet and ('SWIN' in selected_outlet|upper or 'SEA WORLD' in selected_outlet|upper)) or (selected_area and 'SEAWORLD' in selected_area|upper) %}kpi-card-seaworld{% endif %}" id="kpiCardVisitor">
       <div class="kpi-card-header">
-        <span class="kpi-title">Pengunjung &amp; SPH (2026)</span>
-        <div class="kpi-badge-icon" style="background:#ecfdf5; color:#059669; border:1px solid rgba(5,150,105,0.2);">
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span class="kpi-title" id="kpiVisitorTitle">Pengunjung &amp; SPH</span>
+          {% if (selected_area and 'DUFAN' in selected_area|upper) or (selected_outlet and 'DF' in selected_outlet|upper) %}
+          <span id="kpiVisitorUnitBadge" class="unit-indicator unit-dufan" style="display:inline-block; font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; letter-spacing:0.02em; color:var(--unit-dufan); background:rgba(224,0,77,0.12); border:1px solid rgba(224,0,77,0.25);">DUFAN</span>
+          {% elif (selected_outlet and ('SWIN' in selected_outlet|upper or 'SEA WORLD' in selected_outlet|upper)) or (selected_area and 'SEAWORLD' in selected_area|upper) %}
+          <span id="kpiVisitorUnitBadge" class="unit-indicator unit-seaworld" style="display:inline-block; font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; letter-spacing:0.02em; color:var(--unit-seaworld); background:rgba(0,110,179,0.12); border:1px solid rgba(0,110,179,0.25);">SEAWORLD</span>
+          {% else %}
+          <span id="kpiVisitorUnitBadge" class="unit-indicator" style="display:none; font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; letter-spacing:0.02em;"></span>
+          {% endif %}
+        </div>
+        <div class="kpi-badge-icon" id="kpiVisitorIcon" style="background:#ecfdf5; color:#059669; border:1px solid rgba(5,150,105,0.2);">
           <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
         </div>
       </div>
-      <div class="kpi-value">
-        {% if data.total_visitors and data.total_visitors > 0 %}
-        <span id="kpiVisitorCount">{{ "{:,.0f}".format(data.total_visitors).replace(',', '.') }}</span> <span style="font-size:14px; font-weight:normal; color:var(--text-muted);">Orang</span>
-        {% else %}
-        <span id="kpiVisitorCount" style="font-size:16px; color:var(--text-muted); font-weight:600;">Belum Diinput</span>
-        {% endif %}
+      <div class="kpi-value" style="display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:4px;">
+        <div style="display:flex; align-items:baseline; gap:4px;">
+          {% if data.total_visitors and data.total_visitors > 0 %}
+          <span id="kpiVisitorCount">{{ "{:,.0f}".format(data.total_visitors).replace(',', '.') }}</span> <span style="font-size:14px; font-weight:normal; color:var(--text-muted);">Orang</span>
+          {% else %}
+          <span id="kpiVisitorCount" style="font-size:16px; color:var(--text-muted); font-weight:600;">Belum Diinput</span>
+          {% endif %}
+        </div>
+        <span id="kpiVisitorGrowth" class="badge-growth {% if data.visitor_growth is not none and data.visitor_growth >= 0 %}positive{% elif data.visitor_growth is not none %}negative{% else %}neutral{% endif %}" style="font-size:11px; margin-left:auto; {% if data.visitor_growth is none or not data.total_visitors or data.total_visitors == 0 %}display:none;{% endif %}">
+          {% if data.visitor_growth is not none %}{{ "{:+.1f}% YoY".format(data.visitor_growth) }}{% else %}-{% endif %}
+        </span>
       </div>
+
+      <!-- Quality Traffic Composition Bar -->
+      <div id="kpiTrafficMixContainer" style="margin: 6px 0 10px 0; {% if not data.total_visitors or data.total_visitors == 0 %}display:none;{% endif %}">
+        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); margin-bottom:4px; font-weight:600;">
+          <span>Segmen Profil:</span>
+          <span id="kpiTrafficMixLabel">{{ "{:.0f}% Indiv • {:.0f}% R.Dir • {:.0f}% Agen".format(data.pct_individu or 0, data.pct_romb_langsung or 0, data.pct_romb_agen or 0) }}</span>
+        </div>
+        <div class="progress-bar" style="height:6px; border-radius:3px; display:flex; overflow:hidden; background:rgba(0,0,0,0.06); gap:1px;">
+          <div id="barIndiv" class="traffic-bar-indiv" style="height:100%; width:{{ data.pct_individu or 0 }}%; background:var(--brand); transition:width 0.3s;" title="Individu (FIT): {{ '{:,.0f}'.format(data.visitors_individu or 0).replace(',', '.') }}"></div>
+          <div id="barRl" class="traffic-bar-rl" style="height:100%; width:{{ data.pct_romb_langsung or 0 }}%; background:#00b5e2; transition:width 0.3s;" title="Rombongan Langsung: {{ '{:,.0f}'.format(data.visitors_rombongan_langsung or 0).replace(',', '.') }}"></div>
+          <div id="barRa" class="traffic-bar-ra" style="height:100%; width:{{ data.pct_romb_agen or 0 }}%; background:#f59e0b; transition:width 0.3s;" title="Rombongan Agen: {{ '{:,.0f}'.format(data.visitors_rombongan_agen or 0).replace(',', '.') }}"></div>
+        </div>
+      </div>
+
       <div class="kpi-footer">
         <div class="kpi-compare-row">
           <span>SPH (Belanja/Head):</span>
-          <strong id="kpiSphVal">
-            {% if data.sph and data.sph > 0 %}
-            Rp {{ "{:,.0f}".format(data.sph).replace(',', '.') }}
-            {% else %}
-            -
-            {% endif %}
-          </strong>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <strong id="kpiSphVal">
+              {% if data.sph and data.sph > 0 %}
+              Rp {{ "{:,.0f}".format(data.sph).replace(',', '.') }}
+              {% else %}
+              -
+              {% endif %}
+            </strong>
+            <span id="kpiSphGrowth" class="badge-growth {% if data.sph_growth is not none and data.sph_growth >= 0 %}positive{% elif data.sph_growth is not none %}negative{% else %}neutral{% endif %}" style="font-size:10.5px; {% if data.sph_growth is none or not data.total_visitors or data.total_visitors == 0 %}display:none;{% endif %}">
+              {% if data.sph_growth is not none %}{{ "{:+.1f}%".format(data.sph_growth) }}{% else %}-{% endif %}
+            </span>
+          </div>
         </div>
         <div class="kpi-compare-row">
           <span>Capture Rate:</span>
-          <span id="kpiCaptureRate" class="badge-growth {% if data.capture_rate and data.capture_rate > 0 %}positive{% else %}neutral{% endif %}">
-            {% if data.capture_rate and data.capture_rate > 0 %}
-            {{ "{:.1f}%".format(data.capture_rate) }} ({{ "{:,.0f}".format(data.summary['2026']['transactions']).replace(',', '.') }} struk)
-            {% else %}
-            -
-            {% endif %}
-          </span>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span id="kpiCaptureRate" class="badge-growth {% if data.capture_rate and data.capture_rate > 0 %}positive{% else %}neutral{% endif %}">
+              {% if data.capture_rate and data.capture_rate > 0 %}
+              {{ "{:.1f}%".format(data.capture_rate) }}
+              {% else %}
+              -
+              {% endif %}
+            </span>
+            <span id="kpiCaptureStruk" style="font-size:11px; color:var(--text-muted);">
+              {% if data.summary['2026']['transactions'] and data.total_visitors and data.total_visitors > 0 %}
+              ({{ "{:,.0f}".format(data.summary['2026']['transactions']).replace(',', '.') }} struk)
+              {% endif %}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -4121,7 +4265,7 @@
     <div class="charts-view-pills">
       <button type="button" class="chart-view-pill active" id="btnViewAllCharts" onclick="switchChartView('all', this)">
         <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="14" rx="1"></rect><rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
-        <span>Semua (4 Grafik)</span>
+        <span>Semua (6 Grafik)</span>
       </button>
       <button type="button" class="chart-view-pill" id="btnViewTrendCharts" onclick="switchChartView('trend', this)">
         <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
@@ -4130,6 +4274,10 @@
       <button type="button" class="chart-view-pill" id="btnViewHourlyCharts" onclick="switchChartView('hourly', this)">
         <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
         <span>Pola Jam Operasional</span>
+      </button>
+      <button type="button" class="chart-view-pill" id="btnViewVisitorCharts" onclick="switchChartView('visitor', this)">
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>Korelasi Revenue &amp; Pengunjung</span>
       </button>
     </div>
   </div>
@@ -4206,6 +4354,42 @@
       <div class="chart-wrap">
         <canvas id="hourlyTransactionsChart"></canvas>
         <div id="hourlyTransactionsTooltip" class="chart-tooltip"></div>
+      </div>
+    </div>
+
+    <!-- Chart 5: Revenue 2026 vs Actual Visitor 2026 (Dual Y-Axis) -->
+    <div class="chart-panel chart-panel-visitor">
+      <div class="chart-header">
+        <div>
+          <h2 id="chart5Title">{% if selected_month %}Korelasi Revenue vs Pengunjung Harian (2026){% else %}Korelasi Revenue vs Pengunjung Bulanan (2026){% endif %}</h2>
+          <span id="chart5Subtitle" style="font-size:12px; color:var(--text-muted);">{% if selected_month %}Hubungan omzet harian dengan volume pengunjung (Dual Y-Axis){% else %}Hubungan omzet bulanan dengan volume pengunjung YTD (Dual Y-Axis){% endif %}</span>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:var(--brand);"></span> Net Sales (Rp)</div>
+          <div class="legend-item"><span class="legend-dot" id="chart5LegendVisDot" style="background:#E0004D;"></span> Visitor (Orang)</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="visitorRevenueChart"></canvas>
+        <div id="visitorRevenueTooltip" class="chart-tooltip"></div>
+      </div>
+    </div>
+
+    <!-- Chart 6: Actual Visitor 2026 vs 2025 (YoY Trend) -->
+    <div class="chart-panel chart-panel-visitor">
+      <div class="chart-header">
+        <div>
+          <h2 id="chart6Title">{% if selected_month %}Tren Kunjungan Pengunjung Harian (2026 vs 2025){% else %}Tren Kunjungan Pengunjung Bulanan (2026 vs 2025){% endif %}</h2>
+          <span id="chart6Subtitle" style="font-size:12px; color:var(--text-muted);">{% if selected_month %}Perbandingan volume pengunjung harian (YoY day-matched){% else %}Perbandingan volume pengunjung bulanan YTD (YoY){% endif %}</span>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item"><span class="legend-dot" id="chart6LegendVis26Dot" style="background:#E0004D;"></span> 2026</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#a78bfa;"></span> 2025</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="visitorTrendChart"></canvas>
+        <div id="visitorTrendTooltip" class="chart-tooltip"></div>
       </div>
     </div>
 
@@ -5299,6 +5483,8 @@
     daily_chart: {{ data.daily_chart|tojson }},
     target_chart: {{ data.target_chart|tojson }},
     hourly_chart: {{ data.hourly_chart|tojson }},
+    visitor_revenue_chart: {{ data.visitor_revenue_chart|tojson if data.visitor_revenue_chart else '[]' }},
+    visitor_trend_chart: {{ data.visitor_trend_chart|tojson if data.visitor_trend_chart else '[]' }},
     top_5_outlets: {{ data.top_5_outlets|tojson }},
     bottom_5_outlets: {{ data.bottom_5_outlets|tojson }},
     peak_sales_hour: "{{ data.peak_sales_hour }}",
@@ -6300,12 +6486,25 @@
     const kpiUptEl = document.getElementById('kpiUpt');
     if (kpiUptEl) kpiUptEl.textContent = upt26.toFixed(2) + ' item';
 
-    // Filter Visitor Actual (2026)
-    let totalVisitors = 0;
+    // Filter Visitor Actuals (2026 & 2025 YoY day-matched)
+    let totalVisitors26 = 0, totalVisitors25 = 0;
+    let indiv26 = 0, rl26 = 0, ra26 = 0;
     const matchedVisitorUnit = outlet ? (OUTLET_TO_VISITOR_MAP[outlet] || null) : null;
+
+    const vis26ByMonth = {};
+    const vis25ByMonth = {};
+    const vis26ByDay = {};
+    const vis25ByDay = {};
+
+    // Strict Apples-to-Apples Day Matching Set from active 2026 sales dates
+    const active26DatesDm = new Set();
+    distinctDates26.forEach(d => active26DatesDm.add(d.substring(5)));
+
     for (let i = 0; i < RAW_VISITORS.length; i++) {
       const v = RAW_VISITORS[i];
+      const vYear = v.date.substring(0, 4);
       const vDm = v.date.substring(5);
+
       if (startDate || endDate) {
         if (startDm && vDm < startDm) continue;
         if (endDm && vDm > endDm) continue;
@@ -6313,40 +6512,165 @@
         if (v.date.substring(5, 7) !== selMonth) continue;
       }
 
+      // Filter khusus Akhir Pekan jika preset weekend aktif
+      if (currentFilter.weekendOnly && !isWeekendDate(v.date)) continue;
+
       if (matchedVisitorUnit) {
         if (v.unit.toLowerCase() !== matchedVisitorUnit.toLowerCase()) continue;
       } else if (area) {
         if (v.area.toLowerCase() !== area.toLowerCase()) continue;
       }
 
-      totalVisitors += v.visitors;
+      if (vYear === '2026') {
+        totalVisitors26 += v.visitors;
+        indiv26 += (v.visitors_individu || 0);
+        rl26 += (v.visitors_rombongan_langsung || 0);
+        ra26 += (v.visitors_rombongan_agen || 0);
+        const vM = v.date.substring(5, 7);
+        vis26ByMonth[vM] = (vis26ByMonth[vM] || 0) + v.visitors;
+        vis26ByDay[vDm] = (vis26ByDay[vDm] || 0) + v.visitors;
+      } else if (vYear === '2025') {
+        // Strict Apples-to-Apples day matching
+        if (active26DatesDm.size === 0 || active26DatesDm.has(vDm)) {
+          totalVisitors25 += v.visitors;
+        }
+        const vM = v.date.substring(5, 7);
+        vis25ByMonth[vM] = (vis25ByMonth[vM] || 0) + v.visitors;
+        vis25ByDay[vDm] = (vis25ByDay[vDm] || 0) + v.visitors;
+      }
     }
 
-    const sph26 = totalVisitors > 0 ? (s26 / totalVisitors) : 0;
-    const captureRate26 = totalVisitors > 0 ? (tx26Count / totalVisitors * 100) : 0;
+    const sph26 = totalVisitors26 > 0 ? (s26 / totalVisitors26) : 0;
+    const sph25 = totalVisitors25 > 0 ? (s25 / totalVisitors25) : 0;
+    const sphGrowth = (sph25 > 0 && sph26 > 0) ? ((sph26 - sph25) / sph25 * 100) : null;
+    const visGrowth = (totalVisitors25 > 0 && totalVisitors26 > 0) ? ((totalVisitors26 - totalVisitors25) / totalVisitors25 * 100) : null;
 
+    const captureRate26 = totalVisitors26 > 0 ? (tx26Count / totalVisitors26 * 100) : 0;
+
+    // Traffic Quality percentages
+    const pctIndiv = totalVisitors26 > 0 ? (indiv26 / totalVisitors26 * 100) : 0;
+    const pctRl = totalVisitors26 > 0 ? (rl26 / totalVisitors26 * 100) : 0;
+    const pctRa = totalVisitors26 > 0 ? (ra26 / totalVisitors26 * 100) : 0;
+
+    // Dynamic Brand Styling for Dufan & SeaWorld
+    const isDufanActive = (area && area.toUpperCase().includes('DUFAN')) || 
+                          (outlet && outlet.toUpperCase().includes('DF')) ||
+                          (matchedVisitorUnit && matchedVisitorUnit.toLowerCase() === 'dufan');
+    const isSeaWorldActive = (outlet && (outlet.toUpperCase().includes('SWIN') || outlet.toUpperCase().includes('SEA WORLD'))) ||
+                             (area && area.toUpperCase().includes('SEAWORLD')) ||
+                             (matchedVisitorUnit && matchedVisitorUnit.toLowerCase() === 'seaworld');
+
+    const kpiCardVis = document.getElementById('kpiCardVisitor');
+    const kpiVisBadge = document.getElementById('kpiVisitorUnitBadge');
+    if (kpiCardVis) {
+      kpiCardVis.classList.remove('kpi-card-dufan', 'kpi-card-seaworld');
+      if (isDufanActive) {
+        kpiCardVis.classList.add('kpi-card-dufan');
+        if (kpiVisBadge) {
+          kpiVisBadge.style.display = 'inline-block';
+          kpiVisBadge.className = 'unit-indicator unit-dufan';
+          kpiVisBadge.textContent = 'DUFAN';
+          kpiVisBadge.style.color = 'var(--unit-dufan)';
+          kpiVisBadge.style.background = 'rgba(224,0,77,0.12)';
+          kpiVisBadge.style.borderColor = 'rgba(224,0,77,0.25)';
+        }
+      } else if (isSeaWorldActive) {
+        kpiCardVis.classList.add('kpi-card-seaworld');
+        if (kpiVisBadge) {
+          kpiVisBadge.style.display = 'inline-block';
+          kpiVisBadge.className = 'unit-indicator unit-seaworld';
+          kpiVisBadge.textContent = 'SEAWORLD';
+          kpiVisBadge.style.color = 'var(--unit-seaworld)';
+          kpiVisBadge.style.background = 'rgba(0,110,179,0.12)';
+          kpiVisBadge.style.borderColor = 'rgba(0,110,179,0.25)';
+        }
+      } else {
+        if (kpiVisBadge) kpiVisBadge.style.display = 'none';
+      }
+    }
+
+    // Update Visitor Count & Growth
     const kpiVisCountEl = document.getElementById('kpiVisitorCount');
+    const kpiVisGrowthEl = document.getElementById('kpiVisitorGrowth');
     if (kpiVisCountEl) {
-      if (totalVisitors > 0) {
-        kpiVisCountEl.innerHTML = `${formatNum(totalVisitors)} <span style="font-size:14px; font-weight:normal; color:var(--text-muted);">Orang</span>`;
+      if (totalVisitors26 > 0) {
+        kpiVisCountEl.innerHTML = `${formatNum(totalVisitors26)} <span style="font-size:14px; font-weight:normal; color:var(--text-muted);">Orang</span>`;
       } else {
         kpiVisCountEl.innerHTML = `<span style="font-size:15px; color:var(--text-muted); font-weight:600;">Belum Diinput</span>`;
       }
     }
-
-    const kpiSphEl = document.getElementById('kpiSphVal');
-    if (kpiSphEl) {
-      kpiSphEl.textContent = totalVisitors > 0 ? formatRp(sph26) : '-';
+    if (kpiVisGrowthEl) {
+      if (visGrowth !== null && totalVisitors26 > 0) {
+        kpiVisGrowthEl.style.display = 'inline-block';
+        kpiVisGrowthEl.className = 'badge-growth ' + (visGrowth >= 0 ? 'positive' : 'negative');
+        kpiVisGrowthEl.textContent = (visGrowth >= 0 ? '+' : '') + visGrowth.toFixed(1) + '% YoY';
+      } else {
+        kpiVisGrowthEl.style.display = 'none';
+      }
     }
 
+    // Update Traffic Quality Bar & Labels
+    const trafficContainer = document.getElementById('kpiTrafficMixContainer');
+    const trafficLabel = document.getElementById('kpiTrafficMixLabel');
+    const barIndiv = document.getElementById('barIndiv');
+    const barRl = document.getElementById('barRl');
+    const barRa = document.getElementById('barRa');
+    if (trafficContainer) {
+      if (totalVisitors26 > 0) {
+        trafficContainer.style.display = 'block';
+        if (trafficLabel) {
+          trafficLabel.textContent = `${pctIndiv.toFixed(0)}% Indiv • ${pctRl.toFixed(0)}% R.Dir • ${pctRa.toFixed(0)}% Agen`;
+        }
+        if (barIndiv) {
+          barIndiv.style.width = pctIndiv.toFixed(1) + '%';
+          barIndiv.title = `Individu (FIT): ${formatNum(indiv26)} orang (${pctIndiv.toFixed(1)}%)`;
+        }
+        if (barRl) {
+          barRl.style.width = pctRl.toFixed(1) + '%';
+          barRl.title = `Rombongan Langsung: ${formatNum(rl26)} orang (${pctRl.toFixed(1)}%)`;
+        }
+        if (barRa) {
+          barRa.style.width = pctRa.toFixed(1) + '%';
+          barRa.title = `Rombongan Agen: ${formatNum(ra26)} orang (${pctRa.toFixed(1)}%)`;
+        }
+      } else {
+        trafficContainer.style.display = 'none';
+      }
+    }
+
+    // Update SPH & Growth
+    const kpiSphEl = document.getElementById('kpiSphVal');
+    const kpiSphGrowthEl = document.getElementById('kpiSphGrowth');
+    if (kpiSphEl) {
+      kpiSphEl.textContent = totalVisitors26 > 0 ? formatRp(sph26) : '-';
+    }
+    if (kpiSphGrowthEl) {
+      if (sphGrowth !== null && totalVisitors26 > 0) {
+        kpiSphGrowthEl.style.display = 'inline-block';
+        kpiSphGrowthEl.className = 'badge-growth ' + (sphGrowth >= 0 ? 'positive' : 'negative');
+        kpiSphGrowthEl.textContent = (sphGrowth >= 0 ? '+' : '') + sphGrowth.toFixed(1) + '%';
+      } else {
+        kpiSphGrowthEl.style.display = 'none';
+      }
+    }
+
+    // Update Capture Rate
     const kpiCapEl = document.getElementById('kpiCaptureRate');
+    const kpiCapStrukEl = document.getElementById('kpiCaptureStruk');
     if (kpiCapEl) {
-      if (totalVisitors > 0) {
+      if (totalVisitors26 > 0) {
         kpiCapEl.className = 'badge-growth ' + (captureRate26 > 0 ? 'positive' : 'neutral');
-        kpiCapEl.textContent = `${captureRate26.toFixed(1)}% (${formatNum(tx26Count)} struk)`;
+        kpiCapEl.textContent = `${captureRate26.toFixed(1)}%`;
       } else {
         kpiCapEl.className = 'badge-growth neutral';
         kpiCapEl.textContent = '-';
+      }
+    }
+    if (kpiCapStrukEl) {
+      if (totalVisitors26 > 0) {
+        kpiCapStrukEl.textContent = `(${formatNum(tx26Count)} struk)`;
+      } else {
+        kpiCapStrukEl.textContent = '';
       }
     }
 
@@ -6442,17 +6766,27 @@
 
     let dailyChartList = [];
     let targetChartList = [];
+    let visitorRevenueChartList = [];
+    let visitorTrendChartList = [];
 
     const chart1Title = document.getElementById('chart1Title');
     const chart1Subtitle = document.getElementById('chart1Subtitle');
     const chart2Title = document.getElementById('chart2Title');
     const chart2Subtitle = document.getElementById('chart2Subtitle');
+    const chart5Title = document.getElementById('chart5Title');
+    const chart5Subtitle = document.getElementById('chart5Subtitle');
+    const chart6Title = document.getElementById('chart6Title');
+    const chart6Subtitle = document.getElementById('chart6Subtitle');
 
     if (isMonthlyView) {
       if (chart1Title) chart1Title.textContent = 'Tren Penjualan Bulanan (2026 vs 2025)';
       if (chart1Subtitle) chart1Subtitle.textContent = 'Perbandingan pergerakan revenue bulanan YTD';
       if (chart2Title) chart2Title.textContent = 'Target vs Realisasi Bulanan 2026';
       if (chart2Subtitle) chart2Subtitle.textContent = 'Monitoring target bulanan vs aktual tercapai YTD';
+      if (chart5Title) chart5Title.textContent = 'Korelasi Revenue vs Pengunjung Bulanan (2026)';
+      if (chart5Subtitle) chart5Subtitle.textContent = 'Hubungan omzet bulanan dengan volume pengunjung YTD (Dual Y-Axis)';
+      if (chart6Title) chart6Title.textContent = 'Tren Kunjungan Pengunjung Bulanan (2026 vs 2025)';
+      if (chart6Subtitle) chart6Subtitle.textContent = 'Perbandingan volume pengunjung bulanan YTD (YoY)';
 
       const monthKeys = Object.keys(byMonth).sort();
       dailyChartList = monthKeys.map(mKey => {
@@ -6479,6 +6813,31 @@
           actual: item['2026']
         };
       });
+
+      visitorRevenueChartList = dailyChartList.map(item => {
+        const mKey = item.date.substring(5, 7);
+        return {
+          date: item.date,
+          label: item.label,
+          short_label: item.short_label,
+          is_monthly: true,
+          revenue_2026: item['2026'] || 0,
+          visitors_2026: vis26ByMonth[mKey] || 0
+        };
+      });
+
+      visitorTrendChartList = dailyChartList.map(item => {
+        const mKey = item.date.substring(5, 7);
+        return {
+          date: item.date,
+          comparison_date: item.comparison_date,
+          label: item.label,
+          short_label: item.short_label,
+          is_monthly: true,
+          visitors_2026: vis26ByMonth[mKey] || 0,
+          visitors_2025: vis25ByMonth[mKey] || 0
+        };
+      });
     } else {
       if (hasDateRange) {
         const dateRangeLabel = (startDate ? formatDisplayDate(startDate) : 'Awal') + ' - ' + (endDate ? formatDisplayDate(endDate) : 'Akhir');
@@ -6486,6 +6845,10 @@
         if (chart1Subtitle) chart1Subtitle.textContent = `Perbandingan pergerakan revenue harian 2026 vs 2025`;
         if (chart2Title) chart2Title.textContent = `Target vs Realisasi Harian (${dateRangeLabel})`;
         if (chart2Subtitle) chart2Subtitle.textContent = `Monitoring target harian vs aktual tercapai`;
+        if (chart5Title) chart5Title.textContent = `Korelasi Revenue vs Pengunjung Harian (${dateRangeLabel})`;
+        if (chart5Subtitle) chart5Subtitle.textContent = `Hubungan omzet harian dengan volume pengunjung (Dual Y-Axis)`;
+        if (chart6Title) chart6Title.textContent = `Tren Kunjungan Pengunjung Harian (${dateRangeLabel})`;
+        if (chart6Subtitle) chart6Subtitle.textContent = `Perbandingan volume pengunjung harian (YoY day-matched)`;
       } else {
         const selMonthIdx = parseInt(selMonth, 10);
         const selMonthName = mFullNames[selMonthIdx] || month;
@@ -6493,6 +6856,10 @@
         if (chart1Subtitle) chart1Subtitle.textContent = `Perbandingan pergerakan revenue harian bulan ${selMonthName}`;
         if (chart2Title) chart2Title.textContent = `Target vs Realisasi Harian (${selMonthName} 2026)`;
         if (chart2Subtitle) chart2Subtitle.textContent = `Monitoring target harian vs aktual tercapai bulan ${selMonthName}`;
+        if (chart5Title) chart5Title.textContent = `Korelasi Revenue vs Pengunjung Harian (${selMonthName} 2026)`;
+        if (chart5Subtitle) chart5Subtitle.textContent = `Hubungan omzet harian dengan volume pengunjung bulan ${selMonthName} (Dual Y-Axis)`;
+        if (chart6Title) chart6Title.textContent = `Tren Kunjungan Pengunjung Harian (${selMonthName} 2026 vs 2025)`;
+        if (chart6Subtitle) chart6Subtitle.textContent = `Perbandingan volume pengunjung harian bulan ${selMonthName}`;
       }
 
       const dayKeys = Object.keys(byDay).sort();
@@ -6519,7 +6886,38 @@
         target: targetDailyMap[item.date] || 0,
         actual: item['2026']
       }));
+
+      visitorRevenueChartList = dailyChartList.map(item => {
+        const dayKey = item.date.substring(5);
+        return {
+          date: item.date,
+          label: item.label,
+          short_label: item.short_label,
+          is_monthly: false,
+          revenue_2026: item['2026'] || 0,
+          visitors_2026: vis26ByDay[dayKey] || 0
+        };
+      });
+
+      visitorTrendChartList = dailyChartList.map(item => {
+        const dayKey = item.date.substring(5);
+        return {
+          date: item.date,
+          comparison_date: item.comparison_date,
+          label: item.label,
+          short_label: item.short_label,
+          is_monthly: false,
+          visitors_2026: vis26ByDay[dayKey] || 0,
+          visitors_2025: vis25ByDay[dayKey] || 0
+        };
+      });
     }
+
+    const chart5LegendVisDot = document.getElementById('chart5LegendVisDot');
+    const chart6LegendVis26Dot = document.getElementById('chart6LegendVis26Dot');
+    const visAccentColor = isDufanActive ? '#E0004D' : '#0033A0';
+    if (chart5LegendVisDot) chart5LegendVisDot.style.background = visAccentColor;
+    if (chart6LegendVis26Dot) chart6LegendVis26Dot.style.background = visAccentColor;
 
     // Update Top 5 & Evaluation Outlets in DOM
     const active26Outlets = outletList.filter(o => o.s26 > 0);
@@ -6802,6 +7200,8 @@
       daily_chart: dailyChartList,
       target_chart: targetChartList,
       hourly_chart: hourlyList,
+      visitor_revenue_chart: visitorRevenueChartList,
+      visitor_trend_chart: visitorTrendChartList,
       peak_sales_hour: peakHourSales,
       peak_tx_hour: peakHourTx,
       executive_narrative: document.getElementById('narrativeText') ? document.getElementById('narrativeText').textContent : ''
@@ -8182,6 +8582,8 @@
     drawTargetChart();
     drawHourlySalesChart();
     drawHourlyTxChart();
+    drawVisitorRevenueChart();
+    drawVisitorTrendChart();
   }
 
   // Chart 1: YoY Daily Sales
@@ -8700,6 +9102,451 @@
     drawGenericHourlyChart('hourlyTransactionsChart', 'hourlyTransactionsTooltip', 'transactions_2026', 'transactions_2025', '#059669', '#cbd5e1', val => (val || 0).toLocaleString('id-ID') + ' Struk');
   }
 
+  // Chart 5: Korelasi Revenue vs Pengunjung (Dual Y-Axis)
+  const visRevCanvas = document.getElementById('visitorRevenueChart');
+  const visRevTooltip = document.getElementById('visitorRevenueTooltip');
+  let visRevPoints = [];
+
+  function drawVisitorRevenueChart() {
+    if (!visRevCanvas) return;
+    const isDark = root.classList.contains('dark');
+    const gridColor = isDark ? '#1f2937' : '#e2e8f0';
+    const textColor = isDark ? '#94a3b8' : '#64748b';
+
+    const box = visRevCanvas.parentElement;
+    const ratio = window.devicePixelRatio || 1;
+    const width = box.clientWidth;
+    const height = 320;
+    visRevCanvas.width = width * ratio;
+    visRevCanvas.height = height * ratio;
+    visRevCanvas.style.height = height + 'px';
+
+    const ctx = visRevCanvas.getContext('2d');
+    ctx.scale(ratio, ratio);
+
+    const chartData = currentDashboardData.visitor_revenue_chart || [];
+    if (!chartData.length) {
+      ctx.fillStyle = textColor;
+      ctx.textAlign = 'center';
+      ctx.font = '13px sans-serif';
+      ctx.fillText('Tidak ada data revenue & pengunjung untuk filter ini', width / 2, height / 2);
+      return;
+    }
+
+    const isDufan = (currentFilter.area && currentFilter.area.toUpperCase().includes('DUFAN')) || 
+                    (currentFilter.outlet && currentFilter.outlet.toUpperCase().includes('DF'));
+    const isSeaWorld = (currentFilter.outlet && (currentFilter.outlet.toUpperCase().includes('SWIN') || currentFilter.outlet.toUpperCase().includes('SEA WORLD'))) ||
+                       (currentFilter.area && currentFilter.area.toUpperCase().includes('SEAWORLD'));
+    const visColor = isDufan ? '#E0004D' : (isSeaWorld ? (isDark ? '#1a96e8' : '#006EB3') : '#059669');
+    const revColor = isDark ? '#00B5E2' : '#0033A0';
+
+    const maxRev = Math.max(...chartData.map(x => x.revenue_2026 || 0), 1000000);
+    const maxVis = Math.max(...chartData.map(x => x.visitors_2026 || 0), 100);
+
+    const left = 68, bottom = 36, top = 20, right = 60;
+    const plotW = width - left - right;
+    const plotH = height - top - bottom;
+
+    ctx.font = '11px sans-serif';
+    ctx.lineWidth = 1;
+
+    // Gridlines & Dual Y-Axis Labels
+    [0, 0.25, 0.5, 0.75, 1].forEach(t => {
+      const y = top + plotH * (1 - t);
+      ctx.strokeStyle = gridColor;
+      ctx.beginPath();
+      ctx.moveTo(left, y);
+      ctx.lineTo(width - right, y);
+      ctx.stroke();
+
+      // Left Y-Axis: Revenue (Rp)
+      ctx.fillStyle = revColor;
+      ctx.textAlign = 'left';
+      ctx.fillText('Rp ' + Math.round(maxRev * t / 1000000) + 'jt', 6, y + 4);
+
+      // Right Y-Axis: Visitor (Orang)
+      ctx.fillStyle = visColor;
+      ctx.textAlign = 'right';
+      const vVal = Math.round(maxVis * t);
+      const vStr = vVal >= 1000 ? (Math.round(vVal / 1000) + 'rb') : vVal.toLocaleString('id-ID');
+      ctx.fillText(vStr, width - 6, y + 4);
+    });
+
+    const step = plotW / Math.max(chartData.length - 1, 1);
+    visRevPoints = [];
+
+    // Series 1: Revenue 2026 Line
+    ctx.strokeStyle = revColor;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    chartData.forEach((item, i) => {
+      const x = left + i * step;
+      const yRev = top + plotH - ((item.revenue_2026 || 0) / maxRev) * plotH;
+      if (i === 0) ctx.moveTo(x, yRev); else ctx.lineTo(x, yRev);
+    });
+    ctx.stroke();
+
+    // Series 2: Visitor 2026 Line
+    ctx.strokeStyle = visColor;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    chartData.forEach((item, i) => {
+      const x = left + i * step;
+      const yVis = top + plotH - ((item.visitors_2026 || 0) / maxVis) * plotH;
+      if (i === 0) ctx.moveTo(x, yVis); else ctx.lineTo(x, yVis);
+    });
+    ctx.stroke();
+
+    // Markers & Peak Visitor Annotation
+    let peakIndex = -1;
+    let maxVisVal = -1;
+    chartData.forEach((item, i) => {
+      const v = item.visitors_2026 || 0;
+      if (v > maxVisVal) {
+        maxVisVal = v;
+        peakIndex = i;
+      }
+    });
+
+    chartData.forEach((item, i) => {
+      const x = left + i * step;
+      const yRev = top + plotH - ((item.revenue_2026 || 0) / maxRev) * plotH;
+      const yVis = top + plotH - ((item.visitors_2026 || 0) / maxVis) * plotH;
+
+      // Revenue dot
+      ctx.fillStyle = revColor;
+      ctx.beginPath();
+      ctx.arc(x, yRev, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Visitor dot
+      const isPeak = (i === peakIndex && maxVisVal > 0);
+      ctx.fillStyle = isPeak ? '#FED141' : visColor;
+      ctx.beginPath();
+      ctx.arc(x, yVis, isPeak ? 6 : 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (isPeak) {
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        const pinText = '★ Puncak: ' + formatNum(maxVisVal) + ' Org';
+        ctx.font = 'bold 10px sans-serif';
+        const textW = ctx.measureText(pinText).width;
+        const padX = 8;
+        const bW = textW + padX * 2, bH = 20;
+        let bX = x - bW / 2;
+        if (bX < left) bX = left;
+        if (bX + bW > width - right) bX = width - right - bW;
+        const bY = Math.max(yVis - 30, top);
+
+        ctx.fillStyle = '#1e293b';
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(bX, bY, bW, bH, 6);
+        else ctx.rect(bX, bY, bW, bH);
+        ctx.fill();
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.fillStyle = '#fbbf24';
+        ctx.textAlign = 'center';
+        ctx.fillText(pinText, bX + bW / 2, bY + 14);
+      }
+
+      visRevPoints.push({ x, yRev, yVis, item });
+    });
+
+    // X-Axis Labels
+    ctx.fillStyle = textColor;
+    ctx.textAlign = 'center';
+    ctx.font = '11px sans-serif';
+    chartData.forEach((item, i) => {
+      const lbl = item.is_monthly ? (item.short_label || item.label) : item.label;
+      if (chartData.length <= 12) {
+        ctx.fillText(lbl, left + i * step, height - 10);
+      } else {
+        if (i === 0 || i === chartData.length - 1 || i % Math.ceil(chartData.length / 10) === 0) {
+          ctx.fillText(lbl, left + i * step, height - 10);
+        }
+      }
+    });
+  }
+
+  if (visRevCanvas) {
+    visRevCanvas.addEventListener('mousemove', function(e) {
+      if (!visRevPoints.length) return;
+      const rect = visRevCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      let nearest = visRevPoints.reduce((a, p) => Math.hypot(p.x - x, p.yVis - y) < Math.hypot(a.x - x, a.yVis - y) ? p : a);
+      const nearRev = visRevPoints.reduce((a, p) => Math.hypot(p.x - x, p.yRev - y) < Math.hypot(a.x - x, a.yRev - y) ? p : a);
+      if (Math.hypot(nearRev.x - x, nearRev.yRev - y) < Math.hypot(nearest.x - x, nearest.yVis - y)) {
+        nearest = nearRev;
+      }
+
+      if (Math.hypot(nearest.x - x, Math.min(Math.abs(nearest.yVis - y), Math.abs(nearest.yRev - y))) < 40) {
+        const it = nearest.item;
+        const rev = it.revenue_2026 || 0;
+        const vis = it.visitors_2026 || 0;
+        const sph = vis > 0 ? (rev / vis) : 0;
+
+        const isDufan = (currentFilter.area && currentFilter.area.toUpperCase().includes('DUFAN')) || 
+                        (currentFilter.outlet && currentFilter.outlet.toUpperCase().includes('DF'));
+        const isSeaWorld = (currentFilter.outlet && (currentFilter.outlet.toUpperCase().includes('SWIN') || currentFilter.outlet.toUpperCase().includes('SEA WORLD'))) ||
+                           (currentFilter.area && currentFilter.area.toUpperCase().includes('SEAWORLD'));
+        const visColor = isDufan ? '#f43f5e' : (isSeaWorld ? '#38bdf8' : '#10b981');
+
+        let titleHtml = '';
+        if (!it.is_monthly && it.date && it.date.length >= 10) {
+          const dayName = getDayNameFromDateStr(it.date);
+          titleHtml = `<div class="tooltip-title">📅 ${it.label} (${dayName})</div>`;
+        } else {
+          titleHtml = `<div class="tooltip-title">${it.label} 2026</div>`;
+        }
+
+        visRevTooltip.style.display = 'block';
+        visRevTooltip.style.left = Math.min(nearest.x + 12, visRevCanvas.clientWidth - 260) + 'px';
+        visRevTooltip.style.top = Math.max(Math.min(nearest.yVis, nearest.yRev) - 100, 10) + 'px';
+        visRevTooltip.innerHTML = `
+          ${titleHtml}
+          <div class="tooltip-row"><span class="tooltip-label" style="color:#60a5fa;">● Net Sales 2026:</span> <span class="tooltip-val">${formatRp(rev)}</span></div>
+          <div class="tooltip-row"><span class="tooltip-label" style="color:${visColor};">● Visitor 2026:</span> <span class="tooltip-val">${formatNum(vis)} Orang</span></div>
+          <div class="tooltip-row" style="margin-top:4px; padding-top:4px; border-top:1px dashed rgba(255,255,255,0.15);"><span class="tooltip-label" style="color:#fbbf24;">⚡ SPH (${it.is_monthly ? 'Bulanan' : 'Harian'}):</span> <span class="tooltip-val" style="color:#fbbf24; font-weight:700;">${sph > 0 ? formatRp(sph) + '/org' : '-'}</span></div>
+        `;
+      } else {
+        visRevTooltip.style.display = 'none';
+      }
+    });
+
+    visRevCanvas.addEventListener('mouseleave', () => {
+      if (visRevTooltip) visRevTooltip.style.display = 'none';
+    });
+  }
+
+  // Chart 6: Tren Kunjungan Pengunjung (YoY 2026 vs 2025)
+  const visTrendCanvas = document.getElementById('visitorTrendChart');
+  const visTrendTooltip = document.getElementById('visitorTrendTooltip');
+  let visTrendPoints = [];
+
+  function drawVisitorTrendChart() {
+    if (!visTrendCanvas) return;
+    const isDark = root.classList.contains('dark');
+    const gridColor = isDark ? '#1f2937' : '#e2e8f0';
+    const textColor = isDark ? '#94a3b8' : '#64748b';
+
+    const box = visTrendCanvas.parentElement;
+    const ratio = window.devicePixelRatio || 1;
+    const width = box.clientWidth;
+    const height = 320;
+    visTrendCanvas.width = width * ratio;
+    visTrendCanvas.height = height * ratio;
+    visTrendCanvas.style.height = height + 'px';
+
+    const ctx = visTrendCanvas.getContext('2d');
+    ctx.scale(ratio, ratio);
+
+    const trendData = currentDashboardData.visitor_trend_chart || [];
+    if (!trendData.length) {
+      ctx.fillStyle = textColor;
+      ctx.textAlign = 'center';
+      ctx.font = '13px sans-serif';
+      ctx.fillText('Tidak ada data tren pengunjung untuk filter ini', width / 2, height / 2);
+      return;
+    }
+
+    const isDufan = (currentFilter.area && currentFilter.area.toUpperCase().includes('DUFAN')) || 
+                    (currentFilter.outlet && currentFilter.outlet.toUpperCase().includes('DF'));
+    const isSeaWorld = (currentFilter.outlet && (currentFilter.outlet.toUpperCase().includes('SWIN') || currentFilter.outlet.toUpperCase().includes('SEA WORLD'))) ||
+                       (currentFilter.area && currentFilter.area.toUpperCase().includes('SEAWORLD'));
+    const vis26Color = isDufan ? '#E0004D' : (isSeaWorld ? (isDark ? '#1a96e8' : '#006EB3') : (isDark ? '#00B5E2' : '#0033A0'));
+
+    const maxVis = Math.max(...trendData.flatMap(x => [x.visitors_2026 || 0, x.visitors_2025 || 0]), 100);
+    const left = 60, bottom = 36, top = 20, right = 16;
+    const plotW = width - left - right;
+    const plotH = height - top - bottom;
+
+    ctx.font = '11px sans-serif';
+    ctx.fillStyle = textColor;
+    ctx.lineWidth = 1;
+
+    // Gridlines & Left Y-Axis
+    [0, 0.25, 0.5, 0.75, 1].forEach(t => {
+      const y = top + plotH * (1 - t);
+      ctx.strokeStyle = gridColor;
+      ctx.beginPath();
+      ctx.moveTo(left, y);
+      ctx.lineTo(width - right, y);
+      ctx.stroke();
+
+      ctx.textAlign = 'left';
+      const vVal = Math.round(maxVis * t);
+      const vStr = vVal >= 1000 ? (Math.round(vVal / 1000) + 'rb') : vVal.toLocaleString('id-ID');
+      ctx.fillText(vStr, 6, y + 4);
+    });
+
+    const step = plotW / Math.max(trendData.length - 1, 1);
+    visTrendPoints = [];
+
+    // Series 2025 (Lavender Dashed Line)
+    ctx.strokeStyle = '#a78bfa';
+    ctx.lineWidth = 2.2;
+    ctx.setLineDash([5, 4]);
+    ctx.beginPath();
+    trendData.forEach((item, i) => {
+      const x = left + i * step;
+      const y = top + plotH - ((item.visitors_2025 || 0) / maxVis) * plotH;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    ctx.setLineDash([]); // Reset line dash
+
+    // Series 2026 (Solid Line)
+    ctx.strokeStyle = vis26Color;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    trendData.forEach((item, i) => {
+      const x = left + i * step;
+      const y = top + plotH - ((item.visitors_2026 || 0) / maxVis) * plotH;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // Markers & Peak Annotation
+    let peakIndex = -1;
+    let maxVis26Val = -1;
+    trendData.forEach((item, i) => {
+      const v = item.visitors_2026 || 0;
+      if (v > maxVis26Val) {
+        maxVis26Val = v;
+        peakIndex = i;
+      }
+    });
+
+    trendData.forEach((item, i) => {
+      const x = left + i * step;
+      const y26 = top + plotH - ((item.visitors_2026 || 0) / maxVis) * plotH;
+      const isPeak = (i === peakIndex && maxVis26Val > 0);
+
+      ctx.fillStyle = isPeak ? '#FED141' : vis26Color;
+      ctx.beginPath();
+      ctx.arc(x, y26, isPeak ? 6 : 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (isPeak) {
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        const pinText = '★ Puncak: ' + formatNum(maxVis26Val) + ' Org';
+        ctx.font = 'bold 10px sans-serif';
+        const textW = ctx.measureText(pinText).width;
+        const bW = textW + 16, bH = 20;
+        let bX = x - bW / 2;
+        if (bX < left) bX = left;
+        if (bX + bW > width - right) bX = width - right - bW;
+        const bY = Math.max(y26 - 30, top);
+
+        ctx.fillStyle = '#1e293b';
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(bX, bY, bW, bH, 6);
+        else ctx.rect(bX, bY, bW, bH);
+        ctx.fill();
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.fillStyle = '#fbbf24';
+        ctx.textAlign = 'center';
+        ctx.fillText(pinText, bX + bW / 2, bY + 14);
+      }
+
+      visTrendPoints.push({ x, y: y26, item });
+    });
+
+    // X-Axis Labels
+    ctx.fillStyle = textColor;
+    ctx.textAlign = 'center';
+    ctx.font = '11px sans-serif';
+    trendData.forEach((item, i) => {
+      const lbl = item.is_monthly ? (item.short_label || item.label) : item.label;
+      if (trendData.length <= 12) {
+        ctx.fillText(lbl, left + i * step, height - 10);
+      } else {
+        if (i === 0 || i === trendData.length - 1 || i % Math.ceil(trendData.length / 10) === 0) {
+          ctx.fillText(lbl, left + i * step, height - 10);
+        }
+      }
+    });
+  }
+
+  if (visTrendCanvas) {
+    visTrendCanvas.addEventListener('mousemove', function(e) {
+      if (!visTrendPoints.length) return;
+      const rect = visTrendCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      let nearest = visTrendPoints.reduce((a, p) => Math.hypot(p.x - x, p.y - y) < Math.hypot(a.x - x, a.y - y) ? p : a);
+      if (Math.hypot(nearest.x - x, nearest.y - y) < 30) {
+        const it = nearest.item;
+        const v26 = it.visitors_2026 || 0;
+        const v25 = it.visitors_2025 || 0;
+        const diff = v26 - v25;
+        const growth = v25 > 0 ? ((diff / v25) * 100).toFixed(1) + '%' : '-';
+
+        const isDufan = (currentFilter.area && currentFilter.area.toUpperCase().includes('DUFAN')) || 
+                        (currentFilter.outlet && currentFilter.outlet.toUpperCase().includes('DF'));
+        const isSeaWorld = (currentFilter.outlet && (currentFilter.outlet.toUpperCase().includes('SWIN') || currentFilter.outlet.toUpperCase().includes('SEA WORLD'))) ||
+                           (currentFilter.area && currentFilter.area.toUpperCase().includes('SEAWORLD'));
+        const vis26Color = isDufan ? '#f43f5e' : (isSeaWorld ? '#38bdf8' : '#60a5fa');
+
+        let titleHtml = '';
+        let row26Label = '● 2026 (Aktual):';
+        let row25Label = '● 2025 (Pembanding):';
+        let holidayBadge = '';
+
+        if (!it.is_monthly && it.date && it.date.length >= 10) {
+          const day26 = getDayNameFromDateStr(it.date);
+          const day25 = getDayNameFromDateStr(it.comparison_date);
+          titleHtml = `<div class="tooltip-title">📅 ${it.label} (${day26} '26 vs ${day25} '25)</div>`;
+          row26Label = `● 2026 (${day26}):`;
+          row25Label = `● 2025 (${day25}):`;
+
+          const hol26 = INDONESIA_HOLIDAYS[it.date];
+          const hol25 = INDONESIA_HOLIDAYS[it.comparison_date];
+          if (hol26 || hol25) {
+            const holParts = [];
+            if (hol26) holParts.push(`'26: ${hol26}`);
+            if (hol25) holParts.push(`'25: ${hol25}`);
+            holidayBadge = `<div style="margin-top:4px; font-size:10.5px; color:#f87171; border-top:1px dashed rgba(255,255,255,0.15); padding-top:4px;">🔴 Libur: ${holParts.join(' | ')}</div>`;
+          }
+        } else {
+          titleHtml = `<div class="tooltip-title">${it.label} (Bulanan)</div>`;
+        }
+
+        visTrendTooltip.style.display = 'block';
+        visTrendTooltip.style.left = Math.min(nearest.x + 12, visTrendCanvas.clientWidth - 260) + 'px';
+        visTrendTooltip.style.top = Math.max(nearest.y - 120, 10) + 'px';
+        visTrendTooltip.innerHTML = `
+          ${titleHtml}
+          <div class="tooltip-row"><span class="tooltip-label" style="color:${vis26Color};">${row26Label}</span> <span class="tooltip-val">${formatNum(v26)} Orang</span></div>
+          <div class="tooltip-row"><span class="tooltip-label" style="color:#c4b5fd;">${row25Label}</span> <span class="tooltip-val">${formatNum(v25)} Orang</span></div>
+          <div class="tooltip-row"><span class="tooltip-label">YoY Growth:</span> <span class="tooltip-val" style="color:${diff >= 0 ? '#34d399' : '#f87171'}">${growth} (${diff >= 0 ? '+' : ''}${formatNum(diff)} org)</span></div>
+          ${holidayBadge}
+        `;
+      } else {
+        visTrendTooltip.style.display = 'none';
+      }
+    });
+
+    visTrendCanvas.addEventListener('mouseleave', () => {
+      if (visTrendTooltip) visTrendTooltip.style.display = 'none';
+    });
+  }
+
   // Initial load & draw
   applyFilters();
   redrawAllCharts();
@@ -8726,15 +9573,23 @@
     if (btn) btn.classList.add('active');
     const trendPanels = document.querySelectorAll('.chart-panel-trend');
     const hourlyPanels = document.querySelectorAll('.chart-panel-hourly');
+    const visitorPanels = document.querySelectorAll('.chart-panel-visitor');
     if (mode === 'trend') {
       trendPanels.forEach(p => p.style.display = 'block');
       hourlyPanels.forEach(p => p.style.display = 'none');
+      visitorPanels.forEach(p => p.style.display = 'none');
     } else if (mode === 'hourly') {
       trendPanels.forEach(p => p.style.display = 'none');
       hourlyPanels.forEach(p => p.style.display = 'block');
+      visitorPanels.forEach(p => p.style.display = 'none');
+    } else if (mode === 'visitor') {
+      trendPanels.forEach(p => p.style.display = 'none');
+      hourlyPanels.forEach(p => p.style.display = 'none');
+      visitorPanels.forEach(p => p.style.display = 'block');
     } else {
       trendPanels.forEach(p => p.style.display = 'block');
       hourlyPanels.forEach(p => p.style.display = 'block');
+      visitorPanels.forEach(p => p.style.display = 'block');
     }
     requestAnimationFrame(() => {
       try {

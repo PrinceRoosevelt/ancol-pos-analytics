@@ -53,6 +53,10 @@ CREATE TABLE IF NOT EXISTS visitor_actual (
     unit TEXT NOT NULL,
     area TEXT NOT NULL,
     visitors INTEGER NOT NULL,
+    visitors_individu INTEGER DEFAULT 0,
+    visitors_rombongan_langsung INTEGER DEFAULT 0,
+    visitors_rombongan_agen INTEGER DEFAULT 0,
+    visitors_rombongan_total INTEGER DEFAULT 0,
     UNIQUE(date, unit) ON CONFLICT REPLACE
 );
 

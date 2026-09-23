@@ -62,4 +62,5 @@ Before completing any task:
    - `GET /?jenis=KONSINYASI` -> Filtered net sales match expected value.
    - `GET /download?jenis=KONSINYASI` -> Correct Content-Disposition attachment.
    - `POST /api/ask-ai` -> HTTP 200 OK with formatted executive answer.
+4. Git Push: Commit seluruh perubahan terverifikasi dengan pesan deskriptif dan push ke GitHub (`git push origin main`).
 
