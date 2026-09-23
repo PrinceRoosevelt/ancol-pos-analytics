@@ -871,6 +871,8 @@ def build_dashboard(
         matched_visitor_unit = "SeaWorld"
     elif outlet and "DUFAN" in outlet.upper():
         matched_visitor_unit = "Dufan"
+    elif outlet and ("SAMUDRA" in outlet.upper() or "ODIN" in outlet.upper() or "JBL" in outlet.upper() or "JBIN" in outlet.upper()):
+        matched_visitor_unit = "Samudra"
 
     for v in all_raw_visitors:
         v_date = v["date"]
