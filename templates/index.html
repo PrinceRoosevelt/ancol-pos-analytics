@@ -10,8 +10,6 @@
   <link rel="icon" type="image/png" href="/static/app_tile_icon.png">
   <link rel="shortcut icon" href="/static/favicon_tile_32.png">
   <link rel="apple-touch-icon" href="/static/app_tile_icon.png">
-  <!-- SheetJS untuk ekspor Excel langsung di browser -->
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <!-- Google Fonts: Plus Jakarta Sans (Tipografi Korporat Selaras Ancol Brand Guideline) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3883,6 +3881,10 @@
         <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
         <span>Smart Inventory</span>
       </a>
+      <button type="button" class="btn" id="btnDownloadExcel" onclick="downloadCuratedExcel()" style="background:#0284c7; color:#ffffff; font-weight:700; display:inline-flex; align-items:center; gap:6px; border:none; box-shadow:0 2px 8px rgba(2,132,199,0.25); cursor:pointer; transition:all 0.2s ease;" title="Unduh Analisis Kurasi Excel (.xlsx) Sesuai Filter Aktif">
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        <span>Unduh Excel</span>
+      </button>
       <button type="button" class="btn" id="btnSyncGoogleSheets" onclick="handleSyncGoogleSheets()" style="background:#0F9D58; color:#ffffff; font-weight:700; display:inline-flex; align-items:center; gap:8px; border:none; box-shadow:0 2px 8px rgba(15,157,88,0.25); cursor:pointer; transition:all 0.2s ease;">
         <span id="syncGSheetIcon">
           <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
@@ -5706,6 +5708,27 @@
     "TJSO Symphony Of The Sea": "Beachpark"
   };
 
+  const OUTLET_TO_AREA_MAP = {
+    "SWIN Sea World Induk": "AWAPARK",
+    "ODIN Samudra Induk": "AWAPARK",
+    "AWIN Atlantis Induk": "AWAPARK",
+    "AWKL AWA Taman Kelapa 2": "AWAPARK",
+    "JBIN JBL Induk": "AWAPARK",
+    "OL01 Online Shop": "BEACHPARK",
+    "TJSO Symphony Of The Sea": "BEACHPARK",
+    "TJOM Merchandise Ombak Laut": "BEACHPARK",
+    "DFIN Dufan Induk": "DUFAN",
+    "DFAR Dufan Arung Jeram": "DUFAN",
+    "DFIL Dufan Induk Lama": "DUFAN",
+    "DFKE Dufan Kereta Misteri": "DUFAN",
+    "DFIC Dufan Ice Age": "DUFAN",
+    "DFOR Dufan Oriental": "DUFAN",
+    "DFGA Dufan Galactica": "DUFAN",
+    "DFSI Dufan Simulator": "DUFAN",
+    "DFTO Dufan Tornado": "DUFAN",
+    "DFWW Dufan WWN": "DUFAN"
+  };
+
   // State
   let currentFilter = {
     month: "{{ selected_month or '' }}",
@@ -6163,22 +6186,34 @@
     }
   }
 
-  function onSearchInput(val) {
+  let searchDebounceTimer = null;
+  function onSearchInput(val, immediate = false) {
     const clearBtn = document.getElementById('clearSearchBtn');
     if (clearBtn) clearBtn.style.display = val.trim() ? 'block' : 'none';
 
-    if (activeTableTab === 'products') {
-      renderProductsTable(currentDashboardData.products);
-    } else {
-      filterTable();
+    if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+    if (immediate) {
+      if (activeTableTab === 'products') {
+        renderProductsTable(currentDashboardData.products);
+      } else {
+        filterTable();
+      }
+      return;
     }
+    searchDebounceTimer = setTimeout(() => {
+      if (activeTableTab === 'products') {
+        renderProductsTable(currentDashboardData.products);
+      } else {
+        filterTable();
+      }
+    }, 180);
   }
 
   function clearSearch() {
     const searchInput = document.getElementById('tableSearchInput');
     if (searchInput) {
       searchInput.value = '';
-      onSearchInput('');
+      onSearchInput('', true);
       searchInput.focus();
     }
   }
@@ -6189,16 +6224,17 @@
     }
   }
 
-  // Cascading Filter when Area changes
+  // Cascading Filter when Area changes (Instant O(1) Map Lookup)
   function onAreaChange() {
     const areaVal = document.getElementById('filterArea').value;
     const outletSelect = document.getElementById('filterOutlet');
     
-    // Filter available outlets in the select dropdown
+    // Filter available outlets in the select dropdown via static map (no 575k row loop)
     const availableOutlets = new Set();
-    RAW_SALES.forEach(r => {
-      if (!areaVal || r[4] === areaVal) {
-        availableOutlets.add(r[3]);
+    const upperArea = (areaVal || '').toUpperCase();
+    Object.keys(OUTLET_TO_AREA_MAP).forEach(o => {
+      if (!upperArea || OUTLET_TO_AREA_MAP[o].toUpperCase() === upperArea) {
+        availableOutlets.add(o);
       }
     });
 
@@ -6935,6 +6971,15 @@
     }
   }
 
+  // Cache NodeList checkbox outlet agar tidak re-query DOM setiap filtering
+  let _cachedOutletCbs = null;
+  function getOutletCheckboxes() {
+    if (!_cachedOutletCbs || !_cachedOutletCbs.length) {
+      _cachedOutletCbs = document.querySelectorAll('.outlet-checkbox');
+    }
+    return _cachedOutletCbs;
+  }
+
   // Instant Client-Side Filter Engine
   function applyFilters() {
     const month = document.getElementById('filterMonth').value;
@@ -6949,7 +6994,7 @@
     const modelBisnisEl = document.getElementById('filterModelBisnis');
     const modelBisnis = modelBisnisEl ? modelBisnisEl.value : '';
 
-    const allOutletCbs = document.querySelectorAll('.outlet-checkbox');
+    const allOutletCbs = getOutletCheckboxes();
     const totalOutletCount = allOutletCbs.length || 18;
     if (!window.selectedOutlets || window.selectedOutlets.size === 0) {
       if (allOutletCbs.length > 0 && Array.from(allOutletCbs).some(cb => cb.checked)) {
@@ -7025,6 +7070,7 @@
     const startDm = startDate ? startDate.substring(5) : '';
     const endDm = endDate ? endDate.substring(5) : '';
     const selMonth = month ? month.slice(-2) : '';
+    const hasCompactLookup = (typeof COMPACT_LOOKUP !== 'undefined' && COMPACT_LOOKUP) ? COMPACT_LOOKUP : null;
 
     for (let i = 0; i < RAW_SALES.length; i++) {
       const r = RAW_SALES[i]; // [year, date, hour, outlet, area, product, qty, net_sales, invoice, item_net_sales]
@@ -7052,22 +7098,26 @@
       // Filter khusus Akhir Pekan (Sabtu & Minggu) jika preset weekend aktif
       if (currentFilter.weekendOnly && !isWeekendDate(rDate)) continue;
 
-      // Match Supplier, Category & Model Bisnis criteria
-      const lk = (typeof COMPACT_LOOKUP !== 'undefined') ? COMPACT_LOOKUP[rProduct] : null;
-      const rSupplier = lk ? (lk[1] || 'LAIN-LAIN') : '';
-      const rCategory = lk ? (lk[2] || 'LAIN-LAIN') : '';
-      const lkJenisRaw = lk ? (lk[3] || '').toUpperCase() : '';
-      const rJenis = lkJenisRaw.includes('DAGANG') ? 'DAGANGAN' : (lk ? 'KONSINYASI' : '');
+      // Match Supplier, Category & Model Bisnis criteria (Evaluasi 1x per baris)
+      let lkSupplier = 'LAIN-LAIN', lkCategory = 'LAIN-LAIN', lkJenis = '', lkHpp = 0;
+      const lk = hasCompactLookup ? hasCompactLookup[rProduct] : null;
+      if (lk) {
+        lkSupplier = lk[1] || 'LAIN-LAIN';
+        lkCategory = lk[2] || 'LAIN-LAIN';
+        const lkJenisRaw = (lk[3] || '').toUpperCase();
+        lkJenis = lkJenisRaw.includes('DAGANG') ? 'DAGANGAN' : 'KONSINYASI';
+        lkHpp = lk[4] || 0;
+      }
 
-      if (supplier && rSupplier !== supplier) continue;
-      if (category && rCategory !== category) continue;
-      if (modelBisnis && rJenis !== modelBisnis) continue;
-
-      const txId = rOutlet + '_' + rDate + '_' + rInvoice;
+      if (supplier && lkSupplier !== supplier) continue;
+      if (category && lkCategory !== category) continue;
+      if (modelBisnis && lkJenis !== modelBisnis) continue;
 
       // Accumulate 4 Unit Executive Benchmarks (Dufan, SeaWorld, Samudra, Atlantis)
       const rUnit = OUTLET_TO_VISITOR_MAP[rOutlet];
+      let txId = null;
       if (rUnit && unitSales[rUnit]) {
+        txId = rOutlet + '_' + rDate + '_' + rInvoice;
         if (rYear === 2026) {
           unitSales[rUnit].s26 += rSales;
           unitSales[rUnit].tx26.add(txId);
@@ -7086,6 +7136,11 @@
       }
       if (area && rArea !== area) continue;
 
+      // Lazy construct txId jika belum dibuat untuk benchmark unit
+      if (!txId) {
+        txId = rOutlet + '_' + rDate + '_' + rInvoice;
+      }
+
       const mKey = rMonth.substring(5, 7);
       if (!byMonth[mKey]) byMonth[mKey] = { s26: 0, s25: 0 };
 
@@ -7098,14 +7153,7 @@
 
         // Lookup integration (Supplier, Category, Model, HPP, Margin)
         if (lk) {
-          // [code, supplier, category, jenis, hpp, harga_jual]
-          const lkSupplier = lk[1] || 'LAIN-LAIN';
-          const lkCategory = lk[2] || 'LAIN-LAIN';
-          const lkJenisRaw = (lk[3] || '').toUpperCase();
-          const lkJenis = lkJenisRaw.includes('DAGANG') ? 'DAGANGAN' : 'KONSINYASI';
-          const lkHpp = lk[4] || 0;
           const lineCogs = lkHpp * rQty;
-
           totalCogs26 += lineCogs;
 
           if (!bySupplier[lkSupplier]) {
@@ -9302,17 +9350,6 @@
     if (overlay) overlay.style.display = 'none';
   }
 
-  function copyGsheetEmail() {
-    const email = document.getElementById('gsheetRobotEmail')?.value;
-    if (email && email.includes('@')) {
-      navigator.clipboard.writeText(email).then(() => {
-        alert('Email robot Service Account berhasil disalin:\n' + email + '\n\nSilakan buka Google Sheet Anda dan bagikan (Share) sebagai Editor.');
-      });
-    } else {
-      alert('Email robot belum tersedia karena file config/google_credentials.json belum ditemukan.');
-    }
-  }
-
   async function saveGsheetConfig() {
     const input = document.getElementById('gsheetInputId');
     const val = (input ? input.value : '').trim();
@@ -9431,7 +9468,11 @@
       if (currentFilter.startDate) params.set('start_date', currentFilter.startDate);
       if (currentFilter.endDate) params.set('end_date', currentFilter.endDate);
       if (currentFilter.area) params.set('area', currentFilter.area);
-      if (currentFilter.outlet) params.set('outlet', currentFilter.outlet);
+      if (window.selectedOutlets && window.selectedOutlets.size > 0 && window.selectedOutlets.size < 18) {
+        params.set('outlet', Array.from(window.selectedOutlets).join(','));
+      } else if (currentFilter.outlet && currentFilter.outlet !== '__NONE__') {
+        params.set('outlet', currentFilter.outlet);
+      }
       if (currentFilter.supplier) params.set('supplier', currentFilter.supplier);
       if (currentFilter.category) params.set('category', currentFilter.category);
       if (currentFilter.modelBisnis) params.set('jenis', currentFilter.modelBisnis);
@@ -9439,9 +9480,12 @@
       return;
     }
 
-    // Client-side SheetJS Export (Works 100% Offline in Static HTML)
+    // Client-side SheetJS Export (Works 100% Offline in Static HTML with Lazy Load)
     if (typeof XLSX === 'undefined') {
-      alert('Sedang memuat engine Excel, silakan coba 2 detik lagi...');
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+      script.onload = () => downloadCuratedExcel();
+      document.head.appendChild(script);
       return;
     }
 
@@ -10585,7 +10629,11 @@
   redrawAllCharts();
   updateActiveFilterTags();
 
-  window.addEventListener('resize', redrawAllCharts);
+  let resizeDebounceTimer = null;
+  window.addEventListener('resize', () => {
+    if (resizeDebounceTimer) clearTimeout(resizeDebounceTimer);
+    resizeDebounceTimer = setTimeout(redrawAllCharts, 150);
+  });
 
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
