@@ -6891,6 +6891,9 @@
     updateOutletTriggerLabel();
   }
 
+  // Segera inisialisasi outlet multiselect agar Set tidak kosong
+  initOutletMultiselect();
+
   function filterByUnit(unitKey) {
     const cbs = document.querySelectorAll('.outlet-checkbox');
     if (!cbs.length) return;
@@ -6948,6 +6951,12 @@
 
     const allOutletCbs = document.querySelectorAll('.outlet-checkbox');
     const totalOutletCount = allOutletCbs.length || 18;
+    if (!window.selectedOutlets || window.selectedOutlets.size === 0) {
+      if (allOutletCbs.length > 0 && Array.from(allOutletCbs).some(cb => cb.checked)) {
+        window.selectedOutlets = new Set();
+        allOutletCbs.forEach(cb => { if (cb.checked) window.selectedOutlets.add(cb.value); });
+      }
+    }
     const isMultiOutletActive = window.selectedOutlets && (window.selectedOutlets.size < totalOutletCount);
     const isNoOutletSelected = window.selectedOutlets && (window.selectedOutlets.size === 0 && totalOutletCount > 0);
 
@@ -10571,6 +10580,7 @@
   }
 
   // Initial load & draw
+  initOutletMultiselect();
   applyFilters();
   redrawAllCharts();
   updateActiveFilterTags();
