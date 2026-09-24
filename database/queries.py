@@ -71,31 +71,94 @@ def save_visitor_db(
     individu: int = 0,
     rombongan_langsung: int = 0,
     rombongan_agen: int = 0,
+    individu_bayar: int = 0,
+    tidak_bayar: int = 0,
 ) -> None:
     """Simpan/Update pengunjung langsung ke tabel visitor_actual."""
     conn = get_connection()
     try:
         month_str = entry_date[:7]
+        if individu == 0 and (individu_bayar > 0 or tidak_bayar > 0):
+            individu = individu_bayar + tidak_bayar
         romb_total = rombongan_langsung + rombongan_agen
+        if count == 0 and (individu > 0 or romb_total > 0):
+            count = individu + romb_total
+
         conn.execute(
             """
             INSERT INTO visitor_actual (
                 date, month, unit, area, visitors,
-                visitors_individu, visitors_rombongan_langsung,
-                visitors_rombongan_agen, visitors_rombongan_total
+                visitors_individu, visitors_individu_bayar, visitors_tidak_bayar,
+                visitors_rombongan_langsung, visitors_rombongan_agen, visitors_rombongan_total
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(date, unit) DO UPDATE SET
                 visitors = excluded.visitors,
                 area = CASE WHEN excluded.area != '' THEN excluded.area ELSE visitor_actual.area END,
                 visitors_individu = excluded.visitors_individu,
+                visitors_individu_bayar = excluded.visitors_individu_bayar,
+                visitors_tidak_bayar = excluded.visitors_tidak_bayar,
                 visitors_rombongan_langsung = excluded.visitors_rombongan_langsung,
                 visitors_rombongan_agen = excluded.visitors_rombongan_agen,
                 visitors_rombongan_total = excluded.visitors_rombongan_total
             """,
-            (entry_date, month_str, unit, area, count, individu, rombongan_langsung, rombongan_agen, romb_total),
+            (entry_date, month_str, unit, area, count, individu, individu_bayar, tidak_bayar, rombongan_langsung, rombongan_agen, romb_total),
         )
         conn.commit()
+    finally:
+        conn.close()
+
+
+def save_visitors_bulk(records: list[dict[str, Any]]) -> int:
+    """Simpan/Update banyak data pengunjung sekaligus dalam satu transaksi terisolasi."""
+    if not records:
+        return 0
+    conn = get_connection()
+    try:
+        conn.execute("BEGIN TRANSACTION;")
+        prepared = []
+        for r in records:
+            d = str(r["date"]).strip()
+            m = str(r.get("month") or d[:7]).strip()
+            u = str(r["unit"]).strip()
+            a = str(r.get("area") or "").strip()
+            ib = int(r.get("visitors_individu_bayar", 0) or 0)
+            tb = int(r.get("visitors_tidak_bayar", 0) or 0)
+            indiv = int(r.get("visitors_individu", 0) or 0)
+            if indiv == 0 and (ib > 0 or tb > 0):
+                indiv = ib + tb
+            rl = int(r.get("visitors_rombongan_langsung", 0) or 0)
+            ra = int(r.get("visitors_rombongan_agen", 0) or 0)
+            rt = int(r.get("visitors_rombongan_total", 0) or 0)
+            if rt == 0 and (rl > 0 or ra > 0):
+                rt = rl + ra
+            tot = int(r.get("visitors", 0) or 0)
+            if tot == 0 and (indiv > 0 or rt > 0):
+                tot = indiv + rt
+            prepared.append((d, m, u, a, tot, indiv, ib, tb, rl, ra, rt))
+
+        conn.executemany(
+            """
+            INSERT INTO visitor_actual (
+                date, month, unit, area, visitors,
+                visitors_individu, visitors_individu_bayar, visitors_tidak_bayar,
+                visitors_rombongan_langsung, visitors_rombongan_agen, visitors_rombongan_total
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(date, unit) DO UPDATE SET
+                visitors = excluded.visitors,
+                area = CASE WHEN excluded.area != '' THEN excluded.area ELSE visitor_actual.area END,
+                visitors_individu = excluded.visitors_individu,
+                visitors_individu_bayar = excluded.visitors_individu_bayar,
+                visitors_tidak_bayar = excluded.visitors_tidak_bayar,
+                visitors_rombongan_langsung = excluded.visitors_rombongan_langsung,
+                visitors_rombongan_agen = excluded.visitors_rombongan_agen,
+                visitors_rombongan_total = excluded.visitors_rombongan_total
+            """,
+            prepared,
+        )
+        conn.commit()
+        return len(prepared)
     finally:
         conn.close()
 

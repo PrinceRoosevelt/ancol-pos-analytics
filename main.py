@@ -19,6 +19,7 @@ from flask import Flask, jsonify, render_template, request, send_file
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
+from openpyxl.worksheet.datavalidation import DataValidation
 from werkzeug.utils import secure_filename
 
 from database import (
@@ -26,6 +27,7 @@ from database import (
     fetch_all_targets,
     fetch_all_visitors,
     save_visitor_db,
+    save_visitors_bulk,
     sync_database,
     execute_analytics_sql,
 )
@@ -327,13 +329,28 @@ def read_all_visitors() -> list[dict[str, Any]]:
     return fetch_all_visitors()
 
 
-def save_visitor_actual(entry_date: str, unit: str, count: int) -> bool:
+def save_visitor_actual(
+    entry_date: str,
+    unit: str,
+    count: int,
+    individu: int = 0,
+    rombongan_langsung: int = 0,
+    rombongan_agen: int = 0,
+    individu_bayar: int = 0,
+    tidak_bayar: int = 0,
+) -> bool:
     """Simpan/Update nilai pengunjung harian pada sheet Excel dan database SQLite."""
     if not BUDGET_FILE.exists():
         return False
     dt_val = _date(entry_date)
     if not dt_val:
         raise ValueError(f"Format tanggal tidak valid: {entry_date}")
+
+    if individu == 0 and (individu_bayar > 0 or tidak_bayar > 0):
+        individu = individu_bayar + tidak_bayar
+    romb_total = rombongan_langsung + rombongan_agen
+    if count == 0 and (individu > 0 or romb_total > 0):
+        count = individu + romb_total
 
     # 1. Update ke file Excel
     wb = load_workbook(BUDGET_FILE, data_only=False)
@@ -367,10 +384,197 @@ def save_visitor_actual(entry_date: str, unit: str, count: int) -> bool:
 
     # 2. Update ke Database SQLite
     area_name = VISITOR_UNIT_TO_AREA.get(unit.upper(), "")
-    save_visitor_db(target_date_str, unit.strip(), int(count), area_name)
+    save_visitor_db(
+        entry_date=target_date_str,
+        unit=unit.strip(),
+        count=int(count),
+        area=area_name,
+        individu=int(individu),
+        rombongan_langsung=int(rombongan_langsung),
+        rombongan_agen=int(rombongan_agen),
+        individu_bayar=int(individu_bayar),
+        tidak_bayar=int(tidak_bayar),
+    )
 
     _invalidate_sales_cache()
     return True
+
+
+def save_visitors_actual_bulk(records: list[dict[str, Any]]) -> int:
+    """Simpan/Update banyak record pengunjung ke Excel BUDGET_FILE dan database SQLite."""
+    if not records:
+        return 0
+
+    # 1. Update ke file Excel BUDGET_FILE jika ada
+    if BUDGET_FILE.exists():
+        wb = load_workbook(BUDGET_FILE, data_only=False)
+        try:
+            if "VISITOR_ACTUAL" not in wb.sheetnames:
+                ws = wb.create_sheet("VISITOR_ACTUAL")
+                ws.append(["Date", "Visitor Unit", "Visitor Actual"])
+            else:
+                ws = wb["VISITOR_ACTUAL"]
+
+            existing_rows: dict[tuple[str, str], int] = {}
+            for r in range(2, ws.max_row + 1):
+                cell_d = ws.cell(r, 1).value
+                cell_u = ws.cell(r, 2).value
+                if cell_d is not None and cell_u is not None:
+                    p_date = _date(cell_d)
+                    if p_date:
+                        d_str = p_date.strftime("%Y-%m-%d")
+                        existing_rows[(d_str, str(cell_u).strip().casefold())] = r
+
+            for rec in records:
+                d_str = str(rec["date"]).strip()
+                p_date = _date(d_str)
+                if not p_date:
+                    continue
+                d_formatted = p_date.strftime("%Y-%m-%d")
+                u_str = str(rec["unit"]).strip()
+                v_count = int(rec.get("visitors", 0) or 0)
+                key = (d_formatted, u_str.casefold())
+
+                if key in existing_rows:
+                    ws.cell(existing_rows[key], 3, v_count)
+                else:
+                    ws.append([p_date, u_str, v_count])
+                    existing_rows[key] = ws.max_row
+
+            wb.save(BUDGET_FILE)
+        finally:
+            wb.close()
+
+    # 2. Update ke Database SQLite
+    saved_count = save_visitors_bulk(records)
+    _invalidate_sales_cache()
+    return saved_count
+
+
+def parse_curated_visitor_excel(file_source: Any) -> list[dict[str, Any]]:
+    """
+    Membaca dan mem-parsing file Excel pengunjung kurasi (harian / bulanan).
+    Mendukung format template Ancol dan variasi tabel flat.
+    """
+    wb = load_workbook(file_source, data_only=True)
+    try:
+        ws = None
+        for cand in ["DATA PENGUNJUNG", "VISITOR", "VISITOR_ACTUAL", "PENGUNJUNG"]:
+            for original_name in wb.sheetnames:
+                if original_name.strip().upper() == cand:
+                    ws = wb[original_name]
+                    break
+            if ws:
+                break
+        if not ws:
+            ws = wb.active
+
+        header_row_idx = None
+        col_map: dict[str, int] = {}
+
+        for r in range(1, min(10, ws.max_row + 1)):
+            row_vals = [str(ws.cell(r, c).value or "").strip().lower() for c in range(1, ws.max_column + 1)]
+            date_col = None
+            unit_col = None
+            for c_idx, val in enumerate(row_vals, start=1):
+                if any(k in val for k in ["tanggal", "tgl", "date"]):
+                    date_col = c_idx
+                elif any(k in val for k in ["unit", "wahana", "rekreasi"]):
+                    unit_col = c_idx
+
+            if date_col and unit_col:
+                header_row_idx = r
+                for c_idx, val in enumerate(row_vals, start=1):
+                    if any(k in val for k in ["tanggal", "tgl", "date"]) and "date" not in col_map:
+                        col_map["date"] = c_idx
+                    elif any(k in val for k in ["unit", "wahana", "rekreasi"]) and "unit" not in col_map:
+                        col_map["unit"] = c_idx
+                    elif (any(k in val for k in ["individu bayar", "indiv bayar"]) or re.search(r"\b(ib)\b", val) or (("bayar" in val) and ("tidak" not in val) and ("tdk" not in val) and ("agen" not in val))) and "indiv_bayar" not in col_map:
+                        col_map["indiv_bayar"] = c_idx
+                    elif (any(k in val for k in ["tidak bayar", "tdk bayar", "free", "non bayar", "gratis"]) or re.search(r"\b(tb)\b", val)) and "tidak_bayar" not in col_map:
+                        col_map["tidak_bayar"] = c_idx
+                    elif (any(k in val for k in ["rombongan langsung", "romb langsung", "langsung"]) or re.search(r"\b(rl)\b", val)) and "romb_langsung" not in col_map:
+                        col_map["romb_langsung"] = c_idx
+                    elif (any(k in val for k in ["rombongan agen", "romb agen", "agen"]) or re.search(r"\b(ra)\b", val)) and "romb_agen" not in col_map:
+                        col_map["romb_agen"] = c_idx
+                    elif any(k in val for k in ["total", "jumlah pengunjung", "visitor actual", "pengunjung"]) and "total" not in col_map:
+                        col_map["total"] = c_idx
+                break
+
+        if not header_row_idx or "date" not in col_map or "unit" not in col_map:
+            header_row_idx = 1
+            col_map = {
+                "date": 1,
+                "unit": 2,
+                "indiv_bayar": 3,
+                "tidak_bayar": 4,
+                "romb_langsung": 5,
+                "romb_agen": 6,
+                "total": 7,
+            }
+
+        records: list[dict[str, Any]] = []
+        for r in range(header_row_idx + 1, ws.max_row + 1):
+            raw_d = ws.cell(r, col_map["date"]).value
+            raw_u = ws.cell(r, col_map["unit"]).value
+            if raw_d is None or str(raw_d).strip() == "" or raw_u is None or str(raw_u).strip() == "":
+                continue
+
+            dt_val = _date(raw_d)
+            if not dt_val:
+                continue
+
+            date_str = dt_val.strftime("%Y-%m-%d")
+            unit_raw = str(raw_u).strip()
+
+            unit_norm = ""
+            for canon in ["Dufan", "SeaWorld", "Samudra", "Atlantis", "Beachpark"]:
+                if canon.casefold() == unit_raw.casefold() or canon.upper() in unit_raw.upper():
+                    unit_norm = canon
+                    break
+            if not unit_norm:
+                unit_norm = unit_raw
+
+            area_norm = VISITOR_UNIT_TO_AREA.get(unit_norm.upper(), "")
+
+            def _get_int_cell(key: str) -> int:
+                if key in col_map:
+                    v = ws.cell(r, col_map[key]).value
+                    try:
+                        return max(0, int(_number(v)))
+                    except Exception:
+                        return 0
+                return 0
+
+            ib = _get_int_cell("indiv_bayar")
+            tb = _get_int_cell("tidak_bayar")
+            rl = _get_int_cell("romb_langsung")
+            ra = _get_int_cell("romb_agen")
+            tot = _get_int_cell("total")
+
+            if tot == 0 and (ib > 0 or tb > 0 or rl > 0 or ra > 0):
+                tot = ib + tb + rl + ra
+
+            indiv = ib + tb
+            romb_total = rl + ra
+
+            records.append({
+                "date": date_str,
+                "month": date_str[:7],
+                "unit": unit_norm,
+                "area": area_norm,
+                "visitors": tot,
+                "visitors_individu": indiv,
+                "visitors_individu_bayar": ib,
+                "visitors_tidak_bayar": tb,
+                "visitors_rombongan_langsung": rl,
+                "visitors_rombongan_agen": ra,
+                "visitors_rombongan_total": romb_total,
+            })
+
+        return records
+    finally:
+        wb.close()
 
 
 def read_sales() -> list[dict[str, Any]]:
@@ -2100,7 +2304,25 @@ def upload_file():
 
         category = request.form.get("category", "auto")
         raw_name = f.filename.lower()
-        if category == "2025":
+        if category == "visitor" or (category == "auto" and ("visitor" in raw_name or "pengunjung" in raw_name)):
+            dest_dir = BASE_DIR / "data" / "visitor" / "uploads"
+            dest_dir.mkdir(parents=True, exist_ok=True)
+            dest_path = dest_dir / fname
+            f.save(str(dest_path))
+            try:
+                records = parse_curated_visitor_excel(dest_path)
+                if records:
+                    saved_c = save_visitors_actual_bulk(records)
+                    min_d = min(r["date"] for r in records)
+                    max_d = max(r["date"] for r in records)
+                    units_found = sorted(list({r["unit"] for r in records}))
+                    saved_files.append(f"{fname} → Pengunjung ({saved_c} baris [{', '.join(units_found)}]: {min_d} s/d {max_d})")
+                else:
+                    saved_files.append(f"{fname} → data/visitor/uploads/")
+            except Exception as ex:
+                saved_files.append(f"{fname} (Disimpan, info parse: {str(ex)})")
+            continue
+        elif category == "2025":
             dest_dir = SALES_ROOT_DIR / "sales detail 2025"
         elif category == "2026":
             dest_dir = SALES_ROOT_DIR / "sales detail 2026"
@@ -2169,7 +2391,7 @@ def api_clear_cache():
 
 @app.route("/api/save-visitor", methods=["POST"])
 def api_save_visitor():
-    """Endpoint untuk input/update data pengunjung harian per unit wahana."""
+    """Endpoint untuk input/update data pengunjung harian per unit wahana (mendukung 4 aspek)."""
     body = request.get_json(silent=True)
     if not body:
         # Fallback to form-data if submitted via regular form
@@ -2181,24 +2403,49 @@ def api_save_visitor():
 
     entry_date = str(body.get("date", "")).strip()
     unit = str(body.get("unit", "")).strip()
-    count_val = body.get("count", 0)
 
     if not entry_date:
         return jsonify({"ok": False, "error": "Tanggal harus diisi."}), 400
     if not unit:
         return jsonify({"ok": False, "error": "Unit wahana harus dipilih."}), 400
 
-    try:
-        count_int = int(count_val)
-        if count_int < 0:
-            return jsonify({"ok": False, "error": "Jumlah pengunjung tidak boleh negatif."}), 400
-    except (ValueError, TypeError):
-        return jsonify({"ok": False, "error": "Format jumlah pengunjung harus berupa angka bulat."}), 400
+    def _clean_int(val: Any) -> int:
+        try:
+            return max(0, int(_number(val)))
+        except Exception:
+            return 0
+
+    indiv_bayar = _clean_int(body.get("indiv_bayar", 0))
+    tidak_bayar = _clean_int(body.get("tidak_bayar", 0))
+    romb_langsung = _clean_int(body.get("romb_langsung", 0))
+    romb_agen = _clean_int(body.get("romb_agen", 0))
+
+    count_val = body.get("count")
+    if count_val is not None and str(count_val).strip() != "":
+        count_int = _clean_int(count_val)
+    else:
+        count_int = indiv_bayar + tidak_bayar + romb_langsung + romb_agen
+
+    breakdown_sum = indiv_bayar + tidak_bayar + romb_langsung + romb_agen
+    if count_int == 0 and breakdown_sum > 0:
+        count_int = breakdown_sum
+
+    if count_int < 0:
+        return jsonify({"ok": False, "error": "Jumlah pengunjung tidak boleh negatif."}), 400
 
     try:
-        success = save_visitor_actual(entry_date, unit, count_int)
+        success = save_visitor_actual(
+            entry_date=entry_date,
+            unit=unit,
+            count=count_int,
+            individu=indiv_bayar + tidak_bayar,
+            rombongan_langsung=romb_langsung,
+            rombongan_agen=romb_agen,
+            individu_bayar=indiv_bayar,
+            tidak_bayar=tidak_bayar,
+        )
         if not success:
-            return jsonify({"ok": False, "error": "Gagal menyimpan ke file budget."}), 500
+            return jsonify({"ok": False, "error": "Gagal menyimpan ke file budget/database."}), 500
 
         # Re-render static report
         try:
@@ -2218,12 +2465,183 @@ def api_save_visitor():
         except Exception:
             pass
 
+        breakdown_info = []
+        if indiv_bayar > 0:
+            breakdown_info.append(f"Indiv Bayar: {indiv_bayar:,}")
+        if tidak_bayar > 0:
+            breakdown_info.append(f"Tdk Bayar: {tidak_bayar:,}")
+        if romb_langsung > 0:
+            breakdown_info.append(f"Romb Langsung: {romb_langsung:,}")
+        if romb_agen > 0:
+            breakdown_info.append(f"Romb Agen: {romb_agen:,}")
+
+        detail_str = f" ({', '.join(breakdown_info)})" if breakdown_info else ""
+
         return jsonify({
             "ok": True,
-            "message": f"✅ Berhasil menyimpan {count_int:,} pengunjung untuk {unit} pada tanggal {entry_date}."
+            "message": f"✅ Berhasil menyimpan {count_int:,} pengunjung untuk {unit} pada tanggal {entry_date}{detail_str}."
         })
     except Exception as e:
         return jsonify({"ok": False, "error": f"Gagal menyimpan pengunjung: {str(e)}"}), 500
+
+
+@app.route("/api/download-visitor-template", methods=["GET"])
+def api_download_visitor_template():
+    """Download template Excel resmi Ancol untuk input pengunjung harian maupun bulanan berjalan."""
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "DATA PENGUNJUNG"
+
+    brand_blue = "0033A0"
+    header_fill = PatternFill(start_color=brand_blue, end_color=brand_blue, fill_type="solid")
+    header_font = Font(name="Segoe UI", size=11, bold=True, color="FFFFFF")
+    center_align = Alignment(horizontal="center", vertical="center", wrap_text=True)
+    right_align = Alignment(horizontal="right", vertical="center")
+    left_align = Alignment(horizontal="left", vertical="center")
+    thin_border_side = Side(style="thin", color="D1D5DB")
+    cell_border = Border(left=thin_border_side, right=thin_border_side, top=thin_border_side, bottom=thin_border_side)
+    data_font = Font(name="Segoe UI", size=10)
+    total_fill = PatternFill(start_color="F0FDF4", end_color="F0FDF4", fill_type="solid")
+    total_font = Font(name="Segoe UI", size=10, bold=True, color="166534")
+
+    headers = [
+        "Tanggal (YYYY-MM-DD)",
+        "Unit Wahana",
+        "Individu Bayar",
+        "Individu Tdk Bayar",
+        "Rombongan Langsung",
+        "Rombongan Agen",
+        "Total Pengunjung",
+        "Keterangan (Opsional)",
+    ]
+
+    ws.row_dimensions[1].height = 28
+    for col_idx, h in enumerate(headers, start=1):
+        cell = ws.cell(row=1, column=col_idx, value=h)
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = center_align
+        cell.border = cell_border
+
+    sample_data = [
+        ("2026-09-01", "Dufan", 3500, 150, 400, 250, "Operasional normal"),
+        ("2026-09-01", "SeaWorld", 2100, 80, 220, 150, "Operasional normal"),
+        ("2026-09-01", "Samudra", 1400, 60, 180, 110, "Operasional normal"),
+        ("2026-09-01", "Atlantis", 1800, 90, 250, 160, "Operasional normal"),
+        ("2026-09-01", "Beachpark", 2500, 200, 100, 50, "Operasional normal"),
+    ]
+
+    for r_idx, row_item in enumerate(sample_data, start=2):
+        ws.row_dimensions[r_idx].height = 20
+        d_val, u_val, ib, tb, rl, ra, note = row_item
+        ws.cell(row=r_idx, column=1, value=d_val).alignment = center_align
+        ws.cell(row=r_idx, column=2, value=u_val).alignment = center_align
+        ws.cell(row=r_idx, column=3, value=ib).alignment = right_align
+        ws.cell(row=r_idx, column=4, value=tb).alignment = right_align
+        ws.cell(row=r_idx, column=5, value=rl).alignment = right_align
+        ws.cell(row=r_idx, column=6, value=ra).alignment = right_align
+
+        tot_cell = ws.cell(row=r_idx, column=7, value=f"=SUM(C{r_idx}:F{r_idx})")
+        tot_cell.alignment = right_align
+        tot_cell.font = total_font
+        tot_cell.fill = total_fill
+
+        ws.cell(row=r_idx, column=8, value=note).alignment = left_align
+
+        for c_idx in range(1, 9):
+            c = ws.cell(row=r_idx, column=c_idx)
+            c.border = cell_border
+            if c_idx not in (7,):
+                c.font = data_font
+            if c_idx in (3, 4, 5, 6, 7):
+                c.number_format = "#,##0"
+
+    dv = DataValidation(type="list", formula1='"Dufan,SeaWorld,Samudra,Atlantis,Beachpark"', allow_blank=False)
+    dv.error = "Pilih unit dari daftar: Dufan, SeaWorld, Samudra, Atlantis, Beachpark"
+    dv.errorTitle = "Unit Tidak Valid"
+    ws.add_data_validation(dv)
+    dv.add("B2:B500")
+
+    col_widths = {1: 22, 2: 18, 3: 16, 4: 18, 5: 18, 6: 16, 7: 18, 8: 25}
+    for c_idx, width in col_widths.items():
+        ws.column_dimensions[get_column_letter(c_idx)].width = width
+
+    ws.freeze_panes = "A2"
+    ws.auto_filter.ref = f"A1:H{ws.max_row}"
+
+    buf = BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+    return send_file(
+        buf,
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        as_attachment=True,
+        download_name="Template_Input_Pengunjung_Ancol.xlsx",
+    )
+
+
+@app.route("/api/upload-visitor-excel", methods=["POST"])
+def api_upload_visitor_excel():
+    """Upload dan proses file Excel data pengunjung (harian maupun bulanan berjalan)."""
+    pin = request.form.get("pin", "").strip()
+    if pin != ADMIN_PIN:
+        return jsonify({"ok": False, "error": "PIN Admin salah. Akses ditolak."}), 403
+
+    if "file" not in request.files:
+        return jsonify({"ok": False, "error": "File Excel pengunjung tidak ditemukan."}), 400
+
+    file = request.files["file"]
+    if not file or file.filename == "":
+        return jsonify({"ok": False, "error": "Pilih file Excel yang valid."}), 400
+
+    fname = secure_filename(file.filename)
+    if not _allowed_file(fname):
+        return jsonify({"ok": False, "error": "Format file harus .xlsx atau .xls"}), 400
+
+    try:
+        archive_dir = BASE_DIR / "data" / "visitor" / "uploads"
+        archive_dir.mkdir(parents=True, exist_ok=True)
+        archive_path = archive_dir / f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{fname}"
+        file.save(str(archive_path))
+
+        records = parse_curated_visitor_excel(archive_path)
+        if not records:
+            return jsonify({"ok": False, "error": "Tidak ada baris data pengunjung valid yang ditemukan dalam file."}), 400
+
+        saved_count = save_visitors_actual_bulk(records)
+
+        # Re-render static report
+        try:
+            updated_rows = read_sales()
+            dashboard_data = build_dashboard(updated_rows)
+            with app.app_context():
+                write_report(
+                    render_template(
+                        "index.html",
+                        data=dashboard_data,
+                        selected_month="",
+                        selected_date="",
+                        selected_outlet="",
+                        selected_area="",
+                    )
+                )
+        except Exception:
+            pass
+
+        min_date = min(r["date"] for r in records)
+        max_date = max(r["date"] for r in records)
+        units_found = sorted(list({r["unit"] for r in records}))
+
+        return jsonify({
+            "ok": True,
+            "message": f"✅ Berhasil memproses {saved_count:,} baris data pengunjung ({', '.join(units_found)}) untuk periode {min_date} s/d {max_date}.",
+            "count": saved_count,
+            "min_date": min_date,
+            "max_date": max_date,
+            "units": units_found,
+        })
+    except Exception as e:
+        return jsonify({"ok": False, "error": f"Gagal memproses file pengunjung: {str(e)}"}), 500
 
 
 AI_KEY_FILE = BASE_DIR / ".gemini_key"
