@@ -656,6 +656,10 @@ def compute_unit_benchmarks(
 
     u_vis_26: dict[str, int] = defaultdict(int)
     u_vis_25: dict[str, int] = defaultdict(int)
+    u_ib_26: dict[str, int] = defaultdict(int)
+    u_tb_26: dict[str, int] = defaultdict(int)
+    u_rl_26: dict[str, int] = defaultdict(int)
+    u_ra_26: dict[str, int] = defaultdict(int)
     for v in visitors:
         u = v["unit"]
         v_year = v["date"][:4]
@@ -663,6 +667,10 @@ def compute_unit_benchmarks(
         if v_year == "2026":
             if not current_dates or v["date"] in current_dates:
                 u_vis_26[u] += v["visitors"]
+                u_ib_26[u] += v.get("visitors_individu_bayar", 0)
+                u_tb_26[u] += v.get("visitors_tidak_bayar", 0)
+                u_rl_26[u] += v.get("visitors_rombongan_langsung", 0)
+                u_ra_26[u] += v.get("visitors_rombongan_agen", 0)
         elif v_year == "2025":
             if not comparison_day_months or v_dm in comparison_day_months:
                 u_vis_25[u] += v["visitors"]
@@ -689,6 +697,10 @@ def compute_unit_benchmarks(
             "visitors_2026": v26,
             "visitors_2025": v25,
             "growth_visitors": g_vis,
+            "visitors_individu_bayar": u_ib_26[u],
+            "visitors_tidak_bayar": u_tb_26[u],
+            "visitors_rombongan_langsung": u_rl_26[u],
+            "visitors_rombongan_agen": u_ra_26[u],
             "sph_2026": sph26,
             "sph_2025": sph25,
             "growth_sph": g_sph,
@@ -2710,9 +2722,18 @@ def api_ask_ai():
         }
 
         AREA_MAP = {
-            "DUFAN": ["dufan"],
-            "AWAPARK": ["atlantis", "awapark", "awa park", "kolam renang", "waterpark"],
+            "DUFAN": ["dufan", "dunia fantasi"],
+            "AWAPARK": ["awapark", "awa park"],
             "BEACHPARK": ["beachpark", "beach park", "pantai", "beach", "pasir putih"],
+        }
+
+        UNIT_COMP_MAP = {
+            "Dufan": {"kw": ["dufan", "dunia fantasi"], "area": "DUFAN", "outlet": None},
+            "SeaWorld": {"kw": ["seaworld", "sea world", "swin"], "area": None, "outlet": "SWIN Sea World Induk"},
+            "Samudra": {"kw": ["samudra", "ocean dream", "odin"], "area": None, "outlet": "ODIN Samudra Induk"},
+            "Atlantis": {"kw": ["atlantis", "waterpark", "kolam renang", "awin"], "area": None, "outlet": "AWIN Atlantis Induk,AWKL AWA Taman Kelapa 2"},
+            "AWAPARK": {"kw": ["awapark", "awa park"], "area": "AWAPARK", "outlet": None},
+            "Beachpark": {"kw": ["beachpark", "beach park", "pantai", "pasir putih"], "area": "BEACHPARK", "outlet": None},
         }
 
         # 1. Month detection
@@ -2770,7 +2791,7 @@ def api_ask_ai():
             if detected_area:
                 break
 
-        # 4. Outlet detection
+        # 4. Outlet & Recreation Unit detection
         all_outlets_list = sorted({r["outlet"] for r in rows_cache if r.get("outlet")})
         detected_outlet = None
         OUTLET_ALIASES = {
@@ -2787,12 +2808,21 @@ def api_ask_ai():
             "seaworld": "SWIN Sea World Induk",
             "ocean bakery": "SWOB Sea World Ocean Bakery",
             "tug of war": "SWTG Sea World Tug of War",
-            "ocean dream": "ODIN Ocean Dream Induk",
+            "samudra induk": "ODIN Samudra Induk",
+            "ocean dream": "ODIN Samudra Induk",
+            "samudra": "ODIN Samudra Induk",
             "atlantis induk": "AWIN Atlantis Induk",
+            "taman kelapa": "AWKL AWA Taman Kelapa 2",
             "atlantis plaza": "AWCP Atlantis Plaza",
+            "atlantis": "AWIN Atlantis Induk,AWKL AWA Taman Kelapa 2",
+            "waterpark": "AWIN Atlantis Induk,AWKL AWA Taman Kelapa 2",
+            "kolam renang": "AWIN Atlantis Induk,AWKL AWA Taman Kelapa 2",
+            "birdland": "JBIN JBL Induk",
+            "bird land": "JBIN JBL Induk",
+            "jbl": "JBIN JBL Induk",
         }
         for alias, full_out in OUTLET_ALIASES.items():
-            if alias in p_lower:
+            if re.search(rf"\b{re.escape(alias)}\b", p_lower):
                 detected_outlet = full_out
                 break
         if not detected_outlet:
@@ -2894,9 +2924,9 @@ def api_ask_ai():
             ]
             if prev_user_prompts:
                 last_user_p = prev_user_prompts[-1].lower()
-                if not detected_outlet:
+                if not detected_outlet and not detected_area:
                     for alias, full_out in OUTLET_ALIASES.items():
-                        if alias in last_user_p:
+                        if re.search(rf"\b{re.escape(alias)}\b", last_user_p):
                             detected_outlet = full_out
                             break
                     if not detected_outlet:
@@ -2905,7 +2935,7 @@ def api_ask_ai():
                             if re.search(rf"\b{code_low}\b", last_user_p):
                                 detected_outlet = out_name
                                 break
-                if not detected_area:
+                if not detected_area and not detected_outlet:
                     for area_code, kw_list in AREA_MAP.items():
                         for kw in kw_list:
                             if re.search(rf"\b{kw}\b", last_user_p):
@@ -2939,15 +2969,20 @@ def api_ask_ai():
                 h_val += 12
             detected_hour = f"{h_val:02d}"
 
-        # 6. Comparative Head-to-Head Detection (e.g. "Dufan vs Atlantis", "Agustus vs September", "Weekend vs Weekday")
-        is_comparative = bool(re.search(r"\b(?:vs|versus|dibanding|dibandingkan|bandingkan|banding|lawan|lebih (?:bagus|rame|tinggi|besar|banyak) mana|mana yang lebih)\b", p_lower))
-        comp_areas = []
-        for area_code, kw_list in AREA_MAP.items():
-            for kw in kw_list:
-                if re.search(rf"\b{kw}\b", p_lower):
-                    if area_code not in comp_areas:
-                        comp_areas.append(area_code)
+        # 6. Comparative Head-to-Head Detection (e.g. "Dufan vs SeaWorld", "Samudra vs Atlantis", "Agustus vs September", "Weekend vs Weekday")
+        is_comparative = bool(re.search(r"\b(?:vs|versus|dibanding|dibandingkan|bandingkan|banding|lawan|lebih (?:bagus|rame|ramai|tinggi|besar|banyak|unggul) mana|mana yang lebih|antar unit)\b", p_lower))
+        comp_units = []
+        for u_label, u_cfg in UNIT_COMP_MAP.items():
+            for kw in u_cfg["kw"]:
+                if re.search(rf"\b{re.escape(kw)}\b", p_lower):
+                    if u_label not in comp_units:
+                        comp_units.append(u_label)
                     break
+
+        # If user is comparing 2 or more recreation units/areas, do not lock single-unit filter on the main dashboard
+        if len(comp_units) >= 2:
+            detected_area = None
+            detected_outlet = None
 
         comp_months = []
         for k, m_num in MONTH_MAP.items():
@@ -2962,23 +2997,54 @@ def api_ask_ai():
         )
 
         comparative_text = ""
-        if is_comparative or len(comp_areas) >= 2 or len(comp_months) >= 2 or is_wknd_comp:
+        if is_comparative or len(comp_units) >= 2 or len(comp_months) >= 2 or is_wknd_comp:
             comp_blocks = []
-            if len(comp_areas) >= 2:
+            if len(comp_units) >= 2:
                 c_m = detected_month or (detected_date[:7] if detected_date else None)
-                area_a, area_b = comp_areas[0], comp_areas[1]
-                dash_a = build_dashboard(rows_cache, month=c_m, area=area_a, include_raw=False)
-                dash_b = build_dashboard(rows_cache, month=c_m, area=area_b, include_raw=False)
-                s_a, s_b = dash_a["summary"]["2026"], dash_b["summary"]["2026"]
+                u_dash_list = []
+                u_lines = []
+                for u_name in comp_units[:4]:
+                    u_cfg = UNIT_COMP_MAP[u_name]
+                    d_u = build_dashboard(
+                        rows_cache,
+                        date=detected_date,
+                        month=(c_m if not (detected_date or detected_start_date) else None),
+                        start_date=detected_start_date,
+                        end_date=detected_end_date,
+                        area=u_cfg["area"],
+                        outlet=u_cfg["outlet"],
+                        include_raw=False,
+                    )
+                    u_dash_list.append((u_name, d_u))
+                    s_u = d_u["summary"]["2026"]
+                    vis_u = d_u.get("total_visitors", 0)
+                    vis_g = d_u.get("visitor_growth")
+                    vis_g_str = f" ({vis_g:+.1f}% YoY)" if vis_g is not None else ""
+                    sph_u = d_u.get("sph", 0.0)
+                    cap_u = d_u.get("capture_rate", 0.0)
+                    ib_u = d_u.get("visitors_individu_bayar", 0)
+                    tb_u = d_u.get("visitors_tidak_bayar", 0)
+                    rl_u = d_u.get("visitors_rombongan_langsung", 0)
+                    ra_u = d_u.get("visitors_rombongan_agen", 0)
+                    vis_detail_str = (
+                        f" | Visitor: {vis_u:,} org{vis_g_str} [Indiv Bayar: {ib_u:,}, Free: {tb_u:,}, Romb Langsung: {rl_u:,}, Romb Agen: {ra_u:,}] | "
+                        f"SPH: Rp {sph_u:,.0f}/org | Capture Rate: {cap_u:.2f}%"
+                        if vis_u > 0 else " | Visitor: Belum terpetakan"
+                    )
+                    u_lines.append(
+                        f"- **{u_name}**: Omset **Rp {s_u['net_sales']:,.0f}** | Transaksi **{s_u['transactions']:,} struk** | ATV **Rp {s_u['atv']:,.0f}** | Qty **{s_u['qty']:,} pcs**{vis_detail_str}"
+                    )
+                u_a_name, d_a = u_dash_list[0]
+                u_b_name, d_b = u_dash_list[1]
+                s_a, s_b = d_a["summary"]["2026"], d_b["summary"]["2026"]
                 diff_sales = s_a["net_sales"] - s_b["net_sales"]
                 pct_sales = ((s_a["net_sales"] / s_b["net_sales"]) - 1) * 100 if s_b["net_sales"] > 0 else 0
-                winner = area_a if diff_sales >= 0 else area_b
+                winner = u_a_name if diff_sales >= 0 else u_b_name
                 comp_blocks.append(
-                    f"DATA KOMPARATIF HEAD-TO-HEAD ANTAR AREA ({area_a} VS {area_b}):\n"
-                    f"- Area {area_a}: Omset Rp {s_a['net_sales']:,.0f} | Transaksi {s_a['transactions']:,} struk | ATV Rp {s_a['atv']:,.0f} | Qty {s_a['qty']:,} pcs\n"
-                    f"- Area {area_b}: Omset Rp {s_b['net_sales']:,.0f} | Transaksi {s_b['transactions']:,} struk | ATV Rp {s_b['atv']:,.0f} | Qty {s_b['qty']:,} pcs\n"
-                    f"- Perbedaan Omset: Rp {abs(diff_sales):,.0f} ({pct_sales:+.1f}% {'lebih tinggi' if diff_sales >= 0 else 'lebih rendah'} di {area_a})\n"
-                    f"- Rekomendasi: Unggul di {winner}. Analisis apakah perbedaan karena volume pengunjung atau nilai belanja per struk (ATV)."
+                    f"DATA KOMPARATIF HEAD-TO-HEAD ANTAR UNIT ({' VS '.join(comp_units[:4])}):\n"
+                    + "\n".join(u_lines) + "\n"
+                    f"- Selisih Omset ({u_a_name} vs {u_b_name}): **Rp {abs(diff_sales):,.0f}** ({pct_sales:+.1f}% {'lebih tinggi' if diff_sales >= 0 else 'lebih rendah'} di {u_a_name})\n"
+                    f"- Kesimpulan: Unggul di **{winner}**. Bandingkan apakah keunggulan didorong oleh trafik pengunjung wahana (Visitor), rasio konversi belanja (Capture Rate), atau Spending per Head (SPH)."
                 )
             elif len(comp_months) >= 2:
                 m_a, m_b = comp_months[0], comp_months[1]
@@ -2989,21 +3055,26 @@ def api_ask_ai():
                 pct_sales = ((s_a["net_sales"] / s_b["net_sales"]) - 1) * 100 if s_b["net_sales"] > 0 else 0
                 name_a = MONTH_NAMES.get(m_a[5:], m_a)
                 name_b = MONTH_NAMES.get(m_b[5:], m_b)
+                vis_a_str = f" | Visitor {dash_a.get('total_visitors', 0):,} org (SPH Rp {dash_a.get('sph', 0):,.0f}, Capture {dash_a.get('capture_rate', 0):.2f}%)" if dash_a.get("total_visitors", 0) > 0 else ""
+                vis_b_str = f" | Visitor {dash_b.get('total_visitors', 0):,} org (SPH Rp {dash_b.get('sph', 0):,.0f}, Capture {dash_b.get('capture_rate', 0):.2f}%)" if dash_b.get("total_visitors", 0) > 0 else ""
                 comp_blocks.append(
                     f"DATA KOMPARATIF HEAD-TO-HEAD ANTAR BULAN ({name_a} VS {name_b}):\n"
-                    f"- Bulan {name_a}: Omset Rp {s_a['net_sales']:,.0f} | Transaksi {s_a['transactions']:,} struk | ATV Rp {s_a['atv']:,.0f}\n"
-                    f"- Bulan {name_b}: Omset Rp {s_b['net_sales']:,.0f} | Transaksi {s_b['transactions']:,} struk | ATV Rp {s_b['atv']:,.0f}\n"
-                    f"- Selisih Performa: Rp {abs(diff_sales):,.0f} ({pct_sales:+.1f}%)"
+                    f"- **Bulan {name_a}**: Omset **Rp {s_a['net_sales']:,.0f}** | Transaksi **{s_a['transactions']:,} struk** | ATV **Rp {s_a['atv']:,.0f}**{vis_a_str}\n"
+                    f"- **Bulan {name_b}**: Omset **Rp {s_b['net_sales']:,.0f}** | Transaksi **{s_b['transactions']:,} struk** | ATV **Rp {s_b['atv']:,.0f}**{vis_b_str}\n"
+                    f"- Selisih Performa: **Rp {abs(diff_sales):,.0f}** ({pct_sales:+.1f}%)"
                 )
             elif is_wknd_comp:
                 wknd_sales, wknd_tx, wknd_qty = 0, 0, 0
                 wkdy_sales, wkdy_tx, wkdy_qty = 0, 0, 0
                 c_m = detected_month or None
+                out_filter_set = {o.strip() for o in detected_outlet.split(",") if o.strip()} if detected_outlet else set()
                 for r in rows_cache:
                     if r.get("year") == 2026:
                         if c_m and r.get("month") != c_m:
                             continue
                         if detected_area and r.get("area") != detected_area:
+                            continue
+                        if out_filter_set and r.get("outlet") not in out_filter_set:
                             continue
                         try:
                             dt = datetime.strptime(r["date"], "%Y-%m-%d")
@@ -3017,14 +3088,33 @@ def api_ask_ai():
                                 wkdy_qty += r["qty"]
                         except Exception:
                             pass
+                wknd_vis, wkdy_vis = 0, 0
+                for v in read_all_visitors():
+                    if v["date"][:4] == "2026":
+                        if c_m and v["month"] != c_m:
+                            continue
+                        if detected_area and v["area"].casefold() != detected_area.casefold():
+                            continue
+                        try:
+                            dt = datetime.strptime(v["date"], "%Y-%m-%d")
+                            if dt.weekday() in (5, 6):
+                                wknd_vis += v["visitors"]
+                            else:
+                                wkdy_vis += v["visitors"]
+                        except Exception:
+                            pass
                 wknd_atv = (wknd_sales / wknd_tx) if wknd_tx > 0 else 0
                 wkdy_atv = (wkdy_sales / wkdy_tx) if wkdy_tx > 0 else 0
+                wknd_sph = (wknd_sales / wknd_vis) if wknd_vis > 0 else 0
+                wkdy_sph = (wkdy_sales / wkdy_vis) if wkdy_vis > 0 else 0
                 tot_s = wknd_sales + wkdy_sales
+                wknd_vis_str = f" | Visitor {wknd_vis:,} org (SPH Rp {wknd_sph:,.0f})" if wknd_vis > 0 else ""
+                wkdy_vis_str = f" | Visitor {wkdy_vis:,} org (SPH Rp {wkdy_sph:,.0f})" if wkdy_vis > 0 else ""
                 comp_blocks.append(
                     f"DATA KOMPARATIF WEEKEND VS WEEKDAY (AKHIR PEKAN VS HARI KERJA):\n"
-                    f"- Weekend (Sabtu - Minggu): Omset Rp {wknd_sales:,.0f} | Transaksi {wknd_tx:,} struk | ATV Rp {wknd_atv:,.0f} | Qty {wknd_qty:,} pcs\n"
-                    f"- Weekday (Senin - Jumat): Omset Rp {wkdy_sales:,.0f} | Transaksi {wkdy_tx:,} struk | ATV Rp {wkdy_atv:,.0f} | Qty {wkdy_qty:,} pcs\n"
-                    f"- Porsi Penjualan: Weekend menyumbang {(wknd_sales / tot_s * 100) if tot_s > 0 else 0:.1f}% total omset"
+                    f"- **Weekend (Sabtu - Minggu)**: Omset **Rp {wknd_sales:,.0f}** | Transaksi **{wknd_tx:,} struk** | ATV **Rp {wknd_atv:,.0f}** | Qty **{wknd_qty:,} pcs**{wknd_vis_str}\n"
+                    f"- **Weekday (Senin - Jumat)**: Omset **Rp {wkdy_sales:,.0f}** | Transaksi **{wkdy_tx:,} struk** | ATV **Rp {wkdy_atv:,.0f}** | Qty **{wkdy_qty:,} pcs**{wkdy_vis_str}\n"
+                    f"- Porsi Penjualan: Weekend menyumbang **{(wknd_sales / tot_s * 100) if tot_s > 0 else 0:.1f}%** total omset"
                 )
             if comp_blocks:
                 comparative_text = "\n" + "\n\n".join(comp_blocks) + "\n"
@@ -3056,21 +3146,29 @@ def api_ask_ai():
             )
 
         # 8. Targeted SQL Analytics (God Mode Engine)
+        def _append_outlet_sql_filter(conds_list: list[str], params_list: list[Any], out_val: str | None, area_val: str | None) -> None:
+            if out_val:
+                o_items = [x.strip() for x in out_val.split(",") if x.strip()]
+                if len(o_items) == 1:
+                    conds_list.append("outlet = ?")
+                    params_list.append(o_items[0])
+                elif o_items:
+                    conds_list.append(f"outlet IN ({','.join('?' for _ in o_items)})")
+                    params_list.extend(o_items)
+            elif area_val:
+                conds_list.append("area = ?")
+                params_list.append(area_val)
+
         supplier_specific_text = ""
         supplier_analytics_data = None
         if detected_supplier:
             try:
                 s_conds = ["year = 2026", "UPPER(supplier) = ?"]
-                s_params = [detected_supplier.upper()]
+                s_params: list[Any] = [detected_supplier.upper()]
                 if detected_month:
                     s_conds.append("month = ?")
                     s_params.append(detected_month)
-                if detected_outlet:
-                    s_conds.append("outlet = ?")
-                    s_params.append(detected_outlet)
-                elif detected_area:
-                    s_conds.append("area = ?")
-                    s_params.append(detected_area)
+                _append_outlet_sql_filter(s_conds, s_params, detected_outlet, detected_area)
                 s_where = " AND ".join(s_conds)
 
                 supp_sum = execute_analytics_sql(f"""
@@ -3128,16 +3226,11 @@ def api_ask_ai():
         if detected_category:
             try:
                 c_conds = ["year = 2026", "UPPER(category) = ?"]
-                c_params = [detected_category.upper()]
+                c_params: list[Any] = [detected_category.upper()]
                 if detected_month:
                     c_conds.append("month = ?")
                     c_params.append(detected_month)
-                if detected_outlet:
-                    c_conds.append("outlet = ?")
-                    c_params.append(detected_outlet)
-                elif detected_area:
-                    c_conds.append("area = ?")
-                    c_params.append(detected_area)
+                _append_outlet_sql_filter(c_conds, c_params, detected_outlet, detected_area)
                 c_where = " AND ".join(c_conds)
 
                 cat_sum = execute_analytics_sql(f"""
@@ -3194,16 +3287,11 @@ def api_ask_ai():
         if is_invoice_query:
             try:
                 inv_conds = ["year = 2026"]
-                inv_params = []
+                inv_params: list[Any] = []
                 if detected_month:
                     inv_conds.append("month = ?")
                     inv_params.append(detected_month)
-                if detected_outlet:
-                    inv_conds.append("outlet = ?")
-                    inv_params.append(detected_outlet)
-                elif detected_area:
-                    inv_conds.append("area = ?")
-                    inv_params.append(detected_area)
+                _append_outlet_sql_filter(inv_conds, inv_params, detected_outlet, detected_area)
                 inv_where = " AND ".join(inv_conds)
 
                 top_invs = execute_analytics_sql(f"""
@@ -3261,8 +3349,100 @@ def api_ask_ai():
         ) or data.get("jenis") or None
         summary_ctx = data.get("summary_context")
 
+        # 8b. Targeted Visitor SQL Analytics (Peak Visitor Days & 4-Aspect Unit Breakdown)
+        visitor_specific_text = ""
+        peak_visitor_days_list = []
+        try:
+            v_conds = ["date LIKE '2026-%'"]
+            v_params: list[Any] = []
+            if target_start_date and target_end_date:
+                v_conds.append("date >= ? AND date <= ?")
+                v_params.extend([target_start_date, target_end_date])
+            elif target_date:
+                v_conds.append("date = ?")
+                v_params.append(target_date)
+            elif target_month:
+                v_conds.append("month = ?")
+                v_params.append(target_month)
+
+            # Resolve visitor unit filter if outlet or area is active
+            v_unit_filter = None
+            if target_outlet:
+                o_up = target_outlet.upper()
+                if "SWIN" in o_up or "SEA WORLD" in o_up:
+                    v_unit_filter = "SeaWorld"
+                elif "ODIN" in o_up or ("SAMUDRA" in o_up and "JB" not in o_up):
+                    v_unit_filter = "Samudra"
+                elif any(k in o_up for k in ["AWIN", "AWKL", "ATLANTIS"]):
+                    v_unit_filter = "Atlantis"
+                elif "DF" in o_up or "DUFAN" in o_up:
+                    v_unit_filter = "Dufan"
+            if v_unit_filter:
+                v_conds.append("UPPER(unit) = ?")
+                v_params.append(v_unit_filter.upper())
+            elif target_area:
+                v_conds.append("UPPER(area) = ?")
+                v_params.append(target_area.upper())
+
+            v_where = " AND ".join(v_conds)
+            peak_vis_rows = execute_analytics_sql(f"""
+                SELECT 
+                    date,
+                    SUM(visitors) as total_vis,
+                    SUM(COALESCE(visitors_individu_bayar, 0)) as ib,
+                    SUM(COALESCE(visitors_tidak_bayar, 0)) as tb,
+                    SUM(COALESCE(visitors_rombongan_langsung, 0)) as rl,
+                    SUM(COALESCE(visitors_rombongan_agen, 0)) as ra
+                FROM visitor_actual
+                WHERE {v_where}
+                GROUP BY date
+                HAVING SUM(visitors) > 0
+                ORDER BY total_vis DESC
+                LIMIT 5
+            """, tuple(v_params))
+
+            # Daily sales lookup for matching revenue & SPH on peak visitor dates
+            daily_sales_by_date: dict[str, float] = defaultdict(float)
+            out_set_for_vis = {x.strip() for x in target_outlet.split(",") if x.strip()} if target_outlet else set()
+            for r in rows_cache:
+                if r.get("year") == 2026:
+                    if out_set_for_vis and r.get("outlet") not in out_set_for_vis:
+                        continue
+                    if not out_set_for_vis and target_area and r.get("area") != target_area:
+                        continue
+                    daily_sales_by_date[r["date"]] += r["net_sales"]
+
+            if peak_vis_rows:
+                pv_lines = []
+                for idx, pv in enumerate(peak_vis_rows, 1):
+                    d_str = pv["date"]
+                    v_tot = int(pv["total_vis"] or 0)
+                    d_sales = daily_sales_by_date.get(d_str, 0.0)
+                    d_sph = (d_sales / v_tot) if v_tot > 0 else 0.0
+                    peak_visitor_days_list.append({
+                        "date": d_str,
+                        "visitors": v_tot,
+                        "ib": int(pv["ib"] or 0),
+                        "tb": int(pv["tb"] or 0),
+                        "rl": int(pv["rl"] or 0),
+                        "ra": int(pv["ra"] or 0),
+                        "sales": d_sales,
+                        "sph": d_sph,
+                    })
+                    pv_lines.append(
+                        f"  {idx}. Tanggal {d_str}: {v_tot:,} pengunjung "
+                        f"(Indiv Bayar: {int(pv['ib'] or 0):,}, Free: {int(pv['tb'] or 0):,}, Romb Langsung: {int(pv['rl'] or 0):,}, Romb Agen: {int(pv['ra'] or 0):,}) | "
+                        f"Omset Merch: Rp {d_sales:,.0f} | SPH: Rp {d_sph:,.0f}/org"
+                    )
+                visitor_specific_text = (
+                    "\nTOP 5 TANGGAL KUNJUNGAN TERTINGGI (PEAK VISITOR DAYS) & KORELASI OMSET:\n"
+                    + "\n".join(pv_lines) + "\n"
+                )
+        except Exception:
+            pass
+
         if (detected_date or detected_month or detected_area or detected_outlet or 
-            detected_supplier or detected_category or detected_start_date or detected_end_date or target_jenis):
+            detected_supplier or detected_category or detected_start_date or detected_end_date or target_jenis or len(comp_units) >= 2):
             dash = build_dashboard(
                 rows_cache,
                 date=target_date,
@@ -3295,7 +3475,7 @@ def api_ask_ai():
             if target_jenis:
                 label_parts.append(f"Model {target_jenis.capitalize()}")
             filter_label = " - ".join(label_parts) if label_parts else (data.get("filter_label") or "Seluruh Data (YTD 2026)")
-        elif summary_ctx and isinstance(summary_ctx, dict) and "summary" in summary_ctx:
+        elif summary_ctx and isinstance(summary_ctx, dict) and "summary" in summary_ctx and "unit_benchmarks" in summary_ctx and "suppliers" in summary_ctx:
             dash = summary_ctx
             filter_label = data.get("filter_label") or "Seluruh Data (YTD 2026)"
         else:
@@ -3338,33 +3518,68 @@ def api_ask_ai():
 
         # Theme Park Retail Metrics
         total_visitors_val = dash.get("total_visitors", 0)
+        total_visitors_25_val = dash.get("total_visitors_2025", 0)
+        vis_growth_val = dash.get("visitor_growth")
         sph_val = dash.get("sph", 0.0)
+        sph_25_val = dash.get("sph_2025", 0.0)
         cap_rate_val = dash.get("capture_rate", 0.0)
         atv_val = summary_26.get("atv", 0.0)
         upt_val = (summary_26['qty'] / summary_26['transactions']) if summary_26.get('transactions', 0) > 0 else 0.0
 
         if total_visitors_val > 0:
+            vis_growth_str = f" ({vis_growth_val:+.1f}% YoY vs 2025: {total_visitors_25_val:,.0f} org)" if vis_growth_val is not None else ""
             sph_growth_val = dash.get("sph_growth")
-            sph_growth_str = f" ({sph_growth_val:+.1f}% YoY)" if sph_growth_val is not None else ""
+            sph_growth_str = f" ({sph_growth_val:+.1f}% YoY vs 2025: Rp {sph_25_val:,.0f})" if sph_growth_val is not None else ""
+            ib_val = dash.get("visitors_individu_bayar", 0)
+            tb_val = dash.get("visitors_tidak_bayar", 0)
+            rl_val = dash.get("visitors_rombongan_langsung", 0)
+            ra_val = dash.get("visitors_rombongan_agen", 0)
+            pct_ib = dash.get("pct_individu_bayar", 0)
+            pct_tb = dash.get("pct_tidak_bayar", 0)
+            pct_rl = dash.get("pct_romb_langsung", 0)
+            pct_ra = dash.get("pct_romb_agen", 0)
             visitor_metric_text = (
-                f"- Total Pengunjung Masuk Wahana (Visitors): {total_visitors_val:,.0f} orang\n"
-                f"- Spending per Head (SpH): Rp {sph_val:,.0f} per orang{sph_growth_str} (rata-rata belanja merchandise tiap pengunjung wahana)\n"
-                f"- Capture Rate: {cap_rate_val:.2f}% (persentase pengunjung wahana yang membeli merchandise di toko kita)\n"
+                f"- Total Pengunjung Masuk Wahana (Visitors 2026): {total_visitors_val:,.0f} orang{vis_growth_str}\n"
+                f"- Spending per Head (SPH): Rp {sph_val:,.0f} per orang{sph_growth_str} (rata-rata belanja merchandise tiap pengunjung wahana)\n"
+                f"- Capture Rate (Rasio Konversi Pembeli): {cap_rate_val:.2f}% ({summary_26.get('transactions', 0):,} struk dari {total_visitors_val:,.0f} pengunjung)\n"
+                f"- Rincian 4 Aspek Pengunjung (Traffic Quality Mix):\n"
+                f"  1. Individu Bayar (FIT Regular): {ib_val:,.0f} orang ({pct_ib:.1f}%)\n"
+                f"  2. Individu Tidak Bayar (Free / Complimentary): {tb_val:,.0f} orang ({pct_tb:.1f}%)\n"
+                f"  3. Rombongan Langsung (Direct Group): {rl_val:,.0f} orang ({pct_rl:.1f}%)\n"
+                f"  4. Rombongan Agen (Travel Agent): {ra_val:,.0f} orang ({pct_ra:.1f}%)\n"
             )
-            if dash.get("visitors_individu", 0) > 0:
-                ib_val = dash.get("visitors_individu_bayar", 0)
-                tb_val = dash.get("visitors_tidak_bayar", 0)
-                pct_ib = dash.get("pct_individu_bayar", 0)
-                pct_tb = dash.get("pct_tidak_bayar", 0)
-                visitor_metric_text += (
-                    f"  * Komposisi Traffic Pengunjung: Individu {dash['visitors_individu']:,.0f} orang ({dash.get('pct_individu', 0):.1f}%, rincian: {ib_val:,.0f} Bayar [{pct_ib:.1f}%], {tb_val:,.0f} Free/Complimentary [{pct_tb:.1f}%]), "
-                    f"Rombongan Langsung {dash.get('visitors_rombongan_langsung', 0):,.0f} orang ({dash.get('pct_romb_langsung', 0):.1f}%), "
-                    f"Rombongan Agen {dash.get('visitors_rombongan_agen', 0):,.0f} orang ({dash.get('pct_romb_agen', 0):.1f}%)\n"
-                )
         else:
             visitor_metric_text = (
                 "- Data Pengunjung Masuk Wahana (Visitors): Belum terpetakan spesifik untuk filter kombinasi ini\n"
             )
+
+        # 4-Unit Recreation Benchmark Formatting (Dufan, SeaWorld, Samudra, Atlantis)
+        ub_map = dash.get("unit_benchmarks", {})
+        ub_lines = []
+        for u_name in ("Dufan", "SeaWorld", "Samudra", "Atlantis"):
+            ub = ub_map.get(u_name)
+            if ub:
+                gs = ub.get("growth_sales")
+                gs_str = f"{gs:+.1f}% YoY" if gs is not None else "-"
+                gv = ub.get("growth_visitors")
+                gv_str = f"{gv:+.1f}% YoY" if gv is not None else "-"
+                gsph = ub.get("growth_sph")
+                gsph_str = f"{gsph:+.1f}% YoY" if gsph is not None else "-"
+                ib_u = ub.get("visitors_individu_bayar", 0)
+                tb_u = ub.get("visitors_tidak_bayar", 0)
+                rl_u = ub.get("visitors_rombongan_langsung", 0)
+                ra_u = ub.get("visitors_rombongan_agen", 0)
+                aspect_u_str = (
+                    f" [Indiv Bayar: {ib_u:,}, Free: {tb_u:,}, Romb Langsung: {rl_u:,}, Romb Agen: {ra_u:,}]"
+                    if (ib_u + tb_u + rl_u + ra_u) > 0 else ""
+                )
+                ub_lines.append(
+                    f"  * Unit {u_name}: Omset Rp {ub.get('sales_2026', 0):,.0f} ({gs_str}) | "
+                    f"Visitor {ub.get('visitors_2026', 0):,} org ({gv_str}){aspect_u_str} | "
+                    f"SPH Rp {ub.get('sph_2026', 0):,.0f}/org ({gsph_str}) | "
+                    f"Capture Rate {ub.get('capture_rate_2026', 0):.2f}% ({ub.get('transactions_2026', 0):,} struk)"
+                )
+        unit_benchmarks_text = "\n".join(ub_lines) or "  - Data benchmark per unit belum tersedia"
 
         retail_basket_text = (
             f"- Rata-rata Belanja per Struk (ATV / Basket Size): Rp {atv_val:,.0f}\n"
@@ -3532,11 +3747,13 @@ GAYA JAWABAN & TATA ATURAN:
     Sebutkan tanggal merah secara spesifik beserta nama hari dan potensi long weekend-nya.
     Jelaskan proyeksi lonjakan pengunjung theme park (+250% s/d +350%) dan berikan 'Action Plan Persiapan Operasional' (kapan harus kunci buffer stock gudang H-14, jam sibuk mulai 11:00 WIB, pengaturan shift kasir penuh / mobile EDC).
     JANGAN MENOLAK PERTANYAAN atau sekadar berkata data tidak ada hanya karena bulan tersebut belum lewat!
-  * PERBANDINGAN KOMPARATIF (HEAD-TO-HEAD, misal: Dufan vs Atlantis, Weekend vs Weekday, Agustus vs September):
-    Gunakan bagian 'DATA KOMPARATIF HEAD-TO-HEAD' di bawah!
-    Sajikan perbandingan angka omset, struk, dan ATV secara berdampingan (side-by-side) serta jelaskan entitas mana yang lebih unggul.
-  * SPENDING PER HEAD (SPH) & CAPTURE RATE:
-    Gunakan jika relevan untuk menganalisis apakah perubahan omset dipengaruhi oleh jumlah pengunjung atau efektivitas kasir toko dalam menggaet pembeli.
+  * PERBANDINGAN KOMPARATIF (HEAD-TO-HEAD, misal: Dufan vs SeaWorld, Samudra vs Atlantis, Weekend vs Weekday, Agustus vs September):
+    Gunakan bagian 'DATA KOMPARATIF HEAD-TO-HEAD' dan 'PERBANDINGAN KINERJA 4 UNIT REKREASI' di bawah!
+    Sajikan perbandingan angka omset, visitor, rincian 4 aspek pengunjung, SPH, Capture Rate, struk, dan ATV secara berdampingan (side-by-side) serta jelaskan entitas mana yang lebih unggul.
+  * VISITOR (PENGUNJUNG), 4 ASPEK PENGUNJUNG, SPENDING PER HEAD (SPH), & CAPTURE RATE:
+    Jika user bertanya mengenai jumlah pengunjung/visitor, kualitas trafik (Individu Bayar, Individu Tidak Bayar/Free, Rombongan Langsung, Rombongan Agen), SPH, Capture Rate, atau tanggal kunjungan tertinggi:
+    WAJIB paparkan angka eksak dari 'Rincian 4 Aspek Pengunjung', 'PERBANDINGAN KINERJA 4 UNIT REKREASI', dan 'TOP 5 TANGGAL KUNJUNGAN TERTINGGI'!
+    Diagnosis apakah perubahan omset dipengaruhi oleh naik/turunnya jumlah pengunjung wahana atau efektivitas konversi belanja di toko (Capture Rate & SPH).
   * AVERAGE TRANSACTION VALUE (ATV) & UPT:
     Gunakan untuk menganalisis ukuran belanja keranjang per transaksi.
   * JAM OPERASIONAL & SIBUK:
@@ -3563,6 +3780,7 @@ GAYA JAWABAN & TATA ATURAN:
 
 {holiday_calendar_text}
 {comparative_text}
+{visitor_specific_text}
 {supplier_specific_text}
 {category_specific_text}
 {invoice_specific_text}
@@ -3585,6 +3803,9 @@ DATA RINGKASAN ANCOL STORE:
 {visitor_metric_text}
 - Jam Sibuk Penjualan & Transaksi: Pukul {peak_sales}:00 WIB
 - Jam Operasional Aktif: Pukul 06:00 s/d 20:00 WIB
+
+PERBANDINGAN KINERJA 4 UNIT REKREASI (DUFAN, SEAWORLD, SAMUDRA, ATLANTIS):
+{unit_benchmarks_text}
 
 {hourly_text}
 TOP 10 BARANG / PRODUK BERDASARKAN OMSET (REVENUE):
@@ -3778,6 +3999,51 @@ TOP PRODUK PRIORITAS (FAST-MOVING VELOCITY):
                 f"2. **Top 5 Transaksi Struk Terbesar:**\n"
                 f"{ti_text}\n\n"
                 f"💡 **Rekomendasi Kasir**: Tingkatkan promosi add-on produk impulsif di meja kasir untuk mendongkrak rata-rata belanja per struk."
+            )
+        elif (
+            any(k in p_lower for k in [
+                "visitor", "pengunjung", "kunjungan", "sph", "spending per head",
+                "capture rate", "konversi", "rombongan", "individu", "complimentary",
+                "tidak bayar", "tiket gratis", "4 aspek", "empat aspek", "benchmark unit", "antar unit"
+            ])
+            and not any(h_kw in p_lower for h_kw in ["jam ", "jam berapa", "pukul"])
+        ):
+            vis_g_str = f"{vis_growth_val:+.1f}% YoY" if vis_growth_val is not None else "0.0% YoY"
+            sph_g = dash.get("sph_growth")
+            sph_g_str = f"{sph_g:+.1f}% YoY" if sph_g is not None else "0.0% YoY"
+            ib_v = dash.get("visitors_individu_bayar", 0)
+            tb_v = dash.get("visitors_tidak_bayar", 0)
+            rl_v = dash.get("visitors_rombongan_langsung", 0)
+            ra_v = dash.get("visitors_rombongan_agen", 0)
+            p_ib = dash.get("pct_individu_bayar", 0)
+            p_tb = dash.get("pct_tidak_bayar", 0)
+            p_rl = dash.get("pct_romb_langsung", 0)
+            p_ra = dash.get("pct_romb_agen", 0)
+            peak_vis_section = ""
+            if peak_visitor_days_list:
+                pv_items = [
+                    f"  {idx}. **{pv['date']}**: **{pv['visitors']:,} pengunjung** "
+                    f"(Indiv Bayar: {pv['ib']:,}, Free: {pv['tb']:,}, Romb Langsung: {pv['rl']:,}, Romb Agen: {pv['ra']:,}) $\\rightarrow$ "
+                    f"Omset Merch **Rp {pv['sales']:,.0f}** (SPH: **Rp {pv['sph']:,.0f}/org**)"
+                    for idx, pv in enumerate(peak_visitor_days_list[:3], 1)
+                ]
+                peak_vis_section = "\n\n4. **Rekor Tanggal Kunjungan Tertinggi (Peak Visitor Days):**\n" + "\n".join(pv_items)
+            answer = (
+                f"**Analisis Kunjungan Pengunjung (Visitor), 4 Aspek Traffic & Konversi Merchandise ({filter_label}):**\n\n"
+                f"1. **Ringkasan Pengunjung & Konversi Toko:**\n"
+                f"   - Total Pengunjung Wahana (2026): **{total_visitors_val:,.0f} orang** ({vis_g_str} vs 2025: {total_visitors_25_val:,.0f} orang)\n"
+                f"   - Total Omset Merchandise: **Rp {summary_26['net_sales']:,.0f}** ({summary_26['transactions']:,} struk transaksi)\n"
+                f"   - **Spending per Head (SPH)**: **Rp {sph_val:,.0f} / orang** ({sph_g_str} vs 2025: Rp {sph_25_val:,.0f})\n"
+                f"   - **Capture Rate (Rasio Konversi Pembeli)**: **{cap_rate_val:.2f}%** pengunjung wahana berbelanja di toko\n\n"
+                f"2. **Rincian 4 Aspek Pengunjung (Traffic Quality Mix):**\n"
+                f"   - **Individu Bayar (FIT Regular)**: **{ib_v:,.0f} orang** (**{p_ib:.1f}%**)\n"
+                f"   - **Individu Tidak Bayar (Free / Complimentary)**: **{tb_v:,.0f} orang** (**{p_tb:.1f}%**)\n"
+                f"   - **Rombongan Langsung (Direct Group)**: **{rl_v:,.0f} orang** (**{p_rl:.1f}%**)\n"
+                f"   - **Rombongan Agen (Travel Agent)**: **{ra_v:,.0f} orang** (**{p_ra:.1f}%**)\n\n"
+                f"3. **Perbandingan Kinerja 4 Unit Rekreasi (Benchmark Unit):**\n"
+                f"{unit_benchmarks_text}"
+                f"{peak_vis_section}\n\n"
+                f"💡 **Rekomendasi Strategis**: Segmen **Individu Bayar ({p_ib:.1f}%)** memiliki daya beli suvenir premium tertinggi, sedangkan segmen **Rombongan ({p_rl + p_ra:.1f}%)** sangat responsif terhadap produk paket hemat, minuman dingin, dan gantungan kunci di pintu keluar wahana."
             )
         elif any(k in p_lower for k in ["supplier", "vendor", "pemasok", "rekanan"]):
             supp_lines = []

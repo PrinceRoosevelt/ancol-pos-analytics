@@ -7390,10 +7390,10 @@
     }
 
     const unitVisitors = {
-      "Dufan": { v26: 0, v25: 0 },
-      "SeaWorld": { v26: 0, v25: 0 },
-      "Samudra": { v26: 0, v25: 0 },
-      "Atlantis": { v26: 0, v25: 0 }
+      "Dufan": { v26: 0, v25: 0, ib26: 0, tb26: 0, rl26: 0, ra26: 0 },
+      "SeaWorld": { v26: 0, v25: 0, ib26: 0, tb26: 0, rl26: 0, ra26: 0 },
+      "Samudra": { v26: 0, v25: 0, ib26: 0, tb26: 0, rl26: 0, ra26: 0 },
+      "Atlantis": { v26: 0, v25: 0, ib26: 0, tb26: 0, rl26: 0, ra26: 0 }
     };
 
     const vis26ByMonth = {};
@@ -7423,7 +7423,13 @@
       // Accumulate 4 Unit Turnstile Visitors (Strict day-matched for 2025)
       const vUnit = v.unit;
       if (vYear === '2026') {
-        if (unitVisitors[vUnit]) unitVisitors[vUnit].v26 += v.visitors;
+        if (unitVisitors[vUnit]) {
+          unitVisitors[vUnit].v26 += v.visitors;
+          unitVisitors[vUnit].ib26 += (v.visitors_individu_bayar || 0);
+          unitVisitors[vUnit].tb26 += (v.visitors_tidak_bayar || 0);
+          unitVisitors[vUnit].rl26 += (v.visitors_rombongan_langsung || 0);
+          unitVisitors[vUnit].ra26 += (v.visitors_rombongan_agen || 0);
+        }
       } else if (vYear === '2025') {
         if (active26DatesDm.size === 0 || active26DatesDm.has(vDm)) {
           if (unitVisitors[vUnit]) unitVisitors[vUnit].v25 += v.visitors;
@@ -7634,15 +7640,17 @@
       { key: 'Samudra', cardId: 'unitCardSamudra', pfx: 'samudra' },
       { key: 'Atlantis', cardId: 'unitCardAtlantis', pfx: 'atlantis' }
     ];
+    const unitBenchmarksObj = {};
 
     UNIT_BENCHMARK_ITEMS.forEach(u => {
       const s = unitSales[u.key] || { s26: 0, s25: 0, tx26: new Set(), tx25: new Set() };
-      const vis = unitVisitors[u.key] || { v26: 0, v25: 0 };
+      const vis = unitVisitors[u.key] || { v26: 0, v25: 0, ib26: 0, tb26: 0, rl26: 0, ra26: 0 };
       const uSales26 = s.s26;
       const uSales25 = s.s25;
       const uVis26 = vis.v26;
       const uVis25 = vis.v25;
       const uTx26 = s.tx26.size;
+      const uTx25 = s.tx25.size;
 
       const uGrowthSales = uSales25 > 0 ? ((uSales26 - uSales25) / uSales25 * 100) : null;
       const uGrowthVis = uVis25 > 0 ? ((uVis26 - uVis25) / uVis25 * 100) : null;
@@ -7650,6 +7658,27 @@
       const uSph25 = uVis25 > 0 ? (uSales25 / uVis25) : 0;
       const uGrowthSph = (uSph25 > 0 && uSph26 > 0) ? ((uSph26 - uSph25) / uSph25 * 100) : null;
       const uCapRate26 = uVis26 > 0 ? (uTx26 / uVis26 * 100) : 0;
+      const uCapRate25 = uVis25 > 0 ? (uTx25 / uVis25 * 100) : 0;
+
+      unitBenchmarksObj[u.key] = {
+        sales_2026: uSales26,
+        sales_2025: uSales25,
+        growth_sales: uGrowthSales,
+        visitors_2026: uVis26,
+        visitors_2025: uVis25,
+        growth_visitors: uGrowthVis,
+        visitors_individu_bayar: vis.ib26 || 0,
+        visitors_tidak_bayar: vis.tb26 || 0,
+        visitors_rombongan_langsung: vis.rl26 || 0,
+        visitors_rombongan_agen: vis.ra26 || 0,
+        sph_2026: uSph26,
+        sph_2025: uSph25,
+        growth_sph: uGrowthSph,
+        capture_rate_2026: uCapRate26,
+        capture_rate_2025: uCapRate25,
+        transactions_2026: uTx26,
+        transactions_2025: uTx25
+      };
 
       const revValEl = document.getElementById(u.pfx + 'RevVal');
       const revYoYEl = document.getElementById(u.pfx + 'RevYoY');
@@ -8177,6 +8206,9 @@
         s26, s25, q26, q25, tx26Count, tx25Count,
         growthSales, growthQty, growthTx, growthAtv, growthUpt,
         atv26, atv25, upt26, upt25,
+        totalVisitors26, totalVisitors25, visGrowth,
+        sph26, sph25, sphGrowth, captureRate26,
+        ib26, tb26, rl26, ra26, pctIb, pctTb, pctRl, pctRa,
         targetTotal, targetAchieve, targetGap,
         outletList, areaList, productList,
         peakHourSales, peakHourTx, hourlyList,
@@ -8202,6 +8234,7 @@
         growth: { net_sales: growthSales, qty: growthQty, transactions: growthTx, atv: growthAtv },
         diff: { net_sales: s26 - s25, qty: q26 - q25, transactions: tx26Count - tx25Count, atv: atv26 - atv25 }
       },
+      unit_benchmarks: unitBenchmarksObj,
       gross_profit_2026: grossProfit26,
       gross_margin_2026: grossMargin26,
       total_cogs_2026: totalCogs26,
@@ -8227,8 +8260,11 @@
       target_gap: targetGap,
       target_status: targetGap >= 0 ? "MELAMPAUI TARGET" : "DEFISIT DARI TARGET",
       outlets: outletList.map(o => ({ name: o.name, "2026": { net_sales: o.s26, qty: o.q26, transactions: o.tx26 }, "2025": { net_sales: o.s25, qty: o.q25 }, contrib_2026: o.contrib26, growth_sales: o.growthSales })),
+      top_5_outlets: top5.map(o => ({ name: o.name, "2026": { net_sales: o.s26, qty: o.q26, transactions: o.tx26 }, "2025": { net_sales: o.s25, qty: o.q25 }, contrib_2026: o.contrib26, growth_sales: o.growthSales })),
+      bottom_5_outlets: evalOutlets.map(o => ({ name: o.name, "2026": { net_sales: o.s26, qty: o.q26, transactions: o.tx26 }, "2025": { net_sales: o.s25, qty: o.q25 }, contrib_2026: o.contrib26, growth_sales: o.growthSales })),
       areas: areaList.map(a => ({ name: a.name, "2026": { net_sales: a.s26, qty: a.q26, transactions: a.tx26 }, "2025": { net_sales: a.s25, qty: a.q25 }, contrib_2026: a.contrib26, growth_sales: a.growthSales })),
-      products: productList.map(p => ({ name: p.name, s26: p.s26, q26: p.q26, s25: p.s25, q25: p.q25, dailyAvg: p.dailyAvg, weeklyProj: p.weeklyProj, contrib26: p.contrib26, growthQty: p.growthQty, "2026": { net_sales: p.s26, qty: p.q26 }, "2025": { qty: p.q25, net_sales: p.s25 }, contrib_2026: p.contrib26, growth_qty: p.growthQty })),
+      products: productList.map(p => ({ name: p.name, s26: p.s26, q26: p.q26, s25: p.s25, q25: p.q25, dailyAvg: p.dailyAvg, weeklyProj: p.weeklyProj, daily_avg: p.dailyAvg, weekly_proj: p.weeklyProj, contrib26: p.contrib26, growthQty: p.growthQty, "2026": { net_sales: p.s26, qty: p.q26 }, "2025": { qty: p.q25, net_sales: p.s25 }, contrib_2026: p.contrib26, growth_qty: p.growthQty })),
+      priority_products: [...productList].sort((a, b) => b.q26 - a.q26).slice(0, 5).map(p => ({ name: p.name, daily_avg: p.dailyAvg, weekly_proj: p.weeklyProj, "2026": { net_sales: p.s26, qty: p.q26 } })),
       suppliers: supplierList,
       categories: categoryList,
       model_summary: modelSummary,
@@ -8383,6 +8419,10 @@
       s26, s25, q26, q25, tx26Count, tx25Count,
       growthSales, growthQty, growthTx, growthAtv, growthUpt,
       atv26, atv25, upt26, upt25,
+      totalVisitors26 = 0, totalVisitors25 = 0, visGrowth = null,
+      sph26 = 0, sph25 = 0, sphGrowth = null, captureRate26 = 0,
+      ib26 = 0, tb26 = 0, rl26 = 0, ra26 = 0,
+      pctIb = 0, pctTb = 0, pctRl = 0, pctRa = 0,
       targetTotal, targetAchieve, targetGap,
       outletList, areaList, productList,
       peakHourSales, peakHourTx, hourlyList,
@@ -8454,10 +8494,14 @@
     `;
     if (revContent) revContent.innerHTML = card1Html;
 
-    // Card 2: Customer Basket & Ticket Size
+    // Card 2: Customer Basket, Visitor & Conversion
     const basketTitle = document.getElementById('bizBasketTitle');
     const basketContent = document.getElementById('bizBasketContent');
-    if (basketTitle) basketTitle.textContent = `ATV ${formatRp(atv26)} | UPT ${upt26.toFixed(2)} item`;
+    if (basketTitle) {
+      basketTitle.textContent = totalVisitors26 > 0
+        ? `ATV ${formatRp(atv26)} | SPH ${formatRp(Math.round(sph26))} | Cap ${captureRate26.toFixed(1)}%`
+        : `ATV ${formatRp(atv26)} | UPT ${upt26.toFixed(2)} item`;
+    }
 
     const atvDiff = atv26 - atv25;
     const isTrafficDriver = (growthTx || 0) > (growthAtv || 0);
@@ -8476,6 +8520,17 @@
         </div>
       </div>
     `;
+    if (totalVisitors26 > 0) {
+      const visGrowthBadge = visGrowth !== null ? ` (${visGrowth >= 0 ? '+' : ''}${visGrowth.toFixed(1)}% YoY)` : '';
+      card2Html += `
+      <div class="biz-point">
+        <span class="biz-point-tag star">Visitor & SPH</span>
+        <div class="biz-point-text">
+          Kunjungan <strong>${formatNum(totalVisitors26)} org</strong>${visGrowthBadge} dengan SPH <strong>${formatRp(Math.round(sph26))}/org</strong> &amp; Capture Rate <strong>${captureRate26.toFixed(2)}%</strong> (Indiv Bayar <strong>${pctIb.toFixed(0)}%</strong>, Free <strong>${pctTb.toFixed(0)}%</strong>, Romb Langsung <strong>${pctRl.toFixed(0)}%</strong>, Agen <strong>${pctRa.toFixed(0)}%</strong>).
+        </div>
+      </div>
+      `;
+    }
     if (basketContent) basketContent.innerHTML = card2Html;
 
     // Card 3: Top Performers & Focus Units
@@ -11001,6 +11056,10 @@
     try {
       const summaryContext = {
         summary: currentDashboardData.summary,
+        unit_benchmarks: currentDashboardData.unit_benchmarks || {},
+        gross_profit_2026: currentDashboardData.gross_profit_2026 || 0,
+        gross_margin_2026: currentDashboardData.gross_margin_2026 || 0,
+        total_cogs_2026: currentDashboardData.total_cogs_2026 || 0,
         total_visitors: currentDashboardData.total_visitors || 0,
         total_visitors_2025: currentDashboardData.total_visitors_2025 || 0,
         sph: currentDashboardData.sph || 0,
@@ -11024,6 +11083,11 @@
         target_status: currentDashboardData.target_status,
         outlets: currentDashboardData.outlets || [],
         products: currentDashboardData.products || [],
+        suppliers: currentDashboardData.suppliers || [],
+        categories: currentDashboardData.categories || [],
+        model_summary: currentDashboardData.model_summary || {},
+        unmapped_skus: currentDashboardData.unmapped_skus || [],
+        hourly_chart: currentDashboardData.hourly_chart || [],
         top_5_outlets: currentDashboardData.top_5_outlets || [],
         bottom_5_outlets: currentDashboardData.bottom_5_outlets || [],
         priority_products: currentDashboardData.priority_products || [],
