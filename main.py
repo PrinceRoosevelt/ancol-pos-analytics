@@ -298,6 +298,7 @@ def read_target_daily(
     daily: dict[str, float] = defaultdict(float)
     start_dm = start_date[5:] if start_date else ""
     end_dm = end_date[5:] if end_date else ""
+    outlets_set = {o.strip() for o in outlet.split(",") if o.strip()} if outlet else set()
     for target_row in read_budget_daily():
         target_date = target_row["date"]
         target_dm = target_date[5:]
@@ -312,7 +313,7 @@ def read_target_daily(
             continue
         if available_dates is not None and target_date not in available_dates:
             continue
-        if outlet and target_row["outlet"] != outlet:
+        if outlets_set and target_row["outlet"] not in outlets_set:
             continue
         if area and target_row["area"] != area:
             continue
@@ -807,7 +808,7 @@ def build_dashboard(
         and (not date or row["date"][5:] == date[5:])
         and (not outlets_set or row["outlet"] in outlets_set)
         and (not area or row["area"] == area)
-        and (row["year"] == 2026 or row["date"][5:] in comparison_day_months)
+        and (row["year"] == 2026 or not comparison_day_months or row["date"][5:] in comparison_day_months)
     ]
     summary = {str(year): summarize(filtered, year) for year in (2025, 2026)}
     summary["growth"] = {
@@ -902,7 +903,7 @@ def build_dashboard(
                     ),
                 }
             )
-        return sorted(result, key=lambda item: item["2026"]["net_sales"], reverse=True)
+        return sorted(result, key=lambda item: (item["2026"]["net_sales"], item["2025"]["net_sales"]), reverse=True)
 
     daily = flatten(by_day)
     for item in daily:
@@ -920,7 +921,16 @@ def build_dashboard(
         date,
         outlet,
         area,
-        available_dates=current_period_dates,
+        available_dates=current_period_dates if current_period_dates else None,
+        start_date=start_date,
+        end_date=end_date,
+    )
+    full_target_daily = read_target_daily(
+        month,
+        date,
+        outlet,
+        area,
+        available_dates=None,
         start_date=start_date,
         end_date=end_date,
     )
@@ -929,17 +939,30 @@ def build_dashboard(
     is_monthly_view = not month and not has_date_range
 
     if is_monthly_view:
-        # YTD / Semua Bulan (tanpa custom date range) -> Tampilkan agregasi per Bulan
-        m_keys = sorted({row["month"] for row in filtered if row["year"] == 2026})
+        # YTD / Semua Bulan (tanpa custom date range) -> Tampilkan agregasi per Bulan (Full Jan-Des Horizon)
+        chart_by_month: dict[str, dict[str, float]] = {
+            f"{m_idx:02d}": {"2026": 0.0, "2025": 0.0} for m_idx in range(1, 13)
+        }
+        for row in rows:
+            if outlets_set and row["outlet"] not in outlets_set:
+                continue
+            if area and row["area"] != area:
+                continue
+            m_num = row["month"][5:]
+            y_str = str(row["year"])
+            if m_num in chart_by_month and y_str in ("2025", "2026"):
+                chart_by_month[m_num][y_str] += row["net_sales"]
+
+        m_keys = [f"2026-{m_idx:02d}" for m_idx in range(1, 13)]
         daily_chart = [
             {
                 "date": m,
                 "comparison_date": f"2025-{m[5:]}",
                 "label": MONTH_NAMES.get(m[5:], m[5:]),
-                "short_label": datetime.strptime(f"{m}-01", "%Y-%m-%d").strftime("%b"),
+                "short_label": MONTH_NAMES.get(m[5:], m[5:])[:3],
                 "is_monthly": True,
-                "2026": by_month.get(m, {}).get("2026", {"net_sales": 0})["net_sales"],
-                "2025": by_month.get(m, {}).get("2025", {"net_sales": 0})["net_sales"],
+                "2026": chart_by_month.get(m[5:], {}).get("2026", 0.0),
+                "2025": chart_by_month.get(m[5:], {}).get("2025", 0.0),
             }
             for m in m_keys
         ]
@@ -950,7 +973,7 @@ def build_dashboard(
                 "short_label": item["short_label"],
                 "is_monthly": True,
                 "target": sum(
-                    v for d_str, v in target_daily.items() if d_str.startswith(item["date"])
+                    v for d_str, v in full_target_daily.items() if d_str.startswith(item["date"])
                 ),
                 "actual": item["2026"],
             }
@@ -958,6 +981,12 @@ def build_dashboard(
         ]
     else:
         # Bulan Tertentu atau Rentang Tanggal Dipilih -> Tampilkan agregasi per Hari / Tanggal
+        active_26_dm = {row["date"][5:] for row in filtered if row["year"] == 2026}
+        daily_dm_keys = sorted(
+            active_26_dm
+            if active_26_dm
+            else ({row["date"][5:] for row in filtered} | {d_str[5:] for d_str in full_target_daily})
+        )
         daily_chart = [
             {
                 "date": f"2026-{day_month}",
@@ -972,9 +1001,7 @@ def build_dashboard(
                 "2026": by_day.get(day_month, {}).get("2026", {"net_sales": 0})["net_sales"],
                 "2025": by_day.get(day_month, {}).get("2025", {"net_sales": 0})["net_sales"],
             }
-            for day_month in sorted(
-                {row["date"][5:] for row in filtered if row["year"] == 2026}
-            )
+            for day_month in daily_dm_keys
         ]
         target_chart = [
             {
@@ -982,7 +1009,7 @@ def build_dashboard(
                 "label": item["label"],
                 "short_label": item["short_label"],
                 "is_monthly": False,
-                "target": target_daily.get(item["date"], 0.0),
+                "target": (target_daily if active_26_dm else full_target_daily).get(item["date"], 0.0),
                 "actual": item["2026"],
             }
             for item in daily_chart
@@ -1364,10 +1391,10 @@ def build_dashboard(
         "priority_products": priority_products,
         "active_days_count": active_days_2026,
         "executive_narrative": executive_narrative,
-        "months": sorted({row["month"] for row in rows if row["year"] == 2026}, reverse=True),
+        "months": [f"2026-{m_idx:02d}" for m_idx in range(1, 13)],
         "month_labels": {
-            month: MONTH_NAMES.get(month[5:], month)
-            for month in {row["month"] for row in rows if row["year"] == 2026}
+            f"2026-{m_idx:02d}": MONTH_NAMES.get(f"{m_idx:02d}", f"2026-{m_idx:02d}")
+            for m_idx in range(1, 13)
         },
         "dates": sorted({row["date"] for row in rows if row["year"] == 2026}),
         "date_labels": {
@@ -1422,19 +1449,11 @@ def build_dashboard(
                 r.get("item_net_sales", 0.0),
             ]
             for r in rows
-            if r["year"] == 2026 or r["date"][5:] in all_sales_day_months_2026
         ]
         if include_raw
         else [],
-        # The browser-side filter engine receives only target days for which
-        # 2026 sales data is currently available. This keeps its default and
-        # filtered target totals aligned with the backend's MTD calculation.
         "compact_targets": (
-            [
-                target
-                for target in read_all_targets()
-                if target["date"] in all_sales_dates_2026
-            ]
+            read_all_targets()
             if include_raw
             else []
         ),

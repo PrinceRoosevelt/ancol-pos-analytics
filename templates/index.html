@@ -5033,7 +5033,7 @@
           </tr>
         </thead>
         <tbody id="outletsTableBody">
-          {% set max_outlet_sales = data.outlets[0]['2026']['net_sales'] if data.outlets else 1 %}
+          {% set max_outlet_sales = (data.outlets[0]['2026']['net_sales'] if data.outlets else 0) or 1 %}
           {% for item in data.outlets %}
           <tr>
             <td class="text-center" style="color:var(--text-muted);">{{ loop.index }}</td>
@@ -5079,7 +5079,7 @@
           </tr>
         </thead>
         <tbody id="areasTableBody">
-          {% set max_area_sales = data.areas[0]['2026']['net_sales'] if data.areas else 1 %}
+          {% set max_area_sales = (data.areas[0]['2026']['net_sales'] if data.areas else 0) or 1 %}
           {% for item in data.areas %}
           <tr>
             <td class="text-center" style="color:var(--text-muted);">{{ loop.index }}</td>
@@ -5126,7 +5126,7 @@
           </tr>
         </thead>
         <tbody id="productsTableBody">
-          {% set max_product_sales = data.products[0]['2026']['net_sales'] if data.products else 1 %}
+          {% set max_product_sales = (data.products[0]['2026']['net_sales'] if data.products else 0) or 1 %}
           {% for item in data.products[:10] %}
           <tr>
             <td class="text-center" style="color:var(--text-muted);">{{ loop.index }}</td>
@@ -5228,7 +5228,7 @@
           </tr>
         </thead>
         <tbody id="suppliersTableBody">
-          {% set max_supp_sales = data.suppliers[0]['net_sales'] if data.suppliers else 1 %}
+          {% set max_supp_sales = (data.suppliers[0]['net_sales'] if data.suppliers else 0) or 1 %}
           {% for item in data.suppliers %}
           <tr>
             <td class="text-center" style="color:var(--text-muted);">{{ loop.index }}</td>
@@ -5285,7 +5285,7 @@
           </tr>
         </thead>
         <tbody id="categoriesTableBody">
-          {% set max_cat_sales = data.categories[0]['net_sales'] if data.categories else 1 %}
+          {% set max_cat_sales = (data.categories[0]['net_sales'] if data.categories else 0) or 1 %}
           {% for item in data.categories %}
           <tr>
             <td class="text-center" style="color:var(--text-muted);">{{ loop.index }}</td>
@@ -5686,6 +5686,16 @@
   const MONTH_NAMES = {{ data.month_labels|tojson if data.month_labels else '{}' }};
   const DATE_LABELS = {{ data.date_labels|tojson if data.date_labels else '{}' }};
   const COMPACT_LOOKUP = {{ data.compact_lookup|tojson if data.compact_lookup else '{}' }};
+
+  // Precompute Global 2026 Active Dates for Strict Apples-to-Apples KPI & YoY Matching
+  const GLOBAL_ACTIVE_26_DATES = new Set();
+  const GLOBAL_ACTIVE_26_DM = new Set();
+  for (let i = 0; i < RAW_SALES.length; i++) {
+    if (RAW_SALES[i][0] === 2026) {
+      GLOBAL_ACTIVE_26_DATES.add(RAW_SALES[i][1]);
+      GLOBAL_ACTIVE_26_DM.add(RAW_SALES[i][1].substring(5));
+    }
+  }
 
   const OUTLET_TO_VISITOR_MAP = {
     "SWIN Sea World Induk": "SeaWorld",
@@ -7065,12 +7075,31 @@
       hourTx25[hStr] = new Set();
     }
 
+    for (let m = 1; m <= 12; m++) {
+      const mk = String(m).padStart(2, '0');
+      byMonth[mk] = { s26: 0, s25: 0 };
+    }
+
     let itemNetSales26 = 0, itemNetSales25 = 0;
 
     const startDm = startDate ? startDate.substring(5) : '';
     const endDm = endDate ? endDate.substring(5) : '';
     const selMonth = month ? month.slice(-2) : '';
     const hasCompactLookup = (typeof COMPACT_LOOKUP !== 'undefined' && COMPACT_LOOKUP) ? COMPACT_LOOKUP : null;
+
+    // Cek apakah periode filter saat ini memiliki transaksi aktif di tahun 2026
+    let periodHas26Data = false;
+    GLOBAL_ACTIVE_26_DM.forEach(dm => {
+      if (startDate || endDate) {
+        if (startDm && dm < startDm) return;
+        if (endDm && dm > endDm) return;
+        periodHas26Data = true;
+      } else if (selMonth) {
+        if (dm.substring(0, 2) === selMonth) periodHas26Data = true;
+      } else {
+        periodHas26Data = true;
+      }
+    });
 
     for (let i = 0; i < RAW_SALES.length; i++) {
       const r = RAW_SALES[i]; // [year, date, hour, outlet, area, product, qty, net_sales, invoice, item_net_sales]
@@ -7122,8 +7151,10 @@
           unitSales[rUnit].s26 += rSales;
           unitSales[rUnit].tx26.add(txId);
         } else if (rYear === 2025) {
-          unitSales[rUnit].s25 += rSales;
-          unitSales[rUnit].tx25.add(txId);
+          if (!periodHas26Data || GLOBAL_ACTIVE_26_DM.has(rDm)) {
+            unitSales[rUnit].s25 += rSales;
+            unitSales[rUnit].tx25.add(txId);
+          }
         }
       }
 
@@ -7217,34 +7248,39 @@
         byMonth[mKey].s26 += rSales;
 
       } else if (rYear === 2025) {
-        s25 += rSales;
-        itemNetSales25 += rItemNetSales;
-        q25 += rQty;
-        txSet25.add(txId);
-
-        if (!byOutlet[rOutlet]) byOutlet[rOutlet] = { s26: 0, s25: 0, q26: 0, q25: 0, tx26: new Set(), tx25: new Set(), area: rArea };
-        byOutlet[rOutlet].s25 += rSales;
-        byOutlet[rOutlet].q25 += rQty;
-        byOutlet[rOutlet].tx25.add(txId);
-
-        if (!byArea[rArea]) byArea[rArea] = { s26: 0, s25: 0, q26: 0, q25: 0, tx26: new Set(), tx25: new Set() };
-        byArea[rArea].s25 += rSales;
-        byArea[rArea].q25 += rQty;
-        byArea[rArea].tx25.add(txId);
-
-        if (!byProduct[rProduct]) byProduct[rProduct] = { s26: 0, s25: 0, q26: 0, q25: 0 };
-        byProduct[rProduct].s25 += rSales;
-        byProduct[rProduct].q25 += rQty;
-
-        if (byHour[rHour]) {
-          byHour[rHour].s25 += rSales;
-          hourTx25[rHour].add(txId);
-        }
-
-        const dayKey = rDate.substring(5);
-        if (!byDay[dayKey]) byDay[dayKey] = { s26: 0, s25: 0 };
-        byDay[dayKey].s25 += rSales;
+        // Horizon Bulanan (Chart 1) selalu mengumpulkan full 12 bulan (Jan-Des 2025) untuk forecasting
         byMonth[mKey].s25 += rSales;
+
+        // KPI Utama, Tabel, & Grafik Harian tetap Strict Apples-to-Apples (kecuali saat melihat bulan masa depan Okt-Des)
+        if (!periodHas26Data || GLOBAL_ACTIVE_26_DM.has(rDm)) {
+          s25 += rSales;
+          itemNetSales25 += rItemNetSales;
+          q25 += rQty;
+          txSet25.add(txId);
+
+          if (!byOutlet[rOutlet]) byOutlet[rOutlet] = { s26: 0, s25: 0, q26: 0, q25: 0, tx26: new Set(), tx25: new Set(), area: rArea };
+          byOutlet[rOutlet].s25 += rSales;
+          byOutlet[rOutlet].q25 += rQty;
+          byOutlet[rOutlet].tx25.add(txId);
+
+          if (!byArea[rArea]) byArea[rArea] = { s26: 0, s25: 0, q26: 0, q25: 0, tx26: new Set(), tx25: new Set() };
+          byArea[rArea].s25 += rSales;
+          byArea[rArea].q25 += rQty;
+          byArea[rArea].tx25.add(txId);
+
+          if (!byProduct[rProduct]) byProduct[rProduct] = { s26: 0, s25: 0, q26: 0, q25: 0 };
+          byProduct[rProduct].s25 += rSales;
+          byProduct[rProduct].q25 += rQty;
+
+          if (byHour[rHour]) {
+            byHour[rHour].s25 += rSales;
+            hourTx25[rHour].add(txId);
+          }
+
+          const dayKey = rDate.substring(5);
+          if (!byDay[dayKey]) byDay[dayKey] = { s26: 0, s25: 0 };
+          byDay[dayKey].s25 += rSales;
+        }
       }
     }
 
@@ -7273,8 +7309,10 @@
       }
       if (area && t.area !== area) continue;
 
-      targetTotal += t.target;
-      targetDailyMap[t.date] = (targetDailyMap[t.date] || 0) + t.target;
+      if (!periodHas26Data || GLOBAL_ACTIVE_26_DATES.has(t.date)) {
+        targetTotal += t.target;
+        targetDailyMap[t.date] = (targetDailyMap[t.date] || 0) + t.target;
+      }
       const tmKey = t.date.substring(5, 7);
       targetMonthMap[tmKey] = (targetMonthMap[tmKey] || 0) + t.target;
     }
@@ -7735,7 +7773,7 @@
       tx25: v.tx25.size,
       contrib26: s26 > 0 ? (v.s26 / s26 * 100) : 0,
       growthSales: v.s25 > 0 ? ((v.s26 - v.s25) / v.s25 * 100) : null
-    })).sort((a, b) => b.s26 - a.s26);
+    })).sort((a, b) => (b.s26 - a.s26) || (b.s25 - a.s25));
 
     // Areas Flatten & Sort
     const areaList = Object.entries(byArea).map(([name, v]) => ({
@@ -7748,7 +7786,7 @@
       tx25: v.tx25.size,
       contrib26: s26 > 0 ? (v.s26 / s26 * 100) : 0,
       growthSales: v.s25 > 0 ? ((v.s26 - v.s25) / v.s25 * 100) : null
-    })).sort((a, b) => b.s26 - a.s26);
+    })).sort((a, b) => (b.s26 - a.s26) || (b.s25 - a.s25));
 
     // Unique Operational Dates & Sales Velocity Divisor
     const activeDaysCount = Math.max(distinctDates26.size, 1);
@@ -7769,7 +7807,7 @@
         contrib26: s26 > 0 ? (v.s26 / s26 * 100) : 0,
         growthQty: v.q25 > 0 ? ((v.q26 - v.q25) / v.q25 * 100) : null
       };
-    }).sort((a, b) => b.s26 - a.s26);
+    }).sort((a, b) => (b.s26 - a.s26) || (b.s25 - a.s25));
 
     // Hourly Array (Only active operational hours: 06:00 to 20:00, omitting early morning 00:00 - 05:00)
     const activeHours = Object.keys(byHour).filter(h => {
@@ -7829,13 +7867,13 @@
 
     if (isMonthlyView) {
       if (chart1Title) chart1Title.textContent = 'Tren Penjualan Bulanan (2026 vs 2025)';
-      if (chart1Subtitle) chart1Subtitle.textContent = 'Perbandingan pergerakan revenue bulanan YTD';
+      if (chart1Subtitle) chart1Subtitle.textContent = 'Perbandingan pergerakan revenue bulanan Jan – Des (Forecasting)';
       if (chart2Title) chart2Title.textContent = 'Target vs Realisasi Bulanan 2026';
-      if (chart2Subtitle) chart2Subtitle.textContent = 'Monitoring target bulanan vs aktual tercapai YTD';
+      if (chart2Subtitle) chart2Subtitle.textContent = 'Monitoring target bulanan vs aktual tercapai Jan – Des';
       if (chart5Title) chart5Title.textContent = 'Korelasi Revenue vs Pengunjung Bulanan (2026)';
-      if (chart5Subtitle) chart5Subtitle.textContent = 'Hubungan omzet bulanan dengan volume pengunjung YTD (Dual Y-Axis)';
+      if (chart5Subtitle) chart5Subtitle.textContent = 'Hubungan omzet bulanan dengan volume pengunjung (Dual Y-Axis)';
       if (chart6Title) chart6Title.textContent = 'Tren Kunjungan Pengunjung Bulanan (2026 vs 2025)';
-      if (chart6Subtitle) chart6Subtitle.textContent = 'Perbandingan volume pengunjung bulanan YTD (YoY)';
+      if (chart6Subtitle) chart6Subtitle.textContent = 'Perbandingan volume pengunjung bulanan Jan – Des (YoY)';
 
       const monthKeys = Object.keys(byMonth).sort();
       dailyChartList = monthKeys.map(mKey => {
@@ -7911,7 +7949,11 @@
         if (chart6Subtitle) chart6Subtitle.textContent = `Perbandingan volume pengunjung harian bulan ${selMonthName}`;
       }
 
-      const dayKeys = Object.keys(byDay).sort();
+      const dayKeySet = new Set(Object.keys(byDay));
+      if (!periodHas26Data) {
+        Object.keys(targetDailyMap).forEach(dStr => dayKeySet.add(dStr.substring(5)));
+      }
+      const dayKeys = Array.from(dayKeySet).sort();
       dailyChartList = dayKeys.map(dayKey => {
         const parts = dayKey.split('-');
         const dNum = parseInt(parts[1], 10);
@@ -7922,8 +7964,8 @@
           label: dNum + ' ' + mLabel,
           short_label: dNum + ' ' + mLabel,
           is_monthly: false,
-          2026: byDay[dayKey].s26,
-          2025: byDay[dayKey].s25
+          2026: byDay[dayKey] ? byDay[dayKey].s26 : 0,
+          2025: byDay[dayKey] ? byDay[dayKey].s25 : 0
         };
       });
 
@@ -9773,10 +9815,21 @@
     dailyData.forEach((item, i) => {
       const x = left + i * step;
       const y = top + plotH - (item['2026'] / maxVal) * plotH;
+      const y25 = top + plotH - ((item['2025'] || 0) / maxVal) * plotH;
       if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-      salesPoints.push({ x, y, item });
+      salesPoints.push({ x, y, y25, item });
     });
     ctx.stroke();
+
+    // Markers for 2025 Series
+    dailyData.forEach((item, i) => {
+      const x = left + i * step;
+      const y25 = top + plotH - ((item['2025'] || 0) / maxVal) * plotH;
+      ctx.fillStyle = '#a78bfa';
+      ctx.beginPath();
+      ctx.arc(x, y25, 3, 0, Math.PI * 2);
+      ctx.fill();
+    });
 
     // Markers & Peak Anotation (Rekor Tertinggi 2026)
     let peakIndex26 = -1;
@@ -9858,8 +9911,9 @@
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    let nearest = salesPoints.reduce((a, p) => Math.hypot(p.x - x, p.y - y) < Math.hypot(a.x - x, a.y - y) ? p : a);
-    if (Math.hypot(nearest.x - x, nearest.y - y) < 30) {
+    const ptDist = p => Math.min(Math.hypot(p.x - x, p.y - y), Math.hypot(p.x - x, (p.y25 ?? p.y) - y));
+    let nearest = salesPoints.reduce((a, p) => ptDist(p) < ptDist(a) ? p : a);
+    if (ptDist(nearest) < 35) {
       const it = nearest.item;
       const diff = it['2026'] - it['2025'];
       const growth = it['2025'] > 0 ? ((diff / it['2025']) * 100).toFixed(1) + '%' : '-';
@@ -9887,12 +9941,13 @@
           holidayBadge = `<div style="margin-top:4px; font-size:10.5px; color:#f87171; border-top:1px dashed rgba(255,255,255,0.15); padding-top:4px;">🔴 Libur: ${holParts.join(' | ')}</div>`;
         }
       } else {
-        titleHtml = `<div class="tooltip-title">${it.label} ${it.is_monthly ? '2026 (Bulanan)' : '2026'}</div>`;
+        titleHtml = `<div class="tooltip-title">${it.label} ${it.is_monthly ? '(Bulanan 2026 vs 2025)' : '2026'}</div>`;
       }
 
+      const anchorY = Math.abs(nearest.y - y) < Math.abs((nearest.y25 ?? nearest.y) - y) ? nearest.y : (nearest.y25 ?? nearest.y);
       salesTooltip.style.display = 'block';
       salesTooltip.style.left = Math.min(nearest.x + 12, salesCanvas.clientWidth - 270) + 'px';
-      salesTooltip.style.top = Math.max(nearest.y - 120, 10) + 'px';
+      salesTooltip.style.top = Math.max(anchorY - 120, 10) + 'px';
       salesTooltip.innerHTML = `
         ${titleHtml}
         <div class="tooltip-row"><span class="tooltip-label" style="color:#60a5fa;">${row26Label}</span> <span class="tooltip-val">${formatRp(it['2026'])}</span></div>
@@ -9977,14 +10032,21 @@
     targetData.forEach((item, i) => {
       const x = left + i * step;
       const y = top + plotH - (item.actual / maxVal) * plotH;
+      const yTarget = top + plotH - ((item.target || 0) / maxVal) * plotH;
       if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-      targetPoints.push({ x, y, item });
+      targetPoints.push({ x, y, yTarget, item });
     });
     ctx.stroke();
 
     // Markers
     targetData.forEach((item, i) => {
       const x = left + i * step;
+      const yTarget = top + plotH - ((item.target || 0) / maxVal) * plotH;
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.arc(x, yTarget, 3, 0, Math.PI * 2);
+      ctx.fill();
+
       const y = top + plotH - (item.actual / maxVal) * plotH;
       ctx.fillStyle = '#10b981';
       ctx.beginPath();
@@ -10014,8 +10076,9 @@
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    let nearest = targetPoints.reduce((a, p) => Math.hypot(p.x - x, p.y - y) < Math.hypot(a.x - x, a.y - y) ? p : a);
-    if (Math.hypot(nearest.x - x, nearest.y - y) < 30) {
+    const ptDist = p => Math.min(Math.hypot(p.x - x, p.y - y), Math.hypot(p.x - x, (p.yTarget ?? p.y) - y));
+    let nearest = targetPoints.reduce((a, p) => ptDist(p) < ptDist(a) ? p : a);
+    if (ptDist(nearest) < 35) {
       const it = nearest.item;
       const achieve = it.target > 0 ? ((it.actual / it.target) * 100).toFixed(1) + '%' : '-';
       const gap = it.actual - it.target;
@@ -10554,6 +10617,12 @@
 
     trendData.forEach((item, i) => {
       const x = left + i * step;
+      const y25 = top + plotH - ((item.visitors_2025 || 0) / maxVis) * plotH;
+      ctx.fillStyle = '#a78bfa';
+      ctx.beginPath();
+      ctx.arc(x, y25, 3, 0, Math.PI * 2);
+      ctx.fill();
+
       const y26 = top + plotH - ((item.visitors_2026 || 0) / maxVis) * plotH;
       const isPeak = (i === peakIndex && maxVis26Val > 0);
 
@@ -10590,7 +10659,7 @@
         ctx.fillText(pinText, bX + bW / 2, bY + 14);
       }
 
-      visTrendPoints.push({ x, y: y26, item });
+      visTrendPoints.push({ x, y: y26, y25, item });
     });
 
     // X-Axis Labels
@@ -10616,8 +10685,9 @@
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
-      let nearest = visTrendPoints.reduce((a, p) => Math.hypot(p.x - x, p.y - y) < Math.hypot(a.x - x, a.y - y) ? p : a);
-      if (Math.hypot(nearest.x - x, nearest.y - y) < 30) {
+      const ptDist = p => Math.min(Math.hypot(p.x - x, p.y - y), Math.hypot(p.x - x, (p.y25 ?? p.y) - y));
+      let nearest = visTrendPoints.reduce((a, p) => ptDist(p) < ptDist(a) ? p : a);
+      if (ptDist(nearest) < 35) {
         const it = nearest.item;
         const v26 = it.visitors_2026 || 0;
         const v25 = it.visitors_2025 || 0;
