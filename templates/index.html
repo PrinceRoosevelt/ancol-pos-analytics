@@ -2865,6 +2865,386 @@
       width: 100%;
     }
 
+    /* Periodical Visitor & Revenue Comparison Matrix Section */
+    .period-matrix-section {
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(0, 51, 160, 0.14);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 6px 24px -4px rgba(0, 32, 91, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+      position: relative;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    :root.dark .period-matrix-section {
+      background: rgba(10, 19, 36, 0.82);
+      border-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 28px -4px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .matrix-summary-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    @media (max-width: 900px) {
+      .matrix-summary-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+    .matrix-summary-pill {
+      background: var(--bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+    :root.dark .matrix-summary-pill {
+      background: rgba(15, 23, 42, 0.65);
+    }
+    .matrix-summary-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .matrix-summary-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .matrix-summary-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+    }
+    .matrix-summary-val {
+      font-size: 12.5px;
+      font-weight: 750;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .matrix-controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .matrix-filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .matrix-filter-pill {
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--panel-border);
+      background: var(--bg);
+      font-size: 11.5px;
+      font-weight: 650;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+      min-height: 32px;
+    }
+    .matrix-filter-pill:hover {
+      color: var(--text);
+      border-color: var(--brand-border);
+    }
+    .matrix-filter-pill:active {
+      transform: scale(0.97);
+    }
+    .matrix-filter-pill.active {
+      background: var(--brand);
+      color: #ffffff;
+      border-color: var(--brand);
+      box-shadow: 0 2px 8px rgba(0, 51, 160, 0.22);
+    }
+
+    .matrix-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      max-height: 520px;
+      overflow-y: auto;
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      position: relative;
+      background: var(--panel);
+    }
+    .matrix-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 12.5px;
+      font-variant-numeric: tabular-nums;
+    }
+    .matrix-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 8;
+      padding: 10px 12px;
+      font-size: 11px;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 2px solid var(--panel-border);
+      user-select: none;
+      white-space: nowrap;
+    }
+    .matrix-table thead th.th-period {
+      background: #f1f5f9;
+      color: #1e293b;
+      border-right: 1px solid var(--panel-border);
+    }
+    .matrix-table thead th.th-group-2026 {
+      background: #dcfce7;
+      color: #065f46;
+      border-right: 1px solid rgba(5, 150, 105, 0.18);
+    }
+    .matrix-table thead th.th-group-2025 {
+      background: #dbeafe;
+      color: #1e40af;
+      border-right: 1px solid rgba(37, 99, 235, 0.18);
+    }
+    .matrix-table thead th.th-group-growth {
+      background: #ecfdf5;
+      color: #047857;
+      border-right: 1px solid rgba(5, 150, 105, 0.18);
+    }
+    :root.dark .matrix-table thead th.th-period {
+      background: #1e293b;
+      color: #f8fafc;
+    }
+    :root.dark .matrix-table thead th.th-group-2026 {
+      background: #064e3b;
+      color: #a7f3d0;
+      border-right-color: rgba(16, 185, 129, 0.25);
+    }
+    :root.dark .matrix-table thead th.th-group-2025 {
+      background: #1e3a8a;
+      color: #bfdbfe;
+      border-right-color: rgba(59, 130, 246, 0.25);
+    }
+    :root.dark .matrix-table thead th.th-group-growth {
+      background: #065f46;
+      color: #6ee7b7;
+      border-right-color: rgba(16, 185, 129, 0.25);
+    }
+
+    .matrix-table tbody td {
+      padding: 8.5px 12px;
+      border-bottom: 1px solid var(--panel-border);
+      border-right: 1px solid rgba(148, 163, 184, 0.16);
+      white-space: nowrap;
+      transition: background-color 0.12s ease;
+    }
+    .matrix-table tbody td:last-child,
+    .matrix-table thead th:last-child,
+    .matrix-table tfoot td:last-child {
+      border-right: none;
+    }
+
+    /* Subtle Column Group Tints (Matching Excel Screenshot 2) */
+    .matrix-table tbody td.td-2026 {
+      background: rgba(22, 163, 74, 0.06);
+      font-weight: 650;
+    }
+    .matrix-table tbody td.td-2025 {
+      background: rgba(37, 99, 235, 0.06);
+      color: var(--text);
+    }
+    .matrix-table tbody td.td-growth-pos {
+      background: rgba(22, 163, 74, 0.11);
+      color: #15803d;
+      font-weight: 750;
+    }
+    .matrix-table tbody td.td-growth-neg {
+      background: rgba(239, 68, 68, 0.10);
+      color: #dc2626;
+      font-weight: 750;
+    }
+    .matrix-table tbody td.td-growth-neutral {
+      background: rgba(148, 163, 184, 0.06);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    :root.dark .matrix-table tbody td.td-2026 {
+      background: rgba(16, 185, 129, 0.08);
+    }
+    :root.dark .matrix-table tbody td.td-2025 {
+      background: rgba(59, 130, 246, 0.09);
+    }
+    :root.dark .matrix-table tbody td.td-growth-pos {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+    }
+    :root.dark .matrix-table tbody td.td-growth-neg {
+      background: rgba(239, 68, 68, 0.16);
+      color: #f87171;
+    }
+
+    /* Weekend Row Distinct Styling */
+    .matrix-table tbody tr.matrix-row-weekend td.td-period {
+      background: rgba(245, 158, 11, 0.13);
+      border-left: 4px solid #f59e0b;
+      font-weight: 700;
+    }
+    .matrix-table tbody tr.matrix-row-weekend td.td-2026 {
+      background: rgba(245, 158, 11, 0.08);
+    }
+    .matrix-table tbody tr.matrix-row-weekend td.td-2025 {
+      background: rgba(245, 158, 11, 0.06);
+    }
+    :root.dark .matrix-table tbody tr.matrix-row-weekend td.td-period {
+      background: rgba(245, 158, 11, 0.18);
+      border-left: 4px solid #fbbf24;
+    }
+    :root.dark .matrix-table tbody tr.matrix-row-weekend td.td-2026,
+    :root.dark .matrix-table tbody tr.matrix-row-weekend td.td-2025 {
+      background: rgba(245, 158, 11, 0.10);
+    }
+
+    /* National Holiday Row Distinct Styling */
+    .matrix-table tbody tr.matrix-row-holiday td.td-period {
+      background: rgba(224, 0, 77, 0.11);
+      border-left: 4px solid #E0004D;
+      font-weight: 750;
+    }
+    :root.dark .matrix-table tbody tr.matrix-row-holiday td.td-period {
+      background: rgba(244, 63, 94, 0.20);
+      border-left: 4px solid #fb7185;
+    }
+
+    .matrix-table tbody tr:hover td {
+      filter: brightness(0.96);
+    }
+    :root.dark .matrix-table tbody tr:hover td {
+      filter: brightness(1.18);
+    }
+
+    /* Sticky Total Footer */
+    .matrix-table tfoot td {
+      position: sticky;
+      bottom: 0;
+      z-index: 8;
+      background: #f8fafc;
+      font-weight: 800;
+      font-size: 12.5px;
+      padding: 10px 12px;
+      border-top: 2px solid var(--brand);
+      border-right: 1px solid var(--panel-border);
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+    }
+    :root.dark .matrix-table tfoot td {
+      background: #0f172a;
+      border-top-color: var(--brand-sky);
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Badges for Day & Holiday inside Period Column */
+    .matrix-day-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      margin-left: 5px;
+      background: rgba(100, 116, 139, 0.12);
+      color: var(--text-muted);
+    }
+    .matrix-day-badge.weekend {
+      background: rgba(245, 158, 11, 0.2);
+      color: #b45309;
+    }
+    :root.dark .matrix-day-badge.weekend {
+      background: rgba(251, 191, 36, 0.22);
+      color: #fde68a;
+    }
+    .matrix-holiday-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 10px;
+      font-weight: 750;
+      padding: 1px 6px;
+      border-radius: 999px;
+      margin-left: 5px;
+      background: rgba(224, 0, 77, 0.14);
+      color: #be123c;
+      border: 1px solid rgba(224, 0, 77, 0.3);
+      cursor: help;
+    }
+    :root.dark .matrix-holiday-badge {
+      background: rgba(244, 63, 94, 0.22);
+      color: #fda4af;
+      border-color: rgba(244, 63, 94, 0.4);
+    }
+    .matrix-holiday-badge.yoy-2025 {
+      background: rgba(124, 58, 237, 0.12);
+      color: #6d28d9;
+      border-color: rgba(124, 58, 237, 0.3);
+    }
+    :root.dark .matrix-holiday-badge.yoy-2025 {
+      background: rgba(167, 139, 250, 0.2);
+      color: #ddd6fe;
+      border-color: rgba(167, 139, 250, 0.4);
+    }
+
+    .matrix-hover-cell {
+      cursor: help;
+      position: relative;
+    }
+    .matrix-clickable-period {
+      cursor: pointer;
+    }
+    .matrix-clickable-period:hover .matrix-period-text {
+      color: var(--brand);
+      text-decoration: underline;
+    }
+
+    /* Floating Smart Tooltip for Matrix Table */
+    .period-matrix-tooltip {
+      position: fixed;
+      display: none;
+      pointer-events: none;
+      background: rgba(15, 23, 42, 0.97);
+      color: #f8fafc;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 10px;
+      padding: 11px 14px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.42);
+      z-index: 9999;
+      min-width: 255px;
+      max-width: 340px;
+      font-size: 12px;
+      line-height: 1.45;
+      font-variant-numeric: tabular-nums;
+      backdrop-filter: blur(8px);
+    }
+
     /* Business Insight Section Styling */
     .business-insight-section {
       background: var(--panel);
@@ -5365,6 +5745,124 @@
     </div>
   </div>
 
+  <!-- Periodical Visitor & Revenue Comparison Matrix Section (Bulanan / Harian) -->
+  <div class="period-matrix-section" id="periodComparisonSection">
+    <div class="insight-header-panel" style="margin-bottom:14px; padding-bottom:12px;">
+      <div class="insight-header-left">
+        <div class="insight-badge-tag" style="display:inline-flex; align-items:center; gap:6px;">
+          <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          <span id="periodMatrixBadgeTag">PERIODICAL PERFORMANCE MATRIX (YOY COMPARISON)</span>
+        </div>
+        <h2 class="insight-main-title" id="periodMatrixTitle">Tabel Komparasi Bulanan: Visitor &amp; Revenue (2026 vs 2025)</h2>
+        <p class="insight-sub-title" id="periodMatrixSubtitle">Klik baris bulan untuk membedah rincian tanggal • Arahkan kursor (hover) pada Tanggal, Visitor, atau Revenue untuk melihat detail Hari Besar, Rasio 4 Aspek Pengunjung, &amp; SPH</p>
+      </div>
+      <div class="insight-header-right" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+        <button type="button" id="btnMatrixBackYtd" onclick="drillUpPeriodMatrixToYtd()" class="btn" style="display:none; padding:6px 12px; font-size:12px; font-weight:700; background:var(--brand-subtle); color:var(--brand); border:1px solid var(--brand-border); border-radius:8px; align-items:center; gap:5px; cursor:pointer;">
+          <span>↩</span>
+          <span>Kembali ke Semua Bulan (YTD)</span>
+        </button>
+        <button type="button" id="btnCopyMatrixTable" onclick="copyPeriodMatrixToClipboard(this)" class="btn" style="padding:6px 12px; font-size:12px; font-weight:650; background:var(--bg); color:var(--text); border:1px solid var(--panel-border); border-radius:8px; display:inline-flex; align-items:center; gap:5px; cursor:pointer;" title="Salin tabel ke WhatsApp / Excel">
+          <span>📋</span>
+          <span>Salin Tabel</span>
+        </button>
+        <button type="button" id="btnToggleMatrixBody" onclick="togglePeriodMatrixCollapse()" class="btn" style="padding:6px 12px; font-size:12px; font-weight:650; background:var(--bg); color:var(--text-muted); border:1px solid var(--panel-border); border-radius:8px; display:inline-flex; align-items:center; gap:5px; cursor:pointer;" title="Sembunyikan atau tampilkan tabel">
+          <span id="toggleMatrixIcon">▲</span>
+          <span id="toggleMatrixText">Ringkas</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="periodMatrixBody">
+      <!-- Mini Summary Strip: Peak, Low, & Weekend/Holiday Impact -->
+      <div class="matrix-summary-strip" id="periodMatrixSummaryStrip">
+        <div class="matrix-summary-pill">
+          <div class="matrix-summary-icon" style="background:rgba(16,185,129,0.14); color:#059669;">🏆</div>
+          <div class="matrix-summary-meta">
+            <span class="matrix-summary-label" id="matrixPeakLabel">Rekor Tertinggi (Peak 2026)</span>
+            <span class="matrix-summary-val" id="matrixPeakVal">-</span>
+          </div>
+        </div>
+        <div class="matrix-summary-pill">
+          <div class="matrix-summary-icon" style="background:rgba(245,158,11,0.14); color:#d97706;">📉</div>
+          <div class="matrix-summary-meta">
+            <span class="matrix-summary-label" id="matrixLowLabel">Titik Terendah (Low 2026)</span>
+            <span class="matrix-summary-val" id="matrixLowVal">-</span>
+          </div>
+        </div>
+        <div class="matrix-summary-pill">
+          <div class="matrix-summary-icon" style="background:rgba(0,51,160,0.12); color:var(--brand);">📅</div>
+          <div class="matrix-summary-meta">
+            <span class="matrix-summary-label" id="matrixContextLabel">Karakteristik Periode</span>
+            <span class="matrix-summary-val" id="matrixContextVal">-</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Filter Pills & Visual Legend -->
+      <div class="matrix-controls-bar">
+        <div class="matrix-filter-pills">
+          <button type="button" class="matrix-filter-pill active" id="pillMatrixAll" onclick="setPeriodMatrixRowFilter('all')">
+            <span>Semua Baris</span>
+            <span id="countMatrixAll" style="opacity:0.8; font-size:10.5px;">(0)</span>
+          </button>
+          <button type="button" class="matrix-filter-pill" id="pillMatrixWeekend" onclick="setPeriodMatrixRowFilter('weekend_holiday')">
+            <span>🏖️ Weekend &amp; Hari Besar</span>
+            <span id="countMatrixWeekend" style="opacity:0.8; font-size:10.5px;">(0)</span>
+          </button>
+          <button type="button" class="matrix-filter-pill" id="pillMatrixDecline" onclick="setPeriodMatrixRowFilter('decline')">
+            <span>⚠️ Evaluasi (Turun YoY)</span>
+            <span id="countMatrixDecline" style="opacity:0.8; font-size:10.5px;">(0)</span>
+          </button>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px; font-size:11px; color:var(--text-muted); flex-wrap:wrap;">
+          <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:10px; height:10px; border-radius:3px; background:rgba(245,158,11,0.35); border-left:3px solid #f59e0b; display:inline-block;"></span> Akhir Pekan (Sab-Min)</span>
+          <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:10px; height:10px; border-radius:3px; background:rgba(224,0,77,0.28); border-left:3px solid #E0004D; display:inline-block;"></span> Hari Besar Nasional</span>
+          <span style="display:inline-flex; align-items:center; gap:4px; color:var(--brand); font-weight:600;">💡 Hover sel untuk detail % Aspek Visitor, Hari Besar &amp; SPH</span>
+        </div>
+      </div>
+
+      <!-- 7-Column Periodical Comparison Table -->
+      <div class="matrix-table-wrap">
+        <table id="periodComparisonTable" class="matrix-table">
+          <thead>
+            <tr>
+              <th class="th-period sortable-header is-active" id="thMatrixCol_period" onclick="setPeriodMatrixSort('period')" title="Klik untuk urutkan berdasarkan urutan waktu (Tanggal / Bulan)">
+                <span id="thMatrixPeriodLabel">Bulan</span> <span id="sortIconMatrix_period" class="sort-icon" style="color:var(--brand);">▲</span>
+              </th>
+              <th class="th-group-2026 text-right sortable-header" id="thMatrixCol_v26" onclick="setPeriodMatrixSort('v26')" title="Klik untuk urutkan berdasarkan Total Pengunjung 2026">
+                Visitor 2026 <span id="sortIconMatrix_v26" class="sort-icon" style="opacity:0.35;">⇅</span>
+              </th>
+              <th class="th-group-2026 text-right sortable-header" id="thMatrixCol_s26" onclick="setPeriodMatrixSort('s26')" title="Klik untuk urutkan berdasarkan Net Sales / Revenue 2026">
+                Revenue 2026 <span id="sortIconMatrix_s26" class="sort-icon" style="opacity:0.35;">⇅</span>
+              </th>
+              <th class="th-group-2025 text-right sortable-header" id="thMatrixCol_v25" onclick="setPeriodMatrixSort('v25')" title="Klik untuk urutkan berdasarkan Total Pengunjung 2025">
+                Visitor 2025 <span id="sortIconMatrix_v25" class="sort-icon" style="opacity:0.35;">⇅</span>
+              </th>
+              <th class="th-group-2025 text-right sortable-header" id="thMatrixCol_s25" onclick="setPeriodMatrixSort('s25')" title="Klik untuk urutkan berdasarkan Net Sales / Revenue 2025">
+                Revenue 2025 <span id="sortIconMatrix_s25" class="sort-icon" style="opacity:0.35;">⇅</span>
+              </th>
+              <th class="th-group-growth text-center sortable-header" id="thMatrixCol_gVis" onclick="setPeriodMatrixSort('gVis')" title="Klik untuk urutkan berdasarkan Pertumbuhan Pengunjung (%)">
+                Growth Visitor <span id="sortIconMatrix_gVis" class="sort-icon" style="opacity:0.35;">⇅</span>
+              </th>
+              <th class="th-group-growth text-center sortable-header" id="thMatrixCol_gRev" onclick="setPeriodMatrixSort('gRev')" title="Klik untuk urutkan berdasarkan Pertumbuhan Revenue (%)">
+                Growth Revenue <span id="sortIconMatrix_gRev" class="sort-icon" style="opacity:0.35;">⇅</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="periodComparisonTbody">
+            <tr>
+              <td colspan="7" class="text-center" style="padding:18px; color:var(--text-muted);">Memuat matriks perbandingan...</td>
+            </tr>
+          </tbody>
+          <tfoot id="periodComparisonTfoot"></tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Tooltip for Periodical Matrix Table -->
+  <div id="periodMatrixTooltip" class="period-matrix-tooltip"></div>
+
   <!-- Executive Business Insight Section (Dynamic Management & Operational Summary) -->
   <div class="business-insight-section" id="businessInsightSection">
     <div class="insight-header-panel">
@@ -6304,43 +6802,64 @@
   // INDONESIA HOLIDAYS (Tanggal Merah 2025 & 2026)
   // ----------------------------------------------------
   const INDONESIA_HOLIDAYS = {
-    // 2025
+    // 2025 (Libur Nasional & Cuti Bersama SKB 3 Menteri)
     '2025-01-01': 'Tahun Baru 2025 Masehi',
     '2025-01-27': 'Isra Mi\'raj Nabi Muhammad SAW',
+    '2025-01-28': 'Cuti Bersama Tahun Baru Imlek 2576',
     '2025-01-29': 'Tahun Baru Imlek 2576 Kongzili',
+    '2025-03-28': 'Cuti Bersama Hari Suci Nyepi',
     '2025-03-29': 'Hari Suci Nyepi (Tahun Baru Saka 1947)',
-    '2025-03-31': 'Hari Raya Idul Fitri 1446 H',
-    '2025-04-01': 'Hari Raya Idul Fitri 1446 H',
-    '2025-04-18': 'Wafat Yesus Kristus',
+    '2025-03-31': 'Hari Raya Idul Fitri 1446 H (Hari ke-1)',
+    '2025-04-01': 'Hari Raya Idul Fitri 1446 H (Hari ke-2)',
+    '2025-04-02': 'Cuti Bersama Idul Fitri 1446 H',
+    '2025-04-03': 'Cuti Bersama Idul Fitri 1446 H',
+    '2025-04-04': 'Cuti Bersama Idul Fitri 1446 H',
+    '2025-04-07': 'Cuti Bersama Idul Fitri 1446 H',
+    '2025-04-18': 'Wafat Yesus Kristus (Jumat Agung)',
     '2025-04-20': 'Kebangkitan Yesus Kristus (Paskah)',
     '2025-05-01': 'Hari Buruh Internasional',
     '2025-05-12': 'Hari Raya Waisak 2569 BE',
+    '2025-05-13': 'Cuti Bersama Hari Raya Waisak',
     '2025-05-29': 'Kenaikan Yesus Kristus',
+    '2025-05-30': 'Cuti Bersama Kenaikan Yesus Kristus',
     '2025-06-01': 'Hari Lahir Pancasila',
-    '2025-06-07': 'Hari Raya Idul Adha 1446 H',
+    '2025-06-06': 'Hari Raya Idul Adha 1446 H',
+    '2025-06-07': 'Libur Akhir Pekan Idul Adha 1446 H',
+    '2025-06-09': 'Cuti Bersama Idul Adha 1446 H',
     '2025-06-27': 'Tahun Baru Islam 1447 H',
-    '2025-08-17': 'Proklamasi Kemerdekaan RI',
+    '2025-08-17': 'Proklamasi Kemerdekaan RI Ke-80',
+    '2025-08-18': 'Cuti Bersama Kemerdekaan RI',
     '2025-09-05': 'Maulid Nabi Muhammad SAW',
     '2025-12-25': 'Kelahiran Yesus Kristus (Natal)',
+    '2025-12-26': 'Cuti Bersama Hari Raya Natal',
+    '2025-12-31': 'Malam Tahun Baru (Peak Season Akhir Tahun)',
 
-    // 2026
+    // 2026 (Libur Nasional & Cuti Bersama SKB 3 Menteri)
     '2026-01-01': 'Tahun Baru 2026 Masehi',
     '2026-01-16': 'Isra Mi\'raj Nabi Muhammad SAW',
+    '2026-02-16': 'Cuti Bersama Tahun Baru Imlek 2577',
     '2026-02-17': 'Tahun Baru Imlek 2577 Kongzili',
-    '2026-03-19': 'Hari Raya Idul Fitri 1447 H',
-    '2026-03-20': 'Hari Raya Idul Fitri 1447 H',
-    '2026-03-21': 'Hari Suci Nyepi (Tahun Baru Saka 1948)',
+    '2026-03-18': 'Cuti Bersama Hari Suci Nyepi',
+    '2026-03-19': 'Hari Suci Nyepi / Libur Lebaran 1447 H',
+    '2026-03-20': 'Hari Raya Idul Fitri 1447 H (Hari ke-1)',
+    '2026-03-21': 'Hari Raya Idul Fitri 1447 H (Hari ke-2) & Nyepi',
+    '2026-03-23': 'Cuti Bersama Idul Fitri 1447 H',
+    '2026-03-24': 'Cuti Bersama Idul Fitri 1447 H',
     '2026-04-03': 'Wafat Yesus Kristus (Jumat Agung)',
     '2026-04-05': 'Kebangkitan Yesus Kristus (Paskah)',
     '2026-05-01': 'Hari Buruh Internasional',
     '2026-05-14': 'Kenaikan Yesus Kristus',
+    '2026-05-15': 'Cuti Bersama Kenaikan Yesus Kristus',
     '2026-05-27': 'Hari Raya Idul Adha 1447 H',
+    '2026-05-28': 'Cuti Bersama Idul Adha 1447 H',
     '2026-05-31': 'Hari Raya Waisak 2570 BE',
     '2026-06-01': 'Hari Lahir Pancasila',
     '2026-06-16': 'Tahun Baru Islam 1448 H',
     '2026-08-17': 'Hari Kemerdekaan RI Ke-81',
     '2026-08-25': 'Maulid Nabi Muhammad SAW',
-    '2026-12-25': 'Hari Raya Natal'
+    '2026-12-24': 'Cuti Bersama Hari Raya Natal',
+    '2026-12-25': 'Hari Raya Natal',
+    '2026-12-31': 'Malam Tahun Baru (Peak Season Akhir Tahun)'
   };
 
   // State for Calendar Date Picker
@@ -7075,9 +7594,30 @@
       hourTx25[hStr] = new Set();
     }
 
+    const matrixMonthData = {};
+    const matrixDayData = {};
+    function ensureMatrixEntry(map, key) {
+      if (!map[key]) {
+        map[key] = {
+          s26: 0, s25: 0, s25Full: 0,
+          q26: 0, q25: 0,
+          tx26: new Set(), tx25: new Set(), tx25Full: new Set(),
+          v26: 0, ib26: 0, tb26: 0, rl26: 0, ra26: 0,
+          v25: 0, v25Full: 0, ib25: 0, tb25: 0, rl25: 0, ra25: 0,
+          ib25Full: 0, tb25Full: 0, rl25Full: 0, ra25Full: 0,
+          units26: { Dufan: 0, SeaWorld: 0, Samudra: 0, Atlantis: 0 },
+          units25: { Dufan: 0, SeaWorld: 0, Samudra: 0, Atlantis: 0 },
+          units25Full: { Dufan: 0, SeaWorld: 0, Samudra: 0, Atlantis: 0 },
+          has26Sales: false
+        };
+      }
+      return map[key];
+    }
+
     for (let m = 1; m <= 12; m++) {
       const mk = String(m).padStart(2, '0');
       byMonth[mk] = { s26: 0, s25: 0 };
+      ensureMatrixEntry(matrixMonthData, mk);
     }
 
     let itemNetSales26 = 0, itemNetSales25 = 0;
@@ -7247,9 +7787,28 @@
         byDay[dayKey].s26 += rSales;
         byMonth[mKey].s26 += rSales;
 
+        const mm26 = ensureMatrixEntry(matrixMonthData, mKey);
+        mm26.s26 += rSales;
+        mm26.q26 += rQty;
+        mm26.tx26.add(txId);
+        mm26.has26Sales = true;
+        const md26 = ensureMatrixEntry(matrixDayData, dayKey);
+        md26.s26 += rSales;
+        md26.q26 += rQty;
+        md26.tx26.add(txId);
+        md26.has26Sales = true;
+
       } else if (rYear === 2025) {
         // Horizon Bulanan (Chart 1) selalu mengumpulkan full 12 bulan (Jan-Des 2025) untuk forecasting
         byMonth[mKey].s25 += rSales;
+
+        const dayKey25 = rDate.substring(5);
+        const mm25 = ensureMatrixEntry(matrixMonthData, mKey);
+        mm25.s25Full += rSales;
+        mm25.tx25Full.add(txId);
+        const md25 = ensureMatrixEntry(matrixDayData, dayKey25);
+        md25.s25Full += rSales;
+        md25.tx25Full.add(txId);
 
         // KPI Utama, Tabel, & Grafik Harian tetap Strict Apples-to-Apples (kecuali saat melihat bulan masa depan Okt-Des)
         if (!periodHas26Data || GLOBAL_ACTIVE_26_DM.has(rDm)) {
@@ -7280,6 +7839,13 @@
           const dayKey = rDate.substring(5);
           if (!byDay[dayKey]) byDay[dayKey] = { s26: 0, s25: 0 };
           byDay[dayKey].s25 += rSales;
+
+          mm25.s25 += rSales;
+          mm25.q25 += rQty;
+          mm25.tx25.add(txId);
+          md25.s25 += rSales;
+          md25.q25 += rQty;
+          md25.tx25.add(txId);
         }
       }
     }
@@ -7490,12 +8056,57 @@
         const vM = v.date.substring(5, 7);
         vis26ByMonth[vM] = (vis26ByMonth[vM] || 0) + v.visitors;
         vis26ByDay[vDm] = (vis26ByDay[vDm] || 0) + v.visitors;
+
+        const mmV26 = ensureMatrixEntry(matrixMonthData, vM);
+        mmV26.v26 += v.visitors;
+        mmV26.ib26 += (v.visitors_individu_bayar || 0);
+        mmV26.tb26 += (v.visitors_tidak_bayar || 0);
+        mmV26.rl26 += (v.visitors_rombongan_langsung || 0);
+        mmV26.ra26 += (v.visitors_rombongan_agen || 0);
+        if (mmV26.units26[v.unit] !== undefined) mmV26.units26[v.unit] += v.visitors;
+
+        const mdV26 = ensureMatrixEntry(matrixDayData, vDm);
+        mdV26.v26 += v.visitors;
+        mdV26.ib26 += (v.visitors_individu_bayar || 0);
+        mdV26.tb26 += (v.visitors_tidak_bayar || 0);
+        mdV26.rl26 += (v.visitors_rombongan_langsung || 0);
+        mdV26.ra26 += (v.visitors_rombongan_agen || 0);
+        if (mdV26.units26[v.unit] !== undefined) mdV26.units26[v.unit] += v.visitors;
       } else if (vYear === '2025') {
+        const vM = v.date.substring(5, 7);
+        const mmV25 = ensureMatrixEntry(matrixMonthData, vM);
+        mmV25.v25Full += v.visitors;
+        mmV25.ib25Full += (v.visitors_individu_bayar || 0);
+        mmV25.tb25Full += (v.visitors_tidak_bayar || 0);
+        mmV25.rl25Full += (v.visitors_rombongan_langsung || 0);
+        mmV25.ra25Full += (v.visitors_rombongan_agen || 0);
+        if (mmV25.units25Full[v.unit] !== undefined) mmV25.units25Full[v.unit] += v.visitors;
+
+        const mdV25 = ensureMatrixEntry(matrixDayData, vDm);
+        mdV25.v25Full += v.visitors;
+        mdV25.ib25Full += (v.visitors_individu_bayar || 0);
+        mdV25.tb25Full += (v.visitors_tidak_bayar || 0);
+        mdV25.rl25Full += (v.visitors_rombongan_langsung || 0);
+        mdV25.ra25Full += (v.visitors_rombongan_agen || 0);
+        if (mdV25.units25Full[v.unit] !== undefined) mdV25.units25Full[v.unit] += v.visitors;
+
         // Strict Apples-to-Apples day matching
         if (active26DatesDm.size === 0 || active26DatesDm.has(vDm)) {
           totalVisitors25 += v.visitors;
+          mmV25.v25 += v.visitors;
+          mmV25.ib25 += (v.visitors_individu_bayar || 0);
+          mmV25.tb25 += (v.visitors_tidak_bayar || 0);
+          mmV25.rl25 += (v.visitors_rombongan_langsung || 0);
+          mmV25.ra25 += (v.visitors_rombongan_agen || 0);
+          if (mmV25.units25[v.unit] !== undefined) mmV25.units25[v.unit] += v.visitors;
+
+          mdV25.v25 += v.visitors;
+          mdV25.ib25 += (v.visitors_individu_bayar || 0);
+          mdV25.tb25 += (v.visitors_tidak_bayar || 0);
+          mdV25.rl25 += (v.visitors_rombongan_langsung || 0);
+          mdV25.ra25 += (v.visitors_rombongan_agen || 0);
+          if (mdV25.units25[v.unit] !== undefined) mdV25.units25[v.unit] += v.visitors;
         }
-        const vM = v.date.substring(5, 7);
         vis25ByMonth[vM] = (vis25ByMonth[vM] || 0) + v.visitors;
         vis25ByDay[vDm] = (vis25ByDay[vDm] || 0) + v.visitors;
       }
@@ -8258,6 +8869,25 @@
       });
     } catch (e) { console.error('Business Insights error:', e); }
 
+    // Update Periodical Visitor & Revenue Comparison Matrix Table
+    try {
+      updatePeriodComparisonMatrix({
+        isMonthlyView,
+        selMonth,
+        startDate,
+        endDate,
+        periodHas26Data,
+        matrixMonthData,
+        matrixDayData,
+        targetDailyMap,
+        targetMonthMap,
+        s26, s25, tx26Count, tx25Count, q26, q25,
+        totalVisitors26, totalVisitors25,
+        ib26, tb26, rl26, ra26,
+        visGrowth, growthSales
+      });
+    } catch (e) { console.error('Period Matrix error:', e); }
+
     // Render Tables in DOM
     try {
       renderOutletsTable(outletList);
@@ -8326,6 +8956,842 @@
     try {
       redrawAllCharts();
     } catch (e) { console.error('Chart redraw error:', e); }
+  }
+
+  // ---------------------------------------------------------------------------
+  // PERIODICAL PERFORMANCE MATRIX ENGINE (Bulanan / Harian: Visitor & Revenue)
+  // ---------------------------------------------------------------------------
+  let periodMatrixState = {
+    isMonthly: true,
+    rows: [],
+    sortCol: 'period',
+    sortAsc: true,
+    rowFilter: 'all', // 'all' | 'weekend_holiday' | 'decline'
+    summaryTotals: null
+  };
+
+  function getHolidaysForMonth(yearStr, mKey) {
+    const prefix = `${yearStr}-${mKey}-`;
+    const list = [];
+    Object.keys(INDONESIA_HOLIDAYS).sort().forEach(dKey => {
+      if (dKey.startsWith(prefix)) {
+        const dNum = parseInt(dKey.substring(8, 10), 10);
+        list.push(`${dNum}/${mKey}: ${INDONESIA_HOLIDAYS[dKey]}`);
+      }
+    });
+    return list;
+  }
+
+  function formatMatrixDateLabel(dayKey) {
+    // Converts '09-01' -> '01-Sep-26' (matching Screenshot 2)
+    const mShort = ["", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+    const parts = dayKey.split('-');
+    if (parts.length < 2) return dayKey;
+    const mIdx = parseInt(parts[0], 10);
+    const dStr = parts[1];
+    return `${dStr}-${mShort[mIdx] || parts[0]}-26`;
+  }
+
+  function getShortDayName(dateStr) {
+    const full = getDayNameFromDateStr(dateStr);
+    const map = { 'Senin': 'Sen', 'Selasa': 'Sel', 'Rabu': 'Rab', 'Kamis': 'Kam', 'Jumat': 'Jum', 'Sabtu': 'Sab', 'Minggu': 'Min' };
+    return map[full] || full;
+  }
+
+  function updatePeriodComparisonMatrix(ctx) {
+    const {
+      isMonthlyView, selMonth, startDate, endDate, periodHas26Data,
+      matrixMonthData, matrixDayData, targetDailyMap, targetMonthMap,
+      s26, s25, tx26Count, tx25Count, q26, q25,
+      totalVisitors26, totalVisitors25,
+      ib26, tb26, rl26, ra26,
+      visGrowth, growthSales
+    } = ctx;
+
+    const mFullNames = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const mShortNames = ["", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+
+    const titleEl = document.getElementById('periodMatrixTitle');
+    const subEl = document.getElementById('periodMatrixSubtitle');
+    const thPeriodLabelEl = document.getElementById('thMatrixPeriodLabel');
+    const backBtnEl = document.getElementById('btnMatrixBackYtd');
+    const pillWeekendEl = document.getElementById('pillMatrixWeekend');
+
+    periodMatrixState.isMonthly = isMonthlyView;
+
+    if (isMonthlyView) {
+      if (titleEl) titleEl.textContent = 'Tabel Komparasi Bulanan: Visitor & Revenue (Januari – Desember)';
+      if (subEl) subEl.textContent = 'Klik pada nama bulan untuk membedah tanggal harian • Hover pada Bulan, Visitor, atau Revenue untuk rincian Hari Besar, % 4 Aspek Pengunjung, & SPH';
+      if (thPeriodLabelEl) thPeriodLabelEl.textContent = 'Bulan';
+      if (backBtnEl) backBtnEl.style.display = 'none';
+      if (pillWeekendEl) pillWeekendEl.innerHTML = `<span>🎌 Bulan dgn Hari Besar</span> <span id="countMatrixWeekend" style="opacity:0.8; font-size:10.5px;">(0)</span>`;
+    } else {
+      let periodDesc = '';
+      if (startDate || endDate) {
+        periodDesc = `${startDate ? formatDisplayDate(startDate) : 'Awal'} s/d ${endDate ? formatDisplayDate(endDate) : 'Akhir'}`;
+      } else if (selMonth) {
+        const mIdx = parseInt(selMonth, 10);
+        periodDesc = `Bulan ${mFullNames[mIdx] || selMonth} 2026`;
+      }
+      if (titleEl) titleEl.textContent = `Tabel Komparasi Harian: Visitor & Revenue (${periodDesc})`;
+      if (subEl) subEl.textContent = 'Baris kuning menandakan Akhir Pekan (Sabtu-Minggu) & merah menandakan Hari Besar • Hover sel untuk rincian Hari Besar, % 4 Aspek Pengunjung, & SPH';
+      if (thPeriodLabelEl) thPeriodLabelEl.textContent = 'Tanggal';
+      if (backBtnEl) backBtnEl.style.display = 'inline-flex';
+      if (pillWeekendEl) pillWeekendEl.innerHTML = `<span>🏖️ Weekend &amp; Hari Besar</span> <span id="countMatrixWeekend" style="opacity:0.8; font-size:10.5px;">(0)</span>`;
+    }
+
+    const rows = [];
+
+    if (isMonthlyView) {
+      for (let m = 1; m <= 12; m++) {
+        const mKey = String(m).padStart(2, '0');
+        const mm = matrixMonthData[mKey] || {
+          s26: 0, s25: 0, s25Full: 0, q26: 0, q25: 0,
+          tx26: new Set(), tx25: new Set(), tx25Full: new Set(),
+          v26: 0, ib26: 0, tb26: 0, rl26: 0, ra26: 0,
+          v25: 0, v25Full: 0, ib25: 0, tb25: 0, rl25: 0, ra25: 0,
+          ib25Full: 0, tb25Full: 0, rl25Full: 0, ra25Full: 0,
+          units26: {}, units25: {}, units25Full: {}
+        };
+        const has26 = (mm.s26 > 0 || mm.v26 > 0 || mm.has26Sales);
+        const rowV26 = mm.v26 || 0;
+        const rowS26 = mm.s26 || 0;
+        const rowTx26 = mm.tx26 ? mm.tx26.size : 0;
+
+        const rowV25 = has26 ? (mm.v25 || 0) : (mm.v25Full || 0);
+        const rowS25 = has26 ? (mm.s25 || 0) : (mm.s25Full || 0);
+        const rowTx25 = has26 ? (mm.tx25 ? mm.tx25.size : 0) : (mm.tx25Full ? mm.tx25Full.size : 0);
+
+        const rowIb25 = has26 ? (mm.ib25 || 0) : (mm.ib25Full || 0);
+        const rowTb25 = has26 ? (mm.tb25 || 0) : (mm.tb25Full || 0);
+        const rowRl25 = has26 ? (mm.rl25 || 0) : (mm.rl25Full || 0);
+        const rowRa25 = has26 ? (mm.ra25 || 0) : (mm.ra25Full || 0);
+        const rowUnits25 = has26 ? (mm.units25 || {}) : (mm.units25Full || {});
+
+        const gVis = (has26 && rowV25 > 0 && rowV26 > 0) ? ((rowV26 - rowV25) / rowV25 * 100) : null;
+        const gRev = (has26 && rowS25 > 0 && rowS26 > 0) ? ((rowS26 - rowS25) / rowS25 * 100) : null;
+
+        const hols26 = getHolidaysForMonth('2026', mKey);
+        const hols25 = getHolidaysForMonth('2025', mKey);
+
+        rows.push({
+          key: mKey,
+          sortKey: mKey,
+          isMonthly: true,
+          monthFilterVal: '2026-' + mKey,
+          label: `${mFullNames[m]} 2026`,
+          shortLabel: `${mShortNames[m]}-26`,
+          has26,
+          isFutureRef: !has26 && (rowS25 > 0 || rowV25 > 0),
+          isWeekend: false,
+          hasHoliday26: hols26.length > 0,
+          hasHoliday25: hols25.length > 0,
+          hols26,
+          hols25,
+          v26: rowV26,
+          s26: rowS26,
+          tx26: rowTx26,
+          q26: mm.q26 || 0,
+          ib26: mm.ib26 || 0,
+          tb26: mm.tb26 || 0,
+          rl26: mm.rl26 || 0,
+          ra26: mm.ra26 || 0,
+          units26: mm.units26 || {},
+          v25: rowV25,
+          s25: rowS25,
+          v25Full: mm.v25Full || 0,
+          s25Full: mm.s25Full || 0,
+          tx25: rowTx25,
+          q25: mm.q25 || 0,
+          ib25: rowIb25,
+          tb25: rowTb25,
+          rl25: rowRl25,
+          ra25: rowRa25,
+          units25: rowUnits25,
+          target26: targetMonthMap[mKey] || 0,
+          gVis,
+          gRev
+        });
+      }
+    } else {
+      const dayKeySet = new Set(Object.keys(matrixDayData));
+      Object.keys(targetDailyMap).forEach(dStr => dayKeySet.add(dStr.substring(5)));
+      const dayKeys = Array.from(dayKeySet).sort();
+
+      dayKeys.forEach(dayKey => {
+        const md = matrixDayData[dayKey] || {
+          s26: 0, s25: 0, s25Full: 0, q26: 0, q25: 0,
+          tx26: new Set(), tx25: new Set(), tx25Full: new Set(),
+          v26: 0, ib26: 0, tb26: 0, rl26: 0, ra26: 0,
+          v25: 0, v25Full: 0, ib25: 0, tb25: 0, rl25: 0, ra25: 0,
+          ib25Full: 0, tb25Full: 0, rl25Full: 0, ra25Full: 0,
+          units26: {}, units25: {}, units25Full: {}
+        };
+        const date26 = '2026-' + dayKey;
+        const date25 = '2025-' + dayKey;
+        const has26 = !periodHas26Data ? false : (GLOBAL_ACTIVE_26_DM.has(dayKey) || md.s26 > 0 || md.v26 > 0);
+
+        const rowV26 = md.v26 || 0;
+        const rowS26 = md.s26 || 0;
+        const rowTx26 = md.tx26 ? md.tx26.size : 0;
+
+        const rowV25 = has26 ? (md.v25 || 0) : (md.v25Full || 0);
+        const rowS25 = has26 ? (md.s25 || 0) : (md.s25Full || 0);
+        const rowTx25 = has26 ? (md.tx25 ? md.tx25.size : 0) : (md.tx25Full ? md.tx25Full.size : 0);
+
+        const rowIb25 = has26 ? (md.ib25 || 0) : (md.ib25Full || 0);
+        const rowTb25 = has26 ? (md.tb25 || 0) : (md.tb25Full || 0);
+        const rowRl25 = has26 ? (md.rl25 || 0) : (md.rl25Full || 0);
+        const rowRa25 = has26 ? (md.ra25 || 0) : (md.ra25Full || 0);
+        const rowUnits25 = has26 ? (md.units25 || {}) : (md.units25Full || {});
+
+        const gVis = (has26 && rowV25 > 0 && rowV26 > 0) ? ((rowV26 - rowV25) / rowV25 * 100) : null;
+        const gRev = (has26 && rowS25 > 0 && rowS26 > 0) ? ((rowS26 - rowS25) / rowS25 * 100) : null;
+
+        const hol26 = INDONESIA_HOLIDAYS[date26] || '';
+        const hol25 = INDONESIA_HOLIDAYS[date25] || '';
+        const isWkd26 = isWeekendDate(date26);
+        const isWkd25 = isWeekendDate(date25);
+
+        rows.push({
+          key: dayKey,
+          sortKey: dayKey,
+          isMonthly: false,
+          date26,
+          date25,
+          label: formatMatrixDateLabel(dayKey),
+          dayName26: getDayNameFromDateStr(date26),
+          shortDay26: getShortDayName(date26),
+          dayName25: getDayNameFromDateStr(date25),
+          shortDay25: getShortDayName(date25),
+          has26,
+          isFutureRef: !has26 && (rowS25 > 0 || rowV25 > 0),
+          isWeekend: isWkd26,
+          isWeekend25: isWkd25,
+          hasHoliday26: Boolean(hol26),
+          hasHoliday25: Boolean(hol25),
+          hol26,
+          hol25,
+          v26: rowV26,
+          s26: rowS26,
+          tx26: rowTx26,
+          q26: md.q26 || 0,
+          ib26: md.ib26 || 0,
+          tb26: md.tb26 || 0,
+          rl26: md.rl26 || 0,
+          ra26: md.ra26 || 0,
+          units26: md.units26 || {},
+          v25: rowV25,
+          s25: rowS25,
+          v25Full: md.v25Full || 0,
+          s25Full: md.s25Full || 0,
+          tx25: rowTx25,
+          q25: md.q25 || 0,
+          ib25: rowIb25,
+          tb25: rowTb25,
+          rl25: rowRl25,
+          ra25: rowRa25,
+          units25: rowUnits25,
+          target26: targetDailyMap[date26] || 0,
+          gVis,
+          gRev
+        });
+      });
+    }
+
+    periodMatrixState.rows = rows;
+    periodMatrixState.summaryTotals = {
+      v26: totalVisitors26,
+      s26: s26,
+      tx26: tx26Count,
+      q26: q26,
+      ib26, tb26, rl26, ra26,
+      v25: totalVisitors25,
+      s25: s25,
+      tx25: tx25Count,
+      q25: q25,
+      gVis: visGrowth,
+      gRev: growthSales,
+      periodHas26Data
+    };
+
+    // Update Summary Strip (Peak, Low, & Weekend/Holiday Context)
+    updatePeriodMatrixSummaryStrip(rows, isMonthlyView, periodHas26Data);
+
+    // Render Table Rows & Footer
+    renderPeriodComparisonMatrixRows();
+  }
+
+  function updatePeriodMatrixSummaryStrip(rows, isMonthly, periodHas26Data) {
+    const peakLabelEl = document.getElementById('matrixPeakLabel');
+    const peakValEl = document.getElementById('matrixPeakVal');
+    const lowLabelEl = document.getElementById('matrixLowLabel');
+    const lowValEl = document.getElementById('matrixLowVal');
+    const ctxLabelEl = document.getElementById('matrixContextLabel');
+    const ctxValEl = document.getElementById('matrixContextVal');
+
+    const activeRows = periodHas26Data
+      ? rows.filter(r => r.has26 && (r.s26 > 0 || r.v26 > 0))
+      : rows.filter(r => r.s25 > 0 || r.v25 > 0);
+
+    if (!activeRows.length) {
+      if (peakValEl) peakValEl.textContent = 'Belum ada data';
+      if (lowValEl) lowValEl.textContent = 'Belum ada data';
+      if (ctxValEl) ctxValEl.textContent = '-';
+      return;
+    }
+
+    const metricKey = periodHas26Data ? 's26' : 's25';
+    const visKey = periodHas26Data ? 'v26' : 'v25';
+    const yearTag = periodHas26Data ? '2026' : '2025 (Ref)';
+
+    const sortedByRev = [...activeRows].sort((a, b) => b[metricKey] - a[metricKey]);
+    const peakRow = sortedByRev[0];
+    const lowRow = sortedByRev[sortedByRev.length - 1];
+
+    if (peakLabelEl) peakLabelEl.textContent = isMonthly ? `Bulan Tertinggi (${yearTag})` : `Tanggal Tertinggi (${yearTag})`;
+    if (peakValEl && peakRow) {
+      const extraTag = !isMonthly && peakRow.hol26 ? ` 🔴` : (!isMonthly && peakRow.isWeekend ? ` (${peakRow.shortDay26})` : '');
+      peakValEl.textContent = `${peakRow.label}${extraTag}: ${formatCompactRp(peakRow[metricKey])} (${formatNum(peakRow[visKey])} org)`;
+      peakValEl.title = `${peakRow.label}: ${formatRp(peakRow[metricKey])} | Visitor: ${formatNum(peakRow[visKey])} orang`;
+    }
+
+    if (lowLabelEl) lowLabelEl.textContent = isMonthly ? `Bulan Terendah (${yearTag})` : `Tanggal Terendah (${yearTag})`;
+    if (lowValEl && lowRow) {
+      const extraTag = !isMonthly && lowRow.shortDay26 ? ` (${lowRow.shortDay26})` : '';
+      lowValEl.textContent = `${lowRow.label}${extraTag}: ${formatCompactRp(lowRow[metricKey])} (${formatNum(lowRow[visKey])} org)`;
+      lowValEl.title = `${lowRow.label}: ${formatRp(lowRow[metricKey])} | Visitor: ${formatNum(lowRow[visKey])} orang`;
+    }
+
+    if (isMonthly) {
+      const posMonths = activeRows.filter(r => r.gRev !== null && r.gRev >= 0).length;
+      if (ctxLabelEl) ctxLabelEl.textContent = 'Konsistensi Pertumbuhan Bulanan';
+      if (ctxValEl) {
+        ctxValEl.textContent = periodHas26Data
+          ? `${posMonths} dari ${activeRows.length} bulan berjalan tumbuh positif YoY`
+          : `Menampilkan 12 bulan referensi historis 2025`;
+      }
+    } else {
+      const wkdRows = activeRows.filter(r => r.isWeekend || r.hasHoliday26);
+      const wdayRows = activeRows.filter(r => !r.isWeekend && !r.hasHoliday26);
+      const avgWkd = wkdRows.length > 0 ? (wkdRows.reduce((acc, r) => acc + r[metricKey], 0) / wkdRows.length) : 0;
+      const avgWday = wdayRows.length > 0 ? (wdayRows.reduce((acc, r) => acc + r[metricKey], 0) / wdayRows.length) : 0;
+      const ratio = avgWday > 0 ? (avgWkd / avgWday) : 0;
+      const holCount = rows.filter(r => r.hasHoliday26 || r.hasHoliday25).length;
+
+      if (ctxLabelEl) ctxLabelEl.textContent = 'Lonjakan Weekend & Hari Besar';
+      if (ctxValEl) {
+        if (ratio > 0) {
+          ctxValEl.textContent = `Rata-rata Weekend/Libur ${ratio.toFixed(1)}x Weekday (${formatCompactRp(avgWkd)} vs ${formatCompactRp(avgWday)}) • ${holCount} Hari Besar`;
+        } else {
+          ctxValEl.textContent = `${wkdRows.length} hari akhir pekan/libur aktif • ${holCount} Hari Besar terdeteksi`;
+        }
+      }
+    }
+  }
+
+  function renderPeriodComparisonMatrixRows() {
+    const tbody = document.getElementById('periodComparisonTbody');
+    const tfoot = document.getElementById('periodComparisonTfoot');
+    if (!tbody || !tfoot) return;
+
+    const allRows = periodMatrixState.rows || [];
+    const weekendHolidayRows = allRows.filter(r => r.isWeekend || r.hasHoliday26 || r.hasHoliday25);
+    const declineRows = allRows.filter(r => (r.gRev !== null && r.gRev < 0) || (r.gVis !== null && r.gVis < 0));
+
+    const cAllEl = document.getElementById('countMatrixAll');
+    const cWkdEl = document.getElementById('countMatrixWeekend');
+    const cDecEl = document.getElementById('countMatrixDecline');
+    if (cAllEl) cAllEl.textContent = `(${allRows.length})`;
+    if (cWkdEl) cWkdEl.textContent = `(${weekendHolidayRows.length})`;
+    if (cDecEl) cDecEl.textContent = `(${declineRows.length})`;
+
+    let filteredRows = allRows;
+    if (periodMatrixState.rowFilter === 'weekend_holiday') {
+      filteredRows = weekendHolidayRows;
+    } else if (periodMatrixState.rowFilter === 'decline') {
+      filteredRows = declineRows;
+    }
+
+    // Sort rows
+    const col = periodMatrixState.sortCol;
+    const dir = periodMatrixState.sortAsc ? 1 : -1;
+    const sortedRows = [...filteredRows].sort((a, b) => {
+      if (col === 'period') {
+        return a.sortKey.localeCompare(b.sortKey) * dir;
+      }
+      const valA = a[col] !== null && a[col] !== undefined ? a[col] : -999999999;
+      const valB = b[col] !== null && b[col] !== undefined ? b[col] : -999999999;
+      if (valA === valB) return a.sortKey.localeCompare(b.sortKey);
+      return (valA - valB) * dir;
+    });
+
+    if (!sortedRows.length) {
+      tbody.innerHTML = `<tr><td colspan="7" class="text-center" style="padding:20px; color:var(--text-muted);">Tidak ada baris yang sesuai dengan filter baris ini.</td></tr>`;
+      tfoot.innerHTML = '';
+      return;
+    }
+
+    let html = '';
+    sortedRows.forEach((r) => {
+      const origIdx = allRows.indexOf(r);
+      const rowClasses = [];
+      if (!r.isMonthly) {
+        if (r.hasHoliday26) rowClasses.push('matrix-row-holiday');
+        else if (r.isWeekend) rowClasses.push('matrix-row-weekend');
+      }
+
+      // Period cell content
+      let periodBadges = '';
+      if (r.isMonthly) {
+        if (r.isFutureRef) {
+          periodBadges += `<span class="matrix-day-badge" title="Bulan proyeksi Q4 (menampilkan referensi historis 2025)">Ref '25</span>`;
+        }
+        if (r.hasHoliday26) {
+          periodBadges += `<span class="matrix-holiday-badge">🔴 ${r.hols26.length} Libur</span>`;
+        }
+      } else {
+        periodBadges += `<span class="matrix-day-badge ${r.isWeekend ? 'weekend' : ''}">${r.shortDay26}</span>`;
+        if (r.hasHoliday26) {
+          periodBadges += `<span class="matrix-holiday-badge">🔴 Libur '26</span>`;
+        }
+        if (r.hasHoliday25) {
+          periodBadges += `<span class="matrix-holiday-badge yoy-2025">🎌 Libur '25</span>`;
+        }
+      }
+
+      const periodClickAttr = r.isMonthly
+        ? `onclick="drillDownPeriodMatrixMonth('${r.monthFilterVal}')"`
+        : '';
+      const periodClass = r.isMonthly ? 'td-period matrix-hover-cell matrix-clickable-period' : 'td-period matrix-hover-cell';
+      const drillIcon = r.isMonthly ? `<span style="font-size:10px; opacity:0.55; margin-left:4px;">🔍</span>` : '';
+
+      // 2026 Visitor & Revenue formatting
+      const v26Display = r.has26 ? (r.v26 > 0 ? formatNum(r.v26) : '-') : (r.v26 > 0 ? formatNum(r.v26) : '<span style="color:var(--text-muted); font-weight:500;">-</span>');
+      const s26Display = r.has26 ? (r.s26 > 0 ? formatRp(r.s26) : '-') : (r.s26 > 0 ? formatRp(r.s26) : '<span style="color:var(--text-muted); font-weight:500;">Belum Berjalan</span>');
+
+      // 2025 Visitor & Revenue formatting
+      const v25Display = r.v25 > 0 ? formatNum(r.v25) : '-';
+      const s25Display = r.s25 > 0 ? formatRp(r.s25) : '-';
+
+      // Growth Visitor
+      let gVisClass = 'td-growth-neutral text-center matrix-hover-cell';
+      let gVisText = '-';
+      if (r.gVis !== null) {
+        gVisClass = (r.gVis >= 0 ? 'td-growth-pos' : 'td-growth-neg') + ' text-center matrix-hover-cell';
+        const sign = r.gVis >= 0 ? '+' : '';
+        const arrow = r.gVis >= 0 ? '▲' : '▼';
+        gVisText = `${arrow} ${sign}${r.gVis.toFixed(1)}%`;
+      }
+
+      // Growth Revenue
+      let gRevClass = 'td-growth-neutral text-center matrix-hover-cell';
+      let gRevText = '-';
+      if (r.gRev !== null) {
+        gRevClass = (r.gRev >= 0 ? 'td-growth-pos' : 'td-growth-neg') + ' text-center matrix-hover-cell';
+        const sign = r.gRev >= 0 ? '+' : '';
+        const arrow = r.gRev >= 0 ? '▲' : '▼';
+        gRevText = `${arrow} ${sign}${r.gRev.toFixed(1)}%`;
+      }
+
+      html += `
+        <tr class="${rowClasses.join(' ')}">
+          <td class="${periodClass}" ${periodClickAttr} onmouseenter="showPeriodMatrixTooltip(event, ${origIdx}, 'period')" onmousemove="movePeriodMatrixTooltip(event)" onmouseleave="hidePeriodMatrixTooltip()">
+            <span class="matrix-period-text">${r.label}</span>${drillIcon}${periodBadges}
+          </td>
+          <td class="td-2026 text-right matrix-hover-cell" onmouseenter="showPeriodMatrixTooltip(event, ${origIdx}, 'v26')" onmousemove="movePeriodMatrixTooltip(event)" onmouseleave="hidePeriodMatrixTooltip()">
+            ${v26Display}
+          </td>
+          <td class="td-2026 text-right matrix-hover-cell" onmouseenter="showPeriodMatrixTooltip(event, ${origIdx}, 's26')" onmousemove="movePeriodMatrixTooltip(event)" onmouseleave="hidePeriodMatrixTooltip()">
+            ${s26Display}
+          </td>
+          <td class="td-2025 text-right matrix-hover-cell" onmouseenter="showPeriodMatrixTooltip(event, ${origIdx}, 'v25')" onmousemove="movePeriodMatrixTooltip(event)" onmouseleave="hidePeriodMatrixTooltip()">
+            ${v25Display}
+          </td>
+          <td class="td-2025 text-right matrix-hover-cell" onmouseenter="showPeriodMatrixTooltip(event, ${origIdx}, 's25')" onmousemove="movePeriodMatrixTooltip(event)" onmouseleave="hidePeriodMatrixTooltip()">
+            ${s25Display}
+          </td>
+          <td class="${gVisClass}" onmouseenter="showPeriodMatrixTooltip(event, ${origIdx}, 'growth')" onmousemove="movePeriodMatrixTooltip(event)" onmouseleave="hidePeriodMatrixTooltip()">
+            ${gVisText}
+          </td>
+          <td class="${gRevClass}" onmouseenter="showPeriodMatrixTooltip(event, ${origIdx}, 'growth')" onmousemove="movePeriodMatrixTooltip(event)" onmouseleave="hidePeriodMatrixTooltip()">
+            ${gRevText}
+          </td>
+        </tr>
+      `;
+    });
+
+    tbody.innerHTML = html;
+
+    // Render Sticky Footer Total
+    const st = periodMatrixState.summaryTotals || {};
+    let footV26 = 0, footS26 = 0, footV25 = 0, footS25 = 0, footGVis = null, footGRev = null;
+    let footLabel = '';
+
+    if (periodMatrixState.rowFilter === 'all') {
+      footV26 = st.v26 || 0;
+      footS26 = st.s26 || 0;
+      footV25 = st.v25 || 0;
+      footS25 = st.s25 || 0;
+      footGVis = st.gVis !== undefined ? st.gVis : null;
+      footGRev = st.gRev !== undefined ? st.gRev : null;
+      footLabel = st.periodHas26Data ? 'TOTAL PERIODE (APPLES-TO-APPLES)' : 'TOTAL HISTORI 2025';
+    } else {
+      sortedRows.forEach(r => {
+        if (r.has26 || !st.periodHas26Data) {
+          footV26 += r.v26 || 0;
+          footS26 += r.s26 || 0;
+          footV25 += r.v25 || 0;
+          footS25 += r.s25 || 0;
+        }
+      });
+      footGVis = (footV25 > 0 && footV26 > 0) ? ((footV26 - footV25) / footV25 * 100) : null;
+      footGRev = (footS25 > 0 && footS26 > 0) ? ((footS26 - footS25) / footS25 * 100) : null;
+      footLabel = periodMatrixState.rowFilter === 'weekend_holiday'
+        ? `TOTAL WEEKEND & HARI BESAR (${sortedRows.length} Baris)`
+        : `TOTAL BARIS EVALUASI (${sortedRows.length} Baris)`;
+    }
+
+    const fVisColor = footGVis !== null ? (footGVis >= 0 ? '#15803d' : '#dc2626') : 'var(--text-muted)';
+    const fRevColor = footGRev !== null ? (footGRev >= 0 ? '#15803d' : '#dc2626') : 'var(--text-muted)';
+    const fVisStr = footGVis !== null ? `${footGVis >= 0 ? '▲ +' : '▼ '}${footGVis.toFixed(1)}%` : '-';
+    const fRevStr = footGRev !== null ? `${footGRev >= 0 ? '▲ +' : '▼ '}${footGRev.toFixed(1)}%` : '-';
+
+    tfoot.innerHTML = `
+      <tr>
+        <td>${footLabel}</td>
+        <td class="text-right matrix-hover-cell" onmouseenter="showPeriodMatrixTotalTooltip(event, 'v26')" onmousemove="movePeriodMatrixTooltip(event)" onmouseleave="hidePeriodMatrixTooltip()">${footV26 > 0 ? formatNum(footV26) : '-'}</td>
+        <td class="text-right matrix-hover-cell" onmouseenter="showPeriodMatrixTotalTooltip(event, 's26')" onmousemove="movePeriodMatrixTooltip(event)" onmouseleave="hidePeriodMatrixTooltip()">${footS26 > 0 ? formatRp(footS26) : '-'}</td>
+        <td class="text-right">${footV25 > 0 ? formatNum(footV25) : '-'}</td>
+        <td class="text-right">${footS25 > 0 ? formatRp(footS25) : '-'}</td>
+        <td class="text-center" style="color:${fVisColor};">${fVisStr}</td>
+        <td class="text-center" style="color:${fRevColor};">${fRevStr}</td>
+      </tr>
+    `;
+  }
+
+  function showPeriodMatrixTooltip(event, rowIdx, cellType) {
+    const tooltip = document.getElementById('periodMatrixTooltip');
+    if (!tooltip) return;
+    const r = (periodMatrixState.rows || [])[rowIdx];
+    if (!r) return;
+
+    let inner = '';
+
+    if (cellType === 'period') {
+      if (r.isMonthly) {
+        const hol26Html = r.hols26 && r.hols26.length
+          ? `<div style="margin-top:6px; padding-top:6px; border-top:1px dashed rgba(255,255,255,0.18);"><div style="font-weight:700; color:#fda4af; margin-bottom:3px;">🔴 Hari Besar ${r.label}:</div>` + r.hols26.map(h => `<div style="font-size:11px; color:#f8fafc;">• ${h}</div>`).join('') + `</div>`
+          : `<div style="margin-top:6px; font-size:11px; color:#94a3b8;">Tidak ada tanggal merah nasional di bulan ini (2026).</div>`;
+        const hol25Html = r.hols25 && r.hols25.length
+          ? `<div style="margin-top:6px; padding-top:6px; border-top:1px dashed rgba(255,255,255,0.18);"><div style="font-weight:700; color:#ddd6fe; margin-bottom:3px;">🎌 Hari Besar 2025 (Pembanding YoY):</div>` + r.hols25.map(h => `<div style="font-size:11px; color:#cbd5e1;">• ${h}</div>`).join('') + `</div>`
+          : '';
+        inner = `
+          <div class="tooltip-title">📅 ${r.label}</div>
+          <div style="font-size:11.5px; color:#38bdf8; font-weight:600; margin-bottom:4px;">💡 Klik baris ini untuk membedah tanggal harian bulan ${r.label}</div>
+          ${hol26Html}
+          ${hol25Html}
+        `;
+      } else {
+        const wkdText26 = r.isWeekend ? '<span style="color:#fbbf24; font-weight:700;">Akhir Pekan (Weekend)</span>' : 'Hari Kerja (Weekday)';
+        const wkdText25 = r.isWeekend25 ? '<span style="color:#fbbf24; font-weight:700;">Akhir Pekan (Weekend)</span>' : 'Hari Kerja (Weekday)';
+        let holSection = '';
+        if (r.hasHoliday26 || r.hasHoliday25) {
+          holSection += `<div style="margin-top:7px; padding-top:6px; border-top:1px dashed rgba(255,255,255,0.2);">`;
+          if (r.hasHoliday26) {
+            holSection += `<div style="color:#fda4af; font-weight:700; font-size:11.5px;">🔴 Hari Besar 2026:</div><div style="color:#ffffff; font-size:11.5px; margin-bottom:4px;">${r.hol26}</div>`;
+          }
+          if (r.hasHoliday25) {
+            holSection += `<div style="color:#ddd6fe; font-weight:700; font-size:11.5px;">🎌 Hari Besar 2025 (Tanggal Sama):</div><div style="color:#e2e8f0; font-size:11.5px;">${r.hol25}</div>`;
+          }
+          holSection += `</div>`;
+        }
+        inner = `
+          <div class="tooltip-title">📅 ${r.label} (${r.dayName26})</div>
+          <div class="tooltip-row"><span class="tooltip-label">Status 2026 (${r.dayName26}):</span> <span class="tooltip-val">${wkdText26}</span></div>
+          <div class="tooltip-row"><span class="tooltip-label">Status 2025 (${r.dayName25}):</span> <span class="tooltip-val">${wkdText25}</span></div>
+          ${holSection}
+        `;
+      }
+    } else if (cellType === 'v26' || cellType === 'v25') {
+      const is26 = cellType === 'v26';
+      const yr = is26 ? '2026' : '2025';
+      const totalV = is26 ? r.v26 : r.v25;
+      const ib = is26 ? r.ib26 : r.ib25;
+      const rl = is26 ? r.rl26 : r.rl25;
+      const ra = is26 ? r.ra26 : r.ra25;
+      const tb = is26 ? r.tb26 : r.tb25;
+      const unitsMap = is26 ? r.units26 : r.units25;
+      const rev = is26 ? r.s26 : r.s25;
+      const sphVal = totalV > 0 ? (rev / totalV) : 0;
+
+      if (!totalV || totalV <= 0) {
+        inner = `
+          <div class="tooltip-title">👥 Pengunjung ${yr} — ${r.label}</div>
+          <div style="color:#94a3b8; font-size:11.5px;">Belum ada data pengunjung yang diinput pada periode ini.</div>
+        `;
+      } else {
+        const pIb = (ib / totalV * 100);
+        const pRl = (rl / totalV * 100);
+        const pRa = (ra / totalV * 100);
+        const pTb = (tb / totalV * 100);
+
+        // Unit breakdown if multiple units have visitors
+        let unitRowsHtml = '';
+        const unitEntries = Object.entries(unitsMap || {}).filter(([, val]) => val > 0).sort((a, b) => b[1] - a[1]);
+        if (unitEntries.length > 1) {
+          unitRowsHtml = `<div style="margin-top:6px; padding-top:6px; border-top:1px dashed rgba(255,255,255,0.16);"><div style="font-size:10.5px; font-weight:700; color:#94a3b8; text-transform:uppercase; margin-bottom:3px;">Distribusi Unit Wahana:</div>`;
+          unitEntries.forEach(([uName, uVal]) => {
+            const uPct = (uVal / totalV * 100).toFixed(1);
+            unitRowsHtml += `<div class="tooltip-row" style="font-size:11px; margin-bottom:2px;"><span class="tooltip-label">• ${uName}:</span> <span class="tooltip-val">${formatNum(uVal)} (${uPct}%)</span></div>`;
+          });
+          unitRowsHtml += `</div>`;
+        }
+
+        const fullMonthNote = (r.isMonthly && !is26 && r.has26 && r.v25Full > r.v25)
+          ? `<div style="margin-top:5px; font-size:10.5px; color:#cbd5e1; border-top:1px dashed rgba(255,255,255,0.15); padding-top:4px;">📌 Full Bulan ${r.shortLabel.replace('-26', '-25')}: <strong>${formatNum(r.v25Full)} org</strong></div>`
+          : '';
+
+        inner = `
+          <div class="tooltip-title">👥 Rincian 4 Aspek Visitor ${yr} — ${r.label}</div>
+          <div class="tooltip-row" style="margin-bottom:6px;"><span class="tooltip-label">Total Keseluruhan:</span> <span class="tooltip-val" style="color:#34d399; font-size:13px;">${formatNum(totalV)} Orang (100%)</span></div>
+          <div style="height:6px; border-radius:3px; display:flex; overflow:hidden; background:rgba(255,255,255,0.12); margin-bottom:8px; gap:1px;">
+            <div style="width:${pIb.toFixed(1)}%; background:#3b82f6;"></div>
+            <div style="width:${pRl.toFixed(1)}%; background:#00b5e2;"></div>
+            <div style="width:${pRa.toFixed(1)}%; background:#f59e0b;"></div>
+            <div style="width:${pTb.toFixed(1)}%; background:#94a3b8;"></div>
+          </div>
+          <div class="tooltip-row"><span class="tooltip-label" style="color:#93c5fd;">● Individu Bayar (FIT):</span> <span class="tooltip-val">${formatNum(ib)} org (${pIb.toFixed(1)}%)</span></div>
+          <div class="tooltip-row"><span class="tooltip-label" style="color:#67e8f9;">● Rombongan Langsung:</span> <span class="tooltip-val">${formatNum(rl)} org (${pRl.toFixed(1)}%)</span></div>
+          <div class="tooltip-row"><span class="tooltip-label" style="color:#fcd34d;">● Rombongan Agen:</span> <span class="tooltip-val">${formatNum(ra)} org (${pRa.toFixed(1)}%)</span></div>
+          <div class="tooltip-row"><span class="tooltip-label" style="color:#cbd5e1;">● Tidak Bayar (Free):</span> <span class="tooltip-val">${formatNum(tb)} org (${pTb.toFixed(1)}%)</span></div>
+          ${unitRowsHtml}
+          <div style="margin-top:6px; padding-top:5px; border-top:1px dashed rgba(255,255,255,0.16); display:flex; justify-content:space-between; font-size:11px;">
+            <span style="color:#94a3b8;">SPH (Belanja/Visitor):</span>
+            <strong style="color:#f8fafc;">${sphVal > 0 ? formatRp(sphVal) + ' /org' : '-'}</strong>
+          </div>
+          ${fullMonthNote}
+        `;
+      }
+    } else {
+      // Revenue or Growth cell tooltip: Diagnostic SPH, Struk, ATV, Capture Rate & Root-Cause
+      const sph26 = r.v26 > 0 ? (r.s26 / r.v26) : 0;
+      const sph25 = r.v25 > 0 ? (r.s25 / r.v25) : 0;
+      const gSph = (sph25 > 0 && sph26 > 0) ? ((sph26 - sph25) / sph25 * 100) : null;
+      const atv26 = r.tx26 > 0 ? (r.s26 / r.tx26) : 0;
+      const cap26 = r.v26 > 0 ? (r.tx26 / r.v26 * 100) : 0;
+      const diffRev = r.s26 - r.s25;
+
+      let diagText = '';
+      if (r.gRev !== null && r.gVis !== null) {
+        if (r.gRev >= 0 && r.gRev > r.gVis + 3) {
+          diagText = `🚀 <strong>Kualitas Belanja Naik:</strong> Pertumbuhan Revenue (+${r.gRev.toFixed(1)}%) melampaui pertumbuhan Visitor (${r.gVis >= 0 ? '+' : ''}${r.gVis.toFixed(1)}%) berkat lonjakan SPH.`;
+        } else if (r.gRev < 0 && r.gVis >= 0) {
+          diagText = `⚠️ <strong>Anomali Konversi:</strong> Pengunjung naik (+${r.gVis.toFixed(1)}%), namun Revenue terkoreksi (${r.gRev.toFixed(1)}%). Cek komposisi rombongan/free pada kolom Visitor.`;
+        } else if (r.gRev >= 0 && r.gVis >= 0) {
+          diagText = `✅ <strong>Pertumbuhan Sehat:</strong> Kenaikan pengunjung dan omset berjalan selaras.`;
+        } else {
+          diagText = `📉 <strong>Terkoreksi YoY:</strong> Penurunan omset dipengaruhi oleh volume trafik (${r.gVis.toFixed(1)}% YoY).`;
+        }
+      }
+
+      const fullRevNote = (r.isMonthly && r.has26 && r.s25Full > r.s25)
+        ? `<div style="margin-top:4px; font-size:10.5px; color:#cbd5e1;">📌 Full Bulan ${r.shortLabel.replace('-26', '-25')}: <strong>${formatRp(r.s25Full)}</strong></div>`
+        : '';
+
+      inner = `
+        <div class="tooltip-title">💰 Diagnostik Revenue &amp; SPH — ${r.label}</div>
+        <div class="tooltip-row"><span class="tooltip-label">Revenue 2026:</span> <span class="tooltip-val" style="color:#34d399;">${r.s26 > 0 ? formatRp(r.s26) : '-'}</span></div>
+        <div class="tooltip-row"><span class="tooltip-label">Revenue 2025:</span> <span class="tooltip-val" style="color:#93c5fd;">${r.s25 > 0 ? formatRp(r.s25) : '-'}</span></div>
+        ${r.has26 && r.s25 > 0 ? `<div class="tooltip-row"><span class="tooltip-label">Selisih Rupiah:</span> <span class="tooltip-val" style="color:${diffRev >= 0 ? '#34d399' : '#f87171'};">${diffRev >= 0 ? '+' : '-'}${formatRp(Math.abs(diffRev))}</span></div>` : ''}
+        <div style="margin-top:6px; padding-top:6px; border-top:1px dashed rgba(255,255,255,0.16);">
+          <div class="tooltip-row"><span class="tooltip-label">SPH 2026 vs 2025:</span> <span class="tooltip-val">${sph26 > 0 ? formatRp(sph26) : '-'} vs ${sph25 > 0 ? formatRp(sph25) : '-'} ${gSph !== null ? `(${gSph >= 0 ? '+' : ''}${gSph.toFixed(1)}%)` : ''}</span></div>
+          <div class="tooltip-row"><span class="tooltip-label">Struk Transaksi:</span> <span class="tooltip-val">${formatNum(r.tx26)} struk ('26) vs ${formatNum(r.tx25)} ('25)</span></div>
+          <div class="tooltip-row"><span class="tooltip-label">Capture Rate &amp; ATV '26:</span> <span class="tooltip-val">${cap26.toFixed(2)}% • ${atv26 > 0 ? formatRp(atv26) : '-'}</span></div>
+        </div>
+        ${diagText ? `<div style="margin-top:6px; padding-top:6px; border-top:1px dashed rgba(255,255,255,0.16); font-size:11px; color:#e2e8f0;">${diagText}</div>` : ''}
+        ${fullRevNote}
+      `;
+    }
+
+    tooltip.innerHTML = inner;
+    tooltip.style.display = 'block';
+    movePeriodMatrixTooltip(event);
+  }
+
+  function showPeriodMatrixTotalTooltip(event, cellType) {
+    const tooltip = document.getElementById('periodMatrixTooltip');
+    if (!tooltip || !periodMatrixState.summaryTotals) return;
+    const st = periodMatrixState.summaryTotals;
+    if (cellType === 'v26' && st.v26 > 0) {
+      const pIb = (st.ib26 / st.v26 * 100);
+      const pRl = (st.rl26 / st.v26 * 100);
+      const pRa = (st.ra26 / st.v26 * 100);
+      const pTb = (st.tb26 / st.v26 * 100);
+      tooltip.innerHTML = `
+        <div class="tooltip-title">👥 Total Komposisi 4 Aspek Visitor 2026</div>
+        <div class="tooltip-row"><span class="tooltip-label" style="color:#93c5fd;">● Individu Bayar:</span> <span class="tooltip-val">${formatNum(st.ib26)} (${pIb.toFixed(1)}%)</span></div>
+        <div class="tooltip-row"><span class="tooltip-label" style="color:#67e8f9;">● Romb. Langsung:</span> <span class="tooltip-val">${formatNum(st.rl26)} (${pRl.toFixed(1)}%)</span></div>
+        <div class="tooltip-row"><span class="tooltip-label" style="color:#fcd34d;">● Romb. Agen:</span> <span class="tooltip-val">${formatNum(st.ra26)} (${pRa.toFixed(1)}%)</span></div>
+        <div class="tooltip-row"><span class="tooltip-label" style="color:#cbd5e1;">● Tidak Bayar (Free):</span> <span class="tooltip-val">${formatNum(st.tb26)} (${pTb.toFixed(1)}%)</span></div>
+      `;
+      tooltip.style.display = 'block';
+      movePeriodMatrixTooltip(event);
+    } else if (cellType === 's26' && st.s26 > 0) {
+      const sph26 = st.v26 > 0 ? (st.s26 / st.v26) : 0;
+      const atv26 = st.tx26 > 0 ? (st.s26 / st.tx26) : 0;
+      tooltip.innerHTML = `
+        <div class="tooltip-title">💰 Total Akumulasi Revenue 2026</div>
+        <div class="tooltip-row"><span class="tooltip-label">Total Net Sales:</span> <span class="tooltip-val" style="color:#34d399;">${formatRp(st.s26)}</span></div>
+        <div class="tooltip-row"><span class="tooltip-label">Total Struk:</span> <span class="tooltip-val">${formatNum(st.tx26)} struk (ATV ${formatRp(atv26)})</span></div>
+        <div class="tooltip-row"><span class="tooltip-label">Rata-rata SPH:</span> <span class="tooltip-val">${sph26 > 0 ? formatRp(sph26) + ' /org' : '-'}</span></div>
+      `;
+      tooltip.style.display = 'block';
+      movePeriodMatrixTooltip(event);
+    }
+  }
+
+  function movePeriodMatrixTooltip(event) {
+    const tooltip = document.getElementById('periodMatrixTooltip');
+    if (!tooltip || tooltip.style.display === 'none') return;
+    const pad = 14;
+    const w = tooltip.offsetWidth || 280;
+    const h = tooltip.offsetHeight || 160;
+    let left = event.clientX + pad;
+    let top = event.clientY - h - 10;
+    if (left + w > window.innerWidth - 12) {
+      left = Math.max(10, event.clientX - w - pad);
+    }
+    if (top < 10) {
+      top = Math.min(window.innerHeight - h - 10, event.clientY + pad);
+    }
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = top + 'px';
+  }
+
+  function hidePeriodMatrixTooltip() {
+    const tooltip = document.getElementById('periodMatrixTooltip');
+    if (tooltip) tooltip.style.display = 'none';
+  }
+
+  function setPeriodMatrixSort(col) {
+    if (periodMatrixState.sortCol === col) {
+      periodMatrixState.sortAsc = !periodMatrixState.sortAsc;
+    } else {
+      periodMatrixState.sortCol = col;
+      periodMatrixState.sortAsc = (col === 'period');
+    }
+    const cols = ['period', 'v26', 's26', 'v25', 's25', 'gVis', 'gRev'];
+    cols.forEach(c => {
+      const th = document.getElementById('thMatrixCol_' + c);
+      const icon = document.getElementById('sortIconMatrix_' + c);
+      if (th) th.classList.toggle('is-active', c === col);
+      if (icon) {
+        if (c === col) {
+          icon.textContent = periodMatrixState.sortAsc ? '▲' : '▼';
+          icon.style.opacity = '1';
+          icon.style.color = 'var(--brand)';
+        } else {
+          icon.textContent = '⇅';
+          icon.style.opacity = '0.35';
+          icon.style.color = '';
+        }
+      }
+    });
+    renderPeriodComparisonMatrixRows();
+  }
+
+  function setPeriodMatrixRowFilter(mode) {
+    periodMatrixState.rowFilter = mode;
+    const map = {
+      'all': 'pillMatrixAll',
+      'weekend_holiday': 'pillMatrixWeekend',
+      'decline': 'pillMatrixDecline'
+    };
+    Object.entries(map).forEach(([k, id]) => {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('active', k === mode);
+    });
+    renderPeriodComparisonMatrixRows();
+  }
+
+  function drillDownPeriodMatrixMonth(monthVal) {
+    const monthSelect = document.getElementById('filterMonth');
+    if (!monthSelect) return;
+    hidePeriodMatrixTooltip();
+    monthSelect.value = monthVal;
+    periodMatrixState.rowFilter = 'all';
+    periodMatrixState.sortCol = 'period';
+    periodMatrixState.sortAsc = true;
+    setPeriodMatrixRowFilter('all');
+    onMonthChange();
+    if (typeof showFilterToast === 'function') {
+      const mLabel = MONTH_NAMES[monthVal] || monthVal;
+      showFilterToast(`📅 Membedah rincian tanggal bulan ${mLabel}`);
+    }
+  }
+
+  function drillUpPeriodMatrixToYtd() {
+    const monthSelect = document.getElementById('filterMonth');
+    const startInput = document.getElementById('filterStartDate');
+    const endInput = document.getElementById('filterEndDate');
+    const displayLabel = document.getElementById('dateRangeDisplayLabel');
+    const clearBtn = document.getElementById('clearDateBtn');
+    hidePeriodMatrixTooltip();
+    if (monthSelect) monthSelect.value = '';
+    if (startInput) startInput.value = '';
+    if (endInput) endInput.value = '';
+    if (displayLabel) displayLabel.textContent = 'Semua Tanggal (YTD)';
+    if (clearBtn) clearBtn.style.display = 'none';
+    calTempStartDate = '';
+    calTempEndDate = '';
+    periodMatrixState.rowFilter = 'all';
+    periodMatrixState.sortCol = 'period';
+    periodMatrixState.sortAsc = true;
+    setPeriodMatrixRowFilter('all');
+    onFilterChange();
+    if (typeof showFilterToast === 'function') {
+      showFilterToast(`↩ Kembali ke tampilan 12 Bulan (YTD)`);
+    }
+  }
+
+  function togglePeriodMatrixCollapse() {
+    const body = document.getElementById('periodMatrixBody');
+    const icon = document.getElementById('toggleMatrixIcon');
+    const text = document.getElementById('toggleMatrixText');
+    if (!body) return;
+    const isHidden = body.style.display === 'none';
+    body.style.display = isHidden ? 'block' : 'none';
+    if (icon) icon.textContent = isHidden ? '▲' : '▼';
+    if (text) text.textContent = isHidden ? 'Ringkas' : 'Buka Tabel';
+  }
+
+  function copyPeriodMatrixToClipboard(btn) {
+    const rows = periodMatrixState.rows || [];
+    if (!rows.length) return;
+    const headerLabel = periodMatrixState.isMonthly ? 'Bulan' : 'Tanggal';
+    const lines = [
+      `📊 *MATRIKS KOMPARASI VISITOR & REVENUE (2026 vs 2025)*`,
+      `Filter: ${typeof getActiveFilterLabel === 'function' ? getActiveFilterLabel() : 'Semua Data'}`,
+      ``,
+      `${headerLabel}\tVisitor 2026\tRevenue 2026\tVisitor 2025\tRevenue 2025\tGrowth Visitor\tGrowth Revenue`
+    ];
+    rows.forEach(r => {
+      const gV = r.gVis !== null ? `${r.gVis >= 0 ? '+' : ''}${r.gVis.toFixed(1)}%` : '-';
+      const gR = r.gRev !== null ? `${r.gRev >= 0 ? '+' : ''}${r.gRev.toFixed(1)}%` : '-';
+      const dayTag = (!r.isMonthly && r.shortDay26) ? ` (${r.shortDay26})` : '';
+      lines.push(`${r.label}${dayTag}\t${formatNum(r.v26)}\t${Math.round(r.s26)}\t${formatNum(r.v25)}\t${Math.round(r.s25)}\t${gV}\t${gR}`);
+    });
+    const text = lines.join('\n');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = '<span>✅</span> <span>Tersalin!</span>';
+          setTimeout(() => { btn.innerHTML = orig; }, 2000);
+        }
+      });
+    }
   }
 
   function getSubBrandUnitClass(areaName) {
@@ -8452,6 +9918,27 @@
 
     const sLimit = document.getElementById('supplierLimitSelect');
     if (sLimit) sLimit.value = '10';
+
+    if (typeof periodMatrixState !== 'undefined') {
+      periodMatrixState.rowFilter = 'all';
+      periodMatrixState.sortCol = 'period';
+      periodMatrixState.sortAsc = true;
+      const pillMap = { 'all': 'pillMatrixAll', 'weekend_holiday': 'pillMatrixWeekend', 'decline': 'pillMatrixDecline' };
+      Object.entries(pillMap).forEach(([k, id]) => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('active', k === 'all');
+      });
+      ['period', 'v26', 's26', 'v25', 's25', 'gVis', 'gRev'].forEach(c => {
+        const th = document.getElementById('thMatrixCol_' + c);
+        const icon = document.getElementById('sortIconMatrix_' + c);
+        if (th) th.classList.toggle('is-active', c === 'period');
+        if (icon) {
+          icon.textContent = c === 'period' ? '▲' : '⇅';
+          icon.style.opacity = c === 'period' ? '1' : '0.35';
+          icon.style.color = c === 'period' ? 'var(--brand)' : '';
+        }
+      });
+    }
 
     onAreaChange(); // This will reset outlet dropdown and call applyFilters()
   }
