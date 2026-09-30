@@ -6177,30 +6177,14 @@
 <!-- Data & Client Engine Scripts -->
 <script>
   // Raw Data Embedded for Instant Client-Side Processing
-  // RAW_SALES format: [year, date, hour, outlet, area, product, qty, net_sales, invoice, item_net_sales]
-  const RAW_SALES = {{ data.compact_sales|tojson if data.compact_sales else '[]' }};
+  // Compact format: SALES_DICT + RAW_SALES [[di, hi, oi, ai, pi, qty, net_sales, tx_id], ...]
+  const SALES_DICT = {{ data.sales_dict|tojson if data.sales_dict else 'null' }};
+  const RAW_SALES = {{ data.compact_sales_json|safe if data.compact_sales_json else (data.compact_sales|tojson if data.compact_sales else '[]') }};
   const RAW_TARGETS = {{ data.compact_targets|tojson if data.compact_targets else '[]' }};
   const RAW_VISITORS = {{ data.compact_visitors|tojson if data.compact_visitors else '[]' }};
   const MONTH_NAMES = {{ data.month_labels|tojson if data.month_labels else '{}' }};
   const DATE_LABELS = {{ data.date_labels|tojson if data.date_labels else '{}' }};
   const COMPACT_LOOKUP = {{ data.compact_lookup|tojson if data.compact_lookup else '{}' }};
-
-  // Precompute Global 2026 Active Dates for Strict Apples-to-Apples KPI & YoY Matching
-  const GLOBAL_ACTIVE_26_DATES = new Set();
-  const GLOBAL_ACTIVE_26_DM = new Set();
-  for (let i = 0; i < RAW_SALES.length; i++) {
-    if (RAW_SALES[i][0] === 2026) {
-      GLOBAL_ACTIVE_26_DATES.add(RAW_SALES[i][1]);
-      GLOBAL_ACTIVE_26_DM.add(RAW_SALES[i][1].substring(5));
-    }
-  }
-  const GLOBAL_ACTIVE_26_VIS_DM = new Set();
-  for (let i = 0; i < RAW_VISITORS.length; i++) {
-    const rv = RAW_VISITORS[i];
-    if (rv && rv.date && rv.date.substring(0, 4) === '2026' && (rv.visitors || 0) > 0) {
-      GLOBAL_ACTIVE_26_VIS_DM.add(rv.date.substring(5));
-    }
-  }
 
   const OUTLET_TO_VISITOR_MAP = {
     "SWIN Sea World Induk": "SeaWorld",
@@ -6222,6 +6206,84 @@
     "TJOM Merchandise Ombak Laut": "Beachpark",
     "TJSO Symphony Of The Sea": "Beachpark"
   };
+
+  // Precompute Global 2026 Active Dates & Dictionary Lookups for Fast Mobile/Tablet/Desktop Execution
+  const GLOBAL_ACTIVE_26_DATES = new Set();
+  const GLOBAL_ACTIVE_26_DM = new Set();
+  const _IS_COMPACT_SALES = Boolean(SALES_DICT && Array.isArray(SALES_DICT.d));
+  const _SD_DATES = _IS_COMPACT_SALES ? SALES_DICT.d : [];
+  const _SD_HOURS = _IS_COMPACT_SALES ? SALES_DICT.h : [];
+  const _SD_OUTLETS = _IS_COMPACT_SALES ? SALES_DICT.o : [];
+  const _SD_AREAS = _IS_COMPACT_SALES ? SALES_DICT.a : [];
+  const _SD_PRODS = _IS_COMPACT_SALES ? SALES_DICT.p : [];
+
+  const _SD_DATE_YEAR = new Int16Array(_SD_DATES.length);
+  const _SD_DATE_DM = new Array(_SD_DATES.length);
+  const _SD_DATE_MK = new Array(_SD_DATES.length);
+  const _SD_DATE_WKND = new Uint8Array(_SD_DATES.length);
+  const _SD_DATE_HAS26DM = new Uint8Array(_SD_DATES.length);
+  const _SD_OUTLET_UNIT = new Array(_SD_OUTLETS.length);
+  const _SD_PROD_MAPPED = new Uint8Array(_SD_PRODS.length);
+  const _SD_PROD_SUPP = new Array(_SD_PRODS.length);
+  const _SD_PROD_CAT = new Array(_SD_PRODS.length);
+  const _SD_PROD_JENIS = new Array(_SD_PRODS.length);
+  const _SD_PROD_HPP = new Float64Array(_SD_PRODS.length);
+
+  if (_IS_COMPACT_SALES) {
+    for (let di = 0, dLen = _SD_DATES.length; di < dLen; di++) {
+      const dStr = _SD_DATES[di];
+      const yr = parseInt(dStr.substring(0, 4), 10);
+      const dm = dStr.substring(5);
+      const mk = dStr.substring(5, 7);
+      _SD_DATE_YEAR[di] = yr;
+      _SD_DATE_DM[di] = dm;
+      _SD_DATE_MK[di] = mk;
+      const wd = new Date(yr, parseInt(mk, 10) - 1, parseInt(dStr.substring(8, 10), 10)).getDay();
+      _SD_DATE_WKND[di] = (wd === 0 || wd === 6) ? 1 : 0;
+      if (yr === 2026) {
+        GLOBAL_ACTIVE_26_DATES.add(dStr);
+        GLOBAL_ACTIVE_26_DM.add(dm);
+      }
+    }
+    for (let di = 0, dLen = _SD_DATES.length; di < dLen; di++) {
+      if (GLOBAL_ACTIVE_26_DM.has(_SD_DATE_DM[di])) _SD_DATE_HAS26DM[di] = 1;
+    }
+    for (let oi = 0, oLen = _SD_OUTLETS.length; oi < oLen; oi++) {
+      _SD_OUTLET_UNIT[oi] = OUTLET_TO_VISITOR_MAP[_SD_OUTLETS[oi]] || null;
+    }
+    const hasLk = (typeof COMPACT_LOOKUP !== 'undefined' && COMPACT_LOOKUP) ? COMPACT_LOOKUP : null;
+    for (let pi = 0, pLen = _SD_PRODS.length; pi < pLen; pi++) {
+      const lk = hasLk ? hasLk[_SD_PRODS[pi]] : null;
+      if (lk) {
+        _SD_PROD_MAPPED[pi] = 1;
+        _SD_PROD_SUPP[pi] = lk[1] || 'LAIN-LAIN';
+        _SD_PROD_CAT[pi] = lk[2] || 'LAIN-LAIN';
+        _SD_PROD_JENIS[pi] = ((lk[3] || '').toUpperCase().includes('DAGANG')) ? 'DAGANGAN' : 'KONSINYASI';
+        _SD_PROD_HPP[pi] = lk[4] || 0;
+      } else {
+        _SD_PROD_MAPPED[pi] = 0;
+        _SD_PROD_SUPP[pi] = 'LAIN-LAIN';
+        _SD_PROD_CAT[pi] = 'LAIN-LAIN';
+        _SD_PROD_JENIS[pi] = '';
+        _SD_PROD_HPP[pi] = 0;
+      }
+    }
+  } else {
+    for (let i = 0; i < RAW_SALES.length; i++) {
+      if (RAW_SALES[i][0] === 2026) {
+        GLOBAL_ACTIVE_26_DATES.add(RAW_SALES[i][1]);
+        GLOBAL_ACTIVE_26_DM.add(RAW_SALES[i][1].substring(5));
+      }
+    }
+  }
+
+  const GLOBAL_ACTIVE_26_VIS_DM = new Set();
+  for (let i = 0; i < RAW_VISITORS.length; i++) {
+    const rv = RAW_VISITORS[i];
+    if (rv && rv.date && rv.date.substring(0, 4) === '2026' && (rv.visitors || 0) > 0) {
+      GLOBAL_ACTIVE_26_VIS_DM.add(rv.date.substring(5));
+    }
+  }
 
   const OUTLET_TO_AREA_MAP = {
     "SWIN Sea World Induk": "AWAPARK",
@@ -7628,8 +7690,6 @@
       ensureMatrixEntry(matrixMonthData, mk);
     }
 
-    let itemNetSales26 = 0, itemNetSales25 = 0;
-
     const startDm = startDate ? startDate.substring(5) : '';
     const endDm = endDate ? endDate.substring(5) : '';
     const selMonth = month ? month.slice(-2) : '';
@@ -7649,86 +7709,174 @@
       }
     });
 
-    for (let i = 0; i < RAW_SALES.length; i++) {
-      const r = RAW_SALES[i]; // [year, date, hour, outlet, area, product, qty, net_sales, invoice, item_net_sales]
-      const rYear = r[0];
-      const rDate = r[1];
-      const rMonth = rDate.substring(0, 7);
-      const rHour = r[2];
-      const rOutlet = r[3];
-      const rArea = r[4];
-      const rProduct = r[5];
-      const rQty = r[6];
-      const rSales = r[7];
-      const rInvoice = r[8];
-      const rItemNetSales = r[9] || 0;
-      const rDm = rDate.substring(5);
+    // Pre-evaluate Date, Product & Outlet Filter Masks on Dictionary Arrays (636 dates, 3161 products, 18 outlets)
+    const _datePass = _IS_COMPACT_SALES ? new Uint8Array(_SD_DATES.length) : null;
+    const _hasProdFilter = Boolean(supplier || category || modelBisnis);
+    const _prodPass = (_IS_COMPACT_SALES && _hasProdFilter) ? new Uint8Array(_SD_PRODS.length) : null;
+    const _outletPass = _IS_COMPACT_SALES ? new Uint8Array(_SD_OUTLETS.length) : null;
 
-      // Match filter criteria
-      if (startDate || endDate) {
-        if (startDm && rDm < startDm) continue;
-        if (endDm && rDm > endDm) continue;
-      } else if (selMonth) {
-        if (rDate.substring(5, 7) !== selMonth) continue;
+    if (_IS_COMPACT_SALES) {
+      const wkndOnly = Boolean(currentFilter.weekendOnly);
+      for (let di = 0, dLen = _SD_DATES.length; di < dLen; di++) {
+        const dDm = _SD_DATE_DM[di];
+        if (startDate || endDate) {
+          if (startDm && dDm < startDm) continue;
+          if (endDm && dDm > endDm) continue;
+        } else if (selMonth) {
+          if (_SD_DATE_MK[di] !== selMonth) continue;
+        }
+        if (wkndOnly && !_SD_DATE_WKND[di]) continue;
+        _datePass[di] = 1;
       }
-
-      // Filter khusus Akhir Pekan (Sabtu & Minggu) jika preset weekend aktif
-      if (currentFilter.weekendOnly && !isWeekendDate(rDate)) continue;
-
-      // Match Supplier, Category & Model Bisnis criteria (Evaluasi 1x per baris)
-      let lkSupplier = 'LAIN-LAIN', lkCategory = 'LAIN-LAIN', lkJenis = '', lkHpp = 0;
-      const lk = hasCompactLookup ? hasCompactLookup[rProduct] : null;
-      if (lk) {
-        lkSupplier = lk[1] || 'LAIN-LAIN';
-        lkCategory = lk[2] || 'LAIN-LAIN';
-        const lkJenisRaw = (lk[3] || '').toUpperCase();
-        lkJenis = lkJenisRaw.includes('DAGANG') ? 'DAGANGAN' : 'KONSINYASI';
-        lkHpp = lk[4] || 0;
+      if (_prodPass) {
+        for (let pi = 0, pLen = _SD_PRODS.length; pi < pLen; pi++) {
+          if (supplier && _SD_PROD_SUPP[pi] !== supplier) continue;
+          if (category && _SD_PROD_CAT[pi] !== category) continue;
+          if (modelBisnis && _SD_PROD_JENIS[pi] !== modelBisnis) continue;
+          _prodPass[pi] = 1;
+        }
       }
+      if (!isNoOutletSelected) {
+        for (let oi = 0, oLen = _SD_OUTLETS.length; oi < oLen; oi++) {
+          const oName = _SD_OUTLETS[oi];
+          if (isMultiOutletActive) {
+            if (!window.selectedOutlets.has(oName)) continue;
+          } else if (outlet && outlet !== '__NONE__' && oName !== outlet) {
+            continue;
+          }
+          _outletPass[oi] = 1;
+        }
+      }
+    }
 
-      if (supplier && lkSupplier !== supplier) continue;
-      if (category && lkCategory !== category) continue;
-      if (modelBisnis && lkJenis !== modelBisnis) continue;
+    let lastUnitTx26 = -1, lastUnitTx25 = -1;
+    let lastMainTx26 = -1, lastMainHour26 = '';
+    let lastMainTx25 = -1, lastMainHour25 = '';
+    let lastFullTx25 = -1;
 
-      // Accumulate 4 Unit Executive Benchmarks (Dufan, SeaWorld, Samudra, Atlantis)
-      const rUnit = OUTLET_TO_VISITOR_MAP[rOutlet];
-      let txId = null;
-      if (rUnit && unitSales[rUnit]) {
+    for (let i = 0, rLen = RAW_SALES.length; i < rLen; i++) {
+      const r = RAW_SALES[i];
+      let rYear, rDate, rHour, rOutlet, rArea, rProduct, rQty, rSales, txId, rDm, mKey;
+      let lk, lkSupplier, lkCategory, lkJenis, lkHpp, rUnit, isMatched25;
+
+      if (_IS_COMPACT_SALES) {
+        // r = [di, hi, oi, ai, pi, qty, net_sales, ti]
+        const di = r[0];
+        if (!_datePass[di]) continue;
+        const pi = r[4];
+        if (_hasProdFilter && !_prodPass[pi]) continue;
+
+        const oi = r[2];
+        rYear = _SD_DATE_YEAR[di];
+        rSales = r[6];
+        txId = r[7];
+        rUnit = _SD_OUTLET_UNIT[oi];
+        isMatched25 = (!periodHas26Data || _SD_DATE_HAS26DM[di] === 1);
+
+        if (rUnit && unitSales[rUnit]) {
+          if (rYear === 2026) {
+            unitSales[rUnit].s26 += rSales;
+            if (txId !== lastUnitTx26) {
+              unitSales[rUnit].tx26.add(txId);
+              lastUnitTx26 = txId;
+            }
+          } else if (rYear === 2025 && isMatched25) {
+            unitSales[rUnit].s25 += rSales;
+            if (txId !== lastUnitTx25) {
+              unitSales[rUnit].tx25.add(txId);
+              lastUnitTx25 = txId;
+            }
+          }
+        }
+
+        if (!_outletPass[oi]) continue;
+        rArea = _SD_AREAS[r[3]];
+        if (area && rArea !== area) continue;
+
+        rDate = _SD_DATES[di];
+        rDm = _SD_DATE_DM[di];
+        mKey = _SD_DATE_MK[di];
+        rHour = _SD_HOURS[r[1]];
+        rOutlet = _SD_OUTLETS[oi];
+        rProduct = _SD_PRODS[pi];
+        rQty = r[5];
+        lk = _SD_PROD_MAPPED[pi] === 1;
+        lkSupplier = _SD_PROD_SUPP[pi];
+        lkCategory = _SD_PROD_CAT[pi];
+        lkJenis = _SD_PROD_JENIS[pi];
+        lkHpp = _SD_PROD_HPP[pi];
+      } else {
+        // Fallback legacy format: [year, date, hour, outlet, area, product, qty, net_sales, invoice]
+        rYear = r[0];
+        rDate = r[1];
+        rHour = r[2];
+        rOutlet = r[3];
+        rArea = r[4];
+        rProduct = r[5];
+        rQty = r[6];
+        rSales = r[7];
+        const rInvoice = r[8];
+        rDm = rDate.substring(5);
+
+        if (startDate || endDate) {
+          if (startDm && rDm < startDm) continue;
+          if (endDm && rDm > endDm) continue;
+        } else if (selMonth) {
+          if (rDate.substring(5, 7) !== selMonth) continue;
+        }
+        if (currentFilter.weekendOnly && !isWeekendDate(rDate)) continue;
+
+        lkSupplier = 'LAIN-LAIN'; lkCategory = 'LAIN-LAIN'; lkJenis = ''; lkHpp = 0;
+        const lkRaw = hasCompactLookup ? hasCompactLookup[rProduct] : null;
+        lk = Boolean(lkRaw);
+        if (lkRaw) {
+          lkSupplier = lkRaw[1] || 'LAIN-LAIN';
+          lkCategory = lkRaw[2] || 'LAIN-LAIN';
+          const lkJenisRaw = (lkRaw[3] || '').toUpperCase();
+          lkJenis = lkJenisRaw.includes('DAGANG') ? 'DAGANGAN' : 'KONSINYASI';
+          lkHpp = lkRaw[4] || 0;
+        }
+
+        if (supplier && lkSupplier !== supplier) continue;
+        if (category && lkCategory !== category) continue;
+        if (modelBisnis && lkJenis !== modelBisnis) continue;
+
+        rUnit = OUTLET_TO_VISITOR_MAP[rOutlet];
         txId = rOutlet + '_' + rDate + '_' + rInvoice;
-        if (rYear === 2026) {
-          unitSales[rUnit].s26 += rSales;
-          unitSales[rUnit].tx26.add(txId);
-        } else if (rYear === 2025) {
-          if (!periodHas26Data || GLOBAL_ACTIVE_26_DM.has(rDm)) {
+        isMatched25 = (!periodHas26Data || GLOBAL_ACTIVE_26_DM.has(rDm));
+
+        if (rUnit && unitSales[rUnit]) {
+          if (rYear === 2026) {
+            unitSales[rUnit].s26 += rSales;
+            unitSales[rUnit].tx26.add(txId);
+          } else if (rYear === 2025 && isMatched25) {
             unitSales[rUnit].s25 += rSales;
             unitSales[rUnit].tx25.add(txId);
           }
         }
+
+        if (isNoOutletSelected) continue;
+        if (isMultiOutletActive) {
+          if (!window.selectedOutlets.has(rOutlet)) continue;
+        } else if (outlet && outlet !== '__NONE__' && rOutlet !== outlet) {
+          continue;
+        }
+        if (area && rArea !== area) continue;
+        mKey = rDate.substring(5, 7);
       }
 
-      // Filter by Outlet & Area for Main Dashboard
-      if (isNoOutletSelected) continue;
-      if (isMultiOutletActive) {
-        if (!window.selectedOutlets.has(rOutlet)) continue;
-      } else if (outlet && outlet !== '__NONE__' && rOutlet !== outlet) {
-        continue;
-      }
-      if (area && rArea !== area) continue;
-
-      // Lazy construct txId jika belum dibuat untuk benchmark unit
-      if (!txId) {
-        txId = rOutlet + '_' + rDate + '_' + rInvoice;
-      }
-
-      const mKey = rMonth.substring(5, 7);
       if (!byMonth[mKey]) byMonth[mKey] = { s26: 0, s25: 0 };
 
       if (rYear === 2026) {
         s26 += rSales;
-        itemNetSales26 += rItemNetSales;
         q26 += rQty;
-        txSet26.add(txId);
         distinctDates26.add(rDate);
+        const isNewMainTx26 = (txId !== lastMainTx26 || rHour !== lastMainHour26);
+        if (isNewMainTx26) {
+          txSet26.add(txId);
+          lastMainTx26 = txId;
+          lastMainHour26 = rHour;
+        }
 
         // Lookup integration (Supplier, Category, Model, HPP, Margin)
         if (lk) {
@@ -7769,7 +7917,7 @@
         if (!byOutlet[rOutlet]) byOutlet[rOutlet] = { s26: 0, s25: 0, q26: 0, q25: 0, tx26: new Set(), tx25: new Set(), area: rArea };
         byOutlet[rOutlet].s26 += rSales;
         byOutlet[rOutlet].q26 += rQty;
-        byOutlet[rOutlet].tx26.add(txId);
+        if (isNewMainTx26) byOutlet[rOutlet].tx26.add(txId);
 
         if (!byOutletProduct26[rOutlet]) byOutletProduct26[rOutlet] = {};
         if (!byOutletProduct26[rOutlet][rProduct]) byOutletProduct26[rOutlet][rProduct] = { s26: 0, q26: 0 };
@@ -7779,7 +7927,7 @@
         if (!byArea[rArea]) byArea[rArea] = { s26: 0, s25: 0, q26: 0, q25: 0, tx26: new Set(), tx25: new Set() };
         byArea[rArea].s26 += rSales;
         byArea[rArea].q26 += rQty;
-        byArea[rArea].tx26.add(txId);
+        if (isNewMainTx26) byArea[rArea].tx26.add(txId);
 
         if (!byProduct[rProduct]) byProduct[rProduct] = { s26: 0, s25: 0, q26: 0, q25: 0 };
         byProduct[rProduct].s26 += rSales;
@@ -7787,10 +7935,10 @@
 
         if (byHour[rHour]) {
           byHour[rHour].s26 += rSales;
-          hourTx26[rHour].add(txId);
+          if (isNewMainTx26) hourTx26[rHour].add(txId);
         }
 
-        const dayKey = rDate.substring(5);
+        const dayKey = rDm;
         if (!byDay[dayKey]) byDay[dayKey] = { s26: 0, s25: 0 };
         byDay[dayKey].s26 += rSales;
         byMonth[mKey].s26 += rSales;
@@ -7798,42 +7946,49 @@
         const mm26 = ensureMatrixEntry(matrixMonthData, mKey);
         mm26.s26 += rSales;
         mm26.q26 += rQty;
-        mm26.tx26.add(txId);
+        if (isNewMainTx26) mm26.tx26.add(txId);
         mm26.has26Sales = true;
         const md26 = ensureMatrixEntry(matrixDayData, dayKey);
         md26.s26 += rSales;
         md26.q26 += rQty;
-        md26.tx26.add(txId);
+        if (isNewMainTx26) md26.tx26.add(txId);
         md26.has26Sales = true;
 
       } else if (rYear === 2025) {
         // Horizon Bulanan (Chart 1) selalu mengumpulkan full 12 bulan (Jan-Des 2025) untuk forecasting
         byMonth[mKey].s25 += rSales;
 
-        const dayKey25 = rDate.substring(5);
+        const dayKey25 = rDm;
         const mm25 = ensureMatrixEntry(matrixMonthData, mKey);
         mm25.s25Full += rSales;
-        mm25.tx25Full.add(txId);
         const md25 = ensureMatrixEntry(matrixDayData, dayKey25);
         md25.s25Full += rSales;
-        md25.tx25Full.add(txId);
+        if (txId !== lastFullTx25) {
+          mm25.tx25Full.add(txId);
+          md25.tx25Full.add(txId);
+          lastFullTx25 = txId;
+        }
 
         // KPI Utama, Tabel, & Grafik Harian tetap Strict Apples-to-Apples (kecuali saat melihat bulan masa depan Okt-Des)
-        if (!periodHas26Data || GLOBAL_ACTIVE_26_DM.has(rDm)) {
+        if (isMatched25) {
           s25 += rSales;
-          itemNetSales25 += rItemNetSales;
           q25 += rQty;
-          txSet25.add(txId);
+          const isNewMainTx25 = (txId !== lastMainTx25 || rHour !== lastMainHour25);
+          if (isNewMainTx25) {
+            txSet25.add(txId);
+            lastMainTx25 = txId;
+            lastMainHour25 = rHour;
+          }
 
           if (!byOutlet[rOutlet]) byOutlet[rOutlet] = { s26: 0, s25: 0, q26: 0, q25: 0, tx26: new Set(), tx25: new Set(), area: rArea };
           byOutlet[rOutlet].s25 += rSales;
           byOutlet[rOutlet].q25 += rQty;
-          byOutlet[rOutlet].tx25.add(txId);
+          if (isNewMainTx25) byOutlet[rOutlet].tx25.add(txId);
 
           if (!byArea[rArea]) byArea[rArea] = { s26: 0, s25: 0, q26: 0, q25: 0, tx26: new Set(), tx25: new Set() };
           byArea[rArea].s25 += rSales;
           byArea[rArea].q25 += rQty;
-          byArea[rArea].tx25.add(txId);
+          if (isNewMainTx25) byArea[rArea].tx25.add(txId);
 
           if (!byProduct[rProduct]) byProduct[rProduct] = { s26: 0, s25: 0, q26: 0, q25: 0 };
           byProduct[rProduct].s25 += rSales;
@@ -7841,19 +7996,19 @@
 
           if (byHour[rHour]) {
             byHour[rHour].s25 += rSales;
-            hourTx25[rHour].add(txId);
+            if (isNewMainTx25) hourTx25[rHour].add(txId);
           }
 
-          const dayKey = rDate.substring(5);
+          const dayKey = rDm;
           if (!byDay[dayKey]) byDay[dayKey] = { s26: 0, s25: 0 };
           byDay[dayKey].s25 += rSales;
 
           mm25.s25 += rSales;
           mm25.q25 += rQty;
-          mm25.tx25.add(txId);
+          if (isNewMainTx25) mm25.tx25.add(txId);
           md25.s25 += rSales;
           md25.q25 += rQty;
-          md25.tx25.add(txId);
+          if (isNewMainTx25) md25.tx25.add(txId);
         }
       }
     }
@@ -12349,14 +12504,14 @@
     });
   }
 
-  // Initial load & draw
-  initOutletMultiselect();
+  // Initial load & draw (initOutletMultiselect already ran; applyFilters handles tags & charts in 1 pass)
   applyFilters();
-  redrawAllCharts();
-  updateActiveFilterTags();
 
   let resizeDebounceTimer = null;
+  let lastWindowWidth = window.innerWidth;
   window.addEventListener('resize', () => {
+    if (window.innerWidth === lastWindowWidth) return;
+    lastWindowWidth = window.innerWidth;
     if (resizeDebounceTimer) clearTimeout(resizeDebounceTimer);
     resizeDebounceTimer = setTimeout(redrawAllCharts, 150);
   });

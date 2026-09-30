@@ -1,4 +1,5 @@
 import gzip
+import json
 import math
 import os
 import re
@@ -15,7 +16,7 @@ if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
-from flask import Flask, jsonify, render_template, request, send_file
+from flask import Flask, Response, jsonify, render_template, request, send_file
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
@@ -23,6 +24,7 @@ from openpyxl.worksheet.datavalidation import DataValidation
 from werkzeug.utils import secure_filename
 
 from database import (
+    DB_PATH,
     fetch_all_sales,
     fetch_all_targets,
     fetch_all_visitors,
@@ -92,6 +94,10 @@ _sales_cache: list[dict[str, Any]] | None = None
 _sales_cache_signature: tuple[tuple[str, int, int], ...] = ()
 _sales_cache_mapping_signature: tuple[int, int] | None = None
 _sales_cache_lock = Lock()
+_compact_sales_cache: tuple[dict[str, list[str]], list[list[Any]]] | None = None
+_index_response_cache: dict[tuple[Any, ...], tuple[str, bytes]] = {}
+_index_cache_lock = Lock()
+_cache_version: int = 0
 _budget_cache: list[dict[str, Any]] | None = None
 _budget_cache_signature: tuple[tuple[int, int], tuple[int, int]] | None = None
 _budget_cache_lock = Lock()
@@ -578,9 +584,88 @@ def parse_curated_visitor_excel(file_source: Any) -> list[dict[str, Any]]:
         wb.close()
 
 
+def _build_compact_sales_from_rows(rows: list[dict[str, Any]]) -> tuple[dict[str, list[str]], list[list[Any]], str]:
+    """Membangun struktur kamus indeks (sales_dict) & compact_sales agar payload HTML ringan (~80% lebih hemat RAM)."""
+    dates: dict[str, int] = {}
+    hours: dict[str, int] = {}
+    outlets: dict[str, int] = {}
+    areas: dict[str, int] = {}
+    products: dict[str, int] = {}
+    tx_map: dict[tuple[str, str, str], int] = {}
+    compact: list[list[Any]] = []
+
+    for r in rows:
+        d = r["date"]
+        h = r["hour"]
+        o = r["outlet"]
+        a = r["area"]
+        p = r["product"]
+        inv = r.get("invoice", "") or ""
+
+        di = dates.get(d)
+        if di is None:
+            di = len(dates)
+            dates[d] = di
+
+        hi = hours.get(h)
+        if hi is None:
+            hi = len(hours)
+            hours[h] = hi
+
+        oi = outlets.get(o)
+        if oi is None:
+            oi = len(outlets)
+            outlets[o] = oi
+
+        ai = areas.get(a)
+        if ai is None:
+            ai = len(areas)
+            areas[a] = ai
+
+        pi = products.get(p)
+        if pi is None:
+            pi = len(products)
+            products[p] = pi
+
+        tx_key = (o, d, inv)
+        ti = tx_map.get(tx_key)
+        if ti is None:
+            ti = len(tx_map) + 1
+            tx_map[tx_key] = ti
+
+        q = r["qty"]
+        q_val = int(q) if q == int(q) else round(q, 4)
+        s = r["net_sales"]
+        s_val = int(s) if s == int(s) else round(s, 6)
+
+        compact.append([di, hi, oi, ai, pi, q_val, s_val, ti])
+
+    sales_dict = {
+        "d": list(dates.keys()),
+        "h": list(hours.keys()),
+        "o": list(outlets.keys()),
+        "a": list(areas.keys()),
+        "p": list(products.keys()),
+    }
+    compact_json = json.dumps(compact, separators=(",", ":"))
+    return sales_dict, compact, compact_json
+
+
+def _get_compact_sales_payload(rows: list[dict[str, Any]]) -> tuple[dict[str, list[str]], list[list[Any]], str]:
+    global _compact_sales_cache
+    if _sales_cache is not None and rows is _sales_cache:
+        if _compact_sales_cache is not None:
+            return _compact_sales_cache
+        with _sales_cache_lock:
+            if _compact_sales_cache is None:
+                _compact_sales_cache = _build_compact_sales_from_rows(rows)
+            return _compact_sales_cache
+    return _build_compact_sales_from_rows(rows)
+
+
 def read_sales() -> list[dict[str, Any]]:
     """Baca data sales langsung dari SQLite Database yang terindeks dan cepat."""
-    global _sales_cache
+    global _sales_cache, _compact_sales_cache
     with _sales_cache_lock:
         if _sales_cache is not None:
             return _sales_cache
@@ -590,6 +675,7 @@ def read_sales() -> list[dict[str, Any]]:
         rows = fetch_all_sales()
 
         _sales_cache = rows
+        _compact_sales_cache = _build_compact_sales_from_rows(rows)
         return rows
 
 
@@ -1470,23 +1556,9 @@ def build_dashboard(
         },
         "rows_read": len(rows),
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "compact_sales": [
-            [
-                r["year"],
-                r["date"],
-                r["hour"],
-                r["outlet"],
-                r["area"],
-                r["product"],
-                r["qty"],
-                r["net_sales"],
-                r.get("invoice", ""),
-                r.get("item_net_sales", 0.0),
-            ]
-            for r in rows
-        ]
-        if include_raw
-        else [],
+        "sales_dict": _get_compact_sales_payload(rows)[0] if include_raw else None,
+        "compact_sales": _get_compact_sales_payload(rows)[1] if include_raw else [],
+        "compact_sales_json": _get_compact_sales_payload(rows)[2] if include_raw else "[]",
         "compact_targets": (
             read_all_targets()
             if include_raw
@@ -2185,6 +2257,14 @@ def write_report(html: str) -> None:
     (REPORT_DIR / "sales_dashboard.html").write_text(html, encoding="utf-8")
 
 
+def _get_data_state_signature() -> tuple[int, int, int]:
+    """Menghasilkan signature instan (<0.02ms) dari state Lookup, Template, dan Cache Version."""
+    lk_mtime = int(LOOKUP_FILE.stat().st_mtime_ns) if LOOKUP_FILE.exists() else 0
+    tpl_path = BASE_DIR / "templates" / "index.html"
+    tpl_mtime = int(tpl_path.stat().st_mtime_ns) if tpl_path.exists() else 0
+    return (lk_mtime, tpl_mtime, _cache_version)
+
+
 @app.after_request
 def compress_large_response(response):
     """Reduce transfer size for the data-heavy legacy client without UI changes."""
@@ -2201,7 +2281,7 @@ def compress_large_response(response):
     payload = response.get_data()
     if len(payload) < 1024:
         return response
-    response.set_data(gzip.compress(payload, compresslevel=6))
+    response.set_data(gzip.compress(payload, compresslevel=1))
     response.headers["Content-Encoding"] = "gzip"
     response.headers["Vary"] = "Accept-Encoding"
     return response
@@ -2216,10 +2296,27 @@ def index():
     outlet = request.args.get("outlet") or request.args.get("outlets") or None
     area = request.args.get("area") or None
     jenis = request.args.get("jenis") or None
+
+    # Pastikan sinkronisasi awal sudah berjalan minimal 1x
+    rows = read_sales()
+    cache_key = (month, date, start_date, end_date, outlet, area, jenis, _get_data_state_signature())
+
+    with _index_cache_lock:
+        cached_entry = _index_response_cache.get(cache_key)
+
+    if cached_entry is not None:
+        cached_html, cached_gz = cached_entry
+        if "gzip" in request.headers.get("Accept-Encoding", "").lower():
+            resp = Response(cached_gz, mimetype="text/html")
+            resp.headers["Content-Encoding"] = "gzip"
+            resp.headers["Vary"] = "Accept-Encoding"
+            return resp
+        return cached_html
+
     html = render_template(
         "index.html",
         data=build_dashboard(
-            read_sales(),
+            rows,
             month,
             date,
             outlet,
@@ -2235,6 +2332,18 @@ def index():
         selected_jenis=jenis or "",
     )
     write_report(html)
+    gz_bytes = gzip.compress(html.encode("utf-8"), compresslevel=1)
+
+    with _index_cache_lock:
+        if len(_index_response_cache) >= 6:
+            _index_response_cache.clear()
+        _index_response_cache[cache_key] = (html, gz_bytes)
+
+    if "gzip" in request.headers.get("Accept-Encoding", "").lower():
+        resp = Response(gz_bytes, mimetype="text/html")
+        resp.headers["Content-Encoding"] = "gzip"
+        resp.headers["Vary"] = "Accept-Encoding"
+        return resp
     return html
 
 
@@ -2323,12 +2432,17 @@ def _allowed_file(filename: str) -> bool:
 
 def _invalidate_sales_cache() -> None:
     global _sales_cache, _sales_cache_signature, _sales_cache_mapping_signature
+    global _compact_sales_cache, _cache_version
     global _budget_cache, _budget_cache_signature
     global _lookup_cache, _lookup_cache_mtime
     with _sales_cache_lock:
         _sales_cache = None
+        _compact_sales_cache = None
         _sales_cache_signature = ()
         _sales_cache_mapping_signature = None
+    with _index_cache_lock:
+        _index_response_cache.clear()
+        _cache_version += 1
     with _budget_cache_lock:
         _budget_cache = None
         _budget_cache_signature = None
@@ -2418,23 +2532,24 @@ def upload_file():
     # Invalidate cache
     _invalidate_sales_cache()
 
-    # Re-render static report
-    try:
-        updated_rows = read_sales()
-        dashboard_data = build_dashboard(updated_rows)
-        with app.app_context():
-            write_report(
-                render_template(
-                    "index.html",
-                    data=dashboard_data,
-                    selected_month="",
-                    selected_date="",
-                    selected_outlet="",
-                    selected_area="",
+    # Re-render static report only when explicitly enabled
+    if os.environ.get("WRITE_STATIC_REPORT") == "1":
+        try:
+            updated_rows = read_sales()
+            dashboard_data = build_dashboard(updated_rows)
+            with app.app_context():
+                write_report(
+                    render_template(
+                        "index.html",
+                        data=dashboard_data,
+                        selected_month="",
+                        selected_date="",
+                        selected_outlet="",
+                        selected_area="",
+                    )
                 )
-            )
-    except Exception:
-        pass
+        except Exception:
+            pass
 
     msg_parts = [f"✅ {len(saved_files)} file berhasil disimpan:"]
     for s in saved_files:
@@ -2513,23 +2628,24 @@ def api_save_visitor():
         if not success:
             return jsonify({"ok": False, "error": "Gagal menyimpan ke file budget/database."}), 500
 
-        # Re-render static report
-        try:
-            updated_rows = read_sales()
-            dashboard_data = build_dashboard(updated_rows)
-            with app.app_context():
-                write_report(
-                    render_template(
-                        "index.html",
-                        data=dashboard_data,
-                        selected_month="",
-                        selected_date="",
-                        selected_outlet="",
-                        selected_area="",
+        # Re-render static report only when explicitly enabled
+        if os.environ.get("WRITE_STATIC_REPORT") == "1":
+            try:
+                updated_rows = read_sales()
+                dashboard_data = build_dashboard(updated_rows)
+                with app.app_context():
+                    write_report(
+                        render_template(
+                            "index.html",
+                            data=dashboard_data,
+                            selected_month="",
+                            selected_date="",
+                            selected_outlet="",
+                            selected_area="",
+                        )
                     )
-                )
-        except Exception:
-            pass
+            except Exception:
+                pass
 
         breakdown_info = []
         if indiv_bayar > 0:
@@ -2676,23 +2792,24 @@ def api_upload_visitor_excel():
 
         saved_count = save_visitors_actual_bulk(records)
 
-        # Re-render static report
-        try:
-            updated_rows = read_sales()
-            dashboard_data = build_dashboard(updated_rows)
-            with app.app_context():
-                write_report(
-                    render_template(
-                        "index.html",
-                        data=dashboard_data,
-                        selected_month="",
-                        selected_date="",
-                        selected_outlet="",
-                        selected_area="",
+        # Re-render static report only when explicitly enabled
+        if os.environ.get("WRITE_STATIC_REPORT") == "1":
+            try:
+                updated_rows = read_sales()
+                dashboard_data = build_dashboard(updated_rows)
+                with app.app_context():
+                    write_report(
+                        render_template(
+                            "index.html",
+                            data=dashboard_data,
+                            selected_month="",
+                            selected_date="",
+                            selected_outlet="",
+                            selected_area="",
+                        )
                     )
-                )
-        except Exception:
-            pass
+            except Exception:
+                pass
 
         min_date = min(r["date"] for r in records)
         max_date = max(r["date"] for r in records)
