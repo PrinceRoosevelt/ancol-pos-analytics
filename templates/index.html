@@ -6194,6 +6194,13 @@
       GLOBAL_ACTIVE_26_DM.add(RAW_SALES[i][1].substring(5));
     }
   }
+  const GLOBAL_ACTIVE_26_VIS_DM = new Set();
+  for (let i = 0; i < RAW_VISITORS.length; i++) {
+    const rv = RAW_VISITORS[i];
+    if (rv && rv.date && rv.date.substring(0, 4) === '2026' && (rv.visitors || 0) > 0) {
+      GLOBAL_ACTIVE_26_VIS_DM.add(rv.date.substring(5));
+    }
+  }
 
   const OUTLET_TO_VISITOR_MAP = {
     "SWIN Sea World Induk": "SeaWorld",
@@ -7608,7 +7615,8 @@
           units26: { Dufan: 0, SeaWorld: 0, Samudra: 0, Atlantis: 0 },
           units25: { Dufan: 0, SeaWorld: 0, Samudra: 0, Atlantis: 0 },
           units25Full: { Dufan: 0, SeaWorld: 0, Samudra: 0, Atlantis: 0 },
-          has26Sales: false
+          has26Sales: false,
+          has26Vis: false
         };
       }
       return map[key];
@@ -7976,21 +7984,19 @@
     let indiv26 = 0, rl26 = 0, ra26 = 0;
     let ib26 = 0, tb26 = 0;
     let matchedVisitorUnit = null;
-    if (isMultiOutletActive) {
-      const unitsFound = new Set();
+    const selectedVisitorUnits = new Set();
+    if (isMultiOutletActive && !isNoOutletSelected) {
       window.selectedOutlets.forEach(o => {
         const u = OUTLET_TO_VISITOR_MAP[o];
-        if (u) unitsFound.add(u);
+        if (u && u !== 'Beachpark') selectedVisitorUnits.add(u.toLowerCase());
       });
-      if (unitsFound.size === 1) {
-        const singleUnit = Array.from(unitsFound)[0];
-        if (singleUnit !== 'Beachpark') {
-          matchedVisitorUnit = singleUnit;
-        }
+      if (selectedVisitorUnits.size === 1) {
+        matchedVisitorUnit = Array.from(selectedVisitorUnits)[0];
       }
     } else if (outlet && outlet !== '__NONE__') {
       matchedVisitorUnit = OUTLET_TO_VISITOR_MAP[outlet] || null;
       if (matchedVisitorUnit === 'Beachpark') matchedVisitorUnit = null;
+      if (matchedVisitorUnit) selectedVisitorUnits.add(matchedVisitorUnit.toLowerCase());
     }
 
     const unitVisitors = {
@@ -8005,9 +8011,21 @@
     const vis26ByDay = {};
     const vis25ByDay = {};
 
-    // Strict Apples-to-Apples Day Matching Set from active 2026 sales dates
+    // Strict Apples-to-Apples Day Matching Set for Visitors (prioritizes actual 2026 visitor dates)
     const active26DatesDm = new Set();
     distinctDates26.forEach(d => active26DatesDm.add(d.substring(5)));
+    const active26VisDatesDm = new Set();
+    GLOBAL_ACTIVE_26_VIS_DM.forEach(dm => {
+      if (startDate || endDate) {
+        if (startDm && dm < startDm) return;
+        if (endDm && dm > endDm) return;
+      } else if (selMonth) {
+        if (dm.substring(0, 2) !== selMonth) return;
+      }
+      if (currentFilter.weekendOnly && !isWeekendDate('2026-' + dm)) return;
+      active26VisDatesDm.add(dm);
+    });
+    const visMatchDmSet = active26VisDatesDm.size > 0 ? active26VisDatesDm : active26DatesDm;
 
     for (let i = 0; i < RAW_VISITORS.length; i++) {
       const v = RAW_VISITORS[i];
@@ -8035,13 +8053,15 @@
           unitVisitors[vUnit].ra26 += (v.visitors_rombongan_agen || 0);
         }
       } else if (vYear === '2025') {
-        if (active26DatesDm.size === 0 || active26DatesDm.has(vDm)) {
+        if (visMatchDmSet.size === 0 || visMatchDmSet.has(vDm)) {
           if (unitVisitors[vUnit]) unitVisitors[vUnit].v25 += v.visitors;
         }
       }
 
-      if (matchedVisitorUnit) {
-        if (v.unit.toLowerCase() !== matchedVisitorUnit.toLowerCase()) continue;
+      // Filter by Outlet / Multi-Outlet / Area for Main Visitor KPI & Matrix Table
+      if (isNoOutletSelected) continue;
+      if (isMultiOutletActive || (outlet && outlet !== '__NONE__')) {
+        if (selectedVisitorUnits.size === 0 || !selectedVisitorUnits.has(v.unit.toLowerCase())) continue;
       } else if (area) {
         if (v.area.toLowerCase() !== area.toLowerCase()) continue;
       }
@@ -8064,6 +8084,7 @@
         mmV26.rl26 += (v.visitors_rombongan_langsung || 0);
         mmV26.ra26 += (v.visitors_rombongan_agen || 0);
         if (mmV26.units26[v.unit] !== undefined) mmV26.units26[v.unit] += v.visitors;
+        if (v.visitors > 0) mmV26.has26Vis = true;
 
         const mdV26 = ensureMatrixEntry(matrixDayData, vDm);
         mdV26.v26 += v.visitors;
@@ -8072,6 +8093,7 @@
         mdV26.rl26 += (v.visitors_rombongan_langsung || 0);
         mdV26.ra26 += (v.visitors_rombongan_agen || 0);
         if (mdV26.units26[v.unit] !== undefined) mdV26.units26[v.unit] += v.visitors;
+        if (v.visitors > 0) mdV26.has26Vis = true;
       } else if (vYear === '2025') {
         const vM = v.date.substring(5, 7);
         const mmV25 = ensureMatrixEntry(matrixMonthData, vM);
@@ -8090,8 +8112,8 @@
         mdV25.ra25Full += (v.visitors_rombongan_agen || 0);
         if (mdV25.units25Full[v.unit] !== undefined) mdV25.units25Full[v.unit] += v.visitors;
 
-        // Strict Apples-to-Apples day matching
-        if (active26DatesDm.size === 0 || active26DatesDm.has(vDm)) {
+        // Strict Apples-to-Apples day matching for Visitor
+        if (visMatchDmSet.size === 0 || visMatchDmSet.has(vDm)) {
           totalVisitors25 += v.visitors;
           mmV25.v25 += v.visitors;
           mmV25.ib25 += (v.visitors_individu_bayar || 0);
@@ -9053,23 +9075,25 @@
           ib25Full: 0, tb25Full: 0, rl25Full: 0, ra25Full: 0,
           units26: {}, units25: {}, units25Full: {}
         };
-        const has26 = (mm.s26 > 0 || mm.v26 > 0 || mm.has26Sales);
+        const has26Sales = Boolean(mm.s26 > 0 || mm.has26Sales);
+        const has26Vis = Boolean(mm.v26 > 0 || mm.has26Vis);
+        const has26 = (has26Sales || has26Vis);
         const rowV26 = mm.v26 || 0;
         const rowS26 = mm.s26 || 0;
         const rowTx26 = mm.tx26 ? mm.tx26.size : 0;
 
-        const rowV25 = has26 ? (mm.v25 || 0) : (mm.v25Full || 0);
-        const rowS25 = has26 ? (mm.s25 || 0) : (mm.s25Full || 0);
-        const rowTx25 = has26 ? (mm.tx25 ? mm.tx25.size : 0) : (mm.tx25Full ? mm.tx25Full.size : 0);
+        const rowV25 = has26Vis ? (mm.v25 || 0) : (mm.v25Full || 0);
+        const rowS25 = has26Sales ? (mm.s25 || 0) : (mm.s25Full || 0);
+        const rowTx25 = has26Sales ? (mm.tx25 ? mm.tx25.size : 0) : (mm.tx25Full ? mm.tx25Full.size : 0);
 
-        const rowIb25 = has26 ? (mm.ib25 || 0) : (mm.ib25Full || 0);
-        const rowTb25 = has26 ? (mm.tb25 || 0) : (mm.tb25Full || 0);
-        const rowRl25 = has26 ? (mm.rl25 || 0) : (mm.rl25Full || 0);
-        const rowRa25 = has26 ? (mm.ra25 || 0) : (mm.ra25Full || 0);
-        const rowUnits25 = has26 ? (mm.units25 || {}) : (mm.units25Full || {});
+        const rowIb25 = has26Vis ? (mm.ib25 || 0) : (mm.ib25Full || 0);
+        const rowTb25 = has26Vis ? (mm.tb25 || 0) : (mm.tb25Full || 0);
+        const rowRl25 = has26Vis ? (mm.rl25 || 0) : (mm.rl25Full || 0);
+        const rowRa25 = has26Vis ? (mm.ra25 || 0) : (mm.ra25Full || 0);
+        const rowUnits25 = has26Vis ? (mm.units25 || {}) : (mm.units25Full || {});
 
-        const gVis = (has26 && rowV25 > 0 && rowV26 > 0) ? ((rowV26 - rowV25) / rowV25 * 100) : null;
-        const gRev = (has26 && rowS25 > 0 && rowS26 > 0) ? ((rowS26 - rowS25) / rowS25 * 100) : null;
+        const gVis = (has26Vis && rowV25 > 0 && rowV26 > 0) ? ((rowV26 - rowV25) / rowV25 * 100) : null;
+        const gRev = (has26Sales && rowS25 > 0 && rowS26 > 0) ? ((rowS26 - rowS25) / rowS25 * 100) : null;
 
         const hols26 = getHolidaysForMonth('2026', mKey);
         const hols25 = getHolidaysForMonth('2025', mKey);
@@ -9082,6 +9106,8 @@
           label: `${mFullNames[m]} 2026`,
           shortLabel: `${mShortNames[m]}-26`,
           has26,
+          has26Sales,
+          has26Vis,
           isFutureRef: !has26 && (rowS25 > 0 || rowV25 > 0),
           isWeekend: false,
           hasHoliday26: hols26.length > 0,
@@ -9129,24 +9155,26 @@
         };
         const date26 = '2026-' + dayKey;
         const date25 = '2025-' + dayKey;
-        const has26 = !periodHas26Data ? false : (GLOBAL_ACTIVE_26_DM.has(dayKey) || md.s26 > 0 || md.v26 > 0);
+        const has26Sales = !periodHas26Data ? false : Boolean(GLOBAL_ACTIVE_26_DM.has(dayKey) || md.s26 > 0 || md.has26Sales);
+        const has26Vis = !periodHas26Data ? false : Boolean(GLOBAL_ACTIVE_26_VIS_DM.has(dayKey) || md.v26 > 0 || md.has26Vis);
+        const has26 = (has26Sales || has26Vis);
 
         const rowV26 = md.v26 || 0;
         const rowS26 = md.s26 || 0;
         const rowTx26 = md.tx26 ? md.tx26.size : 0;
 
-        const rowV25 = has26 ? (md.v25 || 0) : (md.v25Full || 0);
-        const rowS25 = has26 ? (md.s25 || 0) : (md.s25Full || 0);
-        const rowTx25 = has26 ? (md.tx25 ? md.tx25.size : 0) : (md.tx25Full ? md.tx25Full.size : 0);
+        const rowV25 = has26Vis ? (md.v25 || 0) : (md.v25Full || 0);
+        const rowS25 = has26Sales ? (md.s25 || 0) : (md.s25Full || 0);
+        const rowTx25 = has26Sales ? (md.tx25 ? md.tx25.size : 0) : (md.tx25Full ? md.tx25Full.size : 0);
 
-        const rowIb25 = has26 ? (md.ib25 || 0) : (md.ib25Full || 0);
-        const rowTb25 = has26 ? (md.tb25 || 0) : (md.tb25Full || 0);
-        const rowRl25 = has26 ? (md.rl25 || 0) : (md.rl25Full || 0);
-        const rowRa25 = has26 ? (md.ra25 || 0) : (md.ra25Full || 0);
-        const rowUnits25 = has26 ? (md.units25 || {}) : (md.units25Full || {});
+        const rowIb25 = has26Vis ? (md.ib25 || 0) : (md.ib25Full || 0);
+        const rowTb25 = has26Vis ? (md.tb25 || 0) : (md.tb25Full || 0);
+        const rowRl25 = has26Vis ? (md.rl25 || 0) : (md.rl25Full || 0);
+        const rowRa25 = has26Vis ? (md.ra25 || 0) : (md.ra25Full || 0);
+        const rowUnits25 = has26Vis ? (md.units25 || {}) : (md.units25Full || {});
 
-        const gVis = (has26 && rowV25 > 0 && rowV26 > 0) ? ((rowV26 - rowV25) / rowV25 * 100) : null;
-        const gRev = (has26 && rowS25 > 0 && rowS26 > 0) ? ((rowS26 - rowS25) / rowS25 * 100) : null;
+        const gVis = (has26Vis && rowV25 > 0 && rowV26 > 0) ? ((rowV26 - rowV25) / rowV25 * 100) : null;
+        const gRev = (has26Sales && rowS25 > 0 && rowS26 > 0) ? ((rowS26 - rowS25) / rowS25 * 100) : null;
 
         const hol26 = INDONESIA_HOLIDAYS[date26] || '';
         const hol25 = INDONESIA_HOLIDAYS[date25] || '';
@@ -9165,6 +9193,8 @@
           dayName25: getDayNameFromDateStr(date25),
           shortDay25: getShortDayName(date25),
           has26,
+          has26Sales,
+          has26Vis,
           isFutureRef: !has26 && (rowS25 > 0 || rowV25 > 0),
           isWeekend: isWkd26,
           isWeekend25: isWkd25,
@@ -9313,15 +9343,22 @@
       filteredRows = declineRows;
     }
 
-    // Sort rows
+    // Sort rows (Keep null / future unrun rows always at the bottom in both ▲ and ▼ modes)
     const col = periodMatrixState.sortCol;
     const dir = periodMatrixState.sortAsc ? 1 : -1;
+    const st = periodMatrixState.summaryTotals || {};
     const sortedRows = [...filteredRows].sort((a, b) => {
       if (col === 'period') {
         return a.sortKey.localeCompare(b.sortKey) * dir;
       }
-      const valA = a[col] !== null && a[col] !== undefined ? a[col] : -999999999;
-      const valB = b[col] !== null && b[col] !== undefined ? b[col] : -999999999;
+      const is26Col = (col === 'v26' || col === 's26' || col === 'gVis' || col === 'gRev');
+      const isNullA = (a[col] === null || a[col] === undefined || (st.periodHas26Data && is26Col && ((col === 'v26' || col === 'gVis') ? !a.has26Vis : !a.has26Sales)));
+      const isNullB = (b[col] === null || b[col] === undefined || (st.periodHas26Data && is26Col && ((col === 'v26' || col === 'gVis') ? !b.has26Vis : !b.has26Sales)));
+      if (isNullA && isNullB) return a.sortKey.localeCompare(b.sortKey);
+      if (isNullA) return 1;
+      if (isNullB) return -1;
+      const valA = a[col];
+      const valB = b[col];
       if (valA === valB) return a.sortKey.localeCompare(b.sortKey);
       return (valA - valB) * dir;
     });
@@ -9352,6 +9389,9 @@
         }
       } else {
         periodBadges += `<span class="matrix-day-badge ${r.isWeekend ? 'weekend' : ''}">${r.shortDay26}</span>`;
+        if (r.isFutureRef) {
+          periodBadges += `<span class="matrix-day-badge" title="Tanggal belum berjalan di 2026 (menampilkan referensi historis 2025)">Ref '25</span>`;
+        }
         if (r.hasHoliday26) {
           periodBadges += `<span class="matrix-holiday-badge">🔴 Libur '26</span>`;
         }
@@ -9367,12 +9407,22 @@
       const drillIcon = r.isMonthly ? `<span style="font-size:10px; opacity:0.55; margin-left:4px;">🔍</span>` : '';
 
       // 2026 Visitor & Revenue formatting
-      const v26Display = r.has26 ? (r.v26 > 0 ? formatNum(r.v26) : '-') : (r.v26 > 0 ? formatNum(r.v26) : '<span style="color:var(--text-muted); font-weight:500;">-</span>');
-      const s26Display = r.has26 ? (r.s26 > 0 ? formatRp(r.s26) : '-') : (r.s26 > 0 ? formatRp(r.s26) : '<span style="color:var(--text-muted); font-weight:500;">Belum Berjalan</span>');
+      const v26Display = r.has26Vis
+        ? (r.v26 > 0 ? formatNum(r.v26) : '-')
+        : (r.has26Sales ? '<span style="color:var(--text-muted); font-size:11px; font-weight:500;" title="Data pengunjung tanggal ini belum diinput">Belum Input</span>' : '<span style="color:var(--text-muted); font-weight:500;">-</span>');
+      const s26Display = r.has26Sales
+        ? (r.s26 > 0 ? formatRp(r.s26) : '-')
+        : '<span style="color:var(--text-muted); font-weight:500;">Belum Berjalan</span>';
 
-      // 2025 Visitor & Revenue formatting
-      const v25Display = r.v25 > 0 ? formatNum(r.v25) : '-';
-      const s25Display = r.s25 > 0 ? formatRp(r.s25) : '-';
+      // 2025 Visitor & Revenue formatting (with subtle Ref tag if 2026 is not yet active for that metric)
+      const v25RefBadge = (st.periodHas26Data && !r.has26Vis && r.v25 > 0)
+        ? ` <span style="font-size:9.5px; color:var(--text-muted); font-weight:600;" title="Angka Referensi 2025 (tidak dihitung dalam Total Apples-to-Apples karena 2026 belum diinput)">(Ref)</span>`
+        : '';
+      const s25RefBadge = (st.periodHas26Data && !r.has26Sales && r.s25 > 0)
+        ? ` <span style="font-size:9.5px; color:var(--text-muted); font-weight:600;" title="Angka Referensi 2025 (tidak dihitung dalam Total Apples-to-Apples karena 2026 belum berjalan)">(Ref)</span>`
+        : '';
+      const v25Display = r.v25 > 0 ? `${formatNum(r.v25)}${v25RefBadge}` : '-';
+      const s25Display = r.s25 > 0 ? `${formatRp(r.s25)}${s25RefBadge}` : '-';
 
       // Growth Visitor
       let gVisClass = 'td-growth-neutral text-center matrix-hover-cell';
@@ -9423,10 +9473,15 @@
 
     tbody.innerHTML = html;
 
-    // Render Sticky Footer Total
-    const st = periodMatrixState.summaryTotals || {};
+    // Render Sticky Footer Total (with 0-Diff Apples-to-Apples row + Full Horizon 2025 reference row when applicable)
     let footV26 = 0, footS26 = 0, footV25 = 0, footS25 = 0, footGVis = null, footGRev = null;
+    let fullHorizonV25 = 0, fullHorizonS25 = 0;
     let footLabel = '';
+
+    sortedRows.forEach(r => {
+      fullHorizonV25 += (r.v25Full || r.v25 || 0);
+      fullHorizonS25 += (r.s25Full || r.s25 || 0);
+    });
 
     if (periodMatrixState.rowFilter === 'all') {
       footV26 = st.v26 || 0;
@@ -9435,13 +9490,15 @@
       footS25 = st.s25 || 0;
       footGVis = st.gVis !== undefined ? st.gVis : null;
       footGRev = st.gRev !== undefined ? st.gRev : null;
-      footLabel = st.periodHas26Data ? 'TOTAL PERIODE (APPLES-TO-APPLES)' : 'TOTAL HISTORI 2025';
+      footLabel = st.periodHas26Data ? 'TOTAL PERIODE BERJALAN (APPLES-TO-APPLES)' : 'TOTAL HISTORI 2025';
     } else {
       sortedRows.forEach(r => {
-        if (r.has26 || !st.periodHas26Data) {
+        if (r.has26Vis || !st.periodHas26Data) {
           footV26 += r.v26 || 0;
-          footS26 += r.s26 || 0;
           footV25 += r.v25 || 0;
+        }
+        if (r.has26Sales || !st.periodHas26Data) {
+          footS26 += r.s26 || 0;
           footS25 += r.s25 || 0;
         }
       });
@@ -9457,6 +9514,19 @@
     const fVisStr = footGVis !== null ? `${footGVis >= 0 ? '▲ +' : '▼ '}${footGVis.toFixed(1)}%` : '-';
     const fRevStr = footGRev !== null ? `${footGRev >= 0 ? '▲ +' : '▼ '}${footGRev.toFixed(1)}%` : '-';
 
+    const hasExtraRef25 = st.periodHas26Data && periodMatrixState.rowFilter === 'all' && (fullHorizonV25 > footV25 || Math.round(fullHorizonS25) > Math.round(footS25));
+    const fullHorizonRowHtml = hasExtraRef25 ? `
+      <tr style="font-size:11px; opacity:0.88; background:var(--bg-subtle, #f1f5f9);">
+        <td style="font-weight:700; color:var(--text-muted);">TOTAL PENUH HORIZON 2025 (TERMASUK BARIS REF '25)</td>
+        <td class="text-right" style="color:var(--text-muted);">-</td>
+        <td class="text-right" style="color:var(--text-muted);">-</td>
+        <td class="text-right" style="font-weight:700; color:var(--brand);">${fullHorizonV25 > 0 ? formatNum(fullHorizonV25) : '-'}</td>
+        <td class="text-right" style="font-weight:700; color:var(--brand);">${fullHorizonS25 > 0 ? formatRp(fullHorizonS25) : '-'}</td>
+        <td class="text-center" style="color:var(--text-muted);">Full '25</td>
+        <td class="text-center" style="color:var(--text-muted);">Full '25</td>
+      </tr>
+    ` : '';
+
     tfoot.innerHTML = `
       <tr>
         <td>${footLabel}</td>
@@ -9467,6 +9537,7 @@
         <td class="text-center" style="color:${fVisColor};">${fVisStr}</td>
         <td class="text-center" style="color:${fRevColor};">${fRevStr}</td>
       </tr>
+      ${fullHorizonRowHtml}
     `;
   }
 
@@ -9548,8 +9619,8 @@
           unitRowsHtml += `</div>`;
         }
 
-        const fullMonthNote = (r.isMonthly && !is26 && r.has26 && r.v25Full > r.v25)
-          ? `<div style="margin-top:5px; font-size:10.5px; color:#cbd5e1; border-top:1px dashed rgba(255,255,255,0.15); padding-top:4px;">📌 Full Bulan ${r.shortLabel.replace('-26', '-25')}: <strong>${formatNum(r.v25Full)} org</strong></div>`
+        const fullMonthNote = (r.isMonthly && !is26 && r.has26Vis && r.v25Full > r.v25)
+          ? `<div style="margin-top:5px; font-size:10.5px; color:#cbd5e1; border-top:1px dashed rgba(255,255,255,0.15); padding-top:4px;">📌 Full Bulan ${r.shortLabel.replace('-26', '-25')}: <strong>${formatNum(r.v25Full)} org</strong> (Tabel menampilkan Apples-to-Apples sesuai tanggal aktif Visitor 2026)</div>`
           : '';
 
         inner = `
@@ -9581,6 +9652,7 @@
       const atv26 = r.tx26 > 0 ? (r.s26 / r.tx26) : 0;
       const cap26 = r.v26 > 0 ? (r.tx26 / r.v26 * 100) : 0;
       const diffRev = r.s26 - r.s25;
+      const hasProductFilter = Boolean(currentFilter.supplier || currentFilter.category || currentFilter.modelBisnis);
 
       let diagText = '';
       if (r.gRev !== null && r.gVis !== null) {
@@ -9595,15 +9667,18 @@
         }
       }
 
-      const fullRevNote = (r.isMonthly && r.has26 && r.s25Full > r.s25)
+      const fullRevNote = (r.isMonthly && r.has26Sales && r.s25Full > r.s25)
         ? `<div style="margin-top:4px; font-size:10.5px; color:#cbd5e1;">📌 Full Bulan ${r.shortLabel.replace('-26', '-25')}: <strong>${formatRp(r.s25Full)}</strong></div>`
+        : '';
+      const productFilterNote = hasProductFilter
+        ? `<div style="margin-top:4px; font-size:10px; color:#fcd34d;">ℹ️ Filter Supplier/Kategori/Model aktif: Revenue adalah khusus filter terpilih, sedangkan Visitor adalah total pengunjung wahana.</div>`
         : '';
 
       inner = `
         <div class="tooltip-title">💰 Diagnostik Revenue &amp; SPH — ${r.label}</div>
         <div class="tooltip-row"><span class="tooltip-label">Revenue 2026:</span> <span class="tooltip-val" style="color:#34d399;">${r.s26 > 0 ? formatRp(r.s26) : '-'}</span></div>
         <div class="tooltip-row"><span class="tooltip-label">Revenue 2025:</span> <span class="tooltip-val" style="color:#93c5fd;">${r.s25 > 0 ? formatRp(r.s25) : '-'}</span></div>
-        ${r.has26 && r.s25 > 0 ? `<div class="tooltip-row"><span class="tooltip-label">Selisih Rupiah:</span> <span class="tooltip-val" style="color:${diffRev >= 0 ? '#34d399' : '#f87171'};">${diffRev >= 0 ? '+' : '-'}${formatRp(Math.abs(diffRev))}</span></div>` : ''}
+        ${r.has26Sales && r.s25 > 0 ? `<div class="tooltip-row"><span class="tooltip-label">Selisih Rupiah:</span> <span class="tooltip-val" style="color:${diffRev >= 0 ? '#34d399' : '#f87171'};">${diffRev >= 0 ? '+' : '-'}${formatRp(Math.abs(diffRev))}</span></div>` : ''}
         <div style="margin-top:6px; padding-top:6px; border-top:1px dashed rgba(255,255,255,0.16);">
           <div class="tooltip-row"><span class="tooltip-label">SPH 2026 vs 2025:</span> <span class="tooltip-val">${sph26 > 0 ? formatRp(sph26) : '-'} vs ${sph25 > 0 ? formatRp(sph25) : '-'} ${gSph !== null ? `(${gSph >= 0 ? '+' : ''}${gSph.toFixed(1)}%)` : ''}</span></div>
           <div class="tooltip-row"><span class="tooltip-label">Struk Transaksi:</span> <span class="tooltip-val">${formatNum(r.tx26)} struk ('26) vs ${formatNum(r.tx25)} ('25)</span></div>
@@ -9611,6 +9686,7 @@
         </div>
         ${diagText ? `<div style="margin-top:6px; padding-top:6px; border-top:1px dashed rgba(255,255,255,0.16); font-size:11px; color:#e2e8f0;">${diagText}</div>` : ''}
         ${fullRevNote}
+        ${productFilterNote}
       `;
     }
 
@@ -9717,14 +9793,24 @@
 
   function drillDownPeriodMatrixMonth(monthVal) {
     const monthSelect = document.getElementById('filterMonth');
+    const startInput = document.getElementById('filterStartDate');
+    const endInput = document.getElementById('filterEndDate');
+    const displayLabel = document.getElementById('dateRangeDisplayLabel');
+    const clearBtn = document.getElementById('clearDateBtn');
     if (!monthSelect) return;
     hidePeriodMatrixTooltip();
+    if (startInput) startInput.value = '';
+    if (endInput) endInput.value = '';
+    if (displayLabel) displayLabel.textContent = 'Semua Tanggal (YTD)';
+    if (clearBtn) clearBtn.style.display = 'none';
+    calTempStartDate = '';
+    calTempEndDate = '';
     monthSelect.value = monthVal;
     periodMatrixState.rowFilter = 'all';
     periodMatrixState.sortCol = 'period';
     periodMatrixState.sortAsc = true;
     setPeriodMatrixRowFilter('all');
-    onMonthChange();
+    applyFilters();
     if (typeof showFilterToast === 'function') {
       const mLabel = MONTH_NAMES[monthVal] || monthVal;
       showFilterToast(`📅 Membedah rincian tanggal bulan ${mLabel}`);
@@ -9749,7 +9835,7 @@
     periodMatrixState.sortCol = 'period';
     periodMatrixState.sortAsc = true;
     setPeriodMatrixRowFilter('all');
-    onFilterChange();
+    applyFilters();
     if (typeof showFilterToast === 'function') {
       showFilterToast(`↩ Kembali ke tampilan 12 Bulan (YTD)`);
     }
@@ -11142,8 +11228,36 @@
     const wsProd = XLSX.utils.aoa_to_sheet(prodData);
     XLSX.utils.book_append_sheet(wb, wsProd, "Top Produk");
 
-    // 5. Sheet: Tren Penjualan Harian
-    if (d.daily_chart && d.daily_chart.length) {
+    // 5. Sheet: Tren Penjualan & Pengunjung (Matriks Periodik 2026 vs 2025)
+    if (typeof periodMatrixState !== 'undefined' && periodMatrixState.rows && periodMatrixState.rows.length) {
+      const dailyData = [
+        ["Periode / Tanggal", "Visitor 2026", "Net Sales 2026", "Visitor 2025 (Matched)", "Visitor 2025 (Full)", "Net Sales 2025 (Matched)", "Net Sales 2025 (Full)", "Growth Visitor (%)", "Growth Sales (%)", "Selisih Omset (+/-)", "SPH 2026 (Rp/Org)", "SPH 2025 (Rp/Org)", "Status Hari / Libur"]
+      ];
+      periodMatrixState.rows.forEach(r => {
+        const v26 = r.vis26_active ? r.vis26 : "-";
+        const s26 = r.rev26_active ? r.rev26 : "-";
+        const v25Match = r.vis25_matched || 0;
+        const v25Full = r.vis25_full || 0;
+        const s25Match = r.rev25_matched || 0;
+        const s25Full = r.rev25_full || 0;
+        const gwVis = r.visGrowth !== null && r.visGrowth !== undefined ? (r.visGrowth >= 0 ? '+' : '') + r.visGrowth.toFixed(1) + '%' : '-';
+        const gwRev = r.revGrowth !== null && r.revGrowth !== undefined ? (r.revGrowth >= 0 ? '+' : '') + r.revGrowth.toFixed(1) + '%' : '-';
+        const diffRev = r.rev26_active ? (r.rev26 - s25Match) : '-';
+        const sph26 = r.sph26 !== null && r.sph26 !== undefined ? Math.round(r.sph26) : '-';
+        const sph25 = r.sph25 !== null && r.sph25 !== undefined ? Math.round(r.sph25) : '-';
+        const notes = [];
+        if (r.dayName) notes.push(r.dayName);
+        if (r.isWeekend) notes.push("Weekend");
+        if (r.holiday26) notes.push("Libur '26: " + r.holiday26);
+        if (r.holiday25) notes.push("Libur '25: " + r.holiday25);
+        if (r.holidaysCount26) notes.push(r.holidaysCount26 + " Hari Libur");
+        dailyData.push([
+          r.label, v26, s26, v25Match, v25Full, s25Match, s25Full, gwVis, gwRev, diffRev, sph26, sph25, notes.join(" | ") || "-"
+        ]);
+      });
+      const wsDaily = XLSX.utils.aoa_to_sheet(dailyData);
+      XLSX.utils.book_append_sheet(wb, wsDaily, "TrenPenjualan&Visitor");
+    } else if (d.daily_chart && d.daily_chart.length) {
       const dailyData = [
         ["Periode / Tanggal", "Net Sales 2026", "Net Sales 2025", "Pertumbuhan YoY (%)", "Selisih Omset (+/-)"]
       ];

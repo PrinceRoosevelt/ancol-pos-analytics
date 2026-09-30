@@ -661,6 +661,14 @@ def compute_unit_benchmarks(
     u_tb_26: dict[str, int] = defaultdict(int)
     u_rl_26: dict[str, int] = defaultdict(int)
     u_ra_26: dict[str, int] = defaultdict(int)
+    vis_active_26_dm = {
+        v["date"][5:]
+        for v in visitors
+        if v["date"][:4] == "2026"
+        and v.get("visitors", 0) > 0
+        and (not current_dates or v["date"] in current_dates)
+    }
+    vis_comp_dm = vis_active_26_dm if vis_active_26_dm else comparison_day_months
     for v in visitors:
         u = v["unit"]
         v_year = v["date"][:4]
@@ -673,7 +681,7 @@ def compute_unit_benchmarks(
                 u_rl_26[u] += v.get("visitors_rombongan_langsung", 0)
                 u_ra_26[u] += v.get("visitors_rombongan_agen", 0)
         elif v_year == "2025":
-            if not comparison_day_months or v_dm in comparison_day_months:
+            if not vis_comp_dm or v_dm in vis_comp_dm:
                 u_vis_25[u] += v["visitors"]
 
     res = {}
@@ -1210,8 +1218,8 @@ def build_dashboard(
     vis_25_by_day: dict[str, int] = {}
 
     matched_visitor_unit = None
+    detected_units: set[str] = set()
     if outlets_set:
-        detected_units = set()
         for o_item in outlets_set:
             u_found = OUTLET_TO_VISITOR_UNIT.get(o_item)
             if not u_found:
@@ -1223,12 +1231,14 @@ def build_dashboard(
                     u_found = "Samudra"
                 elif any(k in o_item.upper() for k in ["ATLANTIS", "AWIN", "AWKL", "AWA"]):
                     u_found = "Atlantis"
-            if u_found:
+            if u_found and u_found.casefold() != "beachpark":
                 detected_units.add(u_found)
         if len(detected_units) == 1:
             matched_visitor_unit = next(iter(detected_units))
     elif outlet and outlet in OUTLET_TO_VISITOR_UNIT:
         matched_visitor_unit = OUTLET_TO_VISITOR_UNIT[outlet]
+        if matched_visitor_unit and matched_visitor_unit.casefold() == "beachpark":
+            matched_visitor_unit = None
     elif outlet and "SEA WORLD" in outlet.upper():
         matched_visitor_unit = "SeaWorld"
     elif outlet and "DUFAN" in outlet.upper():
@@ -1238,7 +1248,7 @@ def build_dashboard(
     elif outlet and ("ATLANTIS" in outlet.upper() or "AWIN" in outlet.upper() or "AWKL" in outlet.upper() or "AWA" in outlet.upper()):
         matched_visitor_unit = "Atlantis"
 
-    if not matched_visitor_unit and area:
+    if not matched_visitor_unit and not outlets_set and area:
         if area.upper() in ["ATLANTIS"]:
             matched_visitor_unit = "Atlantis"
         elif area.upper() in ["SAMUDRA"]:
@@ -1247,6 +1257,25 @@ def build_dashboard(
             matched_visitor_unit = "SeaWorld"
         elif area.upper() in ["DUFAN"]:
             matched_visitor_unit = "Dufan"
+
+    detected_units_cf = {du.casefold() for du in detected_units}
+    vis_active_26_dm: set[str] = set()
+    for v in all_raw_visitors:
+        if v["date"][:4] != "2026" or v.get("visitors", 0) <= 0:
+            continue
+        v_dm = v["date"][5:]
+        if start_date or end_date:
+            if start_dm and v_dm < start_dm:
+                continue
+            if end_dm and v_dm > end_dm:
+                continue
+        elif month and v["month"][-2:] != str(month)[-2:]:
+            continue
+        if date and v["date"] != date and v_dm != str(date)[5:]:
+            continue
+        vis_active_26_dm.add(v_dm)
+
+    vis_comparison_day_months = vis_active_26_dm if vis_active_26_dm else comparison_day_months
 
     for v in all_raw_visitors:
         v_date = v["date"]
@@ -1264,9 +1293,15 @@ def build_dashboard(
         if date and v_date != date and v_dm != str(date)[5:]:
             continue
 
-        if matched_visitor_unit:
+        if outlets_set:
+            if not detected_units_cf or v["unit"].casefold() not in detected_units_cf:
+                continue
+        elif matched_visitor_unit:
             if v["unit"].casefold() != matched_visitor_unit.casefold():
                 continue
+        elif outlet:
+            # Outlet publik (misal Online Shop / Ombak Laut / Symphony) tidak punya gate wahana spesifik
+            continue
         elif area:
             if v["area"].casefold() != area.casefold():
                 continue
@@ -1281,7 +1316,7 @@ def build_dashboard(
             vis_26_by_month[v_month] = vis_26_by_month.get(v_month, 0) + v["visitors"]
             vis_26_by_day[v_dm] = vis_26_by_day.get(v_dm, 0) + v["visitors"]
         elif v_year == "2025":
-            if not comparison_day_months or v_dm in comparison_day_months:
+            if not vis_comparison_day_months or v_dm in vis_comparison_day_months:
                 total_visitors_2025 += v["visitors"]
             vis_25_by_month[v_month] = vis_25_by_month.get(v_month, 0) + v["visitors"]
             vis_25_by_day[v_dm] = vis_25_by_day.get(v_dm, 0) + v["visitors"]
