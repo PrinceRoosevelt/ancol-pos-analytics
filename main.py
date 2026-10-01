@@ -128,6 +128,66 @@ WEEKDAY_NAMES = {
     6: "Minggu",
 }
 
+INDONESIA_HOLIDAYS = {
+    # 2025
+    "2025-01-01": "Tahun Baru 2025 Masehi",
+    "2025-01-27": "Isra Mi'raj Nabi Muhammad SAW",
+    "2025-01-28": "Cuti Bersama Tahun Baru Imlek 2576",
+    "2025-01-29": "Tahun Baru Imlek 2576 Kongzili",
+    "2025-03-28": "Cuti Bersama Hari Suci Nyepi",
+    "2025-03-29": "Hari Suci Nyepi (Tahun Baru Saka 1947)",
+    "2025-03-31": "Hari Raya Idul Fitri 1446 H (Hari ke-1)",
+    "2025-04-01": "Hari Raya Idul Fitri 1446 H (Hari ke-2)",
+    "2025-04-02": "Cuti Bersama Idul Fitri 1446 H",
+    "2025-04-03": "Cuti Bersama Idul Fitri 1446 H",
+    "2025-04-04": "Cuti Bersama Idul Fitri 1446 H",
+    "2025-04-07": "Cuti Bersama Idul Fitri 1446 H",
+    "2025-04-18": "Wafat Yesus Kristus (Jumat Agung)",
+    "2025-04-20": "Kebangkitan Yesus Kristus (Paskah)",
+    "2025-05-01": "Hari Buruh Internasional",
+    "2025-05-12": "Hari Raya Waisak 2569 BE",
+    "2025-05-13": "Cuti Bersama Hari Raya Waisak",
+    "2025-05-29": "Kenaikan Yesus Kristus",
+    "2025-05-30": "Cuti Bersama Kenaikan Yesus Kristus",
+    "2025-06-01": "Hari Lahir Pancasila",
+    "2025-06-06": "Hari Raya Idul Adha 1446 H",
+    "2025-06-07": "Libur Akhir Pekan Idul Adha 1446 H",
+    "2025-06-09": "Cuti Bersama Idul Adha 1446 H",
+    "2025-06-27": "Tahun Baru Islam 1447 H",
+    "2025-08-17": "Proklamasi Kemerdekaan RI Ke-80",
+    "2025-08-18": "Cuti Bersama Kemerdekaan RI",
+    "2025-09-05": "Maulid Nabi Muhammad SAW",
+    "2025-12-25": "Kelahiran Yesus Kristus (Natal)",
+    "2025-12-26": "Cuti Bersama Hari Raya Natal",
+    "2025-12-31": "Malam Tahun Baru (Peak Season Akhir Tahun)",
+    # 2026
+    "2026-01-01": "Tahun Baru 2026 Masehi",
+    "2026-01-16": "Isra Mi'raj Nabi Muhammad SAW",
+    "2026-02-16": "Cuti Bersama Tahun Baru Imlek 2577",
+    "2026-02-17": "Tahun Baru Imlek 2577 Kongzili",
+    "2026-03-18": "Cuti Bersama Hari Suci Nyepi",
+    "2026-03-19": "Hari Suci Nyepi / Libur Lebaran 1447 H",
+    "2026-03-20": "Hari Raya Idul Fitri 1447 H (Hari ke-1)",
+    "2026-03-21": "Hari Raya Idul Fitri 1447 H (Hari ke-2) & Nyepi",
+    "2026-03-23": "Cuti Bersama Idul Fitri 1447 H",
+    "2026-03-24": "Cuti Bersama Idul Fitri 1447 H",
+    "2026-04-03": "Wafat Yesus Kristus (Jumat Agung)",
+    "2026-04-05": "Kebangkitan Yesus Kristus (Paskah)",
+    "2026-05-01": "Hari Buruh Internasional",
+    "2026-05-14": "Kenaikan Yesus Kristus",
+    "2026-05-15": "Cuti Bersama Kenaikan Yesus Kristus",
+    "2026-05-27": "Hari Raya Idul Adha 1447 H",
+    "2026-05-28": "Cuti Bersama Idul Adha 1447 H",
+    "2026-05-31": "Hari Raya Waisak 2570 BE",
+    "2026-06-01": "Hari Lahir Pancasila",
+    "2026-06-16": "Tahun Baru Islam 1448 H",
+    "2026-08-17": "Hari Kemerdekaan RI Ke-81",
+    "2026-08-25": "Maulid Nabi Muhammad SAW",
+    "2026-12-24": "Cuti Bersama Hari Raya Natal",
+    "2026-12-25": "Hari Raya Natal",
+    "2026-12-31": "Malam Tahun Baru (Peak Season Akhir Tahun)",
+}
+
 OUTLET_TO_VISITOR_UNIT = {
     "SWIN Sea World Induk": "SeaWorld",
     "ODIN Samudra Induk": "Samudra",
@@ -3293,28 +3353,87 @@ def api_ask_ai():
         # 7. Calendar, Holidays, & Future Planning Intelligence
         is_future_or_holiday_query = any(k in p_lower for k in [
             "desember", "natal", "tahun baru", "tanggal merah", "libur", "liburan", "cuti bersama", 
-            "persiapan", "kalender", "oktober", "november", "strategi jualan", "long weekend", "hari apa aja", "hari apa"
+            "persiapan", "kalender", "oktober", "november", "strategi jualan", "long weekend", "hari apa aja", "hari apa",
+            "forecasting", "proyeksi", "ramalan", "target bulan"
         ])
         
         holiday_calendar_text = ""
         if is_future_or_holiday_query:
-            holiday_calendar_text = (
-                "\nINFORMASI RESMI KALENDER NASIONAL, TANGGAL MERAH, & PROYEKSI HIGH SEASON 2026:\n"
-                "1. KALENDER TANGGAL MERAH & HARI LIBUR NASIONAL AKHIR TAHUN 2026:\n"
-                "   - Jumat, 25 Desember 2026: Hari Raya Natal (Hari Libur Nasional Resmi).\n"
-                "   - Kamis, 24 Desember 2026: Potensi Cuti Bersama Hari Raya Natal.\n"
-                "   - Sabtu-Minggu, 26-27 Desember 2026: Akhir Pekan Terusan (Menciptakan Long Weekend 4 hari beruntun).\n"
-                "   - Kamis, 31 Desember 2026: Malam Pergantian Tahun Baru (Puncak Kerumunan Pengunjung Ancol & Pesta Kembang Api).\n"
-                "   - Jumat, 1 Januari 2027: Libur Tahun Baru 2027 Masehi.\n"
-                "2. KARAKTERISTIK TREN OPERASIONAL THEME PARK ANCOL SAAT LIBURAN (HIGH SEASON):\n"
-                "   - Lonjakan pengunjung diproyeksikan melonjak 250% s/d 350% dibanding hari reguler.\n"
-                "   - Jam sibuk bergeser lebih awal: Pukul 11:00 hingga 18:30 WIB terjadi lonjakan antrean kasir terus-menerus.\n"
-                "   - Barang paling dicari: Minuman dingin (Prima 600ml & jus), jas hujan/payung (Desember musim hujan), serta merchandise boneka maskot Ancol.\n"
-                "3. ROADMAP PERSIAPAN OPERASIONAL TOKO:\n"
-                "   - H-14 (10-15 Desember): Kunci pengadaan buffer stock gudang merchandise & minuman minimal 3x lipat rata-rata mingguan.\n"
-                "   - H-7: Susun jadwal shift staf kasir ekstra & siapkan perangkat EDC / POS mobile bantuan untuk mengurai antrean.\n"
-                "   - Hari H (24 Des - 1 Jan): Buka seluruh loket kasir tanpa jeda (istirahat bergilir), display produk impulsif minuman & jas hujan di jalur antrean kasir.\n"
-            )
+            cal_blocks = []
+            
+            # Dynamic month forecast intelligence
+            if detected_m_num:
+                m_name = MONTH_NAMES.get(detected_m_num, detected_m_num)
+                m_hols_26 = [f"{dKey[8:]} {m_name}: {name}" for dKey, name in INDONESIA_HOLIDAYS.items() if dKey.startswith(f"2026-{detected_m_num}")]
+                m_targets = read_target_daily(month=f"2026-{detected_m_num}", outlet=detected_outlet, area=detected_area)
+                m_target_total = sum(m_targets.values())
+                
+                out_filter_set = {o.strip() for o in detected_outlet.split(",") if o.strip()} if detected_outlet else set()
+                hist_25_rows = [
+                    r for r in rows_cache 
+                    if r.get("year") == 2025 and r.get("month") == f"2025-{detected_m_num}"
+                    and (not detected_area or r.get("area") == detected_area)
+                    and (not out_filter_set or r.get("outlet") in out_filter_set)
+                ]
+                hist_25_sales = sum(r.get("net_sales", 0) for r in hist_25_rows)
+                hist_25_tx = len({(r.get("outlet", ""), r.get("date", ""), r.get("invoice", "")) for r in hist_25_rows})
+                hist_25_qty = sum(r.get("qty", 0) for r in hist_25_rows)
+                hist_25_atv = (hist_25_sales / hist_25_tx) if hist_25_tx > 0 else 0
+                
+                from collections import Counter
+                hist_prod_counter = Counter()
+                for r in hist_25_rows:
+                    hist_prod_counter[r["product"]] += r["qty"]
+                top_hist_prods = [f"{p} ({q:,} pcs)" for p, q in hist_prod_counter.most_common(5)]
+                
+                vis_25_m = [
+                    v for v in read_all_visitors()
+                    if v.get("date", "").startswith("2025-") and v.get("month") == f"2025-{detected_m_num}"
+                    and (not detected_area or v.get("area", "").casefold() == detected_area.casefold())
+                ]
+                hist_25_vis = sum(v.get("visitors", 0) for v in vis_25_m)
+                hist_25_sph = (hist_25_sales / hist_25_vis) if hist_25_vis > 0 else 0
+                
+                hol_str = ", ".join(m_hols_26) if m_hols_26 else "Tidak ada tanggal merah / libur nasional resmi (Fokus pada keramaian akhir pekan Sabtu-Minggu & rombongan sekolah)"
+                target_str = f"Rp {m_target_total:,.0f}" if m_target_total > 0 else "Belum diinput"
+                prod_str = ", ".join(top_hist_prods) if top_hist_prods else "Data produk historis belum terpetakan"
+                vis_str = f"{hist_25_vis:,} orang (SPH: Rp {hist_25_sph:,.0f})" if hist_25_vis > 0 else "Belum terpetakan"
+                
+                cal_blocks.append(
+                    f"INFORMASI RESMI TARGET & HISTORIS UNTUK FORECASTING BULAN {m_name.upper()} 2026:\n"
+                    f"1. TARGET FINANSIAL BULAN {m_name.upper()} 2026: **{target_str}**\n"
+                    f"2. PENCAPAIAN HISTORIS TAHUN LALU (BULAN {m_name.upper()} 2025):\n"
+                    f"   - Total Omset 2025: **Rp {hist_25_sales:,.0f}** | Transaksi: **{hist_25_tx:,} struk** | ATV: **Rp {hist_25_atv:,.0f}** | Qty: **{hist_25_qty:,} pcs**\n"
+                    f"   - Trafik Pengunjung Wahana (Visitors 2025): **{vis_str}**\n"
+                    f"   - Top 5 Produk Terlaris Bulan {m_name} Tahun Lalu: {prod_str}\n"
+                    f"3. KALENDER HARI LIBUR & TANGGAL MERAH BULAN {m_name.upper()} 2026:\n"
+                    f"   - {hol_str}\n"
+                    f"4. ARAHAN STRATEGIS OPERASIONAL BULAN {m_name.upper()}:\n"
+                    f"   - Bandingkan Target 2026 ({target_str}) dengan Realisasi 2025 (Rp {hist_25_sales:,.0f}).\n"
+                    f"   - Berikan rekomendasi konkret: fokus rombongan sekolah/corporate di hari kerja (weekday), peningkatan Capture Rate & SPH di kasir pada akhir pekan (weekend), serta rekomendasi stok produk fast-moving."
+                )
+            
+            # If query also mentions December / Nataru or detected_m_num == '12' or general high-season planning
+            if (not detected_m_num or detected_m_num == "12" or any(k in p_lower for k in ["desember", "natal", "tahun baru", "nataru", "high season"])):
+                cal_blocks.append(
+                    "KALENDER TANGGAL MERAH & PROYEKSI HIGH SEASON AKHIR TAHUN 2026 (DESEMBER):\n"
+                    "1. KALENDER TANGGAL MERAH & HARI LIBUR NASIONAL AKHIR TAHUN 2026:\n"
+                    "   - Jumat, 25 Desember 2026: Hari Raya Natal (Hari Libur Nasional Resmi).\n"
+                    "   - Kamis, 24 Desember 2026: Potensi Cuti Bersama Hari Raya Natal.\n"
+                    "   - Sabtu-Minggu, 26-27 Desember 2026: Akhir Pekan Terusan (Menciptakan Long Weekend 4 hari beruntun).\n"
+                    "   - Kamis, 31 Desember 2026: Malam Pergantian Tahun Baru (Puncak Kerumunan Pengunjung Ancol & Pesta Kembang Api).\n"
+                    "   - Jumat, 1 Januari 2027: Libur Tahun Baru 2027 Masehi.\n"
+                    "2. KARAKTERISTIK TREN OPERASIONAL THEME PARK ANCOL SAAT LIBURAN (HIGH SEASON):\n"
+                    "   - Lonjakan pengunjung diproyeksikan melonjak 250% s/d 350% dibanding hari reguler.\n"
+                    "   - Jam sibuk bergeser lebih awal: Pukul 11:00 hingga 18:30 WIB terjadi lonjakan antrean kasir terus-menerus.\n"
+                    "   - Barang paling dicari: Minuman dingin (Prima 600ml & jus), jas hujan/payung (Desember musim hujan), serta merchandise boneka maskot Ancol.\n"
+                    "3. ROADMAP PERSIAPAN OPERASIONAL TOKO:\n"
+                    "   - H-14 (10-15 Desember): Kunci pengadaan buffer stock gudang merchandise & minuman minimal 3x lipat rata-rata mingguan.\n"
+                    "   - H-7: Susun jadwal shift staf kasir ekstra & siapkan perangkat EDC / POS mobile bantuan untuk mengurai antrean.\n"
+                    "   - Hari H (24 Des - 1 Jan): Buka seluruh loket kasir tanpa jeda (istirahat bergilir), display produk impulsif minuman & jas hujan di jalur antrean kasir."
+                )
+
+            holiday_calendar_text = "\n" + "\n\n".join(cal_blocks) + "\n"
 
         # 8. Targeted SQL Analytics (God Mode Engine)
         def _append_outlet_sql_filter(conds_list: list[str], params_list: list[Any], out_val: str | None, area_val: str | None) -> None:
@@ -4010,8 +4129,11 @@ TOP PRODUK PRIORITAS (FAST-MOVING VELOCITY):
         if api_key:
             try:
                 candidate_models = [
-                    "gemini-3.1-flash-lite",
                     "gemini-flash-lite-latest",
+                    "gemini-2.5-flash",
+                    "gemini-2.0-flash",
+                    "gemini-1.5-flash",
+                    "gemini-3.1-flash-lite",
                 ]
 
                 # Build multi-turn conversational contents
@@ -4048,7 +4170,6 @@ TOP PRODUK PRIORITAS (FAST-MOVING VELOCITY):
                         "generationConfig": {
                             "temperature": 0.2,
                             "maxOutputTokens": 4096,
-                            "thinkingConfig": {"thinkingBudget": 0}
                         }
                     }
 
@@ -4059,7 +4180,7 @@ TOP PRODUK PRIORITAS (FAST-MOVING VELOCITY):
                     )
 
                     try:
-                        with urllib.request.urlopen(req, timeout=7) as response:
+                        with urllib.request.urlopen(req, timeout=15) as response:
                             res_body = json.loads(response.read().decode("utf-8"))
                             text = res_body["candidates"][0]["content"]["parts"][0]["text"].strip()
                             return jsonify({"ok": True, "answer": text, "engine": "gemini-cloud", "model": model_name})
@@ -4098,21 +4219,54 @@ TOP PRODUK PRIORITAS (FAST-MOVING VELOCITY):
         top_prod_weekly = priority_products[0].get('weekly_proj', 0) if priority_products else 0
 
         if is_future_or_holiday_query:
-            answer = (
-                "**Panduan Kalender Libur Nasional & Strategi Persiapan Penjualan (Desember 2026):**\n\n"
-                "1. **Rincian Tanggal Merah & Hari Libur Nasional Resmi:**\n"
-                "   - **Jumat, 25 Desember 2026**: Hari Raya Natal (membentuk *Long Weekend* 4 hari berturut-turut pada 25-27 Desember).\n"
-                "   - **Kamis, 24 Desember 2026**: Potensi Cuti Bersama Natal.\n"
-                "   - **Kamis, 31 Desember 2026**: Malam Pergantian Tahun Baru (puncak kepadatan pengunjung & festival Ancol).\n"
-                "   - **Jumat, 1 Januari 2027**: Libur Tahun Baru 2027 Masehi.\n\n"
-                "2. **Proyeksi Lonjakan Pengunjung Toko (Theme Park Context):**\n"
-                "   - Diproyeksikan kenaikan pengunjung **250% – 350%** dibanding hari kerja reguler.\n"
-                "   - Jam sibuk bergeser lebih awal: Mulai **pukul 11:00 WIB hingga 18:30 WIB** terjadi kepadatan terus-menerus.\n\n"
-                "3. **Rekomendasi Taktis & Persiapan Lapangan (Action Plan):**\n"
-                "   - **Stok Gudang (H-14)**: Kunci pengadaan buffer stock produk fast-moving (air mineral, jas hujan/payung musim hujan, boneka ikonik Ancol) minimal 3x kapasitas reguler sebelum 15 Desember.\n"
-                "   - **Staf Kasir**: Operasikan seluruh counter kasir tanpa jeda (sistem istirahat bergilir) dan siapkan mesin EDC / mobile POS cadangan untuk mengurai antrean panjang.\n"
-                "   - **Display Impulsif**: Letakkan keranjang minuman dingin dan payung persis di jalur antrean menuju kasir."
-            )
+            if detected_m_num and detected_m_num != "12" and not any(k in p_lower for k in ["desember", "natal", "tahun baru", "nataru"]):
+                m_name = MONTH_NAMES.get(detected_m_num, detected_m_num)
+                m_hols = [f"{dKey[8:]} {m_name}: {name}" for dKey, name in INDONESIA_HOLIDAYS.items() if dKey.startswith(f"2026-{detected_m_num}")]
+                m_targets = read_target_daily(month=f"2026-{detected_m_num}", outlet=detected_outlet, area=detected_area)
+                m_t_val = sum(m_targets.values())
+                target_disp = f"Rp {m_t_val:,.0f}" if m_t_val > 0 else "Belum diinput"
+                hol_disp = ", ".join(m_hols) if m_hols else "Tidak ada hari libur nasional resmi (fokus optimalisasi traffic reguler & weekend)"
+                
+                out_filter_set = {o.strip() for o in detected_outlet.split(",") if o.strip()} if detected_outlet else set()
+                hist_rows = [
+                    r for r in rows_cache 
+                    if r.get("year") == 2025 and r.get("month") == f"2025-{detected_m_num}"
+                    and (not detected_area or r.get("area") == detected_area)
+                    and (not out_filter_set or r.get("outlet") in out_filter_set)
+                ]
+                h_sales = sum(r.get("net_sales", 0) for r in hist_rows)
+                h_tx = len({(r.get("outlet", ""), r.get("date", ""), r.get("invoice", "")) for r in hist_rows})
+                h_atv = (h_sales / h_tx) if h_tx > 0 else 0
+                
+                answer = (
+                    f"**Panduan Strategi & Proyeksi Penjualan (Bulan {m_name} 2026):**\n\n"
+                    f"1. **Target Finansial & Pembanding Historis 2025:**\n"
+                    f"   - Target Penjualan 2026: **{target_disp}**\n"
+                    f"   - Realisasi Tahun Lalu ({m_name} 2025): **Rp {h_sales:,.0f}** ({h_tx:,} struk, rata-rata belanja Rp {h_atv:,.0f}/struk)\n\n"
+                    f"2. **Karakteristik Kalender & Hari Libur:**\n"
+                    f"   - {hol_disp}.\n"
+                    f"   - Puncak kepadatan berpusat pada akhir pekan (Sabtu-Minggu), sedangkan hari kerja (weekday) didominasi rombongan sekolah (*study tour*) dan grup korporat.\n\n"
+                    f"3. **Rekomendasi Taktis & Persiapan Lapangan (Action Plan):**\n"
+                    f"   - **Weekday Focus**: Siapkan paket bundling merchandise edukatif untuk rombongan sekolah agar mendongkrak kuantitas barang per transaksi (UPT).\n"
+                    f"   - **Weekend Focus**: Optimalkan pajangan produk impulsif (minuman dingin, gantungan kunci, bando/topi) di dekat kasir untuk mengerek belanja per struk (ATV).\n"
+                    f"   - **Stok & Kasir**: Pastikan buffer stock produk fast-moving aman menjelang Jumat sore dan pastikan mesin EDC siap digunakan tanpa hambatan."
+                )
+            else:
+                answer = (
+                    "**Panduan Kalender Libur Nasional & Strategi Persiapan Penjualan (Desember 2026):**\n\n"
+                    "1. **Rincian Tanggal Merah & Hari Libur Nasional Resmi:**\n"
+                    "   - **Jumat, 25 Desember 2026**: Hari Raya Natal (membentuk *Long Weekend* 4 hari berturut-turut pada 25-27 Desember).\n"
+                    "   - **Kamis, 24 Desember 2026**: Potensi Cuti Bersama Natal.\n"
+                    "   - **Kamis, 31 Desember 2026**: Malam Pergantian Tahun Baru (puncak kepadatan pengunjung & festival Ancol).\n"
+                    "   - **Jumat, 1 Januari 2027**: Libur Tahun Baru 2027 Masehi.\n\n"
+                    "2. **Proyeksi Lonjakan Pengunjung Toko (Theme Park Context):**\n"
+                    "   - Diproyeksikan kenaikan pengunjung **250% – 350%** dibanding hari kerja reguler.\n"
+                    "   - Jam sibuk bergeser lebih awal: Mulai **pukul 11:00 WIB hingga 18:30 WIB** terjadi kepadatan terus-menerus.\n\n"
+                    "3. **Rekomendasi Taktis & Persiapan Lapangan (Action Plan):**\n"
+                    "   - **Stok Gudang (H-14)**: Kunci pengadaan buffer stock produk fast-moving (air mineral, jas hujan/payung musim hujan, boneka ikonik Ancol) minimal 3x kapasitas reguler sebelum 15 Desember.\n"
+                    "   - **Staf Kasir**: Operasikan seluruh counter kasir tanpa jeda (sistem istirahat bergilir) dan siapkan mesin EDC / mobile POS cadangan untuk mengurai antrean panjang.\n"
+                    "   - **Display Impulsif**: Letakkan keranjang minuman dingin dan payung persis di jalur antrean menuju kasir."
+                )
         elif comparative_text:
             answer = (
                 f"**Hasil Analisis Komparatif:**\n\n"
