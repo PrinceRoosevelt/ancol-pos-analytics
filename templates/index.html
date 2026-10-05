@@ -4200,6 +4200,294 @@
       .app-container { max-width: 100%; padding: 0; }
       .chart-panel, .kpi-card, .insight-card, .table-section { box-shadow: none !important; border: 1px solid #ccc !important; }
     }
+
+    /* ==========================================================================
+       ROLE-BASED ACCESS CONTROL (RBAC) & GLASSMORPHISM MODAL
+       ========================================================================== */
+    .role-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100000;
+      background: rgba(0, 32, 91, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: roleFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes roleFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .role-modal-card {
+      width: 100%;
+      max-width: 680px;
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 24px;
+      padding: 28px 24px 22px;
+      box-shadow: 0 30px 80px -15px rgba(0, 32, 91, 0.35), 0 0 0 1px rgba(0, 51, 160, 0.1);
+      color: var(--text);
+      position: relative;
+      animation: roleSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    :root.dark .role-modal-card {
+      background: rgba(15, 23, 42, 0.94);
+      color: #f8fafc;
+      box-shadow: 0 30px 80px -15px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.12);
+    }
+    @keyframes roleSlideUp {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .role-top-banner {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .role-top-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(0, 51, 160, 0.08);
+      color: var(--brand);
+      border: 1px solid rgba(0, 51, 160, 0.2);
+      margin-bottom: 8px;
+    }
+    :root.dark .role-top-pill {
+      background: rgba(0, 181, 226, 0.12);
+      color: var(--brand-sky);
+      border-color: rgba(0, 181, 226, 0.25);
+    }
+    .role-modal-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 0 0 6px 0;
+      color: var(--brand-deep);
+      letter-spacing: -0.02em;
+    }
+    :root.dark .role-modal-title {
+      color: #f1f5f9;
+    }
+    .role-modal-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.4;
+    }
+    .role-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 620px) {
+      .role-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .role-card {
+      border-radius: 18px;
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .role-card:active {
+      transform: scale(0.98);
+    }
+    .role-card-operasional {
+      background: linear-gradient(180deg, rgba(0, 181, 226, 0.06) 0%, rgba(255, 255, 255, 0.75) 100%);
+      border: 2px solid rgba(0, 110, 179, 0.28);
+    }
+    :root.dark .role-card-operasional {
+      background: linear-gradient(180deg, rgba(0, 181, 226, 0.08) 0%, rgba(30, 41, 59, 0.6) 100%);
+      border-color: rgba(0, 181, 226, 0.35);
+    }
+    .role-card-operasional:hover {
+      border-color: #006EB3;
+      box-shadow: 0 10px 24px -6px rgba(0, 110, 179, 0.25);
+      transform: translateY(-2px);
+    }
+    .role-card-mgmt {
+      background: linear-gradient(180deg, rgba(0, 51, 160, 0.06) 0%, rgba(255, 255, 255, 0.75) 100%);
+      border: 2px solid rgba(0, 51, 160, 0.28);
+    }
+    :root.dark .role-card-mgmt {
+      background: linear-gradient(180deg, rgba(0, 51, 160, 0.1) 0%, rgba(30, 41, 59, 0.6) 100%);
+      border-color: rgba(96, 165, 250, 0.35);
+    }
+    .role-card-mgmt:hover {
+      border-color: #0033A0;
+      box-shadow: 0 10px 24px -6px rgba(0, 51, 160, 0.25);
+      transform: translateY(-2px);
+    }
+    .role-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .role-badge {
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .role-badge-operasional {
+      background: rgba(0, 110, 179, 0.12);
+      color: #006EB3;
+      border: 1px solid rgba(0, 110, 179, 0.25);
+    }
+    :root.dark .role-badge-operasional {
+      background: rgba(0, 181, 226, 0.2);
+      color: #38bdf8;
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+    .role-badge-mgmt {
+      background: rgba(0, 51, 160, 0.12);
+      color: #0033A0;
+      border: 1px solid rgba(0, 51, 160, 0.25);
+    }
+    :root.dark .role-badge-mgmt {
+      background: rgba(96, 165, 250, 0.2);
+      color: #93c5fd;
+      border-color: rgba(147, 197, 253, 0.3);
+    }
+    .role-card-title {
+      font-size: 17px;
+      font-weight: 800;
+      margin: 8px 0 4px 0;
+      color: var(--text);
+    }
+    .role-card-tagline {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      line-height: 1.35;
+    }
+    .role-card-points {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 11.5px;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .role-card-points li {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      line-height: 1.3;
+    }
+    .role-btn-select {
+      width: 100%;
+      min-height: 42px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .role-btn-select-operasional {
+      background: #006EB3;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 110, 179, 0.25);
+    }
+    .role-btn-select-operasional:hover {
+      background: #00568c;
+    }
+    .role-btn-select-mgmt {
+      background: #0033A0;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 51, 160, 0.25);
+    }
+    .role-btn-select-mgmt:hover {
+      background: #002575;
+    }
+    .role-modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px dashed var(--panel-border);
+      padding-top: 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .role-checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .role-checkbox-label input {
+      accent-color: var(--brand);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    /* Strict Role Scoping for Operasional Mode */
+    body[data-role="operasional"] #kpiCardGrossProfit,
+    body[data-role="operasional"] #tabBtnSuppliers,
+    body[data-role="operasional"] #table-suppliers,
+    body[data-role="operasional"] #radarSkuBox,
+    body[data-role="operasional"] #btnAIAssistant,
+    body[data-role="operasional"] #aiDrawerOverlay,
+    body[data-role="operasional"] #aiDrawer,
+    body[data-role="operasional"] #btnUploadNav,
+    body[data-role="operasional"] #btnSyncGoogleSheets,
+    body[data-role="operasional"] #btnGsheetSettings,
+    body[data-role="operasional"] #periodComparisonSection {
+      display: none !important;
+    }
+
+    /* POS Header Role Button */
+    .btn-role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(0, 51, 160, 0.22);
+      background: rgba(0, 51, 160, 0.08);
+      color: var(--brand);
+    }
+    .btn-role-badge:hover {
+      background: rgba(0, 51, 160, 0.15);
+      border-color: var(--brand);
+    }
+    :root.dark .btn-role-badge {
+      background: rgba(0, 181, 226, 0.1);
+      color: var(--brand-sky);
+      border-color: rgba(0, 181, 226, 0.3);
+    }
   </style>
 </head>
 <body>
@@ -4247,13 +4535,18 @@
         <span class="status-dot"></span>
         <span id="rowsCountBadge">{{ data.rows_read }} Baris Data Diolah</span>
       </div>
+      <button type="button" class="btn btn-role-badge" id="btnRoleSwitch" onclick="openRoleModal()" title="Ganti Profil Tampilan (Operasional POS vs Management)">
+        <span id="roleIcon">🏪</span>
+        <span id="roleText">Mode: Operasional</span>
+        <span style="opacity:0.4; font-size:9.5px; margin-left:2px;">▼</span>
+      </button>
       <button type="button" class="btn" id="themeToggle">
         <span id="themeIcon">
           <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
         </span> 
         <span id="themeText">Tema</span>
       </button>
-      <a href="/upload" class="btn" style="background:#059669; color:#ffffff; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px; border:none;">
+      <a href="/upload" id="btnUploadNav" class="btn" style="background:#059669; color:#ffffff; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px; border:none;">
         <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
         <span>Upload &amp; Input Pengunjung</span>
       </a>
@@ -4692,6 +4985,73 @@
     </div>
   </div>
 
+  <!-- Glassmorphism Welcome & Role Selector Modal (Operasional vs Management) -->
+  <div id="roleModalOverlay" class="role-modal-overlay" style="display:none;" onclick="handleRoleOverlayClick(event)">
+    <div class="role-modal-card" role="dialog" aria-modal="true" aria-labelledby="roleModalTitle">
+      <button type="button" class="cal-btn-close-icon" onclick="closeRoleModal()" style="position:absolute; right:18px; top:18px;" title="Tutup">✕</button>
+      
+      <div class="role-top-banner">
+        <div class="role-top-pill">✦ ANCOL POS ANALYTICS ✦</div>
+        <h2 class="role-modal-title" id="roleModalTitle">Pilih Profil Akses Dashboard</h2>
+        <p class="role-modal-desc">Sesuaikan visibilitas data dengan lingkungan kerja Anda. Dapat dialihkan sewaktu-waktu di pojok kanan atas.</p>
+      </div>
+
+      <div class="role-cards-grid">
+        <!-- Card 1: Operasional Toko (POS) -->
+        <div class="role-card role-card-operasional" onclick="selectDashboardRole('operasional')">
+          <div>
+            <div class="role-card-header">
+              <span style="font-size:26px;">🏪</span>
+              <span class="role-badge role-badge-operasional">POS &amp; KASIR</span>
+            </div>
+            <div class="role-card-title">Operasional Toko</div>
+            <div class="role-card-tagline">Ideal untuk monitor kasir &amp; tim lapangan di unit rekreasi.</div>
+            <ul class="role-card-points">
+              <li><span style="color:#059669; font-weight:bold;">✔</span> <span>Target Penjualan Harian &amp; Sisa Gap</span></li>
+              <li><span style="color:#059669; font-weight:bold;">✔</span> <span>Jam Sibuk Antrean &amp; Transaksi Kasir</span></li>
+              <li><span style="color:#059669; font-weight:bold;">✔</span> <span>Kecepatan Produk Fast-Moving &amp; Buffer Stok</span></li>
+              <li><span style="color:#dc2626; font-weight:bold;">🔒</span> <span><strong>Data Rahasia Tersembunyi:</strong> HPP, Margin Laba &amp; Vendor</span></li>
+            </ul>
+          </div>
+          <button type="button" class="role-btn-select role-btn-select-operasional">
+            <span>Pilih Mode Operasional</span>
+            <span>➔</span>
+          </button>
+        </div>
+
+        <!-- Card 2: Executive Management -->
+        <div class="role-card role-card-mgmt" onclick="selectDashboardRole('management')">
+          <div>
+            <div class="role-card-header">
+              <span style="font-size:26px;">💼</span>
+              <span class="role-badge role-badge-mgmt">DIREKSI &amp; GM</span>
+            </div>
+            <div class="role-card-title">Executive Management</div>
+            <div class="role-card-tagline">Akses analitik korporat menyeluruh tanpa batas.</div>
+            <ul class="role-card-points">
+              <li><span style="color:#059669; font-weight:bold;">✔</span> <span>Akses Penuh 100% Seluruh Fitur &amp; Menu</span></li>
+              <li><span style="color:#059669; font-weight:bold;">✔</span> <span>Laba Kotor Riil, Estimasi Margin &amp; Total HPP</span></li>
+              <li><span style="color:#059669; font-weight:bold;">✔</span> <span>Peringkat 86 Vendor Supplier &amp; Radar SKU</span></li>
+              <li><span style="color:#059669; font-weight:bold;">✔</span> <span>AI Executive Brain &amp; Komparasi Matriks Periodik</span></li>
+            </ul>
+          </div>
+          <button type="button" class="role-btn-select role-btn-select-mgmt">
+            <span>Pilih Mode Management</span>
+            <span>➔</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="role-modal-footer">
+        <label class="role-checkbox-label">
+          <input type="checkbox" id="chkRememberRole" checked>
+          <span>Ingat pilihan profil ini di perangkat ini</span>
+        </label>
+        <button type="button" onclick="closeRoleModal()" class="btn" style="padding:6px 14px; font-size:12px; background:var(--panel-hover); color:var(--text); border:1px solid var(--panel-border); border-radius:8px; cursor:pointer;">Lanjutkan</button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Executive Summary Banner (Auto Narrative) -->
 
@@ -4732,7 +5092,7 @@
     </div>
 
     <!-- KPI 2: Estimasi Laba Kotor (Gross Profit) -->
-    <div class="kpi-card" style="border-left: 4px solid #059669;">
+    <div class="kpi-card" id="kpiCardGrossProfit" style="border-left: 4px solid #059669;">
       <div class="kpi-card-header">
         <span class="kpi-title">Estimasi Laba Kotor &amp; Margin</span>
         <div class="kpi-badge-icon" style="background:#ecfdf5; color:#059669; border:1px solid rgba(5,150,105,0.2);">
@@ -5342,7 +5702,7 @@
           <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16.5 9.4 4.5-2.8L12 2 3 6.6l4.5 2.8"></path><path d="M3 6.6V18L12 22l9-4V6.6"></path><path d="M12 12v10"></path><path d="m12 12 9-5.4"></path><path d="m12 12-9-5.4"></path></svg>
           <span>Top Produk Terlaris</span>
         </button>
-        <button type="button" class="tab-btn" onclick="switchTable('suppliers', this)">
+        <button type="button" class="tab-btn" id="tabBtnSuppliers" onclick="switchTable('suppliers', this)">
           <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"></path><path d="M7 7h.01"></path></svg>
           <span>Supplier &amp; Kategori</span>
         </button>
@@ -8738,22 +9098,27 @@
       }
 
       const dayKeySet = new Set(Object.keys(byDay));
-      if (!periodHas26Data) {
-        Object.keys(targetDailyMap).forEach(dStr => dayKeySet.add(dStr.substring(5)));
-      }
+      // Full month horizon: add days from matrixDayData & targetDailyMap
+      Object.keys(matrixDayData).forEach(dm => dayKeySet.add(dm));
+      Object.keys(targetDailyMap).forEach(dStr => dayKeySet.add(dStr.substring(5)));
       const dayKeys = Array.from(dayKeySet).sort();
       dailyChartList = dayKeys.map(dayKey => {
         const parts = dayKey.split('-');
         const dNum = parseInt(parts[1], 10);
         const mLabel = mNames[parseInt(parts[0], 10)] || parts[0];
+        const mdEntry = matrixDayData[dayKey];
+        const s25Val = mdEntry ? mdEntry.s25Full : (byDay[dayKey] ? byDay[dayKey].s25 : 0);
+        const isDateActive26 = GLOBAL_ACTIVE_26_DM.has(dayKey) && (byDay[dayKey] !== undefined);
+        const s26Val = isDateActive26 ? (byDay[dayKey] ? byDay[dayKey].s26 : 0) : null;
         return {
           date: '2026-' + dayKey,
           comparison_date: '2025-' + dayKey,
           label: dNum + ' ' + mLabel,
           short_label: dNum + ' ' + mLabel,
           is_monthly: false,
-          2026: byDay[dayKey] ? byDay[dayKey].s26 : 0,
-          2025: byDay[dayKey] ? byDay[dayKey].s25 : 0
+          has26: isDateActive26,
+          2026: s26Val,
+          2025: s25Val
         };
       });
 
@@ -8762,8 +9127,9 @@
         label: item.label,
         short_label: item.short_label,
         is_monthly: false,
+        has26: item.has26,
         target: targetDailyMap[item.date] || 0,
-        actual: item['2026']
+        actual: item.has26 ? item['2026'] : null
       }));
 
       visitorRevenueChartList = dailyChartList.map(item => {
@@ -8773,21 +9139,24 @@
           label: item.label,
           short_label: item.short_label,
           is_monthly: false,
-          revenue_2026: item['2026'] || 0,
-          visitors_2026: vis26ByDay[dayKey] || 0
+          has26: item.has26,
+          revenue_2026: item.has26 ? (item['2026'] || 0) : null,
+          visitors_2026: item.has26 ? (vis26ByDay[dayKey] || 0) : null
         };
       });
 
       visitorTrendChartList = dailyChartList.map(item => {
         const dayKey = item.date.substring(5);
+        const mdEntry = matrixDayData[dayKey];
         return {
           date: item.date,
           comparison_date: item.comparison_date,
           label: item.label,
           short_label: item.short_label,
           is_monthly: false,
-          visitors_2026: vis26ByDay[dayKey] || 0,
-          visitors_2025: vis25ByDay[dayKey] || 0
+          has26: item.has26,
+          visitors_2026: item.has26 ? (vis26ByDay[dayKey] || 0) : null,
+          visitors_2025: mdEntry ? mdEntry.v25Full : (vis25ByDay[dayKey] || 0)
         };
       });
     }
@@ -11530,7 +11899,7 @@
       return;
     }
 
-    const maxVal = Math.max(...dailyData.flatMap(x => [x['2026'], x['2025']]), 1000000);
+    const maxVal = Math.max(...dailyData.flatMap(x => [x['2026'] || 0, x['2025'] || 0]), 1000000);
     const left = 68, bottom = 36, top = 20, right = 16;
     const plotW = width - left - right;
     const plotH = height - top - bottom;
@@ -11553,26 +11922,31 @@
     const step = plotW / Math.max(dailyData.length - 1, 1);
     salesPoints = [];
 
-    // Series 2025
+    // Series 2025 (Full Month Historical Baseline)
     ctx.strokeStyle = '#a78bfa';
     ctx.lineWidth = 2.5;
     ctx.beginPath();
     dailyData.forEach((item, i) => {
       const x = left + i * step;
-      const y = top + plotH - (item['2025'] / maxVal) * plotH;
+      const y = top + plotH - (((item['2025'] !== undefined && item['2025'] !== null) ? item['2025'] : 0) / maxVal) * plotH;
       if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
     });
     ctx.stroke();
 
-    // Series 2026 (Official Ancol Ocean Blue / Sky Blue)
+    // Series 2026 (Official Ancol Ocean Blue / Sky Blue - Only active dates)
     ctx.strokeStyle = isDark ? '#00B5E2' : '#0033A0';
     ctx.lineWidth = 3;
     ctx.beginPath();
+    let hasStarted26 = false;
     dailyData.forEach((item, i) => {
       const x = left + i * step;
+      const y25 = top + plotH - (((item['2025'] !== undefined && item['2025'] !== null) ? item['2025'] : 0) / maxVal) * plotH;
+      if (item.has26 === false || item['2026'] === null || item['2026'] === undefined) {
+        salesPoints.push({ x, y: y25, y25, item });
+        return;
+      }
       const y = top + plotH - (item['2026'] / maxVal) * plotH;
-      const y25 = top + plotH - ((item['2025'] || 0) / maxVal) * plotH;
-      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      if (!hasStarted26) { ctx.moveTo(x, y); hasStarted26 = true; } else ctx.lineTo(x, y);
       salesPoints.push({ x, y, y25, item });
     });
     ctx.stroke();
@@ -11580,7 +11954,7 @@
     // Markers for 2025 Series
     dailyData.forEach((item, i) => {
       const x = left + i * step;
-      const y25 = top + plotH - ((item['2025'] || 0) / maxVal) * plotH;
+      const y25 = top + plotH - (((item['2025'] !== undefined && item['2025'] !== null) ? item['2025'] : 0) / maxVal) * plotH;
       ctx.fillStyle = '#a78bfa';
       ctx.beginPath();
       ctx.arc(x, y25, 3, 0, Math.PI * 2);
@@ -11591,6 +11965,7 @@
     let peakIndex26 = -1;
     let maxVal26 = -1;
     dailyData.forEach((item, i) => {
+      if (item.has26 === false || item['2026'] === null || item['2026'] === undefined) return;
       const val26 = item['2026'] || 0;
       if (val26 > maxVal26) {
         maxVal26 = val26;
@@ -11599,6 +11974,7 @@
     });
 
     dailyData.forEach((item, i) => {
+      if (item.has26 === false || item['2026'] === null || item['2026'] === undefined) return;
       const x = left + i * step;
       const y26 = top + plotH - (item['2026'] / maxVal) * plotH;
       const isPeak = (i === peakIndex26 && maxVal26 > 0);
@@ -11704,13 +12080,22 @@
       salesTooltip.style.display = 'block';
       salesTooltip.style.left = Math.min(nearest.x + 12, salesCanvas.clientWidth - 270) + 'px';
       salesTooltip.style.top = Math.max(anchorY - 120, 10) + 'px';
-      salesTooltip.innerHTML = `
-        ${titleHtml}
-        <div class="tooltip-row"><span class="tooltip-label" style="color:#60a5fa;">${row26Label}</span> <span class="tooltip-val">${formatRp(it['2026'])}</span></div>
-        <div class="tooltip-row"><span class="tooltip-label" style="color:#c4b5fd;">${row25Label}</span> <span class="tooltip-val">${formatRp(it['2025'])}</span></div>
-        <div class="tooltip-row"><span class="tooltip-label">YoY Growth:</span> <span class="tooltip-val" style="color:${diff >= 0 ? '#34d399' : '#f87171'}">${growth} (${diff >= 0 ? '+' : ''}${formatRp(diff)})</span></div>
-        ${holidayBadge}
-      `;
+      if (it.has26 === false || it['2026'] === null || it['2026'] === undefined) {
+        salesTooltip.innerHTML = `
+          ${titleHtml}
+          <div class="tooltip-row"><span class="tooltip-label" style="color:#60a5fa;">${row26Label}</span> <span class="tooltip-val" style="color:var(--text-muted); font-style:italic;">(Belum Berjalan)</span></div>
+          <div class="tooltip-row"><span class="tooltip-label" style="color:#c4b5fd;">${row25Label} (Dasar Proyeksi):</span> <span class="tooltip-val">${formatRp(it['2025'])}</span></div>
+          ${holidayBadge}
+        `;
+      } else {
+        salesTooltip.innerHTML = `
+          ${titleHtml}
+          <div class="tooltip-row"><span class="tooltip-label" style="color:#60a5fa;">${row26Label}</span> <span class="tooltip-val">${formatRp(it['2026'])}</span></div>
+          <div class="tooltip-row"><span class="tooltip-label" style="color:#c4b5fd;">${row25Label}</span> <span class="tooltip-val">${formatRp(it['2025'])}</span></div>
+          <div class="tooltip-row"><span class="tooltip-label">YoY Growth:</span> <span class="tooltip-val" style="color:${diff >= 0 ? '#34d399' : '#f87171'}">${growth} (${diff >= 0 ? '+' : ''}${formatRp(diff)})</span></div>
+          ${holidayBadge}
+        `;
+      }
     } else {
       salesTooltip.style.display = 'none';
     }
@@ -11785,11 +12170,16 @@
     ctx.strokeStyle = '#10b981';
     ctx.lineWidth = 3;
     ctx.beginPath();
+    let hasStartedTargetAct = false;
     targetData.forEach((item, i) => {
       const x = left + i * step;
-      const y = top + plotH - (item.actual / maxVal) * plotH;
       const yTarget = top + plotH - ((item.target || 0) / maxVal) * plotH;
-      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      if (item.has26 === false || item.actual === null || item.actual === undefined) {
+        targetPoints.push({ x, y: yTarget, yTarget, item });
+        return;
+      }
+      const y = top + plotH - (item.actual / maxVal) * plotH;
+      if (!hasStartedTargetAct) { ctx.moveTo(x, y); hasStartedTargetAct = true; } else ctx.lineTo(x, y);
       targetPoints.push({ x, y, yTarget, item });
     });
     ctx.stroke();
@@ -11803,6 +12193,7 @@
       ctx.arc(x, yTarget, 3, 0, Math.PI * 2);
       ctx.fill();
 
+      if (item.has26 === false || item.actual === null || item.actual === undefined) return;
       const y = top + plotH - (item.actual / maxVal) * plotH;
       ctx.fillStyle = '#10b981';
       ctx.beginPath();
@@ -11857,13 +12248,22 @@
       targetTooltip.style.display = 'block';
       targetTooltip.style.left = Math.min(nearest.x + 12, targetCanvas.clientWidth - 250) + 'px';
       targetTooltip.style.top = Math.max(nearest.y - 120, 10) + 'px';
-      targetTooltip.innerHTML = `
-        ${titleHtml}
-        <div class="tooltip-row"><span class="tooltip-label" style="color:#fbbf24;">● Target Revenue:</span> <span class="tooltip-val">${formatRp(it.target)}</span></div>
-        <div class="tooltip-row"><span class="tooltip-label" style="color:#34d399;">● Realisasi Sales:</span> <span class="tooltip-val">${formatRp(it.actual)}</span></div>
-        <div class="tooltip-row"><span class="tooltip-label">Pencapaian:</span> <span class="tooltip-val" style="color:${gap >= 0 ? '#34d399' : '#f87171'}">${achieve} (${gap >= 0 ? '+' : ''}${formatRp(gap)})</span></div>
-        ${holidayBadge}
-      `;
+      if (it.has26 === false || it.actual === null || it.actual === undefined) {
+        targetTooltip.innerHTML = `
+          ${titleHtml}
+          <div class="tooltip-row"><span class="tooltip-label" style="color:#fbbf24;">● Target Revenue:</span> <span class="tooltip-val">${formatRp(it.target)}</span></div>
+          <div class="tooltip-row"><span class="tooltip-label" style="color:#34d399;">● Realisasi Sales:</span> <span class="tooltip-val" style="color:var(--text-muted); font-style:italic;">(Belum Berjalan)</span></div>
+          ${holidayBadge}
+        `;
+      } else {
+        targetTooltip.innerHTML = `
+          ${titleHtml}
+          <div class="tooltip-row"><span class="tooltip-label" style="color:#fbbf24;">● Target Revenue:</span> <span class="tooltip-val">${formatRp(it.target)}</span></div>
+          <div class="tooltip-row"><span class="tooltip-label" style="color:#34d399;">● Realisasi Sales:</span> <span class="tooltip-val">${formatRp(it.actual)}</span></div>
+          <div class="tooltip-row"><span class="tooltip-label">Pencapaian:</span> <span class="tooltip-val" style="color:${gap >= 0 ? '#34d399' : '#f87171'}">${achieve} (${gap >= 0 ? '+' : ''}${formatRp(gap)})</span></div>
+          ${holidayBadge}
+        `;
+      }
     } else {
       targetTooltip.style.display = 'none';
     }
@@ -13032,11 +13432,92 @@
     }
   });
 
-  // Inisialisasi pintasan kustom, multi-select outlet, & status AI
+  // ---------------------------------------------------------------------------
+  // ROLE-BASED ACCESS CONTROL (RBAC) ENGINE
+  // ---------------------------------------------------------------------------
+  let currentDashboardRole = 'operasional';
+
+  function initDashboardRole() {
+    const savedRole = localStorage.getItem('ancol_dashboard_role');
+    if (savedRole === 'operasional' || savedRole === 'management') {
+      applyDashboardRole(savedRole);
+    } else {
+      // First visit: default to operasional and open modal to let user choose
+      applyDashboardRole('operasional');
+      openRoleModal();
+    }
+  }
+
+  function openRoleModal() {
+    const overlay = document.getElementById('roleModalOverlay');
+    if (overlay) overlay.style.display = 'flex';
+  }
+
+  function closeRoleModal() {
+    const overlay = document.getElementById('roleModalOverlay');
+    if (overlay) overlay.style.display = 'none';
+  }
+
+  function handleRoleOverlayClick(e) {
+    if (e.target && e.target.id === 'roleModalOverlay') {
+      closeRoleModal();
+    }
+  }
+
+  function selectDashboardRole(role) {
+    const chk = document.getElementById('chkRememberRole');
+    const remember = chk ? chk.checked : true;
+    if (remember) {
+      try {
+        localStorage.setItem('ancol_dashboard_role', role);
+      } catch (err) {
+        console.warn('localStorage not available:', err);
+      }
+    }
+    applyDashboardRole(role);
+    closeRoleModal();
+  }
+
+  function applyDashboardRole(role) {
+    currentDashboardRole = role;
+    document.body.setAttribute('data-role', role);
+
+    const roleIconEl = document.getElementById('roleIcon');
+    const roleTextEl = document.getElementById('roleText');
+
+    if (role === 'operasional') {
+      if (roleIconEl) roleIconEl.textContent = '🏪';
+      if (roleTextEl) roleTextEl.textContent = 'Mode: Operasional';
+      
+      // If table tab was currently on suppliers, gracefully switch to outlets
+      const activeTabBtn = document.querySelector('.tab-btn.active');
+      if (activeTabBtn && activeTabBtn.id === 'tabBtnSuppliers') {
+        const outletTabBtn = document.querySelector('.tab-btn');
+        if (typeof switchTable === 'function' && outletTabBtn) {
+          switchTable('outlets', outletTabBtn);
+        }
+      }
+      // If AI chat drawer was open, close it
+      if (typeof closeAIChat === 'function') {
+        closeAIChat();
+      }
+    } else {
+      if (roleIconEl) roleIconEl.textContent = '💼';
+      if (roleTextEl) roleTextEl.textContent = 'Mode: Management';
+    }
+
+    // Trigger charts redraw if canvas parent dimensions altered
+    if (typeof redrawAllCharts === 'function') {
+      setTimeout(redrawAllCharts, 80);
+    }
+  }
+
+  // Inisialisasi pintasan kustom, multi-select outlet, status AI, & Profil Akses Role
   initOutletMultiselect();
   renderCustomPresets();
   updatePresetButtonsUI();
   checkAIStatus();
+  initDashboardRole();
 </script>
 </body>
 </html>
