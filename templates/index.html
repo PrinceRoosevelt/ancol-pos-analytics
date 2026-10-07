@@ -13796,8 +13796,7 @@
 
     // Parse bullet points from AI answer
     const cleanAnswer = aiAnswerText || '';
-    const rawLines = cleanAnswer.split('
-')
+    const rawLines = cleanAnswer.split(/\r?\n/)
       .map(l => l.replace(/\*\*(.*?)\*\*/g, '$1').replace(/^###?\s*/, '').trim())
       .filter(l => l.length > 5 && !l.startsWith('—') && !l.startsWith('📱'));
 
