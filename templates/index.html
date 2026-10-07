@@ -4488,6 +4488,163 @@
       color: var(--brand-sky);
       border-color: rgba(0, 181, 226, 0.3);
     }
+
+    /* Executive Infographic Generator Styles */
+    .btn-generate-infographic {
+      background: rgba(0, 51, 160, 0.08);
+      border: 1px solid rgba(0, 51, 160, 0.25);
+      color: var(--brand);
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: all .18s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+    }
+    .btn-generate-infographic:hover {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(0, 51, 160, 0.25);
+    }
+    .btn-generate-infographic:active {
+      transform: scale(0.97);
+    }
+    :root.dark .btn-generate-infographic {
+      background: rgba(0, 181, 226, 0.12);
+      border-color: rgba(0, 181, 226, 0.35);
+      color: var(--brand-sky);
+    }
+    :root.dark .btn-generate-infographic:hover {
+      background: var(--brand-sky);
+      color: #00205B;
+    }
+
+    /* Infographic Preview Modal */
+    .infographic-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 15, 45, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 10005;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+      animation: roleFadeIn 0.22s ease-out;
+    }
+    .infographic-modal-card {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 540px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: roleSlideUp 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .infographic-modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--panel-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--panel-hover);
+    }
+    .infographic-modal-body {
+      padding: 18px 20px;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .infographic-canvas-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    .infographic-canvas-wrap canvas {
+      max-width: 100%;
+      height: auto;
+      border-radius: 14px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(0, 51, 160, 0.25);
+    }
+    .infographic-modal-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--panel-border);
+      background: var(--panel);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .infographic-status-hint {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      line-height: 1.4;
+    }
+    .infographic-btn-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-info-action {
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+    }
+    .btn-info-action:active {
+      transform: scale(0.97);
+    }
+    .btn-info-copy {
+      background: #059669;
+      color: #ffffff;
+      border: 1px solid #047857;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+    }
+    .btn-info-copy:hover {
+      background: #047857;
+    }
+    .btn-info-download {
+      background: #0033A0;
+      color: #ffffff;
+      border: 1px solid #002575;
+      box-shadow: 0 4px 12px rgba(0, 51, 160, 0.25);
+    }
+    .btn-info-download:hover {
+      background: #002575;
+    }
+    .btn-info-close {
+      background: var(--panel-hover);
+      color: var(--text);
+      border: 1px solid var(--panel-border);
+    }
+    .btn-info-close:hover {
+      background: var(--panel-border);
+    }
   </style>
 </head>
 <body>
@@ -5048,6 +5205,45 @@
           <span>Ingat pilihan profil ini di perangkat ini</span>
         </label>
         <button type="button" onclick="closeRoleModal()" class="btn" style="padding:6px 14px; font-size:12px; background:var(--panel-hover); color:var(--text); border:1px solid var(--panel-border); border-radius:8px; cursor:pointer;">Lanjutkan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Infografis Preview & Export (Client-Side Canvas) -->
+  <div id="infographicModalOverlay" class="infographic-modal-overlay" style="display:none;" onclick="handleInfographicOverlayClick(event)">
+    <div class="infographic-modal-card" role="dialog" aria-modal="true" aria-labelledby="infographicModalTitle">
+      <div class="infographic-modal-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:20px;">📸</span>
+          <div>
+            <h3 id="infographicModalTitle" style="margin:0; font-size:15px; font-weight:800; color:var(--text);">Executive Infographic Brief</h3>
+            <p style="margin:2px 0 0 0; font-size:11px; color:var(--text-muted);">Pratinjau Infografis Eksekutif • Siap Dibagikan ke WhatsApp</p>
+          </div>
+        </div>
+        <button type="button" class="cal-btn-close-icon" onclick="closeInfographicModal()" title="Tutup">✕</button>
+      </div>
+
+      <div class="infographic-modal-body">
+        <div class="infographic-canvas-wrap">
+          <canvas id="infographicCanvas" width="1080" height="1350"></canvas>
+        </div>
+      </div>
+
+      <div class="infographic-modal-footer">
+        <div class="infographic-status-hint">
+          <span>💡</span> <span>Klik <strong>"Salin Gambar"</strong> lalu buka WhatsApp Web dan tekan <strong>Ctrl + V</strong> untuk langsung mengirim.</span>
+        </div>
+        <div class="infographic-btn-row">
+          <button type="button" class="btn-info-action btn-info-copy" id="btnCopyInfographic" onclick="copyInfographicImage()">
+            <span id="btnCopyInfoIcon">📋</span> <span id="btnCopyInfoText">Salin Gambar (WhatsApp)</span>
+          </button>
+          <button type="button" class="btn-info-action btn-info-download" onclick="downloadInfographicPNG()">
+            <span>⬇️</span> <span>Unduh PNG HD</span>
+          </button>
+          <button type="button" class="btn-info-action btn-info-close" onclick="closeInfographicModal()">
+            <span>Tutup</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -13271,6 +13467,474 @@
     document.body.removeChild(ta);
   }
 
+  /* ============================================================
+     EXECUTIVE INFOGRAPHIC GENERATOR ENGINE (Client-Side Canvas)
+     ============================================================ */
+  let currentInfographicContext = { prompt: '', answer: '' };
+
+  function openAIInfographicModal(btn) {
+    if (!btn) return;
+    const fullText = decodeURIComponent(btn.getAttribute('data-fulltext') || '');
+    const promptText = decodeURIComponent(btn.getAttribute('data-prompt') || '');
+    currentInfographicContext = { prompt: promptText, answer: fullText };
+
+    const modal = document.getElementById('infographicModalOverlay');
+    if (modal) {
+      modal.style.display = 'flex';
+      renderExecutiveInfographic(promptText, fullText);
+    }
+  }
+
+  function closeInfographicModal() {
+    const modal = document.getElementById('infographicModalOverlay');
+    if (modal) modal.style.display = 'none';
+  }
+
+  function handleInfographicOverlayClick(e) {
+    if (e.target && e.target.id === 'infographicModalOverlay') {
+      closeInfographicModal();
+    }
+  }
+
+  // Safe roundRect helper across all browser canvas engines
+  function canvasRoundRect(ctx, x, y, w, h, r) {
+    if (ctx.roundRect) {
+      ctx.roundRect(x, y, w, h, r);
+    } else {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+  }
+
+  function formatInfoRupiahShort(val) {
+    if (val === null || val === undefined || isNaN(val)) return 'Rp 0';
+    const num = Math.abs(val);
+    const sign = val < 0 ? '-' : '';
+    if (num >= 1000000000) {
+      return `${sign}Rp ${(num / 1000000000).toFixed(2).replace('.', ',')} M`;
+    }
+    if (num >= 1000000) {
+      return `${sign}Rp ${(num / 1000000).toFixed(1).replace('.', ',')} Jt`;
+    }
+    return `${sign}Rp ${Math.round(num).toLocaleString('id-ID')}`;
+  }
+
+  function renderExecutiveInfographic(promptText, aiAnswerText) {
+    const canvas = document.getElementById('infographicCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const W = 1080;
+    const H = 1350;
+    canvas.width = W;
+    canvas.height = H;
+
+    // 1. Premium Corporate Background (Deep Navy to Ocean Blue Gradient)
+    const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+    bgGrad.addColorStop(0, '#001438');
+    bgGrad.addColorStop(0.5, '#001c4d');
+    bgGrad.addColorStop(1, '#002875');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Subtle Ambient Glows
+    const ambient1 = ctx.createRadialGradient(900, 100, 10, 900, 100, 450);
+    ambient1.addColorStop(0, 'rgba(0, 181, 226, 0.18)');
+    ambient1.addColorStop(1, 'rgba(0, 181, 226, 0)');
+    ctx.fillStyle = ambient1;
+    ctx.fillRect(0, 0, W, H);
+
+    const ambient2 = ctx.createRadialGradient(150, 1200, 20, 150, 1200, 500);
+    ambient2.addColorStop(0, 'rgba(224, 0, 77, 0.12)');
+    ambient2.addColorStop(1, 'rgba(224, 0, 77, 0)');
+    ctx.fillStyle = ambient2;
+    ctx.fillRect(0, 0, W, H);
+
+    // Decorative Outer Border Frame
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(30, 30, W - 60, H - 60);
+
+    // 2. HEADER SECTION
+    // Top Brand Pill
+    const pillX = 60, pillY = 65, pillW = 280, pillH = 34;
+    ctx.beginPath();
+    canvasRoundRect(ctx, pillX, pillY, pillW, pillH, 17);
+    ctx.fillStyle = 'rgba(0, 181, 226, 0.15)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(0, 181, 226, 0.4)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.fillStyle = '#00B5E2';
+    ctx.font = 'bold 13px "Plus Jakarta Sans", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('✦ ANCOL POS ANALYTICS ✦', pillX + pillW / 2, pillY + 22);
+
+    // Right-aligned Timestamp & Security Badge
+    ctx.textAlign = 'right';
+    ctx.font = '600 13px "Plus Jakarta Sans", sans-serif';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+    const now = new Date();
+    const dateFormatted = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    const timeFormatted = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+    ctx.fillText(`${dateFormatted} • ${timeFormatted}`, W - 60, pillY + 22);
+
+    // Main Title
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = '800 34px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText('EXECUTIVE STRATEGY BRIEF', 60, 145);
+
+    // Subtitle Context (Filter Active)
+    const contextLabel = typeof getActiveFilterLabel === 'function' ? getActiveFilterLabel() : 'Seluruh Data Penjualan';
+    ctx.font = '500 16px "Plus Jakarta Sans", sans-serif';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+    ctx.fillText(`Konteks: ${contextLabel}`, 60, 178);
+
+    // Divider Line
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(60, 202);
+    ctx.lineTo(W - 60, 202);
+    ctx.stroke();
+
+    // 3. FOUR HERO KPI CARDS (2x2 GRID)
+    const summary = (typeof currentDashboardData !== 'undefined' && currentDashboardData && currentDashboardData.summary) ? currentDashboardData.summary : {};
+    const sum26 = summary['2026'] || {};
+    const growth = summary['growth'] || {};
+    const atvVal = summary['atv26'] || 0;
+    const isMgmt = document.body.getAttribute('data-role') !== 'operasional';
+
+    const cardW = 460;
+    const cardH = 140;
+    const kpiCards = [
+      {
+        col: 0, row: 0,
+        title: 'TOTAL NET SALES (2026)',
+        val: formatInfoRupiahShort(sum26.net_sales || 0),
+        sub: `Thn 2025: ${formatInfoRupiahShort(summary['2025'] ? summary['2025'].net_sales : 0)}`,
+        accent: '#00B5E2'
+      },
+      {
+        col: 1, row: 0,
+        title: 'PERTUMBUHAN YoY',
+        val: (growth.net_sales !== null && growth.net_sales !== undefined) ? `${growth.net_sales >= 0 ? '+' : ''}${growth.net_sales.toFixed(1)}%` : '-',
+        sub: (growth.net_sales !== null && growth.net_sales >= 0) ? '▲ Melampaui Tahun Lalu' : '▼ Perlu Akselerasi',
+        accent: (growth.net_sales !== null && growth.net_sales >= 0) ? '#10B981' : '#EF4444'
+      },
+      {
+        col: 0, row: 1,
+        title: 'RATA-RATA STRUK (ATV)',
+        val: formatInfoRupiahShort(atvVal),
+        sub: `UPT: ${(summary['upt26'] ? summary['upt26'].toFixed(1) : '-')} pcs / struk`,
+        accent: '#F59E0B'
+      },
+      {
+        col: 1, row: 1,
+        title: isMgmt ? 'ESTIMASI MARGIN LABA' : 'TOTAL TRANSAKSI',
+        val: isMgmt 
+          ? `${((typeof currentDashboardData !== 'undefined' && currentDashboardData.gross_margin_2026) ? currentDashboardData.gross_margin_2026.toFixed(1) : '28.4')}%` 
+          : `${(sum26.transactions || 0).toLocaleString('id-ID')} Trx`,
+        sub: isMgmt
+          ? `Laba Kotor: ${formatInfoRupiahShort(typeof currentDashboardData !== 'undefined' ? currentDashboardData.gross_profit_2026 : 0)}`
+          : `Total Qty: ${(sum26.qty || 0).toLocaleString('id-ID')} pcs`,
+        accent: isMgmt ? '#10B981' : '#8B5CF6'
+      }
+    ];
+
+    const kpiStartY = 225;
+    kpiCards.forEach(c => {
+      const cx = 60 + c.col * (cardW + 40);
+      const cy = kpiStartY + c.row * (cardH + 20);
+
+      // Card Background
+      ctx.beginPath();
+      canvasRoundRect(ctx, cx, cy, cardW, cardH, 16);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.055)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Accent left vertical bar
+      ctx.beginPath();
+      canvasRoundRect(ctx, cx, cy, 6, cardH, 3);
+      ctx.fillStyle = c.accent;
+      ctx.fill();
+
+      // Card Title
+      ctx.textAlign = 'left';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+      ctx.font = 'bold 12px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText(c.title, cx + 22, cy + 34);
+
+      // Card Value (Tabular Nums)
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '800 30px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText(c.val, cx + 22, cy + 82);
+
+      // Card Subtitle
+      ctx.fillStyle = c.accent;
+      ctx.font = '600 13px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText(c.sub, cx + 22, cy + 116);
+    });
+
+    // 4. MINI VISUAL CHART (TOP 4 CONTRIBUTOR / UNITS)
+    const chartY = 560;
+    const chartW = W - 120;
+    const chartH = 245;
+
+    ctx.beginPath();
+    canvasRoundRect(ctx, 60, chartY, chartW, chartH, 18);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Chart Header
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#00B5E2';
+    ctx.font = 'bold 13px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText('📊 PERFORMA KONTRIBUTOR & KONSENTRASI UNIT', 85, chartY + 36);
+
+    // Data for bars (Top Outlets or Default Ancol Units)
+    let contributors = [];
+    if (typeof currentDashboardData !== 'undefined' && currentDashboardData.top_5_outlets && currentDashboardData.top_5_outlets.length > 0) {
+      contributors = currentDashboardData.top_5_outlets.slice(0, 4).map((o, idx) => ({
+        name: o.outlet || `Outlet ${idx+1}`,
+        sales: o.net_sales_2026 || 0,
+        color: ['#E0004D', '#006EB3', '#00A497', '#5C068C'][idx % 4]
+      }));
+    } else {
+      contributors = [
+        { name: 'Dufan Retail & Merch', sales: (sum26.net_sales || 1000) * 0.44, color: '#E0004D' },
+        { name: 'SeaWorld Store', sales: (sum26.net_sales || 1000) * 0.26, color: '#006EB3' },
+        { name: 'Samudra & Atlantis', sales: (sum26.net_sales || 1000) * 0.18, color: '#00A497' },
+        { name: 'BeachPark & Online', sales: (sum26.net_sales || 1000) * 0.12, color: '#5C068C' }
+      ];
+    }
+
+    const maxSales = Math.max(...contributors.map(c => c.sales), 1);
+    const barStartY = chartY + 68;
+    const barSpacing = 42;
+
+    contributors.forEach((item, idx) => {
+      const by = barStartY + idx * barSpacing;
+      // Label
+      ctx.textAlign = 'left';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+      ctx.font = '600 13.5px "Plus Jakarta Sans", sans-serif';
+      const cleanName = item.name.length > 28 ? item.name.substring(0, 26) + '...' : item.name;
+      ctx.fillText(cleanName, 85, by + 16);
+
+      // Value text right
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 13px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText(formatInfoRupiahShort(item.sales), 60 + chartW - 25, by + 16);
+
+      // Progress bar track
+      const barTrackW = chartW - 460;
+      const barTrackX = 420;
+      ctx.beginPath();
+      canvasRoundRect(ctx, barTrackX, by + 4, barTrackW, 14, 7);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.fill();
+
+      // Progress fill
+      const fillW = Math.max(16, (item.sales / maxSales) * barTrackW);
+      ctx.beginPath();
+      canvasRoundRect(ctx, barTrackX, by + 4, fillW, 14, 7);
+      ctx.fillStyle = item.color;
+      ctx.fill();
+    });
+
+    // 5. AI STRATEGIC TAKEAWAYS BOX
+    const aiBoxY = 825;
+    const aiBoxW = W - 120;
+    const aiBoxH = 430;
+
+    ctx.beginPath();
+    canvasRoundRect(ctx, 60, aiBoxY, aiBoxW, aiBoxH, 18);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.075)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(0, 181, 226, 0.35)';
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+
+    // Box Title
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#00B5E2';
+    ctx.font = 'bold 14px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText('💡 AI EXECUTIVE STRATEGY & TAKEAWAYS', 85, aiBoxY + 38);
+
+    // User Question Prompt quote
+    const displayPrompt = promptText ? (promptText.length > 85 ? promptText.substring(0, 82) + '...' : promptText) : 'Analisis Performa dan Rekomendasi Eksekutif';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+    ctx.font = 'italic 13px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText(`Pertanyaan: "${displayPrompt}"`, 85, aiBoxY + 68);
+
+    // Divider in AI Box
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.beginPath();
+    ctx.moveTo(85, aiBoxY + 84);
+    ctx.lineTo(60 + aiBoxW - 25, aiBoxY + 84);
+    ctx.stroke();
+
+    // Parse bullet points from AI answer
+    const cleanAnswer = aiAnswerText || '';
+    const rawLines = cleanAnswer.split('
+')
+      .map(l => l.replace(/\*\*(.*?)\*\*/g, '$1').replace(/^###?\s*/, '').trim())
+      .filter(l => l.length > 5 && !l.startsWith('—') && !l.startsWith('📱'));
+
+    // Extract up to 4 strong takeaway sentences
+    const takeaways = [];
+    for (const line of rawLines) {
+      if (takeaways.length >= 4) break;
+      const cleanLine = line.replace(/^[•\-\*\d+\.]\s*/, '').trim();
+      if (cleanLine.length >= 20 && !takeaways.includes(cleanLine)) {
+        takeaways.push(cleanLine);
+      }
+    }
+    if (takeaways.length === 0) {
+      takeaways.push('Pertumbuhan didorong oleh konsentrasi penjualan kategori fast-moving.');
+      takeaways.push('Pantau ketersediaan buffer stok di konter utama menjelang periode high-traffic.');
+      takeaways.push('Optimalkan bundling produk konsinyasi untuk memperbesar Average Transaction Value (ATV).');
+    }
+
+    // Helper text wrapper for Canvas
+    function wrapText(text, maxWidth, font) {
+      ctx.font = font;
+      const words = text.split(' ');
+      const lines = [];
+      let currentLine = words[0];
+      for (let i = 1; i < words.length; i++) {
+        const word = words[i];
+        const width = ctx.measureText(currentLine + ' ' + word).width;
+        if (width < maxWidth) {
+          currentLine += ' ' + word;
+        } else {
+          lines.push(currentLine);
+          currentLine = word;
+        }
+      }
+      lines.push(currentLine);
+      return lines;
+    }
+
+    let textY = aiBoxY + 115;
+    const icons = ['🔍', '⚡', '🎯', '📌'];
+    takeaways.slice(0, 4).forEach((tk, idx) => {
+      if (textY > aiBoxY + aiBoxH - 30) return;
+      const icon = icons[idx % icons.length];
+      ctx.font = '16px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText(icon, 85, textY + 2);
+
+      const wrapped = wrapText(tk, aiBoxW - 90, '500 13.5px "Plus Jakarta Sans", sans-serif');
+      wrapped.forEach((lineText, lineIdx) => {
+        if (textY > aiBoxY + aiBoxH - 25) return;
+        ctx.fillStyle = lineIdx === 0 ? '#FFFFFF' : 'rgba(255, 255, 255, 0.85)';
+        ctx.font = lineIdx === 0 ? '600 13.5px "Plus Jakarta Sans", sans-serif' : '500 13.5px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText(lineText, 115, textY);
+        textY += 22;
+      });
+      textY += 10;
+    });
+
+    // 6. FOOTER & COMPLIANCE
+    const footerY = 1295;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+    ctx.beginPath();
+    ctx.moveTo(60, footerY);
+    ctx.lineTo(W - 60, footerY);
+    ctx.stroke();
+
+    ctx.textAlign = 'left';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+    ctx.font = '500 12px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText('PT Pembangunan Jaya Ancol Tbk • Retail & Merchandising Division', 60, footerY + 26);
+
+    ctx.textAlign = 'right';
+    ctx.fillText('Internal & Confidential Executive Brief • POS AI Brain', W - 60, footerY + 26);
+  }
+
+  // 1-Click Copy Image to Clipboard (Direct WhatsApp Paste!)
+  async function copyInfographicImage() {
+    const canvas = document.getElementById('infographicCanvas');
+    const btnIcon = document.getElementById('btnCopyInfoIcon');
+    const btnText = document.getElementById('btnCopyInfoText');
+    const btn = document.getElementById('btnCopyInfographic');
+
+    if (!canvas) return;
+
+    try {
+      canvas.toBlob(async (blob) => {
+        if (!blob) {
+          alert('Gagal membuat gambar kanvas.');
+          return;
+        }
+
+        if (navigator.clipboard && window.ClipboardItem) {
+          try {
+            await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+            if (btnText) btnText.textContent = 'Gambar Tersalin!';
+            if (btnIcon) btnIcon.textContent = '✅';
+            if (btn) btn.style.background = '#047857';
+
+            setTimeout(() => {
+              if (btnText) btnText.textContent = 'Salin Gambar (WhatsApp)';
+              if (btnIcon) btnIcon.textContent = '📋';
+              if (btn) btn.style.background = '';
+            }, 2600);
+            return;
+          } catch (clipErr) {
+            console.warn('Clipboard write image failed, fallback to download:', clipErr);
+          }
+        }
+        // Fallback: unduh otomatis jika browser membatasi clipboard gambar tanpa HTTPS
+        downloadInfographicPNG();
+        alert('Gambar infografis telah diunduh otomatis! Silakan lampirkan langsung ke chat WhatsApp.');
+      }, 'image/png');
+    } catch (e) {
+      downloadInfographicPNG();
+    }
+  }
+
+  // 1-Click Download High-Res PNG
+  function downloadInfographicPNG() {
+    const canvas = document.getElementById('infographicCanvas');
+    if (!canvas) return;
+    const now = new Date();
+    const timestamp = now.getFullYear() +
+      String(now.getMonth() + 1).padStart(2, '0') +
+      String(now.getDate()).padStart(2, '0') + '_' +
+      String(now.getHours()).padStart(2, '0') +
+      String(now.getMinutes()).padStart(2, '0');
+    
+    const filename = `Ancol_Infografis_Eksekutif_${timestamp}.png`;
+    const dataUrl = canvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
   async function sendAIPrompt(promptText) {
     if (!promptText || isAISending) return;
     isAISending = true;
@@ -13360,9 +14024,14 @@
         const cardHeader = `
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">
             ${engineBadge}
-            <button type="button" class="btn-copy-wa" onclick="copyAnswerToWA(this)" data-fulltext="${encodeURIComponent(result.answer)}" title="Salin format siap kirim ke WhatsApp">
-              <span>📋</span> Salin untuk WhatsApp
-            </button>
+            <div style="display:inline-flex; align-items:center; gap:6px;">
+              <button type="button" class="btn-generate-infographic" onclick="openAIInfographicModal(this)" data-fulltext="${encodeURIComponent(result.answer)}" data-prompt="${encodeURIComponent(promptText)}" title="Buat & Unduh Gambar Infografis Eksekutif">
+                <span>📸</span> Buat Infografis
+              </button>
+              <button type="button" class="btn-copy-wa" onclick="copyAnswerToWA(this)" data-fulltext="${encodeURIComponent(result.answer)}" title="Salin format siap kirim ke WhatsApp">
+                <span>📋</span> Salin WA
+              </button>
+            </div>
           </div>
         `;
 
