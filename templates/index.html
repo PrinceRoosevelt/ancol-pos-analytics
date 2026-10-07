@@ -13470,18 +13470,30 @@
   /* ============================================================
      EXECUTIVE INFOGRAPHIC GENERATOR ENGINE (Client-Side Canvas 16:9 Landscape - Maximized Intent Edition)
      ============================================================ */
-  let currentInfographicContext = { prompt: '', answer: '' };
+  let currentInfographicContext = { prompt: '', answer: '', spec: null };
 
   function openAIInfographicModal(btn) {
     if (!btn) return;
     const fullText = decodeURIComponent(btn.getAttribute('data-fulltext') || '');
     const promptText = decodeURIComponent(btn.getAttribute('data-prompt') || '');
-    currentInfographicContext = { prompt: promptText, answer: fullText };
+    let spec = null;
+    const rawSpec = btn.getAttribute('data-spec');
+    if (rawSpec) {
+      try {
+        spec = JSON.parse(decodeURIComponent(rawSpec));
+      } catch (e) {
+        console.warn('Failed to parse infographic_spec from button:', e);
+      }
+    }
+    if (!spec && window.LAST_AI_INFOGRAPHIC_SPEC) {
+      spec = window.LAST_AI_INFOGRAPHIC_SPEC;
+    }
+    currentInfographicContext = { prompt: promptText, answer: fullText, spec: spec };
 
     const modal = document.getElementById('infographicModalOverlay');
     if (modal) {
       modal.style.display = 'flex';
-      renderExecutiveInfographic(promptText, fullText);
+      renderExecutiveInfographic(promptText, fullText, spec);
     }
   }
 
@@ -13588,7 +13600,7 @@
     return `${sign}Rp ${Math.round(num).toLocaleString('id-ID')}`;
   }
 
-  function renderExecutiveInfographic(promptText, aiAnswerText) {
+  function renderExecutiveInfographic(promptText, aiAnswerText, spec) {
     const canvas = document.getElementById('infographicCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -13609,9 +13621,12 @@
     ctx.lineWidth = 1.5;
     ctx.strokeRect(36, 36, W - 72, H - 72);
 
-    // 2. CONTEXTUAL INTELLIGENCE & INTENT ROUTING (PROMPT-FIRST)
+    // 2. CONTEXTUAL INTELLIGENCE & DETERMINISTIC SPEC ROUTING
     const pLow = (promptText || '').toLowerCase();
     const aLow = (aiAnswerText || '').toLowerCase();
+
+    // Check if deterministic AI spec is available
+    const hasSpec = !!(spec && spec.kpis && spec.kpis.length === 4 && spec.module_1);
 
     function detectUnitFromStr(s) {
       if (!s) return null;
@@ -13623,9 +13638,8 @@
       return null;
     }
 
-    // PROMPT-STRICT: Only detect unit if prompt explicitly asks, or answer is dedicated 100% to single unit
-    let detectedUnit = detectUnitFromStr(pLow);
-    if (!detectedUnit) {
+    let detectedUnit = hasSpec ? spec.unit : detectUnitFromStr(pLow);
+    if (!detectedUnit && !hasSpec) {
       const explicitUnitInAnswer = (aLow.match(/di unit (dufan|seaworld|samudra|atlantis|beachpark)/) || []);
       if (explicitUnitInAnswer[1]) {
         detectedUnit = detectUnitFromStr(explicitUnitInAnswer[1]);
@@ -13639,38 +13653,51 @@
       'Atlantis': '#5C068C',
       'BeachPark': '#D97706'
     };
-    const unitColor = detectedUnit ? (unitThemeColors[detectedUnit] || '#0033A0') : '#0033A0';
+    const unitColor = hasSpec ? (spec.unit_color || '#0033A0') : (detectedUnit ? (unitThemeColors[detectedUnit] || '#0033A0') : '#0033A0');
 
-    const combinedQuery = pLow + ' ' + aLow;
-    const isAudit = combinedQuery.includes('surplus') || combinedQuery.includes('defisit') || combinedQuery.includes('posisi target') || combinedQuery.includes('pencapaian');
-    const isProduct = combinedQuery.includes('produk') || combinedQuery.includes('barang') || combinedQuery.includes('sku') || combinedQuery.includes('terlaris') || combinedQuery.includes('fast-moving');
-    const isForecast = !isAudit && (combinedQuery.includes('forecast') || combinedQuery.includes('proyeksi') || combinedQuery.includes('pekan depan') || combinedQuery.includes('rencana') || (combinedQuery.includes('target') && !isAudit));
-    const isVendor = combinedQuery.includes('vendor') || combinedQuery.includes('supplier') || combinedQuery.includes('konsinyasi');
+    // Strict Prompt-First Intent Classification (Prevents incidental answer words from hijacking layout)
+    const isAudit = hasSpec ? (spec.intent === 'financial_audit') : (pLow.includes('audit') || pLow.includes('surplus') || pLow.includes('defisit') || pLow.includes('posisi target'));
+    const isForecast = hasSpec ? (spec.intent === 'forecast') : (!isAudit && (pLow.includes('forecast') || pLow.includes('proyeksi') || pLow.includes('rencana')));
+    const isProduct = hasSpec ? (spec.intent === 'product_velocity') : (pLow.includes('produk') || pLow.includes('sku') || pLow.includes('terlaris') || pLow.includes('fast-moving'));
+    const isVendor = hasSpec ? (spec.intent === 'supplier_analysis') : (pLow.includes('vendor') || pLow.includes('supplier') || pLow.includes('konsinyasi'));
 
-    // Detect Target Month & Period
-    const monthNames = ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'];
-    let targetPeriod = null;
-    for (const m of monthNames) {
-      if (pLow.includes(m) || aLow.includes(m)) {
-        const yrMatch = (pLow + ' ' + aLow).match(/202[5-9]/);
-        targetPeriod = `${m.charAt(0).toUpperCase() + m.slice(1)} ${yrMatch ? yrMatch[0] : '2026'}`;
-        break;
+    let dynamicTitle = hasSpec ? spec.title : 'EXECUTIVE STRATEGY & INTELLIGENCE BRIEF';
+    let subContext = hasSpec ? spec.sub_context : '';
+
+    if (!hasSpec) {
+      const monthNames = ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'];
+      let targetPeriod = null;
+      for (const m of monthNames) {
+        if (pLow.includes(m) || aLow.includes(m)) {
+          const yrMatch = (pLow + ' ' + aLow).match(/202[5-9]/);
+          targetPeriod = `${m.charAt(0).toUpperCase() + m.slice(1)} ${yrMatch ? yrMatch[0] : '2026'}`;
+          break;
+        }
       }
-    }
 
-    let dynamicTitle = 'EXECUTIVE STRATEGY & INTELLIGENCE BRIEF';
-    if (isAudit) {
-      dynamicTitle = detectedUnit ? `FINANCIAL AUDIT: POSISI TARGET & SURPLUS (${detectedUnit.toUpperCase()})` : 'EXECUTIVE FINANCIAL AUDIT: POSISI TARGET & REALISASI';
-    } else if (detectedUnit && isForecast) {
-      dynamicTitle = `EXECUTIVE FORECASTING BRIEF: ${detectedUnit.toUpperCase()}`;
-    } else if (isForecast) {
-      dynamicTitle = 'EXECUTIVE FORECASTING & PROJECTION BRIEF';
-    } else if (isProduct) {
-      dynamicTitle = 'PRODUCT VELOCITY & MERCHANDISE INTELLIGENCE';
-    } else if (detectedUnit) {
-      dynamicTitle = `UNIT DEEP-DIVE: ${detectedUnit.toUpperCase()} PERFORMANCE`;
-    } else if (isVendor) {
-      dynamicTitle = 'VENDOR & CONSIGNMENT STRATEGIC AUDIT';
+      if (isAudit) {
+        dynamicTitle = detectedUnit ? `FINANCIAL AUDIT: POSISI TARGET & REALISASI (${detectedUnit.toUpperCase()})` : 'EXECUTIVE FINANCIAL AUDIT: POSISI TARGET & REALISASI';
+      } else if (detectedUnit && isForecast) {
+        dynamicTitle = `EXECUTIVE FORECASTING BRIEF: ${detectedUnit.toUpperCase()}`;
+      } else if (isForecast) {
+        dynamicTitle = 'EXECUTIVE FORECASTING & PROJECTION BRIEF';
+      } else if (isProduct) {
+        dynamicTitle = 'PRODUCT VELOCITY & MERCHANDISE INTELLIGENCE';
+      } else if (detectedUnit) {
+        dynamicTitle = `EXECUTIVE SUMMARY: ${detectedUnit.toUpperCase()} PERFORMANCE BRIEF`;
+      } else if (isVendor) {
+        dynamicTitle = 'VENDOR & CONSIGNMENT STRATEGIC AUDIT';
+      }
+
+      const baseContext = typeof getActiveFilterLabel === 'function' ? getActiveFilterLabel() : 'Seluruh Data YTD 2026';
+      subContext = `Konteks Filter: ${baseContext}`;
+      if (detectedUnit && targetPeriod) {
+        subContext = `Fokus Unit: ${detectedUnit} • Periode Target: ${targetPeriod} • Baseline: YTD & Histori 2025`;
+      } else if (detectedUnit) {
+        subContext = `Fokus Unit: ${detectedUnit} • Filter Dashboard: ${baseContext}`;
+      } else if (targetPeriod) {
+        subContext = `Periode Target: ${targetPeriod} • Baseline Filter: ${baseContext}`;
+      }
     }
 
     // 3. HEADER SECTION (Full Width)
@@ -13705,15 +13732,6 @@
     ctx.fillText(dynamicTitle, 64, 134);
 
     // Subtitle Context
-    const baseContext = typeof getActiveFilterLabel === 'function' ? getActiveFilterLabel() : 'Seluruh Data YTD 2026';
-    let subContext = `Konteks Filter: ${baseContext}`;
-    if (detectedUnit && targetPeriod) {
-      subContext = `Fokus Unit: ${detectedUnit} • Periode Target: ${targetPeriod} • Baseline: YTD & Histori 2025`;
-    } else if (detectedUnit) {
-      subContext = `Fokus Unit: ${detectedUnit} • Filter Dashboard: ${baseContext}`;
-    } else if (targetPeriod) {
-      subContext = `Periode Target: ${targetPeriod} • Baseline Filter: ${baseContext}`;
-    }
     ctx.font = '500 15px "Plus Jakarta Sans", sans-serif';
     ctx.fillStyle = '#475569';
     ctx.fillText(subContext, 64, 168);
@@ -13740,92 +13758,99 @@
     const growth = summary['growth'] || {};
     const isMgmt = document.body.getAttribute('data-role') !== 'operasional';
 
-    function extractRpByPattern(regex) {
-      const m = (aiAnswerText || '').match(regex);
-      if (!m || !m[1]) return null;
-      return parseRpValue(m[1]);
-    }
-
-    const tPattern = /(?:target(?:\s+(?:finansial|bulanan|omset|mingguan|pekanan))?(?:\s+[\w\s\d]+)?:?|proyeksi\s+omset:?|dipatok\s+sebesar)[^\d\n]*?Rp\s*([\d\.,]+(?:\s*(?:milyar|miliar|juta|jt|m))?)/i;
-    const hPattern = /(?:realisasi\s+historis(?:\s+[\w\s\d]+)?:?|total\s+omset(?:\s+mencapai)?:?|omset\s+historis:?|histori\s+(?:'25|2025):?)[^\d\n]*?Rp\s*([\d\.,]+(?:\s*(?:milyar|miliar|juta|jt|m))?)/i;
-    const aPattern = /(?:atv|rata-rata\s+belanja(?:\s+per\s+struk)?)[^\d\n]*?Rp\s*([\d\.,]+(?:\s*(?:ribu|rb))?)/i;
-    const uPattern = /(?:upt|volume\s+barang|rata-rata\s+item)[^\d\n]*?([\d\.,]+)\s*(?:pcs|item)/i;
-
-    const rawTarget = extractRpByPattern(tPattern);
-    const rawHist = extractRpByPattern(hPattern);
-    const aiAtv = extractRpByPattern(aPattern);
-    const aiUptMatch = (aiAnswerText || '').match(uPattern);
-    const aiUpt = aiUptMatch ? parseFloat(aiUptMatch[1].replace(',', '.')) : null;
-
-    // RIGOROUS APPLES-TO-APPLES RESOLUTION
-    // If target is in billions (> 5M) but rawHist is a single unit month (< 2M), pair with global baseline
-    let resolvedTarget = rawTarget;
-    let resolvedBaseline = rawHist || sum25.net_sales;
-
-    if (resolvedTarget && resolvedTarget > 5000000000 && rawHist && rawHist < 2000000000) {
-      resolvedBaseline = sum25.net_sales || 16050000000;
-    } else if (resolvedTarget && resolvedTarget < 3000000000 && (!rawHist || rawHist > 5000000000)) {
-      resolvedBaseline = rawHist || 815300901;
-    }
-
-    if (!resolvedTarget && isForecast) {
-      resolvedTarget = Math.round(resolvedBaseline * 1.15);
-    }
-
-    const hasGap = resolvedTarget && resolvedBaseline && resolvedBaseline > 0;
-    const calculatedGapPct = hasGap ? (((resolvedTarget - resolvedBaseline) / resolvedBaseline) * 100) : (growth.net_sales || 5.5);
-
-    // Accurate ATV & UPT resolution
-    const resolvedAtv = aiAtv || sum26.atv || (sum26.transactions > 0 ? (sum26.net_sales / sum26.transactions) : 0);
-    const resolvedUpt = aiUpt || sum26.upt || (sum26.transactions > 0 ? (sum26.qty / sum26.transactions) : 0);
-
-    // Left Panel Hero Cards (2x2 Grid)
-    const cardW = 330;
-    const cardH = 148;
-    const kpiStartY = 212;
-
-    const kpiCards = [
-      {
-        col: 0, row: 0,
-        title: isAudit 
-          ? 'TOTAL REALISASI OMSET (2026)'
-          : (isForecast && resolvedTarget ? 'TARGET FINANSIAL PROYEKSI' : 'TOTAL NET SALES (2026)'),
-        val: formatInfoRupiahShort(isAudit ? (sum26.net_sales || 16930000000) : (resolvedTarget || sum26.net_sales || 0)),
-        sub: isAudit 
-          ? `Histori '25: ${formatInfoRupiahShort(sum25.net_sales || 16050000000)}`
-          : (hasGap ? `Histori '25: ${formatInfoRupiahShort(resolvedBaseline)}` : `Thn 2025: ${formatInfoRupiahShort(sum25.net_sales || 0)}`),
-        accent: unitColor
-      },
-      {
-        col: 1, row: 0,
-        title: isAudit 
-          ? 'POSISI REALISASI vs HISTORI'
-          : (hasGap ? 'GAP TARGET vs HISTORI' : 'PERTUMBUHAN YoY'),
-        val: `${calculatedGapPct >= 0 ? '+' : ''}${calculatedGapPct.toFixed(1)}%`,
-        sub: isAudit
-          ? (calculatedGapPct >= 0 ? '▲ Posisi Surplus (+Rp ' + formatInfoRupiahShort(Math.abs((sum26.net_sales || 16930000000) - (sum25.net_sales || 16050000000))).replace('Rp ', '') + ')' : '▼ Posisi Defisit')
-          : (calculatedGapPct >= 0 ? '▲ Target Tumbuh Agresif' : '▼ Gap Defisit / Perlu Akselerasi'),
-        accent: calculatedGapPct >= 0 ? '#059669' : '#DC2626'
-      },
-      {
-        col: 0, row: 1,
-        title: 'RATA-RATA STRUK (ATV)',
-        val: formatInfoRupiahShort(resolvedAtv),
-        sub: resolvedUpt > 0 ? `UPT: ${resolvedUpt.toFixed(1)} pcs / struk` : `${(sum26.transactions || 0).toLocaleString('id-ID')} Struk`,
-        accent: '#D97706'
-      },
-      {
-        col: 1, row: 1,
-        title: isMgmt ? 'ESTIMASI MARGIN LABA' : 'TOTAL TRANSAKSI KASIR',
-        val: isMgmt 
-          ? `${((typeof currentDashboardData !== 'undefined' && currentDashboardData.gross_margin_2026) ? currentDashboardData.gross_margin_2026.toFixed(1) : '28.4')}%` 
-          : `${(sum26.transactions || 0).toLocaleString('id-ID')} Trx`,
-        sub: isMgmt
-          ? `Laba: ${formatInfoRupiahShort(typeof currentDashboardData !== 'undefined' ? currentDashboardData.gross_profit_2026 : 0)}`
-          : `Total Qty: ${(sum26.qty || 0).toLocaleString('id-ID')} pcs`,
-        accent: isMgmt ? '#059669' : '#7C3AED'
+    let kpiCards = [];
+    if (hasSpec) {
+      kpiCards = spec.kpis.map((c, idx) => ({
+        col: idx % 2,
+        row: Math.floor(idx / 2),
+        title: c.title,
+        val: typeof c.val === 'number' ? formatInfoRupiahShort(c.val) : c.val,
+        sub: c.sub,
+        accent: c.accent || unitColor
+      }));
+    } else {
+      function extractRpByPattern(regex) {
+        const m = (aiAnswerText || '').match(regex);
+        if (!m || !m[1]) return null;
+        return parseRpValue(m[1]);
       }
-    ];
+
+      const tPattern = /(?:target(?:\s+(?:finansial|bulanan|omset|mingguan|pekanan))?(?:\s+[\w\s\d]+)?:?|proyeksi\s+omset:?|dipatok\s+sebesar)[^\d\n]*?Rp\s*([\d\.,]+(?:\s*(?:milyar|miliar|juta|jt|m))?)/i;
+      const hPattern = /(?:realisasi\s+historis(?:\s+[\w\s\d]+)?:?|total\s+omset(?:\s+mencapai)?:?|omset\s+historis:?|histori\s+(?:'25|2025):?)[^\d\n]*?Rp\s*([\d\.,]+(?:\s*(?:milyar|miliar|juta|jt|m))?)/i;
+      const aPattern = /(?:atv|rata-rata\s+belanja(?:\s+per\s+struk)?)[^\d\n]*?Rp\s*([\d\.,]+(?:\s*(?:ribu|rb))?)/i;
+      const uPattern = /(?:upt|volume\s+barang|rata-rata\s+item)[^\d\n]*?([\d\.,]+)\s*(?:pcs|item)/i;
+
+      const rawTarget = extractRpByPattern(tPattern);
+      const rawHist = extractRpByPattern(hPattern);
+      const aiAtv = extractRpByPattern(aPattern);
+      const aiUptMatch = (aiAnswerText || '').match(uPattern);
+      const aiUpt = aiUptMatch ? parseFloat(aiUptMatch[1].replace(',', '.')) : null;
+
+      // RIGOROUS APPLES-TO-APPLES RESOLUTION
+      let resolvedTarget = rawTarget;
+      let resolvedBaseline = rawHist || sum25.net_sales;
+
+      if (resolvedTarget && resolvedTarget > 5000000000 && rawHist && rawHist < 2000000000) {
+        resolvedBaseline = sum25.net_sales || 16050000000;
+      } else if (resolvedTarget && resolvedTarget < 3000000000 && (!rawHist || rawHist > 5000000000)) {
+        resolvedBaseline = rawHist || 815300901;
+      }
+
+      if (!resolvedTarget && isForecast) {
+        resolvedTarget = Math.round(resolvedBaseline * 1.15);
+      }
+
+      const hasGap = resolvedTarget && resolvedBaseline && resolvedBaseline > 0;
+      const calculatedGapPct = hasGap ? (((resolvedTarget - resolvedBaseline) / resolvedBaseline) * 100) : (growth.net_sales || 5.5);
+
+      const resolvedAtv = aiAtv || sum26.atv || (sum26.transactions > 0 ? (sum26.net_sales / sum26.transactions) : 0);
+      const resolvedUpt = aiUpt || sum26.upt || (sum26.transactions > 0 ? (sum26.qty / sum26.transactions) : 0);
+      const deltaFallback = (sum26.net_sales || 16930000000) - (sum25.net_sales || 16050000000);
+      const deltaTextFallback = (deltaFallback >= 0 ? '+' : '') + formatInfoRupiahShort(deltaFallback);
+
+      kpiCards = [
+        {
+          col: 0, row: 0,
+          title: isAudit 
+            ? 'TOTAL REALISASI OMSET (2026)'
+            : (isForecast && resolvedTarget ? 'TARGET FINANSIAL PROYEKSI' : 'TOTAL NET SALES (2026)'),
+          val: formatInfoRupiahShort(isAudit ? (sum26.net_sales || 16930000000) : (resolvedTarget || sum26.net_sales || 0)),
+          sub: isAudit 
+            ? `Histori '25: ${formatInfoRupiahShort(sum25.net_sales || 16050000000)}`
+            : (hasGap ? `Histori '25: ${formatInfoRupiahShort(resolvedBaseline)}` : `Thn 2025: ${formatInfoRupiahShort(sum25.net_sales || 0)}`),
+          accent: unitColor
+        },
+        {
+          col: 1, row: 0,
+          title: isAudit 
+            ? 'POSISI REALISASI vs HISTORI'
+            : (hasGap ? 'GAP TARGET vs HISTORI' : 'PERTUMBUHAN YoY'),
+          val: `${calculatedGapPct >= 0 ? '+' : ''}${calculatedGapPct.toFixed(1)}%`,
+          sub: isAudit
+            ? (calculatedGapPct >= 0 ? `▲ Posisi Surplus (${deltaTextFallback})` : '▼ Posisi Defisit')
+            : (calculatedGapPct >= 0 ? '▲ Target Tumbuh Agresif' : '▼ Gap Defisit / Perlu Akselerasi'),
+          accent: calculatedGapPct >= 0 ? '#059669' : '#DC2626'
+        },
+        {
+          col: 0, row: 1,
+          title: 'RATA-RATA STRUK (ATV)',
+          val: formatInfoRupiahShort(resolvedAtv),
+          sub: resolvedUpt > 0 ? `UPT: ${resolvedUpt.toFixed(1)} pcs / struk` : `${(sum26.transactions || 0).toLocaleString('id-ID')} Struk`,
+          accent: '#D97706'
+        },
+        {
+          col: 1, row: 1,
+          title: isMgmt ? 'ESTIMASI MARGIN LABA' : 'TOTAL TRANSAKSI KASIR',
+          val: isMgmt 
+            ? `${((typeof currentDashboardData !== 'undefined' && currentDashboardData.gross_margin_2026) ? currentDashboardData.gross_margin_2026.toFixed(1) : '28.4')}%` 
+            : `${(sum26.transactions || 0).toLocaleString('id-ID')} Trx`,
+          sub: isMgmt
+            ? `Laba: ${formatInfoRupiahShort(typeof currentDashboardData !== 'undefined' ? currentDashboardData.gross_profit_2026 : 0)}`
+            : `Total Qty: ${(sum26.qty || 0).toLocaleString('id-ID')} pcs`,
+          accent: isMgmt ? '#059669' : '#7C3AED'
+        }
+      ];
+    }
 
     kpiCards.forEach(c => {
       const cx = leftStartX + c.col * (cardW + 24);
@@ -13882,7 +13907,10 @@
     ctx.fillText(detectedUnit ? `📊 KONTRIBUTOR OUTLET & BENCHMARK (${detectedUnit.toUpperCase()})` : '📊 PERFORMA KONTRIBUTOR & KONSENTRASI UNIT', leftStartX + 24, chartY + 36);
 
     let contributors = [];
-    const allOutlets = (typeof currentDashboardData !== 'undefined' && currentDashboardData.outlets) ? currentDashboardData.outlets : [];
+    if (hasSpec && spec.contributors && spec.contributors.length > 0) {
+      contributors = spec.contributors;
+    } else {
+      const allOutlets = (typeof currentDashboardData !== 'undefined' && currentDashboardData.outlets) ? currentDashboardData.outlets : [];
 
     if (detectedUnit && allOutlets.length > 0) {
       const uPrefixes = {
@@ -13944,6 +13972,7 @@
         { name: 'Merchandise Ombak Laut', sales: baseS * 0.07, color: '#D97706' }
       ];
     }
+  }
 
     const maxSales = Math.max(...contributors.map(c => c.sales), 1);
     const barStartY = chartY + 68;
@@ -14015,6 +14044,25 @@
     const m1H = 145;
     const m1X = rightStartX + 24;
 
+    let m1Data = {};
+    if (hasSpec && spec.module_1) {
+      m1Data = spec.module_1;
+    } else {
+      m1Data = {
+        title: isAudit ? '🎯 1. FINANCIAL POSITION: SURPLUS vs DEFISIT AUDIT' : '🎯 1. REVENUE TARGET MILESTONE & GAP PROJECTION',
+        chip_1: isAudit ? (calculatedGapPct >= 0 ? '🟢 STATUS: SURPLUS' : '🔴 STATUS: DEFISIT') : (resolvedTarget ? `Target: ${formatInfoRupiahShort(resolvedTarget)}` : 'Target Bulanan'),
+        chip_2: `${calculatedGapPct >= 0 ? '+' : ''}${calculatedGapPct.toFixed(1)}% YoY`,
+        baseline_label: isAudit ? 'REALISASI HISTORIS 2025' : 'HISTORI \'25 BASELINE',
+        baseline_val: resolvedBaseline,
+        current_label: isAudit ? 'REALISASI PENJUALAN 2026' : 'PROYEKSI TARGET 2026',
+        current_val: isAudit ? (sum26.net_sales || 16930000000) : (resolvedTarget || sum26.net_sales),
+        gap_pct: calculatedGapPct,
+        right_box_title: isAudit ? 'DELTA SURPLUS OMSET' : 'TARGET RATA-RATA STRUK (ATV)',
+        right_box_val: isAudit ? ((sum26.net_sales || 16930000000) - (sum25.net_sales || 16050000000)) : resolvedAtv,
+        right_box_sub: isAudit ? 'Run-Rate: ~Rp 62,3 Jt/hari' : `Target UPT: ${resolvedUpt > 0 ? resolvedUpt.toFixed(1) : '5.1'} pcs / struk`
+      };
+    }
+
     ctx.beginPath();
     canvasRoundRect(ctx, m1X, m1Y, cardBoxW, m1H, 14);
     ctx.fillStyle = '#F8FAFC';
@@ -14023,63 +14071,59 @@
     ctx.lineWidth = 1;
     ctx.stroke();
 
+    const m1AccentColor = m1Data.gap_pct >= 0 ? '#059669' : '#DC2626';
     ctx.beginPath();
     canvasRoundRect(ctx, m1X, m1Y, 4, m1H, 2);
-    ctx.fillStyle = isAudit ? (calculatedGapPct >= 0 ? '#059669' : '#DC2626') : '#059669';
+    ctx.fillStyle = m1AccentColor;
     ctx.fill();
 
     ctx.textAlign = 'left';
-    ctx.fillStyle = isAudit ? (calculatedGapPct >= 0 ? '#059669' : '#DC2626') : '#059669';
+    ctx.fillStyle = m1AccentColor;
     ctx.font = 'bold 13.5px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText(isAudit ? '🎯 1. FINANCIAL POSITION: SURPLUS vs DEFISIT AUDIT' : '🎯 1. REVENUE TARGET MILESTONE & GAP PROJECTION', m1X + 20, m1Y + 28);
+    ctx.fillText(m1Data.title, m1X + 20, m1Y + 28);
 
     // Module 1 Chips
-    const m1ChipText1 = isAudit 
-      ? (calculatedGapPct >= 0 ? '🟢 STATUS: SURPLUS' : '🔴 STATUS: DEFISIT')
-      : (resolvedTarget ? `Target: ${formatInfoRupiahShort(resolvedTarget)}` : 'Target Bulanan');
-    const m1ChipText2 = `${calculatedGapPct >= 0 ? '+' : ''}${calculatedGapPct.toFixed(1)}% YoY`;
-
     let m1ChipX = m1X + cardBoxW - 16;
-    [m1ChipText2, m1ChipText1].forEach(chText => {
+    [m1Data.chip_2, m1Data.chip_1].forEach(chText => {
       ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
       const chW = ctx.measureText(chText).width + 18;
       m1ChipX -= chW;
 
       ctx.beginPath();
       canvasRoundRect(ctx, m1ChipX, m1Y + 14, chW, 22, 11);
-      ctx.fillStyle = (calculatedGapPct >= 0 ? '#059669' : '#DC2626') + '15';
+      ctx.fillStyle = m1AccentColor + '15';
       ctx.fill();
-      ctx.strokeStyle = (calculatedGapPct >= 0 ? '#059669' : '#DC2626') + '40';
+      ctx.strokeStyle = m1AccentColor + '40';
       ctx.lineWidth = 1;
       ctx.stroke();
 
       ctx.textAlign = 'center';
-      ctx.fillStyle = calculatedGapPct >= 0 ? '#059669' : '#DC2626';
+      ctx.fillStyle = m1AccentColor;
       ctx.fillText(chText, m1ChipX + chW / 2, m1Y + 29);
       m1ChipX -= 8;
     });
 
     // Comparative Progress Bars
-    const targetMax = Math.max(resolvedTarget || sum26.net_sales || 16930000000, resolvedBaseline || sum25.net_sales || 16050000000, 1);
+    const targetMax = Math.max(m1Data.current_val || 1, m1Data.baseline_val || 1, m1Data.target_val || 1);
     const progTrackW = 600;
 
     // Line 1: Baseline
     ctx.textAlign = 'left';
     ctx.fillStyle = '#64748B';
     ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText(isAudit ? 'REALISASI HISTORIS 2025' : 'HISTORI \'25 BASELINE', m1X + 20, m1Y + 58);
+    ctx.fillText(m1Data.baseline_label, m1X + 20, m1Y + 58);
 
     ctx.textAlign = 'right';
     ctx.fillStyle = '#475569';
     ctx.font = 'bold 12px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText(formatInfoRupiahShort(resolvedBaseline), m1X + 20 + progTrackW, m1Y + 58);
+    ctx.fillText(formatInfoRupiahShort(m1Data.baseline_val), m1X + 20 + progTrackW, m1Y + 58);
 
     ctx.beginPath();
     canvasRoundRect(ctx, m1X + 20, m1Y + 66, progTrackW, 14, 7);
     ctx.fillStyle = '#E2E8F0';
     ctx.fill();
 
-    const histFillW = Math.max(20, Math.min(progTrackW, (resolvedBaseline / targetMax) * progTrackW));
+    const histFillW = Math.max(20, Math.min(progTrackW, (m1Data.baseline_val / targetMax) * progTrackW));
     ctx.beginPath();
     canvasRoundRect(ctx, m1X + 20, m1Y + 66, histFillW, 14, 7);
     ctx.fillStyle = '#94A3B8';
@@ -14087,25 +14131,24 @@
 
     // Line 2: Realisasi / Target 2026
     ctx.textAlign = 'left';
-    ctx.fillStyle = calculatedGapPct >= 0 ? '#059669' : '#DC2626';
+    ctx.fillStyle = m1AccentColor;
     ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText(isAudit ? 'REALISASI PENJUALAN 2026' : 'PROYEKSI TARGET 2026', m1X + 20, m1Y + 104);
+    ctx.fillText(m1Data.current_label, m1X + 20, m1Y + 104);
 
     ctx.textAlign = 'right';
-    ctx.fillStyle = calculatedGapPct >= 0 ? '#059669' : '#DC2626';
+    ctx.fillStyle = m1AccentColor;
     ctx.font = 'bold 12.5px "Plus Jakarta Sans", sans-serif';
-    const display2026Val = isAudit ? (sum26.net_sales || 16930000000) : (resolvedTarget || sum26.net_sales);
-    ctx.fillText(`${formatInfoRupiahShort(display2026Val)}  (▲ ${calculatedGapPct >= 0 ? '+' : ''}${calculatedGapPct.toFixed(1)}%)`, m1X + 20 + progTrackW, m1Y + 104);
+    ctx.fillText(`${formatInfoRupiahShort(m1Data.current_val)}  (▲ ${m1Data.gap_pct >= 0 ? '+' : ''}${m1Data.gap_pct.toFixed(1)}%)`, m1X + 20 + progTrackW, m1Y + 104);
 
     ctx.beginPath();
     canvasRoundRect(ctx, m1X + 20, m1Y + 112, progTrackW, 14, 7);
     ctx.fillStyle = '#E2E8F0';
     ctx.fill();
 
-    const targetFillW = Math.max(20, Math.min(progTrackW, (display2026Val / targetMax) * progTrackW));
+    const targetFillW = Math.max(20, Math.min(progTrackW, (m1Data.current_val / targetMax) * progTrackW));
     ctx.beginPath();
     canvasRoundRect(ctx, m1X + 20, m1Y + 112, targetFillW, 14, 7);
-    ctx.fillStyle = calculatedGapPct >= 0 ? '#059669' : '#DC2626';
+    ctx.fillStyle = m1AccentColor;
     ctx.fill();
 
     // Right Mini KPI Box (Module 1)
@@ -14122,23 +14165,36 @@
     ctx.textAlign = 'left';
     ctx.fillStyle = '#64748B';
     ctx.font = 'bold 10.5px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText(isAudit ? 'DELTA SURPLUS OMSET' : 'TARGET RATA-RATA STRUK (ATV)', m1BoxX + 16, m1Y + 68);
+    ctx.fillText(m1Data.right_box_title, m1BoxX + 16, m1Y + 68);
 
-    ctx.fillStyle = isAudit ? '#059669' : '#0F172A';
+    ctx.fillStyle = (typeof m1Data.right_box_val === 'number' && m1Data.right_box_val < 0) ? '#DC2626' : (m1Data.right_box_title.includes('DELTA') ? '#059669' : '#0F172A');
     ctx.font = '800 17px "Plus Jakarta Sans", sans-serif';
-    const deltaSurplus = (sum26.net_sales || 16930000000) - (sum25.net_sales || 16050000000);
-    ctx.fillText(isAudit ? `+${formatInfoRupiahShort(deltaSurplus)}` : formatInfoRupiahShort(resolvedAtv), m1BoxX + 16, m1Y + 92);
+    let rightBoxFormatted = '';
+    if (typeof m1Data.right_box_val === 'number') {
+      const isDelta = m1Data.right_box_title.includes('DELTA') || m1Data.right_box_title.includes('GAP');
+      rightBoxFormatted = (isDelta && m1Data.right_box_val >= 0 ? '+' : '') + formatInfoRupiahShort(m1Data.right_box_val);
+    } else {
+      rightBoxFormatted = String(m1Data.right_box_val);
+    }
+    rightBoxFormatted = rightBoxFormatted.replace('+-', '-');
+    ctx.fillText(rightBoxFormatted, m1BoxX + 16, m1Y + 92);
 
     ctx.fillStyle = '#059669';
     ctx.font = '600 11.5px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText(isAudit ? 'Run-Rate: ~Rp 62,3 Jt/hari' : `Target UPT: ${resolvedUpt > 0 ? resolvedUpt.toFixed(1) : '5.1'} pcs / struk`, m1BoxX + 16, m1Y + 114);
+    ctx.fillText(m1Data.right_box_sub, m1BoxX + 16, m1Y + 114);
 
     // ────────────────────────────────────────────────────────────
-    // MODULE 2: ADAPTIVE (AUDIT UNIT BREAKDOWN vs PEAK-HOURS VELOCITY) (Y: 455, H: 225)
+    // MODULE 2: ADAPTIVE (OUTLET BREAKDOWN vs UNIT AUDIT vs PEAK-HOURS) (Y: 455, H: 225)
     // ────────────────────────────────────────────────────────────
     const m2Y = 455;
     const m2H = 225;
     const m2X = rightStartX + 24;
+
+    let m2Data = (hasSpec && spec.module_2) ? spec.module_2 : null;
+    const m2Type = m2Data ? m2Data.type : (isAudit ? 'unit_audit' : 'peak_hours');
+    const m2Title = m2Data ? m2Data.title : (isAudit ? '📊 2. KONTRIBUSI SURPLUS & REALISASI PER UNIT REKREASI' : '⏰ 2. PROFIL JAM SIBUK & LONJAKAN TRANSAKSI (PEAK HOURS VELOCITY)');
+    const m2Chips = m2Data ? m2Data.chips : (isAudit ? ['Dufan & SeaWorld Penopang 55%', '5 Unit Rekreasi'] : ['⚡ Mobile EDC: 14:30 WIB', '📍 Puncak: 17:00 WIB (Rp 50,4 Jt)']);
+    const m2Accent = (m2Type === 'unit_outlets' || m2Type === 'unit_audit') ? (detectedUnit ? unitColor : '#006EB3') : '#7C3AED';
 
     ctx.beginPath();
     canvasRoundRect(ctx, m2X, m2Y, cardBoxW, m2H, 14);
@@ -14150,39 +14206,38 @@
 
     ctx.beginPath();
     canvasRoundRect(ctx, m2X, m2Y, 4, m2H, 2);
-    ctx.fillStyle = isAudit ? '#006EB3' : '#7C3AED';
+    ctx.fillStyle = m2Accent;
     ctx.fill();
 
     // Module 2 Header
     ctx.textAlign = 'left';
-    ctx.fillStyle = isAudit ? '#006EB3' : '#7C3AED';
+    ctx.fillStyle = m2Accent;
     ctx.font = 'bold 13.5px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText(isAudit ? '📊 2. KONTRIBUSI SURPLUS & REALISASI PER UNIT REKREASI' : '⏰ 2. PROFIL JAM SIBUK & LONJAKAN TRANSAKSI (PEAK HOURS VELOCITY)', m2X + 20, m2Y + 28);
+    ctx.fillText(m2Title, m2X + 20, m2Y + 28);
 
     // Module 2 Chips
     let m2ChipX = m2X + cardBoxW - 16;
-    (isAudit ? ['Dufan & SeaWorld Penopang 55%', '5 Unit Rekreasi'] : ['⚡ Mobile EDC: 16:30 WIB', '📍 Puncak: 17:00 WIB (Rp 50,4 Jt)']).forEach(chText => {
+    m2Chips.forEach(chText => {
       ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
       const chW = ctx.measureText(chText).width + 18;
       m2ChipX -= chW;
 
       ctx.beginPath();
       canvasRoundRect(ctx, m2ChipX, m2Y + 14, chW, 22, 11);
-      ctx.fillStyle = (isAudit ? '#006EB3' : '#7C3AED') + '15';
+      ctx.fillStyle = m2Accent + '15';
       ctx.fill();
-      ctx.strokeStyle = (isAudit ? '#006EB3' : '#7C3AED') + '40';
+      ctx.strokeStyle = m2Accent + '40';
       ctx.lineWidth = 1;
       ctx.stroke();
 
       ctx.textAlign = 'center';
-      ctx.fillStyle = isAudit ? '#006EB3' : '#7C3AED';
+      ctx.fillStyle = m2Accent;
       ctx.fillText(chText, m2ChipX + chW / 2, m2Y + 29);
       m2ChipX -= 8;
     });
 
-    if (isAudit) {
-      // Audit Unit Breakdown Bars
-      const auditUnits = [
+    if (m2Type === 'unit_outlets' || m2Type === 'unit_audit') {
+      const items = (m2Data && m2Data.items) ? m2Data.items : [
         { name: 'Dufan (DFIN + Outlet)', sales: 4940000000, share: '29.2%', color: '#E0004D' },
         { name: 'SeaWorld (SWIN)', sales: 4510000000, share: '26.6%', color: '#006EB3' },
         { name: 'Samudra (ODIN)', sales: 2770000000, share: '16.4%', color: '#00A497' },
@@ -14190,17 +14245,19 @@
         { name: 'BeachPark & Retail Ombak', sales: 3100000000, share: '18.3%', color: '#D97706' }
       ];
 
+      const maxSalesM2 = Math.max(...items.map(it => it.sales), 1);
       const uBarStartY = m2Y + 54;
-      auditUnits.forEach((u, uIdx) => {
+      items.slice(0, 5).forEach((u, uIdx) => {
         const uby = uBarStartY + uIdx * 28;
 
         ctx.textAlign = 'left';
         ctx.fillStyle = '#1E293B';
         ctx.font = '600 12px "Plus Jakarta Sans", sans-serif';
-        ctx.fillText(u.name, m2X + 24, uby + 14);
+        const cleanUName = u.name.length > 34 ? u.name.substring(0, 32) + '...' : u.name;
+        ctx.fillText(cleanUName, m2X + 24, uby + 14);
 
         ctx.textAlign = 'right';
-        ctx.fillStyle = u.color;
+        ctx.fillStyle = u.color || unitColor;
         ctx.font = 'bold 12px "Plus Jakarta Sans", sans-serif';
         ctx.fillText(`${formatInfoRupiahShort(u.sales)} (${u.share})`, m2X + cardBoxW - 24, uby + 14);
 
@@ -14210,20 +14267,23 @@
         ctx.fillStyle = '#E2E8F0';
         ctx.fill();
 
-        const uFillW = Math.max(16, (u.sales / 5000000000) * uTrackW);
+        const uFillW = Math.max(16, (u.sales / maxSalesM2) * uTrackW);
         ctx.beginPath();
         canvasRoundRect(ctx, m2X + 24, uby + 18, uFillW, 6, 3);
-        ctx.fillStyle = u.color;
+        ctx.fillStyle = u.color || unitColor;
         ctx.fill();
       });
 
       ctx.textAlign = 'left';
       ctx.fillStyle = '#0F172A';
       ctx.font = '600 12px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('• KESIMPULAN AUDIT: Penjualan toko secara agregat SURPLUS +5.5% (Rp 880 Jt di atas tahun lalu), ditopang stabilitas Dufan & SeaWorld.', m2X + 20, m2Y + 208);
+      const conclusionText = (m2Data && m2Data.conclusion)
+        ? m2Data.conclusion
+        : '• KESIMPULAN: Penjualan toko didukung oleh stabilitas performa unit rekreasi utama.';
+      ctx.fillText(conclusionText, m2X + 20, m2Y + 208);
     } else {
       // Peak Hours Bar Chart Visual with Generous Headroom
-      const chartHours = [
+      const chartHours = (m2Data && m2Data.chart_hours) ? m2Data.chart_hours : [
         { hour: '10:00', pct: 0.18, trx: '52 Trx' },
         { hour: '12:00', pct: 0.35, trx: '120 Trx' },
         { hour: '14:00', pct: 0.55, trx: '210 Trx' },
@@ -14236,7 +14296,7 @@
       const chartBaseY = m2Y + 172;
       const chartMaxH = 78;
       const chartBarW = 54;
-      const chartSpacing = (cardBoxW - 140) / 7;
+      const chartSpacing = (cardBoxW - 140) / Math.max(chartHours.length, 1);
 
       const critX = m2X + 60 + 3 * chartSpacing - 12;
       const critW = 3 * chartSpacing + 24;
@@ -14285,7 +14345,10 @@
       ctx.textAlign = 'left';
       ctx.fillStyle = '#0F172A';
       ctx.font = '600 12px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('• AKSI TAKTIS: Full-staffing seluruh loket kasir & aktifkan Mobile EDC pada 16:30 WIB (H-30m sebelum lonjakan jam puncak).', m2X + 20, m2Y + 208);
+      const conclusionText = (m2Data && m2Data.conclusion)
+        ? m2Data.conclusion
+        : '• AKSI TAKTIS: Full-staffing seluruh loket kasir & aktifkan Mobile EDC pada 14:30 WIB (H-30m sebelum lonjakan jam puncak).';
+      ctx.fillText(conclusionText, m2X + 20, m2Y + 208);
     }
 
     // ────────────────────────────────────────────────────────────
@@ -14294,6 +14357,10 @@
     const m3Y = 695;
     const m3H = 275;
     const m3X = rightStartX + 24;
+
+    let m3Data = (hasSpec && spec.module_3) ? spec.module_3 : null;
+    const m3Title = m3Data ? m3Data.title : (isAudit ? '🗺️ 3. ACTION PLAN: MENGUNCI SURPLUS & MITIGASI DEFISIT' : '🗺️ 3. OPERATIONAL ROADMAP & TACTICAL MILESTONES');
+    const m3Chips = m3Data ? m3Data.chips : (isAudit ? ['Zero Deficit Risk', '4 Pilar Mitigasi'] : ['Zero Stockout', '4 Tahapan Eksekusi']);
 
     ctx.beginPath();
     canvasRoundRect(ctx, m3X, m3Y, cardBoxW, m3H, 14);
@@ -14312,11 +14379,11 @@
     ctx.textAlign = 'left';
     ctx.fillStyle = '#D97706';
     ctx.font = 'bold 13.5px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText(isAudit ? '🗺️ 3. ACTION PLAN: MENGUNCI SURPLUS & MITIGASI DEFISIT' : '🗺️ 3. OPERATIONAL ROADMAP & TACTICAL MILESTONES', m3X + 20, m3Y + 28);
+    ctx.fillText(m3Title, m3X + 20, m3Y + 28);
 
     // Module 3 Chips
     let m3ChipX = m3X + cardBoxW - 16;
-    (isAudit ? ['Zero Deficit Risk', '4 Pilar Mitigasi'] : ['Zero Stockout', '4 Tahapan Eksekusi']).forEach(chText => {
+    m3Chips.forEach(chText => {
       ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
       const chW = ctx.measureText(chText).width + 18;
       m3ChipX -= chW;
@@ -14346,7 +14413,7 @@
     ctx.lineWidth = 3;
     ctx.stroke();
 
-    const milestones = isAudit ? [
+    const milestones = (m3Data && m3Data.milestones) ? m3Data.milestones : (isAudit ? [
       {
         num: 1,
         color: '#006EB3',
@@ -14436,7 +14503,7 @@
           'Catat evaluasi stok & kesiapan besok'
         ]
       }
-    ];
+    ]);
 
     milestones.forEach((m, idx) => {
       const nodeCenterX = m3X + 20 + idx * stepColW + stepColW / 2;
@@ -14668,6 +14735,9 @@
         aiChatHistory.push({ role: 'assistant', text: result.answer });
         if (aiChatHistory.length > 10) aiChatHistory = aiChatHistory.slice(-10);
 
+        window.LAST_AI_INFOGRAPHIC_SPEC = result.infographic_spec || null;
+        const specAttr = result.infographic_spec ? `data-spec="${encodeURIComponent(JSON.stringify(result.infographic_spec))}"` : '';
+
         const engineBadge = result.engine === 'gemini-cloud' 
           ? '<div style="font-size:10.5px; color:var(--brand); background:var(--brand-subtle); border:1px solid var(--brand-border); border-radius:10px; padding:2px 8px; font-weight:700; display:inline-flex; align-items:center; gap:4px;">✨ Cloud AI Gemini (' + (result.model || '3-Flash') + ')</div>' 
           : '<div style="font-size:10.5px; color:#059669; background:#ecfdf5; border:1px solid #a7f3d0; border-radius:10px; padding:2px 8px; font-weight:700; display:inline-flex; align-items:center; gap:4px;">⚡ Ancol BI Rule Engine</div>';
@@ -14676,7 +14746,7 @@
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">
             ${engineBadge}
             <div style="display:inline-flex; align-items:center; gap:6px;">
-              <button type="button" class="btn-generate-infographic" onclick="openAIInfographicModal(this)" data-fulltext="${encodeURIComponent(result.answer)}" data-prompt="${encodeURIComponent(promptText)}" title="Buat & Unduh Gambar Infografis Eksekutif">
+              <button type="button" class="btn-generate-infographic" onclick="openAIInfographicModal(this)" data-fulltext="${encodeURIComponent(result.answer)}" data-prompt="${encodeURIComponent(promptText)}" ${specAttr} title="Buat & Unduh Gambar Infografis Eksekutif">
                 <span>📸</span> Buat Infografis
               </button>
               <button type="button" class="btn-copy-wa" onclick="copyAnswerToWA(this)" data-fulltext="${encodeURIComponent(result.answer)}" title="Salin format siap kirim ke WhatsApp">

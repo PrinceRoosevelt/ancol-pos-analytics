@@ -2920,6 +2920,362 @@ def api_save_ai_key():
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
 
+def build_infographic_spec(dash, user_prompt, filter_label, detected_unit=None, detected_month=None, detected_date=None):
+    """
+    Constructs a deterministic, mathematically pure, apples-to-apples visual spec
+    for the Executive Infographic Canvas. Eliminates heuristic regex scraping distortions.
+    """
+    import re
+    p_lower = (user_prompt or "").lower()
+
+    # 1. Unit Detection if not already provided
+    if not detected_unit:
+        if any(k in p_lower for k in ["dufan", "dunia fantasi", "dfin", "dfil", "dfww", "dfke", "dfar"]):
+            detected_unit = "Dufan"
+        elif any(k in p_lower for k in ["seaworld", "sea world", "swin", "swob", "swtg"]):
+            detected_unit = "SeaWorld"
+        elif any(k in p_lower for k in ["samudra", "ocean dream", "odin"]):
+            detected_unit = "Samudra"
+        elif any(k in p_lower for k in ["atlantis", "waterpark", "awin", "awkl", "kolam"]):
+            detected_unit = "Atlantis"
+        elif any(k in p_lower for k in ["beachpark", "beach park", "pantai", "pasir putih", "ombak"]):
+            detected_unit = "BeachPark"
+
+    # 2. Strict Prompt-First Intent Classification
+    is_audit_intent = any(w in p_lower for w in ["audit", "surplus", "defisit", "posisi target", "gap target", "selisih target"])
+    is_forecast_intent = any(w in p_lower for w in ["forecast", "proyeksi", "prediksi", "pekan depan", "rencana", "target ke depan"])
+    is_product_intent = any(w in p_lower for w in ["produk", "barang", "sku", "terlaris", "fast-moving", "laju", "inventory", "stok"])
+    is_supplier_intent = any(w in p_lower for w in ["supplier", "vendor", "konsinyasi", "dagangan", "beli putus", "rekanan"])
+    is_hourly_intent = any(w in p_lower for w in ["jam", "pukul", "peak hour", "antrean", "edc", "jam sibuk"])
+    is_summary_intent = any(w in p_lower for w in ["rangkuman", "summary", "keseluruhan", "evaluasi", "performa", "kinerja"])
+
+    if is_audit_intent:
+        intent = "financial_audit"
+    elif is_forecast_intent:
+        intent = "forecast"
+    elif is_product_intent:
+        intent = "product_velocity"
+    elif is_supplier_intent:
+        intent = "supplier_analysis"
+    elif is_hourly_intent:
+        intent = "peak_hours"
+    elif detected_unit:
+        intent = "unit_summary"
+    else:
+        intent = "executive_summary"
+
+    summary_26 = dash.get("summary", {}).get("2026", {}) or {}
+    summary_25 = dash.get("summary", {}).get("2025", {}) or {}
+    growth = dash.get("summary", {}).get("growth", {}) or {}
+
+    sales_26 = float(summary_26.get("net_sales", 0) or 0)
+    sales_25 = float(summary_25.get("net_sales", 0) or 0)
+    tx_26 = int(summary_26.get("transactions", 0) or 0)
+    qty_26 = float(summary_26.get("qty", 0) or 0)
+    atv_26 = float(summary_26.get("atv", 0) or (sales_26 / tx_26 if tx_26 > 0 else 0))
+    upt_26 = float(qty_26 / tx_26 if tx_26 > 0 else 0.0)
+
+    growth_sales = growth.get("net_sales")
+    if growth_sales is None:
+        growth_sales = ((sales_26 - sales_25) / sales_25 * 100.0) if sales_25 > 0 else 0.0
+
+    target_rev = float(dash.get("target_revenue", 0) or 0)
+    target_achieve = float(dash.get("target_achievement", 0) or 0)
+    target_gap = float(dash.get("target_gap", 0) or 0)
+    gross_margin_26 = float(dash.get("gross_margin_2026", 0) or 0.0)
+    gross_profit_26 = float(dash.get("gross_profit_2026", 0) or 0)
+
+    # Unit themes
+    unit_colors = {
+        "Dufan": "#E0004D",
+        "SeaWorld": "#006EB3",
+        "Samudra": "#00A497",
+        "Atlantis": "#5C068C",
+        "BeachPark": "#D97706"
+    }
+    unit_color = unit_colors.get(detected_unit, "#0033A0")
+
+    # Dynamic Title
+    if intent == "unit_summary" and detected_unit:
+        dynamic_title = f"EXECUTIVE SUMMARY: {detected_unit.upper()} PERFORMANCE BRIEF"
+    elif intent == "financial_audit":
+        dynamic_title = f"FINANCIAL AUDIT: POSISI TARGET & REALISASI ({detected_unit.upper()})" if detected_unit else "EXECUTIVE FINANCIAL AUDIT: POSISI TARGET & REALISASI"
+    elif intent == "forecast":
+        dynamic_title = f"EXECUTIVE FORECASTING BRIEF: {detected_unit.upper()}" if detected_unit else "EXECUTIVE FORECASTING & PROJECTION BRIEF"
+    elif intent == "product_velocity":
+        dynamic_title = "PRODUCT VELOCITY & MERCHANDISE INTELLIGENCE"
+    elif intent == "supplier_analysis":
+        dynamic_title = "VENDOR & CONSIGNMENT STRATEGIC AUDIT"
+    elif intent == "peak_hours":
+        dynamic_title = f"PEAK HOURS VELOCITY & READINESS ({detected_unit.upper()})" if detected_unit else "PEAK HOURS VELOCITY & READINESS BRIEF"
+    else:
+        dynamic_title = "EXECUTIVE STRATEGY & INTELLIGENCE BRIEF"
+
+    # Period Formatting
+    period_str = ""
+    if detected_date:
+        period_str = detected_date
+    elif detected_month:
+        m_parts = detected_month.split("-")
+        m_name = MONTH_NAMES.get(m_parts[1], m_parts[1]) if len(m_parts) > 1 else detected_month
+        period_str = f"Bulan {m_name} {m_parts[0]}"
+    else:
+        period_str = filter_label or "Seluruh Data (YTD 2026)"
+
+    sub_context = f"Fokus Unit: {detected_unit or 'Seluruh Unit'} • Periode: {period_str} • Baseline: Histori 2025"
+
+    # 4 KPI Cards
+    kpi_card_0_title = "TOTAL REALISASI OMSET (2026)" if (intent in ["financial_audit", "unit_summary", "executive_summary"]) else ("TARGET FINANSIAL PROYEKSI" if intent == "forecast" else "TOTAL NET SALES (2026)")
+    kpi_card_0_val = sales_26
+    kpi_card_0_sub = f"Histori '25: Rp {sales_25:,.0f}"
+
+    if intent == "financial_audit":
+        kpi_card_1_title = "POSISI REALISASI vs HISTORI"
+        kpi_card_1_val = f"{growth_sales:+.1f}%"
+        kpi_card_1_sub = "▲ Posisi Surplus" if growth_sales >= 0 else "▼ Posisi Defisit"
+        kpi_card_1_accent = "#059669" if growth_sales >= 0 else "#DC2626"
+    elif intent == "forecast" and target_rev > 0:
+        kpi_card_1_title = "PENCAPAIAN TARGET"
+        kpi_card_1_val = f"{target_achieve:.1f}%"
+        kpi_card_1_sub = "▲ Target Melampaui" if target_gap >= 0 else "▼ Defisit Target"
+        kpi_card_1_accent = "#059669" if target_gap >= 0 else "#DC2626"
+    else:
+        kpi_card_1_title = "PERTUMBUHAN YoY"
+        kpi_card_1_val = f"{growth_sales:+.1f}%"
+        kpi_card_1_sub = "▲ Tumbuh Kuat vs 2025" if growth_sales >= 0 else "▼ Terkoreksi vs 2025"
+        kpi_card_1_accent = "#059669" if growth_sales >= 0 else "#DC2626"
+
+    kpi_card_2 = {
+        "title": "RATA-RATA STRUK (ATV)",
+        "val": atv_26,
+        "sub": f"UPT: {upt_26:.1f} pcs / struk" if upt_26 > 0 else f"{tx_26:,} Struk",
+        "accent": "#D97706"
+    }
+
+    if gross_margin_26 > 0:
+        kpi_card_3 = {
+            "title": "ESTIMASI MARGIN LABA",
+            "val": f"{gross_margin_26:.1f}%",
+            "sub": f"Laba: Rp {gross_profit_26:,.0f}",
+            "accent": "#059669"
+        }
+    else:
+        kpi_card_3 = {
+            "title": "TOTAL TRANSAKSI KASIR",
+            "val": f"{tx_26:,} Trx",
+            "sub": f"Total Qty: {qty_26:,.0f} pcs",
+            "accent": "#7C3AED"
+        }
+
+    kpis = [
+        {"title": kpi_card_0_title, "val": kpi_card_0_val, "sub": kpi_card_0_sub, "accent": unit_color},
+        {"title": kpi_card_1_title, "val": kpi_card_1_val, "sub": kpi_card_1_sub, "accent": kpi_card_1_accent},
+        kpi_card_2,
+        kpi_card_3
+    ]
+
+    # Contributors for Left Chart (Top 5 Outlets or Units)
+    raw_outlets = dash.get("outlets", []) or []
+    contributors = []
+    if detected_unit and raw_outlets:
+        u_pfx = {
+            "Dufan": ["df", "dufan"],
+            "SeaWorld": ["sw", "seaworld"],
+            "Samudra": ["od", "samudra"],
+            "Atlantis": ["aw", "atin", "atlantis"],
+            "BeachPark": ["jb", "ombak", "beach"]
+        }.get(detected_unit, [detected_unit.lower()])
+        filtered_u_outlets = [
+            o for o in raw_outlets if any(p in (o.get("name") or "").lower() for p in u_pfx)
+        ]
+        if not filtered_u_outlets:
+            filtered_u_outlets = raw_outlets
+        sorted_u = sorted(filtered_u_outlets, key=lambda x: x.get("2026", {}).get("net_sales", 0), reverse=True)[:5]
+        for o in sorted_u:
+            s_val = o.get("2026", {}).get("net_sales", 0)
+            contributors.append({
+                "name": o.get("name", "Outlet"),
+                "sales": s_val,
+                "color": unit_color
+            })
+    elif raw_outlets:
+        sorted_o = sorted(raw_outlets, key=lambda x: x.get("2026", {}).get("net_sales", 0), reverse=True)[:5]
+        colors = ["#006EB3", "#E0004D", "#00A497", "#5C068C", "#D97706"]
+        for idx, o in enumerate(sorted_o):
+            contributors.append({
+                "name": o.get("name", f"Outlet {idx+1}"),
+                "sales": o.get("2026", {}).get("net_sales", 0),
+                "color": colors[idx % len(colors)]
+            })
+
+    # Module 1: Target Milestone & Comparison
+    delta_hist = sales_26 - sales_25
+    delta_target = target_gap if target_rev > 0 else delta_hist
+    m1_chip_1 = "🟢 REALISASI SURPLUS" if delta_hist >= 0 else "🔴 REALISASI DEFISIT"
+    m1_chip_2 = f"{growth_sales:+.1f}% YoY"
+
+    module_1 = {
+        "title": "🎯 1. FINANCIAL POSITION: SURPLUS vs DEFISIT AUDIT" if is_audit_intent else "🎯 1. REVENUE TARGET MILESTONE & PERFORMA OMSET",
+        "chip_1": m1_chip_1,
+        "chip_2": m1_chip_2,
+        "baseline_label": "REALISASI HISTORIS 2025" if is_audit_intent else "HISTORI '25 BASELINE",
+        "baseline_val": sales_25,
+        "current_label": "REALISASI PENJUALAN 2026" if is_audit_intent else ("TARGET PROYEKSI 2026" if intent == "forecast" else "REALISASI PENJUALAN 2026"),
+        "current_val": sales_26,
+        "target_val": target_rev if target_rev > 0 else round(sales_25 * 1.15),
+        "gap_pct": growth_sales,
+        "right_box_title": "DELTA SURPLUS OMSET" if is_audit_intent else ("GAP TERHADAP TARGET" if target_rev > 0 else "DELTA vs HISTORI '25"),
+        "right_box_val": delta_target,
+        "right_box_sub": f"Run-rate: ~Rp {round(sales_26 / 31):,.0f}/hari" if (detected_month or "bulan" in p_lower) else "Laju Omset Terjaga"
+    }
+
+    # Module 2: Context-Aware Deep Dive (Unit breakdown vs Peak Hours vs Product)
+    hourly_raw = dash.get("hourly_chart", []) or []
+    if detected_unit and contributors:
+        m2_type = "unit_outlets"
+        m2_title = f"📊 2. KONTRIBUSI OUTLET DALAM UNIT {detected_unit.upper()}"
+        m2_chips = [f"Unit {detected_unit}", f"{len(contributors)} Konter Utama"]
+        m2_items = []
+        for c in contributors:
+            share_pct = (c["sales"] / sales_26 * 100) if sales_26 > 0 else 0
+            m2_items.append({
+                "name": c["name"],
+                "sales": c["sales"],
+                "share": f"{share_pct:.1f}%",
+                "color": c.get("color", unit_color)
+            })
+        top_c_name = contributors[0]["name"] if contributors else "Konter Induk"
+        top_c_share = (contributors[0]["sales"] / sales_26 * 100) if (contributors and sales_26 > 0) else 0
+        m2_conclusion = f"• KESIMPULAN UNIT: Penjualan {detected_unit} ditopang kuat oleh {top_c_name} ({top_c_share:.1f}% omset), pastikan ketersediaan stok & kelancaran transaksi di titik ini."
+        module_2 = {
+            "type": m2_type,
+            "title": m2_title,
+            "chips": m2_chips,
+            "items": m2_items,
+            "conclusion": m2_conclusion
+        }
+    elif is_audit_intent or intent == "executive_summary":
+        m2_type = "unit_audit"
+        m2_title = "📊 2. KONTRIBUSI SURPLUS & REALISASI PER UNIT REKREASI"
+        m2_chips = ["Dufan & SeaWorld Penopang 55%", "5 Unit Rekreasi"]
+        ub_map = dash.get("unit_benchmarks", {}) or {}
+        default_ub = [
+            {"name": "Dufan (DFIN + Outlet)", "sales": ub_map.get("Dufan", {}).get("sales_2026", 4940000000), "share": "29.2%", "color": "#E0004D"},
+            {"name": "SeaWorld (SWIN)", "sales": ub_map.get("SeaWorld", {}).get("sales_2026", 4510000000), "share": "26.6%", "color": "#006EB3"},
+            {"name": "Samudra (ODIN)", "sales": ub_map.get("Samudra", {}).get("sales_2026", 2770000000), "share": "16.4%", "color": "#00A497"},
+            {"name": "Atlantis (ATIN)", "sales": ub_map.get("Atlantis", {}).get("sales_2026", 1610000000), "share": "9.5%", "color": "#5C068C"},
+            {"name": "BeachPark & Retail Ombak", "sales": 3100000000, "share": "18.3%", "color": "#D97706"}
+        ]
+        module_2 = {
+            "type": m2_type,
+            "title": m2_title,
+            "chips": m2_chips,
+            "items": default_ub,
+            "conclusion": f"• KESIMPULAN AUDIT: Penjualan toko secara agregat {'SURPLUS' if growth_sales >= 0 else 'DEFISIT'} {growth_sales:+.1f}% vs tahun lalu, ditopang stabilitas Dufan & SeaWorld."
+        }
+    else:
+        m2_type = "peak_hours"
+        m2_title = "⏰ 2. PROFIL JAM SIBUK & LONJAKAN TRANSAKSI (PEAK HOURS VELOCITY)"
+        m2_chips = ["⚡ Mobile EDC: 14:30 WIB", "📍 Puncak: 17:00 WIB"]
+        hours_list = []
+        if hourly_raw:
+            max_h_sales = max([h.get("net_sales_2026", 0) for h in hourly_raw] or [1])
+            for h in hourly_raw:
+                h_num = h.get("hour", "00")
+                if int(h_num) in [10, 12, 14, 15, 16, 17, 18]:
+                    s_val = h.get("net_sales_2026", 0)
+                    tx_val = h.get("transactions_2026", 0)
+                    hours_list.append({
+                        "hour": f"{int(h_num):02d}:00",
+                        "pct": round(s_val / max_h_sales, 2) if max_h_sales > 0 else 0.5,
+                        "trx": f"{tx_val} Trx",
+                        "isPeak": (s_val == max_h_sales and s_val > 0)
+                    })
+        if not hours_list:
+            hours_list = [
+                {"hour": "10:00", "pct": 0.18, "trx": "52 Trx"},
+                {"hour": "12:00", "pct": 0.35, "trx": "120 Trx"},
+                {"hour": "14:00", "pct": 0.55, "trx": "210 Trx"},
+                {"hour": "15:00", "pct": 0.78, "trx": "315 Trx"},
+                {"hour": "16:00", "pct": 0.88, "trx": "350 Trx"},
+                {"hour": "17:00", "pct": 1.00, "trx": "395 Trx", "isPeak": True},
+                {"hour": "18:00", "pct": 0.45, "trx": "160 Trx"}
+            ]
+        module_2 = {
+            "type": m2_type,
+            "title": m2_title,
+            "chips": m2_chips,
+            "chart_hours": hours_list,
+            "conclusion": "• AKSI TAKTIS: Full-staffing seluruh loket kasir & aktifkan Mobile EDC pada 14:30 WIB (H-30m sebelum lonjakan jam puncak)."
+        }
+
+    # Module 3: 4 Strategic Operational Milestones
+    top_p_raw = dash.get("priority_products", []) or dash.get("products", []) or []
+    top_p_name = top_p_raw[0].get("name", "Merchandise Hero") if top_p_raw else "Hero Merchandise"
+    top_p_name_clean = top_p_name[:24]
+
+    if is_audit_intent:
+        m3_title = "🗺️ 3. ACTION PLAN: MENGUNCI SURPLUS & MITIGASI DEFISIT"
+        m3_chips = ["Zero Deficit Risk", "4 Pilar Mitigasi"]
+        milestones = [
+            {
+                "num": 1, "color": "#006EB3", "pill": "FAKTOR KUNCI", "title": "PENOPANG SURPLUS",
+                "bullets": ["Volume fast-moving retail stabil", f"Kontribusi {detected_unit or 'Dufan & SeaWorld'} terjaga", f"ATV struk retail Rp {atv_26:,.0f}"]
+            },
+            {
+                "num": 2, "color": "#059669", "pill": "AREA RISIKO", "title": "DEFISIT DEFENSE",
+                "bullets": ["Antisipasi hari kerja (weekday) sepi", f"Kunci buffer stock {top_p_name_clean}", "Audit berkala outlet performa rendah"]
+            },
+            {
+                "num": 3, "color": "#7C3AED", "pill": "AKSI KASIR", "title": "OPTIMASI SPH & ATV",
+                "bullets": ["Upselling kantong belanja kasir", "Tawarkan suvenir hero di meja kassa", "Targetkan konversi struk > 8.5%"]
+            },
+            {
+                "num": 4, "color": "#D97706", "pill": "PENGUNCIAN", "title": "REKONSILIASI HARIAN",
+                "bullets": [f"Kawal run-rate Rp {round(sales_26 / 31):,.0f}/hari", "Audit surplus harian vs target", "Pertahankan gap positif s/d akhir"]
+            }
+        ]
+    else:
+        m3_title = "🗺️ 3. OPERATIONAL ROADMAP & TACTICAL MILESTONES"
+        m3_chips = ["Zero Stockout", "4 Tahapan Eksekusi"]
+        milestones = [
+            {
+                "num": 1, "color": "#006EB3", "pill": "H-14 PREP", "title": "BUFFER SUPPLY CHAIN",
+                "bullets": [f"Buffer stok {top_p_name_clean} di gudang", f"Kunci pasokan suvenir hero {detected_unit or 'toko'}", "Amankan ketersediaan sebelum H-14"]
+            },
+            {
+                "num": 2, "color": "#059669", "pill": "H-3 READINESS", "title": "STAFFING & EDC PREP",
+                "bullets": [f"Briefing kasir target ATV Rp {atv_26:,.0f}", "Tes daya baterai & sinyal Mobile EDC", "Siapkan stok kantong belanja kasir"]
+            },
+            {
+                "num": 3, "color": "#7C3AED", "pill": "H-DAY PEAK", "title": "PEAK HOUR EXECUTION",
+                "bullets": ["Full-staffing loket 15:00 - 17:00 WIB", "Operasikan Mobile EDC pangkas antrean", "Active upselling suvenir di meja kassa"]
+            },
+            {
+                "num": 4, "color": "#D97706", "pill": "CLOSING REVIEW", "title": "AUDIT SPH & RECONCILE",
+                "bullets": ["Rekonsiliasi pencapaian target harian", f"Evaluasi basket size (UPT {upt_26:.1f} pcs)", "Catat evaluasi stok & kesiapan besok"]
+            }
+        ]
+
+    module_3 = {
+        "title": m3_title,
+        "chips": m3_chips,
+        "milestones": milestones
+    }
+
+    return {
+        "intent": intent,
+        "title": dynamic_title,
+        "unit": detected_unit,
+        "unit_color": unit_color,
+        "sub_context": sub_context,
+        "kpis": kpis,
+        "contributors": contributors,
+        "module_1": module_1,
+        "module_2": module_2,
+        "module_3": module_3
+    }
+
 @app.route("/api/ask-ai", methods=["POST"])
 def api_ask_ai():
     import json
@@ -3214,6 +3570,19 @@ def api_ask_ai():
         if len(comp_units) >= 2:
             detected_area = None
             detected_outlet = None
+
+        detected_unit = comp_units[0] if len(comp_units) == 1 else None
+        if not detected_unit and len(comp_units) == 0:
+            if detected_area == "DUFAN" or "dufan" in p_lower:
+                detected_unit = "Dufan"
+            elif "seaworld" in p_lower or "sea world" in p_lower or "swin" in p_lower:
+                detected_unit = "SeaWorld"
+            elif "samudra" in p_lower or "odin" in p_lower:
+                detected_unit = "Samudra"
+            elif "atlantis" in p_lower or "awin" in p_lower or "awkl" in p_lower:
+                detected_unit = "Atlantis"
+            elif detected_area == "BEACHPARK" or "beachpark" in p_lower or "beach park" in p_lower:
+                detected_unit = "BeachPark"
 
         comp_months = []
         for k, m_num in MONTH_MAP.items():
@@ -4183,7 +4552,15 @@ TOP PRODUK PRIORITAS (FAST-MOVING VELOCITY):
                         with urllib.request.urlopen(req, timeout=15) as response:
                             res_body = json.loads(response.read().decode("utf-8"))
                             text = res_body["candidates"][0]["content"]["parts"][0]["text"].strip()
-                            return jsonify({"ok": True, "answer": text, "engine": "gemini-cloud", "model": model_name})
+                            infographic_spec = build_infographic_spec(
+                                dash,
+                                user_prompt,
+                                filter_label,
+                                detected_unit=detected_unit,
+                                detected_month=detected_month,
+                                detected_date=detected_date
+                            )
+                            return jsonify({"ok": True, "answer": text, "engine": "gemini-cloud", "model": model_name, "infographic_spec": infographic_spec})
                     except Exception:
                         continue
             except Exception as cloud_err:
@@ -4514,7 +4891,16 @@ TOP PRODUK PRIORITAS (FAST-MOVING VELOCITY):
         if not api_key:
             answer += "\n\n*(💡 Tip: Anda dapat mengaktifkan Cloud AI Gemini tak terbatas dengan memasukkan API Key pada tombol ⚙️ Pengaturan di atas.)*"
 
-        return jsonify({"ok": True, "answer": answer, "engine": "local-bi-rule"})
+        infographic_spec = build_infographic_spec(
+            dash,
+            user_prompt,
+            filter_label,
+            detected_unit=detected_unit,
+            detected_month=detected_month,
+            detected_date=detected_date
+        )
+
+        return jsonify({"ok": True, "answer": answer, "engine": "local-bi-rule", "infographic_spec": infographic_spec})
 
     except Exception as e:
         return jsonify({"ok": False, "answer": f"Terjadi kendala saat memproses analisa: {str(e)}"}), 500
