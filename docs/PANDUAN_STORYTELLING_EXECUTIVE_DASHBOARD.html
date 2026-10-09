@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Panduan Storytelling Executive Dashboard Ancol POS Analytics</title>
+  <style>
+    /* Native system fonts to avoid network delay */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    @page {
+      size: A4 portrait;
+      margin: 14mm 14mm 16mm 14mm;
+      @bottom-right {
+        content: counter(page);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 8pt;
+        color: #64748B;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #0F172A;
+      background-color: #FFFFFF;
+      line-height: 1.5;
+      font-size: 9.5pt;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Page break helpers */
+    .page {
+      page-break-after: always;
+      position: relative;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5 {
+      color: #00205B;
+      font-weight: 700;
+      margin-top: 0;
+      letter-spacing: -0.02em;
+    }
+
+    h1 { font-size: 20pt; line-height: 1.2; }
+    h2 { font-size: 13.5pt; border-bottom: 2px solid #E2E8F0; padding-bottom: 5px; margin-bottom: 12px; margin-top: 14px; }
+    h3 { font-size: 11pt; margin-bottom: 6px; color: #0033A0; }
+
+    p { margin-top: 0; margin-bottom: 8px; color: #334155; }
+    .lead { font-size: 10.5pt; font-weight: 500; color: #1E293B; line-height: 1.55; }
+
+    /* Header & Badges */
+    .doc-header {
+      border-bottom: 3px solid #0033A0;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .corp-badge {
+      font-size: 7.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 800;
+      color: #0033A0;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    .doc-meta {
+      text-align: right;
+      font-size: 8pt;
+      color: #64748B;
+      line-height: 1.4;
+    }
+
+    /* Cards & Containers */
+    .card {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+
+    .card-primary {
+      background: #F0F7FF;
+      border: 1.5px solid #0033A0;
+    }
+
+    .card-accent {
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+    }
+
+    .card-warning {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+    }
+
+    /* Grid layout */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    /* Beat Item Cards */
+    .beat-card {
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 11px 13px;
+      margin-bottom: 11px;
+      background: #FFFFFF;
+      border-left: 5px solid #0033A0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .beat-card.beat-1 { border-left-color: #00205B; }
+    .beat-card.beat-2 { border-left-color: #0033A0; }
+    .beat-card.beat-3 { border-left-color: #00B5E2; }
+    .beat-card.beat-4 { border-left-color: #E0004D; }
+    .beat-card.beat-5 { border-left-color: #00A497; }
+    .beat-card.beat-6 { border-left-color: #F59E0B; }
+
+    .beat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .beat-title {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #0F172A;
+      margin: 0;
+    }
+
+    .beat-step {
+      font-size: 7.5pt;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 12px;
+      background: #00205B;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .script-box {
+      background: #F1F5F9;
+      border: 1px dashed #94A3B8;
+      border-radius: 6px;
+      padding: 8px 11px;
+      margin-top: 6px;
+      font-size: 8.5pt;
+      color: #1E293B;
+      font-style: italic;
+      position: relative;
+    }
+
+    .script-box::before {
+      content: "🎙️ Skrip Presenter (Verbatim):";
+      display: block;
+      font-size: 7.5pt;
+      font-weight: 700;
+      font-style: normal;
+      color: #475569;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      margin-bottom: 12px;
+      font-size: 8.5pt;
+    }
+
+    th, td {
+      padding: 7px 9px;
+      text-align: left;
+      border: 1px solid #E2E8F0;
+    }
+
+    th {
+      background-color: #F8FAFC;
+      color: #00205B;
+      font-weight: 700;
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #FAFAFA;
+    }
+
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8pt;
+    }
+
+    .tag {
+      font-size: 7.5pt;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .tag-blue { background: #DBEAFE; color: #1E40AF; }
+    .tag-green { background: #DCFCE7; color: #166534; }
+    .tag-amber { background: #FEF3C7; color: #92400E; }
+    .tag-rose { background: #FFE4E6; color: #9F1239; }
+
+    .flow-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      font-size: 8.5pt;
+      color: #0033A0;
+    }
+
+    .footer {
+      margin-top: auto;
+      border-top: 1px solid #E2E8F0;
+      padding-top: 8px;
+      font-size: 7.5pt;
+      color: #94A3B8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== HALAMAN 1 ==================== -->
+  <div class="page">
+    <div class="doc-header">
+      <div>
+        <span class="corp-badge">PT PEMBANGUNAN JAYA ANCOL, TBK &bull; RETAIL &amp; MERCHANDISE BUSINESS UNIT</span>
+        <h1 style="margin-bottom: 4px;">Panduan Storytelling Executive Dashboard</h1>
+        <div style="font-size: 10pt; color: #0033A0; font-weight: 600;">
+          The 6-Beat Executive Narrative Framework: Navigasi YTD vs MTD Berdampak Tinggi untuk Direksi
+        </div>
+      </div>
+      <div class="doc-meta">
+        <strong>Versi:</strong> 2.4 (Executive Standard)<br>
+        <strong>Dokumen:</strong> SOP Storytelling &amp; BI<br>
+        <strong>Kategori:</strong> Strategi Presentasi C-Level
+      </div>
+    </div>
+
+    <div class="card card-primary" style="margin-bottom: 14px;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+        <span style="font-size: 14pt;">🎯</span>
+        <strong style="color: #00205B; font-size: 10.5pt;">KONSENSUS UTAMA: YTD Diceritakan Terlebih Dahulu Sebelum MTD</strong>
+      </div>
+      <p style="margin-bottom: 4px; font-size: 9.5pt; color: #1E293B; line-height: 1.55;">
+        Ketika dashboard dibuka pertama kali di depan jajaran Direksi atau VP, <strong>YTD (Year-to-Date) MUTLAK diceritakan pertama kali sebagai <em>"The Strategic Anchor"</em> (Jangkar Makro)</strong>, kemudian segera disambung dengan <strong>MTD (Month-to-Date) sebagai <em>"The Operational Pulse"</em> (Detak Momentum Berjalan)</strong>.
+      </p>
+      <div style="font-size: 8.5pt; color: #475569; border-top: 1px dashed #CBD5E1; padding-top: 6px; margin-top: 4px;">
+        <strong>Mengapa?</strong> Tanpa mengetahui posisi kumulatif tahunan (apakah perusahaan surplus atau defisit vs target tahunan RKAP), angka pencapaian bulanan (MTD) kehilangan bobot evaluasi dan memicu kepanikan atau optimisme yang salah tempat.
+      </div>
+    </div>
+
+    <h2>1. Mengapa YTD Sebelum MTD? (Rasional Analitis &amp; Psikologi C-Level)</h2>
+    
+    <div class="grid-3">
+      <div class="card" style="margin-bottom: 0;">
+        <strong style="color: #0033A0; display: block; font-size: 9pt; margin-bottom: 4px;">1. The Pyramid Principle (Minto)</strong>
+        <p style="font-size: 8pt; color: #475569; margin: 0;">
+          Direksi selalu berpikir <em>top-down</em> (Helicopter View). Mereka membutuhkan kejelasan posisi makro kapal besar Ancol sebelum mendengarkan dinamika ombak harian di bulan berjalan.
+        </p>
+      </div>
+      <div class="card" style="margin-bottom: 0;">
+        <strong style="color: #0033A0; display: block; font-size: 9pt; margin-bottom: 4px;">2. Contextualizing Momentum</strong>
+        <p style="font-size: 8pt; color: #475569; margin: 0;">
+          MTD menjawab: <em>"Apakah bulan ini mempercepat (accelerator) atau memperlambat (drag) target YTD?"</em> Jika YTD belum dibacakan, audiens tidak memiliki tolak ukur evaluasi.
+        </p>
+      </div>
+      <div class="card" style="margin-bottom: 0;">
+        <strong style="color: #0033A0; display: block; font-size: 9pt; margin-bottom: 4px;">3. Preventing Panic Disruption</strong>
+        <p style="font-size: 8pt; color: #475569; margin: 0;">
+          Jika MTD turun -5% tetapi YTD surplus +12%, itu adalah variasi taktis musiman biasa, bukan krisis. Memulai dari MTD sering memicu salah diagnosa kepanikan.
+        </p>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 14px;">2. Matriks Komparasi Efek Psikologis Audiense</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 20%;">Pendekatan</th>
+          <th style="width: 35%;">Alur Pikiran Audiens / C-Level</th>
+          <th style="width: 25%;">Dampak Diskusi</th>
+          <th style="width: 20%;">Rekomendasi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color: #DC2626;">MTD Duluan</strong><br><span style="font-size: 7.5pt; color: #64748B;">(Bottom-Up Terbalik)</span></td>
+          <td><em>"Oke bulan ini capai 1.8 Miliar, tapi posisi target tahunan kita gimana? Kita aman gak tahun ini? Jangan-jangan minus di kuartal kemarin?"</em></td>
+          <td>Fokus buyar, audiens memotong presentasi untuk menanyakan angka tahunan, presenter kehilangan kendali panggung.</td>
+          <td><span class="tag tag-rose">❌ Dihindari</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color: #16A34A;">YTD Lalu MTD</strong><br><span style="font-size: 7.5pt; color: #64748B;">(The Executive Anchor)</span></td>
+          <td><em>"Secara tahunan kita surplus +8% di atas RKAP. Lalu bagaimana kontribusi bulan berjalan? Bagus, bulan ini tumbuh +14% sehingga mempertebal surplus!"</em></td>
+          <td>Pikiran jernih, audiens tenang karena posisi makro jelas, diskusi langsung terarah ke strategi taktis &amp; perbaikan operasional.</td>
+          <td><span class="tag tag-green">✅ Sangat Disarankan</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>3. Arsitektur Alur Narasi: The 6-Beat Executive Flow</h2>
+    <div style="background: #F1F5F9; border-radius: 8px; padding: 10px; border: 1px solid #CBD5E1; margin-bottom: 10px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; text-align: center; gap: 4px;">
+        <div style="flex: 1; background: white; padding: 6px 4px; border-radius: 6px; border: 1px solid #E2E8F0;">
+          <div style="font-size: 7pt; font-weight: 800; color: #00205B;">BEAT 1</div>
+          <div style="font-size: 7.5pt; font-weight: 700; color: #0033A0;">MACRO ANCHOR</div>
+          <div style="font-size: 6.5pt; color: #64748B;">Kesehatan YTD vs Target</div>
+        </div>
+        <div style="color: #94A3B8; font-weight: 800; font-size: 9pt;">&rarr;</div>
+        <div style="flex: 1; background: white; padding: 6px 4px; border-radius: 6px; border: 1px solid #E2E8F0;">
+          <div style="font-size: 7pt; font-weight: 800; color: #0033A0;">BEAT 2</div>
+          <div style="font-size: 7.5pt; font-weight: 700; color: #00205B;">PULSE OF MOMENTUM</div>
+          <div style="font-size: 6.5pt; color: #64748B;">Laju MTD vs Run-Rate</div>
+        </div>
+        <div style="color: #94A3B8; font-weight: 800; font-size: 9pt;">&rarr;</div>
+        <div style="flex: 1; background: white; padding: 6px 4px; border-radius: 6px; border: 1px solid #E2E8F0;">
+          <div style="font-size: 7pt; font-weight: 800; color: #00B5E2;">BEAT 3</div>
+          <div style="font-size: 7.5pt; font-weight: 700; color: #0284C7;">ENGINE OF GROWTH</div>
+          <div style="font-size: 6.5pt; color: #64748B;">Traffic vs Basket Size</div>
+        </div>
+        <div style="color: #94A3B8; font-weight: 800; font-size: 9pt;">&rarr;</div>
+        <div style="flex: 1; background: white; padding: 6px 4px; border-radius: 6px; border: 1px solid #E2E8F0;">
+          <div style="font-size: 7pt; font-weight: 800; color: #E0004D;">BEAT 4</div>
+          <div style="font-size: 7.5pt; font-weight: 700; color: #BE123C;">UNIT PORTFOLIO</div>
+          <div style="font-size: 6.5pt; color: #64748B;">Pareto Wahana Ancol</div>
+        </div>
+        <div style="color: #94A3B8; font-weight: 800; font-size: 9pt;">&rarr;</div>
+        <div style="flex: 1; background: white; padding: 6px 4px; border-radius: 6px; border: 1px solid #E2E8F0;">
+          <div style="font-size: 7pt; font-weight: 800; color: #00A497;">BEAT 5</div>
+          <div style="font-size: 7.5pt; font-weight: 700; color: #0F766E;">MARGIN QUALITY</div>
+          <div style="font-size: 6.5pt; color: #64748B;">Konsinyasi vs Dagangan</div>
+        </div>
+        <div style="color: #94A3B8; font-weight: 800; font-size: 9pt;">&rarr;</div>
+        <div style="flex: 1; background: white; padding: 6px 4px; border-radius: 6px; border: 1px solid #E2E8F0;">
+          <div style="font-size: 7pt; font-weight: 800; color: #F59E0B;">BEAT 6</div>
+          <div style="font-size: 7.5pt; font-weight: 700; color: #D97706;">TACTICAL ACTION</div>
+          <div style="font-size: 6.5pt; color: #64748B;">Floor &amp; Golden Hours</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>Ancol POS Analytics &bull; Framework Standar Storytelling Eksekutif</div>
+      <div>Halaman 1 dari 4</div>
+    </div>
+  </div>
+
+  <!-- ==================== HALAMAN 2 ==================== -->
+  <div class="page">
+    <div class="doc-header">
+      <div>
+        <span class="corp-badge">DEEP DIVE BABAK 1 &amp; 2 &bull; MACRO TO OPERATIONAL PULSE</span>
+        <h2>Beat 1 (YTD) &amp; Beat 2 (MTD): Fondasi Cerita Eksekutif</h2>
+      </div>
+      <div class="doc-meta">
+        <strong>Fokus:</strong> Kalibrasi Ekspektasi &amp; Laju Bisnis<br>
+        <strong>Target Audiens:</strong> Direksi, VP, GM Unit
+      </div>
+    </div>
+
+    <!-- BEAT 1 -->
+    <div class="beat-card beat-1">
+      <div class="beat-header">
+        <span class="beat-title">BEAT 1: The Macro Anchor — Status Kesehatan YTD (State of the Union)</span>
+        <span class="beat-step">Langkah 1 &bull; 60 Detik</span>
+      </div>
+      <p style="font-size: 8.5pt; margin-bottom: 6px;">
+        <strong>Elemen Dashboard:</strong> Total Net Revenue YTD, YoY Growth kumulatif 2026 vs 2025, Target Pencapaian Tahunan (RKAP).
+      </p>
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px;">
+        <div style="font-size: 8pt; color: #334155;">
+          <strong>Tujuan Strategis:</strong> Mengunci posisi helikopter. Menjawab pertanyaan mendasar direksi: <em>"Apakah secara keseluruhan tahun ini retail Ancol sedang dalam posisi aman, melaju pesat, atau sedang defisit?"</em>
+        </div>
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 4px 6px; font-size: 7.5pt;">
+          <strong>Key Metrics:</strong><br>
+          &bull; YTD Revenue (Rp M)<br>
+          &bull; YoY Kumulatif (%)<br>
+          &bull; Defisit/Surplus RKAP
+        </div>
+      </div>
+      <div class="script-box">
+        "Bapak/Ibu Direksi, membuka evaluasi performa retail kita hari ini: Secara kumulatif Year-to-Date (YTD) hingga bulan berjalan, Retail Ancol telah membukukan total pendapatan bersih sebesar Rp [X] Miliar. Angka ini mencerminkan pertumbuhan solid sebesar [+/- Y%] YoY dibandingkan periode yang sama tahun 2025, menempatkan posisi pencapaian kita berada di [Z%] dari target RKAP tahunan kita."
+      </div>
+    </div>
+
+    <!-- BEAT 2 -->
+    <div class="beat-card beat-2">
+      <div class="beat-header">
+        <span class="beat-title">BEAT 2: The Pulse of Momentum — Detak Taktis MTD (Current Month Velocity)</span>
+        <span class="beat-step">Langkah 2 &bull; 60 Detik</span>
+      </div>
+      <p style="font-size: 8.5pt; margin-bottom: 6px;">
+        <strong>Elemen Dashboard:</strong> Total Sales MTD bulan berjalan, Filter Periode Bulan, Run-Rate harian, Target Bulanan MTD, YoY MTD (matching calendar day).
+      </p>
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px;">
+        <div style="font-size: 8pt; color: #334155;">
+          <strong>Tujuan Strategis:</strong> Mengaitkan posisi makro dengan performa bulan berjalan. Menegaskan apakah bulan ini berfungsi sebagai <strong>akselerator</strong> (memperkuat surplus) atau <strong>beban perlambatan</strong> (drag).
+        </div>
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 4px 6px; font-size: 7.5pt;">
+          <strong>Key Metrics:</strong><br>
+          &bull; MTD Revenue (Rp M)<br>
+          &bull; MTD Growth YoY (%)<br>
+          &bull; Run-Rate Harian (Rp/hari)
+        </div>
+      </div>
+      <div class="script-box">
+        "Jika kita bedah performa bulan berjalan (Month-to-Date), ritme pertumbuhan ini terjaga sangat positif. Per tanggal [N], total penjualan MTD mencapai Rp [A] Miliar dengan rata-rata omset harian (run-rate) sebesar Rp [B] Juta per hari. Artinya, performa bulan berjalan ini menjadi lokomotif akselerator yang semakin memperlebar surplus tahunan kita, dengan proyeksi tutup bulan mampu menembus Rp [C] Miliar."
+      </div>
+    </div>
+
+    <h2>Kombinasi Dinamika Skenario YTD vs MTD</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 15%;">Kondisi YTD</th>
+          <th style="width: 15%;">Kondisi MTD</th>
+          <th style="width: 35%;">Diagnosa Bisnis &amp; Makna Riil</th>
+          <th style="width: 35%;">Arah Narasi Presenter</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-green">SURPLUS (+)</span></td>
+          <td><span class="tag tag-green">GROWING (+)</span></td>
+          <td><strong>Super Accelerator:</strong> Bisnis melaju di atas target, momentum pasar sangat kuat.</td>
+          <td><em>"Kita melaju kencang, saatnya ekspansi margin dan maksimalkan stok fast-moving untuk libur mendatang."</em></td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-green">SURPLUS (+)</span></td>
+          <td><span class="tag tag-amber">SLOWING (-)</span></td>
+          <td><strong>Seasonal Drag / Buffer Mode:</strong> Terjadi penurunan bulanan, tetapi cadangan surplus YTD aman.</td>
+          <td><em>"Bulan ini sedikit melambat karena faktor cuaca/low-season, namun buffer YTD kita sangat kokoh. Kita siapkan dorongan di akhir pekan."</em></td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-rose">DEFISIT (-)</span></td>
+          <td><span class="tag tag-green">GROWING (+)</span></td>
+          <td><strong>Turnaround Momentum:</strong> Kebangkitan performa untuk memulihkan ketertinggalan awal tahun.</td>
+          <td><em>"Bulan ini membuktikan efektivitas program recovery kita, ritme positif MTD ini harus dipertahankan untuk menutup defisit YTD."</em></td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-rose">DEFISIT (-)</span></td>
+          <td><span class="tag tag-rose">DROPPING (-)</span></td>
+          <td><strong>Red Alert / Critical Drag:</strong> Penurunan berlanjut, butuh intervensi darurat segera.</td>
+          <td><em>"Kondisi ini membutuhkan intervensi mendesak: restrukturisasi pricing, bundling hero SKU, dan optimalisasi jam sibuk kasir."</em></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer">
+      <div>Ancol POS Analytics &bull; Framework Standar Storytelling Eksekutif</div>
+      <div>Halaman 2 dari 4</div>
+    </div>
+  </div>
+
+  <!-- ==================== HALAMAN 3 ==================== -->
+  <div class="page">
+    <div class="doc-header">
+      <div>
+        <span class="corp-badge">DEEP DIVE BABAK 3 &amp; 4 &bull; DIAGNOSTIC DRIVERS &amp; CONCENTRATION</span>
+        <h2>Beat 3 (Drivers) &amp; Beat 4 (Wahana): Mengapa &amp; Di Mana?</h2>
+      </div>
+      <div class="doc-meta">
+        <strong>Fokus:</strong> Diagnosa Akar Penyebab &amp; Portofolio Unit<br>
+        <strong>Target Audiens:</strong> Merchandising, Operation Manager
+      </div>
+    </div>
+
+    <!-- BEAT 3 -->
+    <div class="beat-card beat-3">
+      <div class="beat-header">
+        <span class="beat-title">BEAT 3: The Engine of Growth — Volume Kunjungan vs Basket Size (The "Why")</span>
+        <span class="beat-step">Langkah 3 &bull; 90 Detik</span>
+      </div>
+      <p style="font-size: 8.5pt; margin-bottom: 6px;">
+        <strong>Elemen Dashboard:</strong> Total Struk / Transaksi (Traffic), Average Transaction Value (ATV / Basket Size), Spending Per Head (SPH).
+      </p>
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px;">
+        <div style="font-size: 8pt; color: #334155;">
+          <strong>Tujuan Strategis:</strong> Menjawab pertanyaan fundamental: <em>"Apakah kenaikan omset terjadi karena makin banyak pengunjung yang berbelanja (volume-driven), atau karena setiap pengunjung berbelanja dengan nilai struk yang lebih mahal (ticket/pricing-driven)?"</em>
+        </div>
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 4px 6px; font-size: 7.5pt;">
+          <strong>Formulasi BI:</strong><br>
+          <code>Revenue = Struk &times; ATV</code><br>
+          &bull; Struk = Minat &amp; Traffic<br>
+          &bull; ATV = Kemampuan Upselling
+        </div>
+      </div>
+      <div class="script-box">
+        "Pertanyaan kuncinya: apa mesin pendorong di balik angka ini? Data analitik menunjukkan pertumbuhan ini bersifat [Traffic-Driven / Basket-Size Driven]. Total volume transaksi mencapai [X] struk, sementara Average Transaction Value (ATV) tercatat sebesar Rp [Y] per struk (+Z% YoY). Artinya, pengunjung tidak hanya berdatangan dalam jumlah lebih banyak, tetapi efektivitas upselling dan paket bundling di kasir sukses menaikkan nilai belanja per kepala."
+      </div>
+    </div>
+
+    <!-- BEAT 4 -->
+    <div class="beat-card beat-4">
+      <div class="beat-header">
+        <span class="beat-title">BEAT 4: Unit Contribution &amp; Concentration — Pareto 80/20 Portofolio Wahana</span>
+        <span class="beat-step">Langkah 4 &bull; 90 Detik</span>
+      </div>
+      <p style="font-size: 8.5pt; margin-bottom: 6px;">
+        <strong>Elemen Dashboard:</strong> Filter &amp; Chart Performa per Area/Wahana: Dufan, SeaWorld, Samudra, Atlantis, Beach Park/Pasar Seni.
+      </p>
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px;">
+        <div style="font-size: 8pt; color: #334155;">
+          <strong>Tujuan Strategis:</strong> Mengidentifikasi konsentrasi pendapatan dan lokomotif utama. Memisahkan unit yang menjadi mesin laba (hero unit) dari unit yang mengalami stagnasi atau anomali penurunan.
+        </div>
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 4px 6px; font-size: 7.5pt;">
+          <strong>Unit Benchmark:</strong><br>
+          &bull; Dufan: ~55–65% Total Revenue<br>
+          &bull; SeaWorld: ~15–20% Revenue<br>
+          &bull; Samudra, Atlantis: ~10–15%
+        </div>
+      </div>
+      <div class="script-box">
+        "Melihat sebaran portofolio wahana kita: Dufan tetap menjadi jangkar utama dengan kontribusi [62%] dari total revenue, bertumbuh solid [+15%]. SeaWorld mencatatkan kinerja konsisten sebesar [18%]. Namun, perhatian khusus perlu kita berikan pada unit [Atlantis/Samudra], di mana kita mendeteksi penurunan ATV sebesar [-4%] yang disebabkan oleh berkurangnya stok kategori merchandise pakaian renang/souvenir tematik."
+      </div>
+    </div>
+
+    <h2>Matriks Diagnosa Mesin Pertumbuhan (The 4-Quadrant Driver Grid)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 25%;">Kondisi Driver</th>
+          <th style="width: 35%;">Diagnosa Fenomena Toko</th>
+          <th style="width: 40%;">Aksi Strategis Manajemen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color: #0033A0;">Traffic Naik &bull; ATV Naik</strong><br><span style="font-size: 7pt; color: #64748B;">(Gold Standard Growth)</span></td>
+          <td>Konversi pengunjung tinggi, antrian kasir termonetisasi maksimal, bundling merchandise berhasil dibeli pengunjung.</td>
+          <td>Pertahankan stok hero SKU, perkuat fast-track kasir pada jam puncak (14:00-17:00), replikasi bundling ke unit lain.</td>
+        </tr>
+        <tr>
+          <td><strong style="color: #0284C7;">Traffic Naik &bull; ATV Turun</strong><br><span style="font-size: 7pt; color: #64748B;">(Impulse / Low-Ticket)</span></td>
+          <td>Banyak transaksi struk bernilai kecil (hanya beli air mineral/souvenir murah). Pengunjung menahan belanja barang mahal.</td>
+          <td>Latih kasir menawarkan <em>add-on item</em> di meja kasir (payung, gantungan kunci, bando tematik) untuk mendongkrak nilai keranjang belanja.</td>
+        </tr>
+        <tr>
+          <td><strong style="color: #D97706;">Traffic Turun &bull; ATV Naik</strong><br><span style="font-size: 7pt; color: #64748B;">(High-Ticket Selective)</span></td>
+          <td>Jumlah pembeli berkurang tetapi mereka yang membeli memborong barang bernilai tinggi (misal: apparel/jaket Dufan premium).</td>
+          <td>Evaluasi layout gerai dan signage agar menarik lebih banyak orang masuk (<em>store walk-in rate</em>), buat produk pembuka (<em>entry-point SKU</em>).</td>
+        </tr>
+        <tr>
+          <td><strong style="color: #DC2626;">Traffic Turun &bull; ATV Turun</strong><br><span style="font-size: 7pt; color: #64748B;">(Double-Drag Threat)</span></td>
+          <td>Kunjungan gerai lesu dan pengunjung tidak berminat belanja merchandise.</td>
+          <td>Audit variasi barang (merchandise usang/stok habis), periksa kebersihan gerai, review daya saing harga jual.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer">
+      <div>Ancol POS Analytics &bull; Framework Standar Storytelling Eksekutif</div>
+      <div>Halaman 3 dari 4</div>
+    </div>
+  </div>
+
+  <!-- ==================== HALAMAN 4 ==================== -->
+  <div class="page">
+    <div class="doc-header">
+      <div>
+        <span class="corp-badge">DEEP DIVE BABAK 5 &amp; 6 &bull; MARGIN QUALITY &amp; GROUND ACTIONS</span>
+        <h2>Beat 5 (Margin) &amp; Beat 6 (Aksi Lapangan): So What &amp; Now What?</h2>
+      </div>
+      <div class="doc-meta">
+        <strong>Fokus:</strong> Profitabilitas Bersih &amp; Eksekusi Taktis 14 Hari<br>
+        <strong>Target Audiens:</strong> Keuangan, Tim Merchandising, Store SPV
+      </div>
+    </div>
+
+    <!-- BEAT 5 -->
+    <div class="beat-card beat-5">
+      <div class="beat-header">
+        <span class="beat-title">BEAT 5: Margin &amp; Cashflow Quality — Konsinyasi vs Dagangan Beli Putus</span>
+        <span class="beat-step">Langkah 5 &bull; 60 Detik</span>
+      </div>
+      <p style="font-size: 8.5pt; margin-bottom: 6px;">
+        <strong>Elemen Dashboard:</strong> Filter Model Bisnis (Konsinyasi vs Dagangan), Split Nominal Revenue, Margin Laba Kotor (HPP vs HJ).
+      </p>
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px;">
+        <div style="font-size: 8pt; color: #334155;">
+          <strong>Tujuan Strategis:</strong> Memastikan manajemen tidak terbuai "omset semu". Menegaskan kontribusi laba kotor riil Ancol antara barang beli putus (margin 100% milik Ancol) versus barang konsinyasi rekanan supplier.
+        </div>
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 4px 6px; font-size: 7.5pt;">
+          <strong>Karakteristik Finansial:</strong><br>
+          &bull; Dagangan: Margin ~40–60% (Gross Profit)<br>
+          &bull; Konsinyasi: Sharing Fee ~20–30% Ancol
+        </div>
+      </div>
+      <div class="script-box">
+        "Dari sisi kualitas laba dan kesehatan arus kas: Omset kita terbagi atas [65%] Konsinyasi dan [35%] Dagangan Beli Putus. Yang sangat menggembirakan, pertumbuhan segmen Dagangan melesat [+22%], didorong tingginya penjualan merchandise resmi original Dufan. Ini berarti profit margin kotor yang terserap ke laba bersih Ancol meningkat lebih tajam dibandingkan sekadar pertumbuhan omset konsinyasi."
+      </div>
+    </div>
+
+    <!-- BEAT 6 -->
+    <div class="beat-card beat-6">
+      <div class="beat-header">
+        <span class="beat-title">BEAT 6: The Ground Action Plan — Eksekusi Lantai &amp; Jam Emas (Now What?)</span>
+        <span class="beat-step">Langkah 6 &bull; 90 Detik</span>
+      </div>
+      <p style="font-size: 8.5pt; margin-bottom: 6px;">
+        <strong>Elemen Dashboard:</strong> Hourly Sales Heatmap (14:00 - 17:00 WIB), Top 5 Hero SKUs, Slow Moving Watchlist, Audit SKU Unmapped.
+      </p>
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px;">
+        <div style="font-size: 8pt; color: #334155;">
+          <strong>Tujuan Strategis:</strong> Menutup presentasi dengan keputusan konkret. Tidak berhenti di angka masa lalu, melainkan menetapkan rencana aksi taktis lantai toko untuk 7–14 hari ke depan.
+        </div>
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 4px 6px; font-size: 7.5pt;">
+          <strong>Floor Battleground:</strong><br>
+          &bull; Golden Hour: 15:00–17:00 WIB<br>
+          &bull; Zero Stockout Hero SKU<br>
+          &bull; Quick Clear Cashier Line
+        </div>
+      </div>
+      <div class="script-box">
+        "Sebagai kesimpulan dan rencana aksi konkret kita di lantai operasional: Pertama, kami memusatkan alokasi kasir bantuan pada Jam Emas (Golden Hours) pukul 15:00 hingga 17:00 WIB saat arus keluar pengunjung memuncak untuk mencegah antrian lepas. Kedua, mengamankan replenishment stok 5 Hero SKU teratas di konter Dufan Mart &amp; Dolphin. Ketiga, meluncurkan program bundling kasir untuk mengatrol ATV unit Samudra minggu ini."
+      </div>
+    </div>
+
+    <h2>Presenter Checklist &amp; Do's and Don'ts di Ruang Rapat Direksi</h2>
+    <div class="grid-2">
+      <div style="background: #F0FDF4; border: 1px solid #86EFAC; border-radius: 6px; padding: 10px;">
+        <strong style="color: #166534; font-size: 8.5pt; display: block; margin-bottom: 4px;">✅ HAL YANG WAJIB DILAKUKAN (DO'S)</strong>
+        <ul style="margin: 0; padding-left: 14px; font-size: 8pt; color: #14532D; line-height: 1.5;">
+          <li>Mulai presentasi dengan <strong>YTD untuk mengunci angka makro</strong> (Helicopter View).</li>
+          <li>Hubungkan angka MTD sebagai bukti akselerasi atau perlambatan target tahunan.</li>
+          <li>Gunakan fitur <em>searchable combobox</em> jika ingin memfilter salah satu dari 86 supplier.</li>
+          <li>Sebutkan selalu <strong>faktor pendorong di balik angka</strong> (Traffic vs ATV).</li>
+          <li>Gunakan tombol <em>"📋 Salin Ringkasan untuk WhatsApp"</em> untuk membagikan risalah rapat seketika ke grup direksi.</li>
+        </ul>
+      </div>
+      <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 6px; padding: 10px;">
+        <strong style="color: #991B1B; font-size: 8.5pt; display: block; margin-bottom: 4px;">❌ HAL YANG HARUS DIHINDARI (DON'TS)</strong>
+        <ul style="margin: 0; padding-left: 14px; font-size: 8pt; color: #7F1D1D; line-height: 1.5;">
+          <li>Jangan langsung membuka angka harian/outlet mikro tanpa menyebutkan posisi YTD.</li>
+          <li>Jangan membiarkan perdebatan berkutat pada angka tanpa solusi aksi lapangan.</li>
+          <li>Jangan membaca seluruh tabel baris per baris; fokus pada <strong>Top 20% pendorong (Pareto)</strong>.</li>
+          <li>Jangan mencampuradukkan omset kotor konsinyasi seolah 100% merupakan keuntungan Ancol.</li>
+          <li>Hindari istilah teknis database; gunakan bahasa bisnis ritel (Struk, ATV, Margin, Hero SKU).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>Ancol POS Analytics &bull; Framework Standar Storytelling Eksekutif</div>
+      <div>Halaman 4 dari 4</div>
+    </div>
+  </div>
+
+</body>
+</html>
+
