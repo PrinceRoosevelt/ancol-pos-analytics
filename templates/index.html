@@ -13751,6 +13751,11 @@
     const rightStartX = leftStartX + leftWidth + colGap; // 772
     const rightWidth = W - rightStartX - 64; // 1084 (60.5%)
 
+    // Left Panel Hero Cards Dimensions (2x2 Grid)
+    const cardW = 330;
+    const cardH = 148;
+    const kpiStartY = 212;
+
     // DATA EXTRACTION FOR HERO KPI CARDS
     const summary = (typeof currentDashboardData !== 'undefined' && currentDashboardData && currentDashboardData.summary) ? currentDashboardData.summary : {};
     const sum26 = summary['2026'] || {};
@@ -13758,8 +13763,20 @@
     const growth = summary['growth'] || {};
     const isMgmt = document.body.getAttribute('data-role') !== 'operasional';
 
+    // Calculation variables accessible across all visual modules
+    let resolvedTarget = null;
+    let resolvedBaseline = sum25.net_sales || 16050000000;
+    let calculatedGapPct = growth.net_sales || 5.5;
+    let resolvedAtv = sum26.atv || (sum26.transactions > 0 ? (sum26.net_sales / sum26.transactions) : 0);
+    let resolvedUpt = sum26.upt || (sum26.transactions > 0 ? (sum26.qty / sum26.transactions) : 0);
+
     let kpiCards = [];
     if (hasSpec) {
+      if (spec.module_1) {
+        if (typeof spec.module_1.current_val === 'number') resolvedTarget = spec.module_1.current_val;
+        if (typeof spec.module_1.baseline_val === 'number') resolvedBaseline = spec.module_1.baseline_val;
+        if (typeof spec.module_1.gap_pct === 'number') calculatedGapPct = spec.module_1.gap_pct;
+      }
       kpiCards = spec.kpis.map((c, idx) => ({
         col: idx % 2,
         row: Math.floor(idx / 2),
@@ -13787,8 +13804,8 @@
       const aiUpt = aiUptMatch ? parseFloat(aiUptMatch[1].replace(',', '.')) : null;
 
       // RIGOROUS APPLES-TO-APPLES RESOLUTION
-      let resolvedTarget = rawTarget;
-      let resolvedBaseline = rawHist || sum25.net_sales;
+      resolvedTarget = rawTarget;
+      resolvedBaseline = rawHist || sum25.net_sales;
 
       if (resolvedTarget && resolvedTarget > 5000000000 && rawHist && rawHist < 2000000000) {
         resolvedBaseline = sum25.net_sales || 16050000000;
@@ -13801,10 +13818,10 @@
       }
 
       const hasGap = resolvedTarget && resolvedBaseline && resolvedBaseline > 0;
-      const calculatedGapPct = hasGap ? (((resolvedTarget - resolvedBaseline) / resolvedBaseline) * 100) : (growth.net_sales || 5.5);
+      calculatedGapPct = hasGap ? (((resolvedTarget - resolvedBaseline) / resolvedBaseline) * 100) : (growth.net_sales || 5.5);
 
-      const resolvedAtv = aiAtv || sum26.atv || (sum26.transactions > 0 ? (sum26.net_sales / sum26.transactions) : 0);
-      const resolvedUpt = aiUpt || sum26.upt || (sum26.transactions > 0 ? (sum26.qty / sum26.transactions) : 0);
+      resolvedAtv = aiAtv || sum26.atv || (sum26.transactions > 0 ? (sum26.net_sales / sum26.transactions) : 0);
+      resolvedUpt = aiUpt || sum26.upt || (sum26.transactions > 0 ? (sum26.qty / sum26.transactions) : 0);
       const deltaFallback = (sum26.net_sales || 16930000000) - (sum25.net_sales || 16050000000);
       const deltaTextFallback = (deltaFallback >= 0 ? '+' : '') + formatInfoRupiahShort(deltaFallback);
 
