@@ -1437,6 +1437,188 @@
               </button>
             </div>
           </div>
+
+          <!-- Case 4: Operational Excellence (OPEX) Portal & Field Service Audit (NEW FLAGSHIP) -->
+          <div class="p-5 bg-white/70 dark:bg-stone-900/55 backdrop-blur-md rounded-2xl border border-stone-200/70 dark:border-stone-800/80 shadow-xs space-y-4">
+            
+            <!-- Header Case -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200/60 dark:border-stone-700/80 pb-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300">
+                    <svg class="w-3.5 h-3.5 inline-block shrink-0 align-middle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Operational Technology &amp; QA • Python Microserver
+                  </span>
+                  <span class="text-[10px] font-mono text-stone-400">9 Unit Rekreasi Ancol</span>
+                </div>
+                <h3 class="font-extrabold text-stone-900 dark:text-white text-base mt-1">
+                  Operational Excellence (OPEX) Portal: Sistem Audit Pelayanan Lapangan &amp; Executive Quality Dashboard
+                </h3>
+              </div>
+
+              <!-- Interactive Step Selector Tabs -->
+              <div class="flex items-center gap-1 p-1 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/70 dark:border-stone-700 text-xs font-bold self-start sm:self-auto overflow-x-auto max-w-full">
+                <button onclick="switchOpexStep(1)" id="btn-opex-step-1" class="px-3 py-1.5 rounded-lg bg-stone-900 dark:bg-white text-white dark:text-stone-900 shadow-2xs transition-all font-bold shrink-0">
+                  1. Dashboard Eksekutif
+                </button>
+                <button onclick="switchOpexStep(2)" id="btn-opex-step-2" class="px-3 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all font-medium shrink-0">
+                  2. Gap Analysis 14 Aspek
+                </button>
+                <button onclick="switchOpexStep(3)" id="btn-opex-step-3" class="px-3 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all font-medium shrink-0">
+                  3. Form Audit Cerdas
+                </button>
+                <button onclick="switchOpexStep(4)" id="btn-opex-step-4" class="px-3 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all font-medium shrink-0">
+                  4. Multi-Evidence &amp; Penalti
+                </button>
+                <button onclick="switchOpexStep(5)" id="btn-opex-step-5" class="px-3 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all font-medium shrink-0">
+                  5. User CRUD &amp; SQLite WAL
+                </button>
+              </div>
+            </div>
+
+            <!-- STEP 1: DASHBOARD MONITORING (5.jpeg) -->
+            <div id="opex-step-pane-1" class="space-y-3">
+              <div class="group relative rounded-2xl overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-900 shadow-md cursor-pointer" onclick="openPhotoModal('./project%20baru/5.jpeg', 'Executive Dashboard Monitoring 9 Unit Rekreasi Ancol (Layer 2)', 'Skor Konsolidasi Ancol 3.75/5.00 dari 1.066 penilaian terverifikasi. Memetakan pemeringkatan unit (#1 Samudra 4.10, #2 Putri Duyung 4.02, #3 Bird Land 4.01 s/d #9 Retail 3.52) serta tren pertumbuhan mutu Juli–Oktober 2026 yang berhasil melampaui target korporat 4.00 (mencapai 4.12).')">
+                <img src="./project%20baru/5.jpeg" alt="OPEX Executive Monitoring Dashboard" class="w-full max-h-[460px] object-contain mx-auto bg-stone-950 group-hover:scale-[1.01] transition-transform duration-300" loading="lazy">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end text-white text-xs">
+                  <span class="font-extrabold text-sm text-sky-400">📊 Executive Multi-Unit Monitoring (Layer 2)</span>
+                  <span class="text-stone-300 text-[11px] mt-0.5">Klik untuk melihat tampilan resolusi penuh (Full-Res Lightbox) ↗</span>
+                </div>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs pt-1 border-t border-stone-100 dark:border-stone-800">
+                <div>
+                  <span class="font-bold text-stone-900 dark:text-white">Layer 2: Executive Dashboard Monitoring</span> — 
+                  <span class="text-stone-500">Konsolidasi 1.066 penilaian dari 9 unit rekreasi dengan tren skor meningkat dari 3.52 (Juli) hingga 4.12 (Oktober 2026), menembus target standar mutu korporat (4.00).</span>
+                </div>
+                <span class="text-[11px] font-mono text-sky-600 dark:text-sky-400 font-bold shrink-0">1.066 Penilaian Real-Time</span>
+              </div>
+            </div>
+
+            <!-- STEP 2: DETAIL 14 ASPEK STANDAR & POS KERJA (6.jpeg) -->
+            <div id="opex-step-pane-2" class="hidden space-y-3">
+              <div class="group relative rounded-2xl overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-900 shadow-md cursor-pointer" onclick="openPhotoModal('./project%20baru/6.jpeg', 'Detail Evaluasi 14 Aspek Mutu & Distribusi Pos Kerja Wahana', 'Mendiagnosis performa pos kerja (Tenant Retail Merchandise Atlantis 4.29 & Kasir Samudra 4.13) dan memetakan gap mutu 14 aspek standar (Unggul: Seragam 4.48, Name Tag 4.22; Area Perhatian: Salam Ancol 2.97 & Kecepatan Layanan 3.53).')">
+                <img src="./project%20baru/6.jpeg" alt="OPEX 14 Aspek Standar & Evaluasi Pos Kerja" class="w-full max-h-[460px] object-contain mx-auto bg-stone-950 group-hover:scale-[1.01] transition-transform duration-300" loading="lazy">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end text-white text-xs">
+                  <span class="font-extrabold text-sm text-emerald-400">📈 Gap Analysis & Pos Kerja Distribution</span>
+                  <span class="text-stone-300 text-[11px] mt-0.5">Klik untuk melihat tampilan resolusi penuh (Full-Res Lightbox) ↗</span>
+                </div>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs pt-1 border-t border-stone-100 dark:border-stone-800">
+                <div>
+                  <span class="font-bold text-stone-900 dark:text-white">Evaluasi Rinci 14 Aspek Standar Pelayanan &amp; Hospitalitas</span> — 
+                  <span class="text-stone-500">Mendeteksi pos berkinerja tertinggi serta menyoroti area kritis yang membutuhkan intervensi mendesak: Kecepatan Layanan (3.53) dan Kepatuhan Salam Ancol (2.97).</span>
+                </div>
+                <span class="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-bold shrink-0">14 Dimensi Audit SOP</span>
+              </div>
+            </div>
+
+            <!-- STEP 3: FORM AUDIT LAPANGAN CERDAS (2.jpeg) -->
+            <div id="opex-step-pane-3" class="hidden space-y-3">
+              <div class="group relative rounded-2xl overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-900 shadow-md cursor-pointer" onclick="openPhotoModal('./project%20baru/2.jpeg', 'Form Audit Pelayanan Lapangan Digital (Tim Monitoring Independen)', 'Formulir inspeksi mutu mandiri & independen dengan fitur Isi Cepat Skor 4 untuk efisiensi di lapangan, live scoring per aspek, dan kalkulasi rata-rata skor instan.')">
+                <img src="./project%20baru/2.jpeg" alt="Form Audit Pelayanan Lapangan" class="w-full max-h-[460px] object-contain mx-auto bg-stone-950 group-hover:scale-[1.01] transition-transform duration-300" loading="lazy">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end text-white text-xs">
+                  <span class="font-extrabold text-sm text-sky-400">📋 Form Audit Cerdas & Quick-Fill Skor 4</span>
+                  <span class="text-stone-300 text-[11px] mt-0.5">Klik untuk melihat tampilan resolusi penuh (Full-Res Lightbox) ↗</span>
+                </div>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs pt-1 border-t border-stone-100 dark:border-stone-800">
+                <div>
+                  <span class="font-bold text-stone-900 dark:text-white">Form Inspeksi Digital Ramah Mobile</span> — 
+                  <span class="text-stone-500">Dilengkapi fitur inovatif "Isi Cepat: Semua Standar Baik (Skor 4)" sehingga auditor lapangan cukup menyesuaikan 1–2 aspek yang bermasalah tanpa harus klik 14 kali dari awal.</span>
+                </div>
+                <span class="text-[11px] font-mono text-amber-600 dark:text-amber-400 font-bold shrink-0">Hemat Waktu Lapangan 70%</span>
+              </div>
+            </div>
+
+            <!-- STEP 4: DETEKSI PENALTI & MULTI-EVIDENCE (3.jpeg & 1.jpeg) -->
+            <div id="opex-step-pane-4" class="hidden space-y-3">
+              <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+                <div class="md:col-span-8 group relative rounded-2xl overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-900 shadow-md cursor-pointer" onclick="openPhotoModal('./project%20baru/3.jpeg', 'Deteksi Pelanggaran Berat & Unggah Bukti Multi-Evidence', 'Sistem penalti otomatis -1.0 poin untuk pelanggaran 3S & Salam Ancol, upload foto wajib auto-kompresi, dan teknologi streaming video QR yang menjaga ukuran berkas dokumen tetap <150 KB.')">
+                  <img src="./project%20baru/3.jpeg" alt="Deteksi Pelanggaran Berat & Multi-Evidence" class="w-full max-h-[460px] object-contain mx-auto bg-stone-950 group-hover:scale-[1.01] transition-transform duration-300" loading="lazy">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end text-white text-xs">
+                    <span class="font-extrabold text-sm text-red-400">⚠️ Penalti Otomatis &amp; Bukti Foto/Video QR</span>
+                    <span class="text-stone-300 text-[11px] mt-0.5">Klik untuk melihat tampilan resolusi penuh (Full-Res Lightbox) ↗</span>
+                  </div>
+                </div>
+                <div class="md:col-span-4 group relative rounded-2xl overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-900 shadow-md cursor-pointer" onclick="openPhotoModal('./project%20baru/1.jpeg', 'Gerbang Masuk Akun Operasional OPEX Ancol', 'Layar masuk akun operasional terintegrasi dengan akses langsung ke Executive Dashboard (Layer 2) dan pendaftaran akun staf.')">
+                  <img src="./project%20baru/1.jpeg" alt="OPEX Sign In Portal" class="w-full h-full max-h-[460px] object-cover mx-auto bg-stone-950 group-hover:scale-[1.02] transition-transform duration-300" loading="lazy">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-end text-white text-xs">
+                    <span class="font-bold text-xs text-sky-400">Portal Masuk Staf &amp; Executive Layer 2</span>
+                    <span class="text-stone-300 text-[10px]">Klik Perbesar ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs pt-1 border-t border-stone-100 dark:border-stone-800">
+                <div>
+                  <span class="font-bold text-stone-900 dark:text-white">Integritas Bukti Lapangan &amp; Dokumen Super Ringan</span> — 
+                  <span class="text-stone-500">Penalti otomatis -1.0 poin untuk ketiadaan salam/senyum, foto terkompresi otomatis, dan video dialirkan via streaming link/QR agar berkas arsip tetap sangat ringan (&lt;150 KB).</span>
+                </div>
+                <span class="text-[11px] font-mono text-red-600 dark:text-red-400 font-bold shrink-0">Anti-Manipulasi SOP</span>
+              </div>
+            </div>
+
+            <!-- STEP 5: USER MANAGEMENT CRUD & ARSITEKTUR WAL (7.jpeg & 4.jpeg) -->
+            <div id="opex-step-pane-5" class="hidden space-y-3">
+              <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+                <div class="md:col-span-8 group relative rounded-2xl overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-900 shadow-md cursor-pointer" onclick="openPhotoModal('./project%20baru/7.jpeg', 'Manajemen Hak Akses Pengguna (User CRUD)', 'Pengelolaan 19 akun staf operasional dan penilai independen terintegrasi database SQLite Write-Ahead Logging pada Zero-Dependency Python Microserver (Port 8080 Active).')">
+                  <img src="./project%20baru/7.jpeg" alt="Manajemen Hak Akses Pengguna CRUD" class="w-full max-h-[460px] object-contain mx-auto bg-stone-950 group-hover:scale-[1.01] transition-transform duration-300" loading="lazy">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end text-white text-xs">
+                    <span class="font-extrabold text-sm text-purple-400">👥 User CRUD &amp; Zero-Dependency Server (Port 8080)</span>
+                    <span class="text-stone-300 text-[11px] mt-0.5">Klik untuk melihat tampilan resolusi penuh (Full-Res Lightbox) ↗</span>
+                  </div>
+                </div>
+                <div class="md:col-span-4 group relative rounded-2xl overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-900 shadow-md cursor-pointer" onclick="openPhotoModal('./project%20baru/4.jpeg', 'Portal Masuk Petugas: 3 Role Model', 'Modal otentikasi petugas dengan pembagian hak akses: Super Admin (5 Panel Penuh), User Staf (3 Form Laporan), dan Tamu Netral (Mode Pengawasan).')">
+                  <img src="./project%20baru/4.jpeg" alt="Portal Masuk Petugas 3 Role" class="w-full h-full max-h-[460px] object-cover mx-auto bg-stone-950 group-hover:scale-[1.02] transition-transform duration-300" loading="lazy">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-end text-white text-xs">
+                    <span class="font-bold text-xs text-purple-400">3-Role Security Architecture</span>
+                    <span class="text-stone-300 text-[10px]">Klik Perbesar ↗</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs pt-1 border-t border-stone-100 dark:border-stone-800">
+                <div>
+                  <span class="font-bold text-stone-900 dark:text-white">Keamanan Berbasis Peran (RBAC) &amp; Python Microserver</span> — 
+                  <span class="text-stone-500">Struktur 3 hak akses (Super Admin, User Staf, Tamu Netral) berjalan di atas Python Microserver independen (Port 8080) dengan integritas data SQLite WAL berkinerja tinggi.</span>
+                </div>
+                <span class="text-[11px] font-mono text-purple-600 dark:text-purple-400 font-bold shrink-0">Port 8080 Active • SQLite WAL</span>
+              </div>
+            </div>
+
+            <!-- Operational & Commercial Highlights (3 Cards) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs pt-1">
+              <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/50 dark:border-stone-800 space-y-1">
+                <span class="font-bold text-sky-700 dark:text-sky-400">Transformasi Kertas ke Digital</span>
+                <p class="text-[11px] text-stone-600 dark:text-stone-400 leading-relaxed">
+                  Mengeliminasi formulir kertas manual, mempercepat rekapitulasi audit dari H+3 hari kerja menjadi <strong>real-time detik itu juga</strong> ke SQLite database.
+                </p>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/50 dark:border-stone-800 space-y-1">
+                <span class="font-bold text-emerald-700 dark:text-emerald-400">1.066+ Data Audit Terverifikasi</span>
+                <p class="text-[11px] text-stone-600 dark:text-stone-400 leading-relaxed">
+                  Memantau mutu 9 unit rekreasi Ancol secara konsisten; membuktikan kenaikan rata-rata skor layanan dari <strong>3.52 hingga 4.12</strong> melampaui target korporat.
+                </p>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/50 dark:border-stone-800 space-y-1">
+                <span class="font-bold text-red-700 dark:text-red-400">Algoritma Penalti &amp; Gap Guard</span>
+                <p class="text-[11px] text-stone-600 dark:text-stone-400 leading-relaxed">
+                  Penalti otomatis pelanggaran 3S, bukti multi-evidence terkompresi, dan deteksi dini titik kritis layanan untuk evaluasi langsung jajaran manajemen.
+                </p>
+              </div>
+            </div>
+
+            <!-- Operational Takeaway Bar -->
+            <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200/50 dark:border-stone-800 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div class="text-[11px] text-stone-600 dark:text-stone-300">
+                <strong>Operational Impact:</strong> Mengubah tata kelola pengawasan standar mutu 9 unit rekreasi Ancol menjadi berbasis data presisi, meningkatkan kepatuhan SOP hospitalitas, dan menyediakan dasbor eksekutif instan bagi pengambil keputusan.
+              </div>
+              <span class="text-[10px] font-mono text-sky-600 dark:text-sky-400 font-bold shrink-0">Field QA &amp; Executive Intelligence</span>
+            </div>
+
+            <div class="flex items-center justify-between pt-1">
+              <span class="text-[10px] font-mono text-stone-500">Tech Stack: Python 3.11 Microserver • SQLite WAL • RBAC Security • HTML5 Canvas / Charts • REST Endpoints</span>
+              <span class="text-[11px] font-bold text-stone-400">Porto Real Case #4</span>
+            </div>
+
+          </div>
         </div>
 
         <!-- TAB 5: SOURCE FILES VAULT -->
@@ -2908,6 +3090,22 @@
           }
         }
       });
+    }
+
+    // OPEX CASE STUDY VIEWER STEP CONTROLLER
+    function switchOpexStep(step) {
+      for (let s = 1; s <= 5; s++) {
+        const pane = document.getElementById('opex-step-pane-' + s);
+        const btn = document.getElementById('btn-opex-step-' + s);
+        if (pane) pane.classList.toggle('hidden', s !== step);
+        if (btn) {
+          if (s === step) {
+            btn.className = "px-3 py-1.5 rounded-lg bg-stone-900 dark:bg-white text-white dark:text-stone-900 shadow-2xs transition-all font-bold shrink-0";
+          } else {
+            btn.className = "px-3 py-1.5 rounded-lg text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all font-medium shrink-0";
+          }
+        }
+      }
     }
 
     // PHOTO MODAL LIGHTBOX
