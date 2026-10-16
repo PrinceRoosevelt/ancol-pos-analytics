@@ -5345,9 +5345,14 @@
       <div class="kpi-value"><span id="kpiTx2026">{{ "{:,.0f}".format(data.summary["2026"]["transactions"]).replace(',', '.') }}</span> <span style="font-size:14px; font-weight:normal; color:var(--text-muted);">Struk</span></div>
       <div class="kpi-footer">
         <div class="kpi-compare-row">
+          <span>Tahun 2025:</span>
+          <strong id="kpiTx2025">{{ "{:,.0f}".format(data.summary["2025"]["transactions"]).replace(',', '.') }} Struk</strong>
+        </div>
+        <div class="kpi-compare-row">
           <span>Pertumbuhan Struk:</span>
-          <span id="kpiTxGrowth" class="badge-growth {% if data.summary['growth']['transactions'] is not none and data.summary['growth']['transactions'] >= 0 %}positive{% else %}negative{% endif %}">
+          <span id="kpiTxGrowth" class="badge-growth {% if data.summary['growth']['transactions'] is not none and data.summary['growth']['transactions'] >= 0 %}positive{% elif data.summary['growth']['transactions'] is not none %}negative{% else %}neutral{% endif %}">
             {% if data.summary['growth']['transactions'] is none %}-{% else %}{{ "{:+.2f}%".format(data.summary['growth']['transactions']) }}{% endif %}
+            ({{ "{:+,.0f}".format(data.summary["diff"]["transactions"]).replace(',', '.') }} Struk)
           </span>
         </div>
         <div class="kpi-compare-row">
@@ -5368,9 +5373,14 @@
       <div class="kpi-value"><span id="kpiQty2026">{{ "{:,.0f}".format(data.summary["2026"]["qty"]).replace(',', '.') }}</span> <span style="font-size:14px; font-weight:normal; color:var(--text-muted);">Pcs</span></div>
       <div class="kpi-footer">
         <div class="kpi-compare-row">
+          <span>Tahun 2025:</span>
+          <strong id="kpiQty2025">{{ "{:,.0f}".format(data.summary["2025"]["qty"]).replace(',', '.') }} Pcs</strong>
+        </div>
+        <div class="kpi-compare-row">
           <span>Pertumbuhan Qty:</span>
-          <span id="kpiQtyGrowth" class="badge-growth {% if data.summary['growth']['qty'] is not none and data.summary['growth']['qty'] >= 0 %}positive{% else %}negative{% endif %}">
+          <span id="kpiQtyGrowth" class="badge-growth {% if data.summary['growth']['qty'] is not none and data.summary['growth']['qty'] >= 0 %}positive{% elif data.summary['growth']['qty'] is not none %}negative{% else %}neutral{% endif %}">
             {% if data.summary['growth']['qty'] is none %}-{% else %}{{ "{:+.2f}%".format(data.summary['growth']['qty']) }}{% endif %}
+            ({{ "{:+,.0f}".format(data.summary["diff"]["qty"]).replace(',', '.') }} Pcs)
           </span>
         </div>
         <div class="kpi-compare-row">
@@ -8672,20 +8682,30 @@
 
     const kpiTx26El = document.getElementById('kpiTx2026');
     if (kpiTx26El) kpiTx26El.textContent = formatNum(tx26Count);
+    const kpiTx25El = document.getElementById('kpiTx2025');
+    if (kpiTx25El) kpiTx25El.textContent = formatNum(tx25Count) + ' Struk';
     const kpiTxGrowthEl = document.getElementById('kpiTxGrowth');
     if (kpiTxGrowthEl) {
-      kpiTxGrowthEl.className = 'badge-growth ' + (growthTx !== null && growthTx >= 0 ? 'positive' : 'negative');
-      kpiTxGrowthEl.textContent = growthTx !== null ? (growthTx >= 0 ? '+' : '') + growthTx.toFixed(2) + '%' : '-';
+      kpiTxGrowthEl.className = 'badge-growth ' + (growthTx !== null && growthTx >= 0 ? 'positive' : (growthTx !== null ? 'negative' : 'neutral'));
+      const diffTx = tx26Count - tx25Count;
+      const diffTxSign = diffTx >= 0 ? '+' : '-';
+      const diffTxStr = tx25Count > 0 ? ' (' + diffTxSign + formatNum(Math.abs(diffTx)) + ' Struk)' : '';
+      kpiTxGrowthEl.textContent = (growthTx !== null ? (growthTx >= 0 ? '+' : '') + growthTx.toFixed(2) + '%' : '-') + diffTxStr;
     }
     const kpiAtvEl = document.getElementById('kpiAtv');
     if (kpiAtvEl) kpiAtvEl.textContent = formatRp(atv26);
 
     const kpiQty26El = document.getElementById('kpiQty2026');
     if (kpiQty26El) kpiQty26El.textContent = formatNum(q26);
+    const kpiQty25El = document.getElementById('kpiQty2025');
+    if (kpiQty25El) kpiQty25El.textContent = formatNum(q25) + ' Pcs';
     const kpiQtyGrowthEl = document.getElementById('kpiQtyGrowth');
     if (kpiQtyGrowthEl) {
-      kpiQtyGrowthEl.className = 'badge-growth ' + (growthQty !== null && growthQty >= 0 ? 'positive' : 'negative');
-      kpiQtyGrowthEl.textContent = growthQty !== null ? (growthQty >= 0 ? '+' : '') + growthQty.toFixed(2) + '%' : '-';
+      kpiQtyGrowthEl.className = 'badge-growth ' + (growthQty !== null && growthQty >= 0 ? 'positive' : (growthQty !== null ? 'negative' : 'neutral'));
+      const diffQty = q26 - q25;
+      const diffQtySign = diffQty >= 0 ? '+' : '-';
+      const diffQtyStr = q25 > 0 ? ' (' + diffQtySign + formatNum(Math.abs(diffQty)) + ' Pcs)' : '';
+      kpiQtyGrowthEl.textContent = (growthQty !== null ? (growthQty >= 0 ? '+' : '') + growthQty.toFixed(2) + '%' : '-') + diffQtyStr;
     }
     const kpiUptEl = document.getElementById('kpiUpt');
     if (kpiUptEl) kpiUptEl.textContent = upt26.toFixed(2) + ' item';
