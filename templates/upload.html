@@ -42,15 +42,54 @@
       max-width: 620px;
       transition: all .2s ease;
     }
-    .logo { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .logo { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
     .logo-icon {
-      width: 46px; height: 46px; border-radius: 12px;
+      width: 48px; height: 48px; border-radius: 12px;
       background: linear-gradient(135deg, var(--brand) 0%, #0056b3 100%);
       display: flex; align-items: center; justify-content: center;
-      font-size: 24px; color: white; box-shadow: 0 4px 12px rgba(0,51,160,.25);
+      color: white; box-shadow: 0 4px 12px rgba(0,51,160,.25); flex-shrink: 0;
     }
+    .logo-icon svg { width: 26px; height: 26px; fill: currentColor; }
     .logo-text h1 { font-size: 19px; font-weight: 800; color: var(--text); letter-spacing: -0.01em; }
     .logo-text p { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+
+    /* Modern Colored Flat Rounded Badges */
+    .flat-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      flex-shrink: 0;
+      vertical-align: middle;
+      line-height: 1;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .flat-badge svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+    .flat-badge-xs { width: 20px; height: 20px; border-radius: 6px; padding: 3px; }
+    .flat-badge-sm { width: 26px; height: 26px; border-radius: 8px; padding: 4.5px; }
+    .flat-badge-md { width: 32px; height: 32px; border-radius: 9px; padding: 6px; }
+    .flat-badge-lg { width: 42px; height: 42px; border-radius: 12px; padding: 8px; }
+    .flat-badge-xl { width: 54px; height: 54px; border-radius: 15px; padding: 11px; }
+
+    /* Vibrant semantic colors with soft squircle tinted containers */
+    .flat-badge-brand   { background: rgba(0, 51, 160, 0.10); color: #0033A0; }
+    .flat-badge-sky     { background: rgba(2, 132, 199, 0.12); color: #0284c7; }
+    .flat-badge-emerald { background: rgba(5, 150, 105, 0.12); color: #059669; }
+    .flat-badge-amber   { background: rgba(217, 119, 6, 0.12); color: #d97706; }
+    .flat-badge-rose    { background: rgba(224, 0, 77, 0.12);  color: #E0004D; }
+    .flat-badge-purple  { background: rgba(126, 34, 206, 0.12); color: #7e22ce; }
+    .flat-badge-teal    { background: rgba(13, 148, 136, 0.12); color: #0d9488; }
+    .flat-badge-indigo  { background: rgba(79, 70, 229, 0.12); color: #4f46e5; }
+    .flat-badge-slate   { background: rgba(100, 116, 139, 0.12); color: #475569; }
+    .flat-badge-white   { background: rgba(255, 255, 255, 0.20); color: #ffffff; }
+
+    .tab-btn.active .flat-badge { background: rgba(255, 255, 255, 0.22); color: #ffffff; }
+    .btn-submit .flat-badge     { background: rgba(255, 255, 255, 0.22); color: #ffffff; }
     
     .tab-nav {
       display: flex; gap: 8px; margin-bottom: 24px;
@@ -207,7 +246,9 @@
 <body>
   <div class="card">
     <div class="logo">
-      <div class="logo-icon">&#128448;</div>
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v3.5a2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0V5a1 1 0 0 1 1-1zm-1 6.84A4.47 4.47 0 0 0 5.5 12c1.3 0 2.45-.55 3.25-1.42.8.87 1.95 1.42 3.25 1.42s2.45-.55 3.25-1.42A4.47 4.47 0 0 0 20.5 12c.4 0 .78-.06 1.15-.16V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8.16zM9 15h6v4H9v-4z"/></svg>
+      </div>
       <div class="logo-text">
         <h1>Portal Admin &amp; Input Data</h1>
         <p>Manajemen Sales &amp; Pengunjung Harian / Bulanan Ancol</p>
@@ -216,8 +257,14 @@
 
     <!-- Tab Navigation -->
     <div class="tab-nav">
-      <button type="button" class="tab-btn active" id="tabBtnUpload" onclick="switchAdminTab('upload')">&#128194; Upload File Sales</button>
-      <button type="button" class="tab-btn" id="tabBtnVisitor" onclick="switchAdminTab('visitor')">&#128101; Input Pengunjung (4 Aspek)</button>
+      <button type="button" class="tab-btn active" id="tabBtnUpload" onclick="switchAdminTab('upload')">
+        <span class="flat-badge flat-badge-sm flat-badge-brand"><svg viewBox="0 0 24 24"><path d="M20 5h-8.586L9.707 3.293A1 1 0 0 0 9 3H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/></svg></span>
+        Upload File Sales
+      </button>
+      <button type="button" class="tab-btn" id="tabBtnVisitor" onclick="switchAdminTab('visitor')">
+        <span class="flat-badge flat-badge-sm flat-badge-purple"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></span>
+        Input Pengunjung (4 Aspek)
+      </button>
     </div>
 
     <div id="ajaxAlert"></div>
@@ -234,26 +281,37 @@
     <div class="tab-content active" id="tabUpload">
       <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
         <div class="form-group">
-          <label for="pin">&#128272; PIN Admin</label>
+          <label for="pin" style="display:inline-flex; align-items:center; gap:6px;">
+            <span class="flat-badge flat-badge-xs flat-badge-amber"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></span>
+            <span>PIN Admin</span>
+          </label>
           <input type="password" id="pin" name="pin" placeholder="Masukkan PIN admin..." autocomplete="current-password" required>
         </div>
 
         <div class="form-group">
-          <label for="category">&#128193; Folder Tujuan / Jenis Data</label>
+          <label for="category" style="display:inline-flex; align-items:center; gap:6px;">
+            <span class="flat-badge flat-badge-xs flat-badge-sky"><svg viewBox="0 0 24 24"><path d="M20 5h-8.586L9.707 3.293A1 1 0 0 0 9 3H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/></svg></span>
+            <span>Folder Tujuan / Jenis Data</span>
+          </label>
           <select id="category" name="category">
-            <option value="2026" selected>&#128193; data/sales detail 2026/ (Penjualan 2026)</option>
-            <option value="2025">&#128193; data/sales detail 2025/ (Penjualan 2025)</option>
-            <option value="visitor">&#128101; data/visitor/ (Data Pengunjung Template / Unit Excel)</option>
-            <option value="target">&#128193; data/target 2026/ (Master Budget &amp; Target)</option>
-            <option value="auto">&#10024; Otomatis Deteksi dari Nama File</option>
+            <option value="2026" selected>📁 data/sales detail 2026/ (Penjualan 2026)</option>
+            <option value="2025">📁 data/sales detail 2025/ (Penjualan 2025)</option>
+            <option value="visitor">👥 data/visitor/ (Data Pengunjung Template / Unit Excel)</option>
+            <option value="target">🎯 data/target 2026/ (Master Budget &amp; Target)</option>
+            <option value="auto">✨ Otomatis Deteksi dari Nama File</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label>&#128194; File Excel Sales / Budget / Pengunjung</label>
+          <label style="display:inline-flex; align-items:center; gap:6px;">
+            <span class="flat-badge flat-badge-xs flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 13h8v2H8v-2zm0 4h8v2H8v-2z"/></svg></span>
+            <span>File Excel Sales / Budget / Pengunjung</span>
+          </label>
           <div class="drop-zone" id="dropZone">
             <input type="file" name="files" id="fileInput" accept=".xlsx,.xls" multiple>
-            <div class="dz-icon">&#128193;</div>
+            <div class="dz-icon">
+              <span class="flat-badge flat-badge-xl flat-badge-brand"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg></span>
+            </div>
             <div class="dz-title">Klik di sini atau drag &amp; drop file Excel</div>
             <div class="dz-hint">Format: .xlsx / .xls | Maks. 64 MB per file | Bisa pilih lebih dari 1 file</div>
           </div>
@@ -261,7 +319,10 @@
         </div>
 
         <button type="submit" class="btn-submit" id="submitBtn">
-          <span id="btnText">&#128228; Upload &amp; Refresh Dashboard</span>
+          <span id="btnText" style="display:inline-flex; align-items:center; gap:8px;">
+            <span class="flat-badge flat-badge-sm flat-badge-white"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg></span>
+            <span>Upload &amp; Refresh Dashboard</span>
+          </span>
           <span class="spinner" id="spinner"></span>
         </button>
       </form>
@@ -273,31 +334,43 @@
       <form id="visitorForm" onsubmit="submitVisitorData(event)">
         <div class="section-header">
           <div>
-            <h3>&#9997;&#65039; Form Input Cepat Harian (4 Aspek)</h3>
+            <h3 style="display:inline-flex; align-items:center; gap:8px;">
+              <span class="flat-badge flat-badge-sm flat-badge-brand"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></span>
+              <span>Form Input Cepat Harian (4 Aspek)</span>
+            </h3>
             <p>Input per unit dengan rincian Individu &amp; Rombongan</p>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="vPin">&#128272; PIN Admin</label>
+          <label for="vPin" style="display:inline-flex; align-items:center; gap:6px;">
+            <span class="flat-badge flat-badge-xs flat-badge-amber"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></span>
+            <span>PIN Admin</span>
+          </label>
           <input type="password" id="vPin" placeholder="Masukkan PIN admin..." autocomplete="current-password" required>
         </div>
 
         <div class="grid-2">
           <div class="form-group">
-            <label for="vUnit">&#127914; Unit Wahana / Rekreasi</label>
+            <label for="vUnit" style="display:inline-flex; align-items:center; gap:6px;">
+              <span class="flat-badge flat-badge-xs flat-badge-rose"><svg viewBox="0 0 24 24"><path d="M22 10V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v4a2 2 0 0 1 0 4v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 1 0-4zm-9 7.5h-2v-2h2v2zm0-4.5h-2v-2h2v2zm0-4.5h-2v-2h2v2z"/></svg></span>
+              <span>Unit Wahana / Rekreasi</span>
+            </label>
             <select id="vUnit" required>
               <option value="">-- Pilih Unit Wahana --</option>
-              <option value="Dufan">&#127906; Dufan (Area DUFAN)</option>
-              <option value="SeaWorld">&#128031; SeaWorld (Area AWAPARK)</option>
-              <option value="Samudra">&#128044; Samudra (Area AWAPARK)</option>
-              <option value="Atlantis">&#127946; Atlantis (Area AWAPARK)</option>
-              <option value="Beachpark">&#127958; Beachpark (Area BEACHPARK)</option>
+              <option value="Dufan">Dufan (Area DUFAN)</option>
+              <option value="SeaWorld">SeaWorld (Area AWAPARK)</option>
+              <option value="Samudra">Samudra (Area AWAPARK)</option>
+              <option value="Atlantis">Atlantis (Area AWAPARK)</option>
+              <option value="Beachpark">Beachpark (Area BEACHPARK)</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="vDate">&#128197; Tanggal Kunjungan</label>
+            <label for="vDate" style="display:inline-flex; align-items:center; gap:6px;">
+              <span class="flat-badge flat-badge-xs flat-badge-sky"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/></svg></span>
+              <span>Tanggal Kunjungan</span>
+            </label>
             <input type="date" id="vDate" required>
           </div>
         </div>
@@ -305,24 +378,36 @@
         <!-- 4 Aspek Operasional -->
         <div class="grid-2">
           <div class="form-group">
-            <label for="vIndivBayar">&#127919; 1. Individu Bayar</label>
+            <label for="vIndivBayar" style="display:inline-flex; align-items:center; gap:6px;">
+              <span class="flat-badge flat-badge-xs flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></span>
+              <span>1. Individu Bayar</span>
+            </label>
             <input type="number" id="vIndivBayar" placeholder="0" min="0" step="1" oninput="calcVisitorTotal()">
           </div>
 
           <div class="form-group">
-            <label for="vIndivTdkBayar">&#127379; 2. Individu Tdk Bayar (Free)</label>
+            <label for="vIndivTdkBayar" style="display:inline-flex; align-items:center; gap:6px;">
+              <span class="flat-badge flat-badge-xs flat-badge-teal"><svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.65-.5-.65C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1h-2V5c0-.55.45-1 1-1zM9 4c.55 0 1 .45 1 1v1H8c-.55 0-1-.45-1-1s.45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h7v6h2V8h7v6z"/></svg></span>
+              <span>2. Individu Tdk Bayar (Free)</span>
+            </label>
             <input type="number" id="vIndivTdkBayar" placeholder="0" min="0" step="1" oninput="calcVisitorTotal()">
           </div>
         </div>
 
         <div class="grid-2">
           <div class="form-group">
-            <label for="vRombLangsung">&#128652; 3. Rombongan Langsung</label>
+            <label for="vRombLangsung" style="display:inline-flex; align-items:center; gap:6px;">
+              <span class="flat-badge flat-badge-xs flat-badge-brand"><svg viewBox="0 0 24 24"><path d="M4 16c0 .88.39 1.67 1 2.22V20a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4v10zm3.5 1c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1.5-6H6V6h12v5z"/></svg></span>
+              <span>3. Rombongan Langsung</span>
+            </label>
             <input type="number" id="vRombLangsung" placeholder="0" min="0" step="1" oninput="calcVisitorTotal()">
           </div>
 
           <div class="form-group">
-            <label for="vRombAgen">&#127970; 4. Rombongan Agen</label>
+            <label for="vRombAgen" style="display:inline-flex; align-items:center; gap:6px;">
+              <span class="flat-badge flat-badge-xs flat-badge-purple"><svg viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg></span>
+              <span>4. Rombongan Agen</span>
+            </label>
             <input type="number" id="vRombAgen" placeholder="0" min="0" step="1" oninput="calcVisitorTotal()">
           </div>
         </div>
@@ -330,14 +415,20 @@
         <!-- Total Box Auto-sum -->
         <div class="total-box">
           <div>
-            <div class="total-box-label">&#128101; Total Pengunjung Aktual</div>
+            <div class="total-box-label" style="display:inline-flex; align-items:center; gap:8px;">
+              <span class="flat-badge flat-badge-xs flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></span>
+              <span>Total Pengunjung Aktual</span>
+            </div>
             <div class="total-box-desc">Otomatis dijumlahkan dari 4 aspek di atas</div>
           </div>
           <input type="number" id="vCount" placeholder="0" min="0" step="1" required>
         </div>
 
         <button type="submit" class="btn-submit btn-success" id="vSubmitBtn">
-          <span id="vBtnText">&#128190; Simpan Pengunjung Harian</span>
+          <span id="vBtnText" style="display:inline-flex; align-items:center; gap:8px;">
+            <span class="flat-badge flat-badge-sm flat-badge-white"><svg viewBox="0 0 24 24"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg></span>
+            <span>Simpan Pengunjung Harian</span>
+          </span>
           <span class="spinner" id="vSpinner"></span>
         </button>
       </form>
@@ -348,24 +439,36 @@
       <form id="visitorExcelForm" onsubmit="submitVisitorExcel(event)">
         <div class="section-header">
           <div>
-            <h3>&#128196; Upload File Excel Pengunjung (Harian / Bulanan)</h3>
+            <h3 style="display:inline-flex; align-items:center; gap:8px;">
+              <span class="flat-badge flat-badge-sm flat-badge-sky"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 13h8v2H8v-2zm0 4h8v2H8v-2z"/></svg></span>
+              <span>Upload File Excel Pengunjung (Harian / Bulanan)</span>
+            </h3>
             <p>Untuk update harian banyak unit sekaligus atau bulanan berjalan</p>
           </div>
           <a href="/api/download-visitor-template" class="btn-template" title="Download format standar Excel resmi Ancol">
-            &#128229; Unduh Template
+            <span class="flat-badge flat-badge-xs flat-badge-brand"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></span>
+            <span>Unduh Template</span>
           </a>
         </div>
 
         <div class="form-group">
-          <label for="vExcelPin">&#128272; PIN Admin</label>
+          <label for="vExcelPin" style="display:inline-flex; align-items:center; gap:6px;">
+            <span class="flat-badge flat-badge-xs flat-badge-amber"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></span>
+            <span>PIN Admin</span>
+          </label>
           <input type="password" id="vExcelPin" placeholder="Masukkan PIN admin..." autocomplete="current-password" required>
         </div>
 
         <div class="form-group">
-          <label>&#128203; File Excel Data Pengunjung (.xlsx)</label>
+          <label style="display:inline-flex; align-items:center; gap:6px;">
+            <span class="flat-badge flat-badge-xs flat-badge-sky"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 13h8v2H8v-2zm0 4h8v2H8v-2z"/></svg></span>
+            <span>File Excel Data Pengunjung (.xlsx)</span>
+          </label>
           <div class="drop-zone" id="visitorDropZone">
             <input type="file" id="visitorFileInput" accept=".xlsx,.xls" required>
-            <div class="dz-icon">&#128202;</div>
+            <div class="dz-icon">
+              <span class="flat-badge flat-badge-xl flat-badge-sky"><svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14.2h-2.8zm5.6 8h2.8v6.2h-2.8zM2 22h20V20H2z"/></svg></span>
+            </div>
             <div class="dz-title">Pilih atau Drag &amp; Drop File Excel Pengunjung</div>
             <div class="dz-hint">Format sesuai template Ancol | Otomatis sinkron ke SQLite &amp; Budget</div>
           </div>
@@ -373,14 +476,20 @@
         </div>
 
         <button type="submit" class="btn-submit" id="vExcelSubmitBtn" style="background: #0284c7;">
-          <span id="vExcelBtnText">&#9889; Upload &amp; Sinkronkan Pengunjung Excel</span>
+          <span id="vExcelBtnText" style="display:inline-flex; align-items:center; gap:8px;">
+            <span class="flat-badge flat-badge-sm flat-badge-white"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></span>
+            <span>Upload &amp; Sinkronkan Pengunjung Excel</span>
+          </span>
           <span class="spinner" id="vExcelSpinner"></span>
         </button>
       </form>
     </div>
 
     <div class="info-box">
-      <strong>&#128203; Panduan Penggunaan:</strong>
+      <strong style="display:inline-flex; align-items:center; gap:8px;">
+        <span class="flat-badge flat-badge-xs flat-badge-brand"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 13h8v2H8v-2zm0 4h8v2H8v-2z"/></svg></span>
+        <span>Panduan Penggunaan:</span>
+      </strong>
       <ul>
         <li>File sales <strong>2026</strong> &rarr; otomatis tersimpan ke <code>data/sales detail 2026/</code></li>
         <li>File sales <strong>2025</strong> &rarr; otomatis tersimpan ke <code>data/sales detail 2025/</code></li>
@@ -390,7 +499,10 @@
       </ul>
     </div>
 
-    <a href="/" class="back-link">&larr; Kembali ke Dashboard Sales Analytics</a>
+    <a href="/" class="back-link">
+      <span class="flat-badge flat-badge-xs flat-badge-brand"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></span>
+      <span>Kembali ke Dashboard Sales Analytics</span>
+    </a>
   </div>
 
   <script>
@@ -431,7 +543,7 @@
     }
     function renderFiles(files) {
       fileList.innerHTML = Array.from(files).map(f =>
-        '<div class="file-item"><span>&#128196;</span><span class="file-name">' + f.name + '</span><span class="file-size">' + formatSize(f.size) + '</span></div>'
+        '<div class="file-item"><span class="flat-badge flat-badge-xs flat-badge-brand"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 13h8v2H8v-2zm0 4h8v2H8v-2z"/></svg></span><span class="file-name">' + f.name + '</span><span class="file-size">' + formatSize(f.size) + '</span></div>'
       ).join('');
     }
     fileInput.addEventListener('change', () => renderFiles(fileInput.files));
@@ -444,7 +556,7 @@
       fileInput.files = dt.files; renderFiles(fileInput.files);
     });
     document.getElementById('uploadForm').addEventListener('submit', () => {
-      document.getElementById('btnText').textContent = 'Mengupload...';
+      document.getElementById('btnText').innerHTML = '<span>Mengupload...</span>';
       document.getElementById('spinner').style.display = 'block';
       document.getElementById('submitBtn').disabled = true;
     });
@@ -459,7 +571,7 @@
         return;
       }
       visitorFileList.innerHTML = Array.from(files).map(f =>
-        '<div class="file-item"><span>&#128202;</span><span class="file-name">' + f.name + '</span><span class="file-size">' + formatSize(f.size) + '</span></div>'
+        '<div class="file-item"><span class="flat-badge flat-badge-xs flat-badge-sky"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 13h8v2H8v-2zm0 4h8v2H8v-2z"/></svg></span><span class="file-name">' + f.name + '</span><span class="file-size">' + formatSize(f.size) + '</span></div>'
       ).join('');
     }
     visitorFileInput.addEventListener('change', () => renderVisitorFile(visitorFileInput.files));
@@ -490,7 +602,7 @@
       const spinner = document.getElementById('vSpinner');
       const alertBox = document.getElementById('ajaxAlert');
 
-      btnText.textContent = 'Menyimpan...';
+      btnText.innerHTML = '<span>Menyimpan...</span>';
       spinner.style.display = 'block';
       btn.disabled = true;
       alertBox.innerHTML = '';
@@ -516,7 +628,7 @@
       } catch (err) {
         alertBox.innerHTML = '<div class="alert alert-error">❌ Gagal terhubung ke server: ' + err.message + '</div>';
       } finally {
-        btnText.textContent = '💾 Simpan Pengunjung Harian';
+        btnText.innerHTML = '<span class="flat-badge flat-badge-sm flat-badge-white"><svg viewBox="0 0 24 24"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg></span> <span>Simpan Pengunjung Harian</span>';
         spinner.style.display = 'none';
         btn.disabled = false;
       }
@@ -538,7 +650,7 @@
         return;
       }
 
-      btnText.textContent = 'Memproses Excel...';
+      btnText.innerHTML = '<span>Memproses Excel...</span>';
       spinner.style.display = 'block';
       btn.disabled = true;
       alertBox.innerHTML = '';
@@ -564,7 +676,7 @@
       } catch (err) {
         alertBox.innerHTML = '<div class="alert alert-error">❌ Gagal terhubung ke server: ' + err.message + '</div>';
       } finally {
-        btnText.textContent = '⚡ Upload & Sinkronkan Pengunjung Excel';
+        btnText.innerHTML = '<span class="flat-badge flat-badge-sm flat-badge-white"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></span> <span>Upload &amp; Sinkronkan Pengunjung Excel</span>';
         spinner.style.display = 'none';
         btn.disabled = false;
       }

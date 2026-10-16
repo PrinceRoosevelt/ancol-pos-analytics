@@ -216,6 +216,49 @@
       border-color: rgba(0, 181, 226, 0.3);
     }
 
+    /* Modern Colored Flat Rounded Badges (Ancol Standard) */
+    .flat-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      flex-shrink: 0;
+      vertical-align: middle;
+      line-height: 1;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .flat-badge svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+    .flat-badge-xs { width: 18px; height: 18px; border-radius: 5px; padding: 2.5px; }
+    .flat-badge-sm { width: 24px; height: 24px; border-radius: 7px; padding: 4px; }
+    .flat-badge-md { width: 30px; height: 30px; border-radius: 9px; padding: 5.5px; }
+    .flat-badge-lg { width: 40px; height: 40px; border-radius: 12px; padding: 8px; }
+    .flat-badge-xl { width: 50px; height: 50px; border-radius: 14px; padding: 10px; }
+
+    /* Vibrant semantic colors with soft squircle tinted containers */
+    .flat-badge-brand   { background: rgba(0, 51, 160, 0.10); color: #0033A0; }
+    .flat-badge-sky     { background: rgba(2, 132, 199, 0.12); color: #0284c7; }
+    .flat-badge-emerald { background: rgba(5, 150, 105, 0.12); color: #059669; }
+    .flat-badge-amber   { background: rgba(217, 119, 6, 0.12); color: #d97706; }
+    .flat-badge-rose    { background: rgba(224, 0, 77, 0.12);  color: #E0004D; }
+    .flat-badge-purple  { background: rgba(126, 34, 206, 0.12); color: #7e22ce; }
+    .flat-badge-teal    { background: rgba(13, 148, 136, 0.12); color: #0d9488; }
+    .flat-badge-indigo  { background: rgba(79, 70, 229, 0.12); color: #4f46e5; }
+    .flat-badge-slate   { background: rgba(100, 116, 139, 0.12); color: #475569; }
+    .flat-badge-white   { background: rgba(255, 255, 255, 0.20); color: #ffffff; }
+
+    :root.dark .flat-badge-brand   { background: rgba(0, 181, 226, 0.16); color: #38c8ee; }
+    :root.dark .flat-badge-sky     { background: rgba(56, 189, 248, 0.18); color: #38bdf8; }
+    :root.dark .flat-badge-emerald { background: rgba(16, 185, 129, 0.18); color: #34d399; }
+    :root.dark .flat-badge-amber   { background: rgba(245, 158, 11, 0.18); color: #fbbf24; }
+    :root.dark .flat-badge-rose    { background: rgba(244, 63, 94, 0.18);  color: #fb7185; }
+    :root.dark .flat-badge-purple  { background: rgba(168, 85, 247, 0.18); color: #c084fc; }
+    :root.dark .flat-badge-teal    { background: rgba(20, 184, 166, 0.18); color: #2dd4bf; }
+
     .brand-info h1 {
       font-size: 21px;
       font-weight: 800;
@@ -4693,7 +4736,7 @@
         <span id="rowsCountBadge">{{ data.rows_read }} Baris Data Diolah</span>
       </div>
       <button type="button" class="btn btn-role-badge" id="btnRoleSwitch" onclick="openRoleModal()" title="Ganti Profil Tampilan (Operasional POS vs Management)">
-        <span id="roleIcon">🏪</span>
+        <span id="roleIcon"><span class="flat-badge flat-badge-xs flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v3.5a2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0V5a1 1 0 0 1 1-1zm-1 6.84A4.47 4.47 0 0 0 5.5 12c1.3 0 2.45-.55 3.25-1.42.8.87 1.95 1.42 3.25 1.42s2.45-.55 3.25-1.42A4.47 4.47 0 0 0 20.5 12c.4 0 .78-.06 1.15-.16V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8.16zM9 15h6v4H9v-4z"/></svg></span></span>
         <span id="roleText">Mode: Operasional</span>
         <span style="opacity:0.4; font-size:9.5px; margin-left:2px;">▼</span>
       </button>
@@ -4804,7 +4847,7 @@
             <span id="dateRangeDisplayLabel" class="trigger-text">Semua Tanggal (YTD)</span>
           </div>
           <div class="trigger-actions">
-            <button type="button" id="clearDateBtn" class="btn-clear-date" onclick="event.stopPropagation(); clearDateRange();" title="Reset Tanggal" style="display:none;">✕</button>
+            <button type="button" id="clearDateBtn" class="btn-clear-date" onclick="event.stopPropagation(); clearDateRange();" title="Reset Tanggal" style="display:none;"><svg viewBox="0 0 24 24" style="width:10px;height:10px;fill:currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
             <span class="trigger-arrow">▾</span>
           </div>
         </div>
@@ -5006,8 +5049,8 @@
         <label class="filter-label">Model Bisnis</label>
         <select id="filterModelBisnis" onchange="applyFilters()">
           <option value="">Semua Model Bisnis</option>
-          <option value="KONSINYASI" {% if selected_jenis == 'KONSINYASI' %}selected{% endif %}>🤝 Konsinyasi (Vendor)</option>
-          <option value="DAGANGAN" {% if selected_jenis == 'DAGANGAN' %}selected{% endif %}>📦 Dagangan (Beli Putus)</option>
+          <option value="KONSINYASI" {% if selected_jenis == 'KONSINYASI' %}selected{% endif %}>Konsinyasi (Vendor Titip Jual)</option>
+          <option value="DAGANGAN" {% if selected_jenis == 'DAGANGAN' %}selected{% endif %}>Dagangan (Beli Putus)</option>
         </select>
       </div>
     </div>
@@ -5015,7 +5058,10 @@
     <div id="activeFiltersContainer" class="active-filters" style="{% if not (selected_month or selected_date or selected_area or selected_outlet or selected_jenis) %}display:none;{% endif %}">
       <span style="font-size:12px; font-weight:600; color:var(--text-muted);">Filter Aktif:</span>
       <span id="activeFilterTags"></span>
-      <button type="button" class="btn" onclick="resetFilters()" style="padding:2px 8px; font-size:11px; margin-left:auto; background:transparent; border-color:var(--panel-border);">✖ Reset Filter</button>
+      <button type="button" class="btn" onclick="resetFilters()" style="padding:2px 8px; font-size:11px; margin-left:auto; background:transparent; border-color:var(--panel-border); display:inline-flex; align-items:center; gap:5px;">
+        <span class="flat-badge flat-badge-xs flat-badge-rose"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></span>
+        <span>Reset Filter</span>
+      </button>
     </div>
   </div>
 
@@ -5109,8 +5155,8 @@
   <div id="gsheetModalOverlay" class="cal-overlay" onclick="closeGsheetModal(event)" style="display:none;">
     <div class="cal-card" onclick="event.stopPropagation()" style="max-width: 540px;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span style="font-size:24px;">📊</span>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span class="flat-badge flat-badge-lg flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14.2h-2.8zm5.6 8h2.8v6.2h-2.8zM2 22h20V20H2z"/></svg></span>
           <div>
             <h3 style="margin:0; font-size:16px; font-weight:750; color:#1e293b;">Google Sheets Live Auto-Sync</h3>
             <span style="font-size:12px; color:#64748b;">Sinkronisasi Real-time via Google Apps Script (Tanpa Cloud Console)</span>
@@ -5158,16 +5204,16 @@
         <div class="role-card role-card-operasional" onclick="selectDashboardRole('operasional')">
           <div>
             <div class="role-card-header">
-              <span style="font-size:26px;">🏪</span>
+              <span class="flat-badge flat-badge-lg flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v3.5a2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0V5a1 1 0 0 1 1-1zm-1 6.84A4.47 4.47 0 0 0 5.5 12c1.3 0 2.45-.55 3.25-1.42.8.87 1.95 1.42 3.25 1.42s2.45-.55 3.25-1.42A4.47 4.47 0 0 0 20.5 12c.4 0 .78-.06 1.15-.16V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8.16zM9 15h6v4H9v-4z"/></svg></span>
               <span class="role-badge role-badge-operasional">POS &amp; KASIR</span>
             </div>
             <div class="role-card-title">Operasional Toko</div>
             <div class="role-card-tagline">Ideal untuk monitor kasir &amp; tim lapangan di unit rekreasi.</div>
             <ul class="role-card-points">
-              <li><span style="color:#059669; font-weight:bold;">✔</span> <span>Target Penjualan Harian &amp; Sisa Gap</span></li>
-              <li><span style="color:#059669; font-weight:bold;">✔</span> <span>Jam Sibuk Antrean &amp; Transaksi Kasir</span></li>
-              <li><span style="color:#059669; font-weight:bold;">✔</span> <span>Kecepatan Produk Fast-Moving &amp; Buffer Stok</span></li>
-              <li><span style="color:#dc2626; font-weight:bold;">🔒</span> <span><strong>Data Rahasia Tersembunyi:</strong> HPP, Margin Laba &amp; Vendor</span></li>
+              <li><span class="flat-badge flat-badge-xs flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> <span>Target Penjualan Harian &amp; Sisa Gap</span></li>
+              <li><span class="flat-badge flat-badge-xs flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> <span>Jam Sibuk Antrean &amp; Transaksi Kasir</span></li>
+              <li><span class="flat-badge flat-badge-xs flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> <span>Kecepatan Produk Fast-Moving &amp; Buffer Stok</span></li>
+              <li><span class="flat-badge flat-badge-xs flat-badge-rose"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></span> <span><strong>Data Rahasia Tersembunyi:</strong> HPP, Margin Laba &amp; Vendor</span></li>
             </ul>
           </div>
           <button type="button" class="role-btn-select role-btn-select-operasional">
@@ -5180,16 +5226,16 @@
         <div class="role-card role-card-mgmt" onclick="selectDashboardRole('management')">
           <div>
             <div class="role-card-header">
-              <span style="font-size:26px;">💼</span>
+              <span class="flat-badge flat-badge-lg flat-badge-brand"><svg viewBox="0 0 24 24"><path d="M9 2h6a2 2 0 0 1 2 2v2h4a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4V4a2 2 0 0 1 2-2zm6 4V4H9v2h6zm-5 7h4v-2h-4v2z"/></svg></span>
               <span class="role-badge role-badge-mgmt">DIREKSI &amp; GM</span>
             </div>
             <div class="role-card-title">Executive Management</div>
             <div class="role-card-tagline">Akses analitik korporat menyeluruh tanpa batas.</div>
             <ul class="role-card-points">
-              <li><span style="color:#059669; font-weight:bold;">✔</span> <span>Akses Penuh 100% Seluruh Fitur &amp; Menu</span></li>
-              <li><span style="color:#059669; font-weight:bold;">✔</span> <span>Laba Kotor Riil, Estimasi Margin &amp; Total HPP</span></li>
-              <li><span style="color:#059669; font-weight:bold;">✔</span> <span>Peringkat 86 Vendor Supplier &amp; Radar SKU</span></li>
-              <li><span style="color:#059669; font-weight:bold;">✔</span> <span>AI Executive Brain &amp; Komparasi Matriks Periodik</span></li>
+              <li><span class="flat-badge flat-badge-xs flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> <span>Akses Penuh 100% Seluruh Fitur &amp; Menu</span></li>
+              <li><span class="flat-badge flat-badge-xs flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> <span>Laba Kotor Riil, Estimasi Margin &amp; Total HPP</span></li>
+              <li><span class="flat-badge flat-badge-xs flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> <span>Peringkat 86 Vendor Supplier &amp; Radar SKU</span></li>
+              <li><span class="flat-badge flat-badge-xs flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> <span>AI Executive Brain &amp; Komparasi Matriks Periodik</span></li>
             </ul>
           </div>
           <button type="button" class="role-btn-select role-btn-select-mgmt">
@@ -5213,8 +5259,8 @@
   <div id="infographicModalOverlay" class="infographic-modal-overlay" style="display:none;" onclick="handleInfographicOverlayClick(event)">
     <div class="infographic-modal-card" role="dialog" aria-modal="true" aria-labelledby="infographicModalTitle">
       <div class="infographic-modal-header">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span style="font-size:20px;">📸</span>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span class="flat-badge flat-badge-lg flat-badge-brand"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg></span>
           <div>
             <h3 id="infographicModalTitle" style="margin:0; font-size:16px; font-weight:800; color:var(--text);">Executive Infographic Brief (PowerPoint 16:9 Widescreen)</h3>
             <p style="margin:2px 0 0 0; font-size:11px; color:var(--text-muted);">Format Landscape 16:9 • Siap Paste ke Slide PowerPoint &amp; WhatsApp Chat</p>
@@ -5231,14 +5277,17 @@
 
       <div class="infographic-modal-footer">
         <div class="infographic-status-hint">
-          <span>💡</span> <span>Klik <strong>"Salin Gambar"</strong> lalu buka WhatsApp Web dan tekan <strong>Ctrl + V</strong> untuk langsung mengirim.</span>
+          <span class="flat-badge flat-badge-xs flat-badge-amber"><svg viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg></span>
+          <span>Klik <strong>"Salin Gambar"</strong> lalu buka WhatsApp Web dan tekan <strong>Ctrl + V</strong> untuk langsung mengirim.</span>
         </div>
         <div class="infographic-btn-row">
           <button type="button" class="btn-info-action btn-info-copy" id="btnCopyInfographic" onclick="copyInfographicImage()">
-            <span id="btnCopyInfoIcon">📋</span> <span id="btnCopyInfoText">Salin Gambar (WhatsApp)</span>
+            <span id="btnCopyInfoIcon" class="flat-badge flat-badge-xs flat-badge-white"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></span>
+            <span id="btnCopyInfoText">Salin Gambar (WhatsApp)</span>
           </button>
           <button type="button" class="btn-info-action btn-info-download" onclick="downloadInfographicPNG()">
-            <span>⬇️</span> <span>Unduh PNG HD</span>
+            <span class="flat-badge flat-badge-xs flat-badge-white"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></span>
+            <span>Unduh PNG HD</span>
           </button>
           <button type="button" class="btn-info-action btn-info-close" onclick="closeInfographicModal()">
             <span>Tutup</span>
@@ -5742,8 +5791,8 @@
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center; width:100%; font-size:11px;">
             <div style="display:flex; gap:5px;">
-              <span class="velocity-tag" title="Rata-rata penjualan per hari operasional">⚡ {{ "{:,.0f}".format(p.daily_avg) if (p.daily_avg or 0) >= 10 else "{:.1f}".format(p.daily_avg or 0) }} /hari</span>
-              <span class="velocity-tag-weekly" title="Proyeksi estimasi kebutuhan pasokan per minggu">📦 ~{{ "{:,.0f}".format(p.weekly_proj or 0).replace(',', '.') }} /mgg</span>
+              <span class="velocity-tag" title="Rata-rata penjualan per hari operasional"><span class="flat-badge flat-badge-xs flat-badge-amber"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></span> {{ "{:,.0f}".format(p.daily_avg) if (p.daily_avg or 0) >= 10 else "{:.1f}".format(p.daily_avg or 0) }} /hari</span>
+              <span class="velocity-tag-weekly" title="Proyeksi estimasi kebutuhan pasokan per minggu"><span class="flat-badge flat-badge-xs flat-badge-sky"><svg viewBox="0 0 24 24"><path d="M20 8l-8 5-8-5V6l8 5 8-5v2zm0-4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/></svg></span> ~{{ "{:,.0f}".format(p.weekly_proj or 0).replace(',', '.') }} /mgg</span>
             </div>
             <span style="color:var(--text-muted); font-size:10.5px;">Rp {{ "{:,.0f}".format(p["2026"]["net_sales"]).replace(',', '.') }}</span>
           </div>
@@ -6092,8 +6141,8 @@
             </td>
             <td class="text-right"><strong>{{ "{:.1f}%".format(item.contrib_2026) }}</strong></td>
             <td class="text-right">{{ "{:,.0f}".format(item["2026"]["qty"]).replace(',', '.') }}</td>
-            <td class="text-right"><span class="velocity-tag" title="Rata-rata penjualan per hari operasional">⚡ {{ "{:,.0f}".format(item.daily_avg) if (item.daily_avg or 0) >= 10 else "{:.1f}".format(item.daily_avg or 0) }} /hr</span></td>
-            <td class="text-right"><span class="velocity-tag-weekly" title="Proyeksi estimasi kebutuhan pasokan per minggu">📦 ~{{ "{:,.0f}".format(item.weekly_proj or 0).replace(',', '.') }} /mg</span></td>
+            <td class="text-right"><span class="velocity-tag" title="Rata-rata penjualan per hari operasional"><span class="flat-badge flat-badge-xs flat-badge-amber"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></span> {{ "{:,.0f}".format(item.daily_avg) if (item.daily_avg or 0) >= 10 else "{:.1f}".format(item.daily_avg or 0) }} /hr</span></td>
+            <td class="text-right"><span class="velocity-tag-weekly" title="Proyeksi estimasi kebutuhan pasokan per minggu"><span class="flat-badge flat-badge-xs flat-badge-sky"><svg viewBox="0 0 24 24"><path d="M20 8l-8 5-8-5V6l8 5 8-5v2zm0-4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/></svg></span> ~{{ "{:,.0f}".format(item.weekly_proj or 0).replace(',', '.') }} /mg</span></td>
             <td class="text-right" style="color:var(--text-muted);">{{ "{:,.0f}".format(item["2025"]["qty"]).replace(',', '.') }}</td>
             <td class="text-right">
               <span class="badge-growth {% if item.growth_qty is not none and item.growth_qty >= 0 %}positive{% elif item.growth_qty is not none %}negative{% else %}neutral{% endif %}">
@@ -6342,21 +6391,27 @@
       <!-- Mini Summary Strip: Peak, Low, & Weekend/Holiday Impact -->
       <div class="matrix-summary-strip" id="periodMatrixSummaryStrip">
         <div class="matrix-summary-pill">
-          <div class="matrix-summary-icon" style="background:rgba(16,185,129,0.14); color:#059669;">🏆</div>
+          <div class="matrix-summary-icon" style="background:rgba(16,185,129,0.14); color:#059669;">
+            <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>
+          </div>
           <div class="matrix-summary-meta">
             <span class="matrix-summary-label" id="matrixPeakLabel">Rekor Tertinggi (Peak 2026)</span>
             <span class="matrix-summary-val" id="matrixPeakVal">-</span>
           </div>
         </div>
         <div class="matrix-summary-pill">
-          <div class="matrix-summary-icon" style="background:rgba(245,158,11,0.14); color:#d97706;">📉</div>
+          <div class="matrix-summary-icon" style="background:rgba(245,158,11,0.14); color:#d97706;">
+            <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M16 18l2.29-2.29-4.88-4.88-4 4L2 7.41 3.41 6l6 6 4-4 6.3 6.29L22 12v6z"/></svg>
+          </div>
           <div class="matrix-summary-meta">
             <span class="matrix-summary-label" id="matrixLowLabel">Titik Terendah (Low 2026)</span>
             <span class="matrix-summary-val" id="matrixLowVal">-</span>
           </div>
         </div>
         <div class="matrix-summary-pill">
-          <div class="matrix-summary-icon" style="background:rgba(0,51,160,0.12); color:var(--brand);">📅</div>
+          <div class="matrix-summary-icon" style="background:rgba(0,51,160,0.12); color:var(--brand);">
+            <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/></svg>
+          </div>
           <div class="matrix-summary-meta">
             <span class="matrix-summary-label" id="matrixContextLabel">Karakteristik Periode</span>
             <span class="matrix-summary-val" id="matrixContextVal">-</span>
@@ -6445,9 +6500,9 @@
         <div class="insight-health-status {% if is_healthy %}positive{% elif data.summary.growth.net_sales is not none and data.summary.growth.net_sales >= -10 %}warning{% else %}danger{% endif %}" id="insightHealthBadge">
           <span class="health-dot"></span>
           <span id="insightHealthText">
-            {% if is_healthy %}🟢 Performa Prima (Target {{ "{:.1f}%".format(data.target_achievement) }} | Tumbuh YoY)
-            {% elif data.summary.growth.net_sales is not none and data.summary.growth.net_sales >= -10 %}🟡 Waspada Penurunan ({{ "{:+.1f}%".format(data.summary.growth.net_sales) }} YoY)
-            {% else %}🔴 Perlu Intervensi Taktis ({{ "{:+.1f}%".format(data.summary.growth.net_sales) if data.summary.growth.net_sales is not none else "-" }} YoY){% endif %}
+            {% if is_healthy %}Performa Prima (Target {{ "{:.1f}%".format(data.target_achievement) }} | Tumbuh YoY)
+            {% elif data.summary.growth.net_sales is not none and data.summary.growth.net_sales >= -10 %}Waspada Penurunan ({{ "{:+.1f}%".format(data.summary.growth.net_sales) }} YoY)
+            {% else %}Perlu Intervensi Taktis ({{ "{:+.1f}%".format(data.summary.growth.net_sales) if data.summary.growth.net_sales is not none else "-" }} YoY){% endif %}
           </span>
         </div>
       </div>
@@ -6722,7 +6777,10 @@
   <div id="aiChatBody" class="ai-chat-body">
     <!-- Welcome Card -->
     <div class="ai-bubble ai-bubble-assistant">
-      <p>👋 <strong>Halo Bapak/Ibu Manajemen & Tim Operasional Ancol Store!</strong></p>
+      <p style="display:inline-flex; align-items:center; gap:8px;">
+        <span class="flat-badge flat-badge-xs flat-badge-brand"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></span>
+        <strong>Halo Bapak/Ibu Manajemen &amp; Tim Operasional Ancol Store!</strong>
+      </p>
       <p>Saya adalah asisten AI resmi yang terhubung langsung dengan seluruh data penjualan, target revenue, dan performa outlet Ancol.</p>
       <p>Silakan <strong>klik salah satu tombol pintasan di atas</strong> atau ketikkan pertanyaan apapun di bawah untuk mendapatkan analisis instan.</p>
     </div>
@@ -6733,7 +6791,7 @@
     <div class="ai-input-row">
       <input type="text" id="aiChatInput" class="ai-chat-input" placeholder="Tanyakan seputar data, toko, atau omset..." autocomplete="off">
       <button type="submit" id="btnAISend" class="ai-btn-send" title="Kirim Pertanyaan" aria-label="Kirim">
-        <span>➤</span>
+        <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
       </button>
     </div>
     <div class="ai-footer-hint">Tekan Enter untuk mengirim • Terhubung langsung dengan analitik aktif</div>
@@ -9493,8 +9551,8 @@
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center; width:100%; font-size:11px;">
               <div style="display:flex; gap:5px;">
-                <span class="velocity-tag" title="Rata-rata penjualan per hari operasional">⚡ ${dAvg} /hari</span>
-                <span class="velocity-tag-weekly" title="Proyeksi estimasi kebutuhan pasokan per minggu">📦 ~${wProj} /mgg</span>
+                <span class="velocity-tag" title="Rata-rata penjualan per hari operasional"><span class="flat-badge flat-badge-xs flat-badge-amber"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></span> ${dAvg} /hari</span>
+                <span class="velocity-tag-weekly" title="Proyeksi estimasi kebutuhan pasokan per minggu"><span class="flat-badge flat-badge-xs flat-badge-sky"><svg viewBox="0 0 24 24"><path d="M20 8l-8 5-8-5V6l8 5 8-5v2zm0-4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/></svg></span> ~${wProj} /mgg</span>
               </div>
               <span style="color:var(--text-muted); font-size:10.5px;">${formatRp(p.s26)}</span>
             </div>
@@ -10810,16 +10868,16 @@
       healthBadge.className = 'insight-health-status';
       if (targetAchieve >= 100 && (growthSales || 0) >= 0) {
         healthBadge.classList.add('positive');
-        healthText.textContent = `🟢 Performa Prima (Target ${targetAchieve.toFixed(1)}% | Tumbuh YoY)`;
+        healthText.textContent = `Performa Prima (Target ${targetAchieve.toFixed(1)}% | Tumbuh YoY)`;
       } else if ((growthSales || 0) >= 0) {
         healthBadge.classList.add('positive');
-        healthText.textContent = `🟢 Tumbuh Positif (+${(growthSales||0).toFixed(1)}% YoY)`;
+        healthText.textContent = `Tumbuh Positif (+${(growthSales||0).toFixed(1)}% YoY)`;
       } else if ((growthSales || 0) >= -10) {
         healthBadge.classList.add('warning');
-        healthText.textContent = `🟡 Waspada Penurunan (${(growthSales||0).toFixed(1)}% YoY)`;
+        healthText.textContent = `Waspada Penurunan (${(growthSales||0).toFixed(1)}% YoY)`;
       } else {
         healthBadge.classList.add('danger');
-        healthText.textContent = `🔴 Perlu Intervensi Taktis (${(growthSales||0).toFixed(1)}% YoY)`;
+        healthText.textContent = `Perlu Intervensi Taktis (${(growthSales||0).toFixed(1)}% YoY)`;
       }
     }
 
@@ -11254,8 +11312,8 @@
           </td>
           <td class="text-right"><strong>${contrib.toFixed(1)}%</strong></td>
           <td class="text-right">${formatNum(q26)}</td>
-          <td class="text-right"><span class="velocity-tag" title="Rata-rata penjualan per hari operasional">⚡ ${dAvgStr} /hr</span></td>
-          <td class="text-right"><span class="velocity-tag-weekly" title="Proyeksi estimasi kebutuhan pasokan per minggu (7 hari)">📦 ~${wProjStr} /mg</span></td>
+          <td class="text-right"><span class="velocity-tag" title="Rata-rata penjualan per hari operasional"><span class="flat-badge flat-badge-xs flat-badge-amber"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></span> ${dAvgStr} /hr</span></td>
+          <td class="text-right"><span class="velocity-tag-weekly" title="Proyeksi estimasi kebutuhan pasokan per minggu (7 hari)"><span class="flat-badge flat-badge-xs flat-badge-sky"><svg viewBox="0 0 24 24"><path d="M20 8l-8 5-8-5V6l8 5 8-5v2zm0-4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/></svg></span> ~${wProjStr} /mg</span></td>
           <td class="text-right" style="color:var(--text-muted);">${formatNum(q25)}</td>
           <td class="text-right"><span class="badge-growth ${gqClass}">${gqBadge}</span></td>
         </tr>`;
@@ -14783,11 +14841,13 @@
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">
             ${engineBadge}
             <div style="display:inline-flex; align-items:center; gap:6px;">
-              <button type="button" class="btn-generate-infographic" onclick="openAIInfographicModal(this)" data-fulltext="${encodeURIComponent(result.answer)}" data-prompt="${encodeURIComponent(promptText)}" ${specAttr} title="Buat & Unduh Gambar Infografis Eksekutif">
-                <span>📸</span> Buat Infografis
+              <button type="button" class="btn-generate-infographic" onclick="openAIInfographicModal(this)" data-fulltext="${encodeURIComponent(result.answer)}" data-prompt="${encodeURIComponent(promptText)}" ${specAttr} title="Buat & Unduh Gambar Infografis Eksekutif" style="display:inline-flex; align-items:center; gap:6px;">
+                <span class="flat-badge flat-badge-xs flat-badge-brand"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg></span>
+                <span>Buat Infografis</span>
               </button>
-              <button type="button" class="btn-copy-wa" onclick="copyAnswerToWA(this)" data-fulltext="${encodeURIComponent(result.answer)}" title="Salin format siap kirim ke WhatsApp">
-                <span>📋</span> Salin WA
+              <button type="button" class="btn-copy-wa" onclick="copyAnswerToWA(this)" data-fulltext="${encodeURIComponent(result.answer)}" title="Salin format siap kirim ke WhatsApp" style="display:inline-flex; align-items:center; gap:6px;">
+                <span class="flat-badge flat-badge-xs flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></span>
+                <span>Salin WA</span>
               </button>
             </div>
           </div>
@@ -14913,7 +14973,7 @@
     const roleTextEl = document.getElementById('roleText');
 
     if (role === 'operasional') {
-      if (roleIconEl) roleIconEl.textContent = '🏪';
+      if (roleIconEl) roleIconEl.innerHTML = '<span class="flat-badge flat-badge-xs flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v3.5a2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0V5a1 1 0 0 1 1-1zm-1 6.84A4.47 4.47 0 0 0 5.5 12c1.3 0 2.45-.55 3.25-1.42.8.87 1.95 1.42 3.25 1.42s2.45-.55 3.25-1.42A4.47 4.47 0 0 0 20.5 12c.4 0 .78-.06 1.15-.16V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8.16zM9 15h6v4H9v-4z"/></svg></span>';
       if (roleTextEl) roleTextEl.textContent = 'Mode: Operasional';
       
       // If table tab was currently on suppliers, gracefully switch to outlets
@@ -14929,7 +14989,7 @@
         closeAIChat();
       }
     } else {
-      if (roleIconEl) roleIconEl.textContent = '💼';
+      if (roleIconEl) roleIconEl.innerHTML = '<span class="flat-badge flat-badge-xs flat-badge-brand"><svg viewBox="0 0 24 24"><path d="M9 2h6a2 2 0 0 1 2 2v2h4a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4V4a2 2 0 0 1 2-2zm6 4V4H9v2h6zm-5 7h4v-2h-4v2z"/></svg></span>';
       if (roleTextEl) roleTextEl.textContent = 'Mode: Management';
     }
 
