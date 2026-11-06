@@ -3323,50 +3323,110 @@ def api_ask_ai():
             "Beachpark": {"kw": ["beachpark", "beach park", "pantai", "pasir putih"], "area": "BEACHPARK", "outlet": None},
         }
 
-        # 1. Month detection
-        detected_m_num = None
-        for k, m_num in MONTH_MAP.items():
-            if re.search(rf"\b{k}\b", p_lower):
-                detected_m_num = m_num
-                break
-        detected_month = f"2026-{detected_m_num}" if detected_m_num else None
+        # 1a. Month Range & Macro Period Detection (e.g. "januari hingga oktober", "januari sampai oktober", "jan-okt", "q1", "semester 1", "ytd")
+        MONTH_NAMES_REGEX = r"januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember|jan|feb|mar|apr|may|jun|jul|agu|aug|sep|okt|oct|nov|des|dec"
+        RANGE_SEP_REGEX = r"(?:sampai\s+dengan|sampai|hingga|s/d|sd|ke|-)"
 
-        # 2. Date detection
-        rows_cache = read_sales()
-        all_dates_2026 = sorted({r["date"] for r in rows_cache if r.get("year") == 2026})
-        latest_date_in_db = all_dates_2026[-1] if all_dates_2026 else "2026-09-07"
-        default_month_num = detected_m_num or latest_date_in_db[5:7]
-
-        detected_date = None
-        # Pattern A: "tanggal 7 september" or "7 sep" or "tgl 7"
-        m_day = re.search(r"(?:tanggal|tgl)?\s*(\b[1-9]\b|\b[12][0-9]\b|\b3[01]\b)\s*(januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember|jan|feb|mar|apr|may|jun|jul|agu|aug|sep|okt|oct|nov|des|dec)", p_lower)
-        if m_day:
-            d_val = int(m_day.group(1))
-            m_word = m_day.group(2)
-            m_num = MONTH_MAP.get(m_word, default_month_num)
-            cand_date = f"2026-{m_num}-{d_val:02d}"
-            if cand_date in all_dates_2026:
-                detected_date = cand_date
-        else:
-            m_day_only = re.search(r"(?:tanggal|tgl)\s*(\b[1-9]\b|\b[12][0-9]\b|\b3[01]\b)", p_lower)
-            if m_day_only:
-                d_val = int(m_day_only.group(1))
-                cand_date = f"2026-{default_month_num}-{d_val:02d}"
-                if cand_date in all_dates_2026:
-                    detected_date = cand_date
-
-        # 2b. Date Range Detection (e.g. "1 sampai 10 agustus", "10-15 agustus", "antara tanggal 5 dan 20")
         detected_start_date = None
         detected_end_date = None
-        m_range = re.search(r"(?:tanggal|tgl)?\s*(\b[1-9]\b|\b[12][0-9]\b|\b3[01]\b)\s*(?:sampai|s/d|sd|hingga|-)\s*(\b[1-9]\b|\b[12][0-9]\b|\b3[01]\b)\s*(januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember|jan|feb|mar|apr|may|jun|jul|agu|aug|sep|okt|oct|nov|des|dec)?", p_lower)
-        if m_range:
-            d1_val = int(m_range.group(1))
-            d2_val = int(m_range.group(2))
-            m_range_word = m_range.group(3)
-            m_range_num = MONTH_MAP.get(m_range_word, default_month_num) if m_range_word else default_month_num
-            if d1_val <= d2_val:
-                detected_start_date = f"2026-{m_range_num}-{d1_val:02d}"
-                detected_end_date = f"2026-{m_range_num}-{d2_val:02d}"
+        detected_month = None
+        detected_m_num = None
+        is_month_range = False
+        month_range_label = None
+
+        rows_cache = read_sales()
+        all_dates_2026 = sorted({r["date"] for r in rows_cache if r.get("year") == 2026})
+        latest_date_in_db = all_dates_2026[-1] if all_dates_2026 else "2026-10-31"
+
+        if re.search(r"\b(?:ytd|year to date|sepanjang tahun ini|sepanjang tahun 2026|selama tahun 2026)\b", p_lower):
+            detected_start_date = "2026-01-01"
+            detected_end_date = latest_date_in_db
+            is_month_range = True
+            month_range_label = f"Periode YTD 2026 (01 Jan s/d {latest_date_in_db})"
+        elif re.search(r"\b(?:q1|kuartal 1|triwulan 1)\b", p_lower):
+            detected_start_date = "2026-01-01"
+            detected_end_date = "2026-03-31"
+            is_month_range = True
+            month_range_label = "Periode Q1 2026 (Januari s/d Maret)"
+        elif re.search(r"\b(?:q2|kuartal 2|triwulan 2)\b", p_lower):
+            detected_start_date = "2026-04-01"
+            detected_end_date = "2026-06-30"
+            is_month_range = True
+            month_range_label = "Periode Q2 2026 (April s/d Juni)"
+        elif re.search(r"\b(?:q3|kuartal 3|triwulan 3)\b", p_lower):
+            detected_start_date = "2026-07-01"
+            detected_end_date = "2026-09-30"
+            is_month_range = True
+            month_range_label = "Periode Q3 2026 (Juli s/d September)"
+        elif re.search(r"\b(?:q4|kuartal 4|triwulan 4)\b", p_lower):
+            detected_start_date = "2026-10-01"
+            detected_end_date = "2026-12-31"
+            is_month_range = True
+            month_range_label = "Periode Q4 2026 (Oktober s/d Desember)"
+        elif re.search(r"\b(?:semester 1|sem 1)\b", p_lower):
+            detected_start_date = "2026-01-01"
+            detected_end_date = "2026-06-30"
+            is_month_range = True
+            month_range_label = "Periode Semester 1 2026 (Januari s/d Juni)"
+        elif re.search(r"\b(?:semester 2|sem 2)\b", p_lower):
+            detected_start_date = "2026-07-01"
+            detected_end_date = "2026-12-31"
+            is_month_range = True
+            month_range_label = "Periode Semester 2 2026 (Juli s/d Desember)"
+        else:
+            m_mrange = re.search(rf"(?:dari\s+)?(?:bulan\s+)?\b({MONTH_NAMES_REGEX})\b\s*{RANGE_SEP_REGEX}\s*(?:bulan\s+)?\b({MONTH_NAMES_REGEX})\b", p_lower)
+            if m_mrange:
+                m1_word, m2_word = m_mrange.group(1), m_mrange.group(2)
+                m1_num, m2_num = MONTH_MAP.get(m1_word), MONTH_MAP.get(m2_word)
+                if m1_num and m2_num and int(m1_num) <= int(m2_num):
+                    import calendar
+                    last_d = calendar.monthrange(2026, int(m2_num))[1]
+                    detected_start_date = f"2026-{m1_num}-01"
+                    detected_end_date = f"2026-{m2_num}-{last_d:02d}"
+                    is_month_range = True
+                    m1_name = MONTH_NAMES.get(m1_num, m1_num)
+                    m2_name = MONTH_NAMES.get(m2_num, m2_num)
+                    month_range_label = f"Periode {m1_name} s/d {m2_name} 2026"
+
+        # 1b. Single Month detection (only if NOT a month range)
+        if not is_month_range:
+            for k, m_num in MONTH_MAP.items():
+                if re.search(rf"\b{k}\b", p_lower):
+                    detected_m_num = m_num
+                    break
+            detected_month = f"2026-{detected_m_num}" if detected_m_num else None
+
+        default_month_num = detected_m_num or latest_date_in_db[5:7]
+
+        # 2. Date detection (only if NOT a month range)
+        detected_date = None
+        if not is_month_range:
+            m_day = re.search(r"(?:tanggal|tgl)?\s*(\b[1-9]\b|\b[12][0-9]\b|\b3[01]\b)\s*(januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember|jan|feb|mar|apr|may|jun|jul|agu|aug|sep|okt|oct|nov|des|dec)", p_lower)
+            if m_day:
+                d_val = int(m_day.group(1))
+                m_word = m_day.group(2)
+                m_num = MONTH_MAP.get(m_word, default_month_num)
+                cand_date = f"2026-{m_num}-{d_val:02d}"
+                if cand_date in all_dates_2026:
+                    detected_date = cand_date
+            else:
+                m_day_only = re.search(r"(?:tanggal|tgl)\s*(\b[1-9]\b|\b[12][0-9]\b|\b3[01]\b)", p_lower)
+                if m_day_only:
+                    d_val = int(m_day_only.group(1))
+                    cand_date = f"2026-{default_month_num}-{d_val:02d}"
+                    if cand_date in all_dates_2026:
+                        detected_date = cand_date
+
+            # 2b. Date Range Detection (e.g. "1 sampai 10 agustus", "10-15 agustus", "antara tanggal 5 dan 20")
+            m_range = re.search(r"(?:tanggal|tgl)?\s*(\b[1-9]\b|\b[12][0-9]\b|\b3[01]\b)\s*(?:sampai|s/d|sd|hingga|-)\s*(\b[1-9]\b|\b[12][0-9]\b|\b3[01]\b)\s*(januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember|jan|feb|mar|apr|may|jun|jul|agu|aug|sep|okt|oct|nov|des|dec)?", p_lower)
+            if m_range:
+                d1_val = int(m_range.group(1))
+                d2_val = int(m_range.group(2))
+                m_range_word = m_range.group(3)
+                m_range_num = MONTH_MAP.get(m_range_word, default_month_num) if m_range_word else default_month_num
+                if d1_val <= d2_val:
+                    detected_start_date = f"2026-{m_range_num}-{d1_val:02d}"
+                    detected_end_date = f"2026-{m_range_num}-{d2_val:02d}"
 
         # 3. Area detection
         detected_area = None
@@ -3585,11 +3645,12 @@ def api_ask_ai():
                 detected_unit = "BeachPark"
 
         comp_months = []
-        for k, m_num in MONTH_MAP.items():
-            if re.search(rf"\b{k}\b", p_lower):
-                cand_m = f"2026-{m_num}"
-                if cand_m not in comp_months:
-                    comp_months.append(cand_m)
+        if not is_month_range:
+            for k, m_num in MONTH_MAP.items():
+                if re.search(rf"\b{k}\b", p_lower):
+                    cand_m = f"2026-{m_num}"
+                    if cand_m not in comp_months:
+                        comp_months.append(cand_m)
 
         is_wknd_comp = (
             any(w in p_lower for w in ["weekend", "akhir pekan", "sabtu minggu"]) and 
@@ -3720,9 +3781,9 @@ def api_ask_ai():
                 comparative_text = "\n" + "\n\n".join(comp_blocks) + "\n"
 
         # 7. Calendar, Holidays, & Future Planning Intelligence
-        is_future_or_holiday_query = any(k in p_lower for k in [
+        is_future_or_holiday_query = (not is_month_range) and any(k in p_lower for k in [
             "desember", "natal", "tahun baru", "tanggal merah", "libur", "liburan", "cuti bersama", 
-            "persiapan", "kalender", "oktober", "november", "strategi jualan", "long weekend", "hari apa aja", "hari apa",
+            "persiapan", "kalender", "strategi jualan", "long weekend", "hari apa aja", "hari apa",
             "forecasting", "proyeksi", "ramalan", "target bulan"
         ])
         
@@ -4116,7 +4177,9 @@ def api_ask_ai():
                 include_raw=False
             )
             label_parts = []
-            if target_start_date and target_end_date:
+            if month_range_label:
+                label_parts.append(month_range_label)
+            elif target_start_date and target_end_date:
                 label_parts.append(f"Rentang {target_start_date} s/d {target_end_date}")
             elif target_date:
                 dt_obj = datetime.strptime(target_date, "%Y-%m-%d")
@@ -4161,10 +4224,12 @@ def api_ask_ai():
         target_gap = dash.get("target_gap", 0)
         outlets_raw = dash.get("outlets", [])
         if outlets_raw:
-            top_outlets = sorted(outlets_raw, key=lambda x: x.get("2026", {}).get("net_sales", 0), reverse=True)[:5]
+            all_outlets_ranked = sorted(outlets_raw, key=lambda x: x.get("2026", {}).get("net_sales", 0), reverse=True)
+            top_outlets = all_outlets_ranked[:5]
             eval_cands = [o for o in outlets_raw if o.get("growth_sales") is not None]
             bottom_outlets = sorted(eval_cands, key=lambda x: x.get("growth_sales", 0))[:5] if eval_cands else []
         else:
+            all_outlets_ranked = dash.get("top_5_outlets", [])
             top_outlets = dash.get("top_5_outlets", [])
             bottom_outlets = dash.get("bottom_5_outlets", [])
         priority_products = dash.get("priority_products", [])
@@ -4254,10 +4319,10 @@ def api_ask_ai():
         g_qty_str = f"{g_qty:+.2f}%" if g_qty is not None else "0.00%"
 
         top_o_lines = []
-        for i, o in enumerate(top_outlets[:5]):
+        for i, o in enumerate(all_outlets_ranked):
             gw = o.get('growth_sales')
             gw_str = f"{gw:+.1f}%" if gw is not None else "0.0%"
-            top_o_lines.append(f"  {i+1}. {o['name']}: Rp {o['2026']['net_sales']:,.0f} (Kontribusi: {o.get('contrib_2026', 0):.1f}%, Growth: {gw_str})")
+            top_o_lines.append(f"  {i+1}. {o['name']}: Rp {o['2026']['net_sales']:,.0f} (Kontribusi: {o.get('contrib_2026', 0):.1f}%, Volume: {o.get('2026', {}).get('qty', 0):,.0f} pcs, Struk: {o.get('2026', {}).get('transactions', 0):,} struk, Growth: {gw_str})")
         top_o_text = "\n".join(top_o_lines) or "  - Data outlet tidak tersedia untuk filter ini"
 
         eval_o_lines = []
@@ -4473,7 +4538,7 @@ TOP 10 BARANG / PRODUK BERDASARKAN OMSET (REVENUE):
 TOP 10 BARANG / PRODUK BERDASARKAN KUANTITAS TERJUAL (QTY):
 {top_p_qty_text}
 
-TOP CABANG BERDASARKAN OMSET (REVENUE):
+PERINGKAT SELURUH CABANG / KONTER RESMI (OMSET TERTINGGI S/D TERENDAH):
 {top_o_text}
 
 TOP CABANG BERDASARKAN VOLUME TERJUAL (QTY):
@@ -4871,6 +4936,21 @@ TOP PRODUK PRIORITAS (FAST-MOVING VELOCITY):
                 f"- **Jam Operasional Toko**: Terjadwal pukul **06:00 s/d 20:00 WIB**.\n\n"
                 f"**Jam Penjualan Tertinggi:**\n{h_rank_str}{h_details}\n\n"
                 f"💡 **Arahan Operasional**: Pastikan seluruh loket kasir POS beroperasi penuh 30 menit sebelum jam puncak pukul {peak_sales}:00 WIB."
+            )
+        elif any(k in p_lower for k in ["konter", "outlet", "cabang", "toko", "rank", "ranking", "peringkat"]):
+            o_rank_lines = []
+            for idx, o in enumerate(all_outlets_ranked, 1):
+                gw = o.get('growth_sales')
+                gw_str = f"{gw:+.1f}% YoY" if gw is not None else "-"
+                o_rank_lines.append(
+                    f"{idx}. **{o['name']}**: Omset **Rp {o['2026']['net_sales']:,.0f}** ({o.get('contrib_2026', 0):.1f}% kontribusi) | Volume **{o.get('2026', {}).get('qty', 0):,.0f} pcs** | {o.get('2026', {}).get('transactions', 0):,} struk ({gw_str})"
+                )
+            o_rank_text = "\n".join(o_rank_lines) if o_rank_lines else "Data outlet tidak tersedia."
+            answer = (
+                f"**Peringkat Kinerja Seluruh Konter ({filter_label}):**\n\n"
+                f"Berikut adalah urutan performa konter ritel Ancol Store dari kontribusi tertinggi hingga terendah:\n\n"
+                f"{o_rank_text}\n\n"
+                f"💡 **Analisis Eksekutif**: Kontributor omset terbesar dipimpin oleh **{all_outlets_ranked[0]['name'] if all_outlets_ranked else 'SWIN'}** yang menyumbang porsi mayoritas penjualan. Untuk konter pada peringkat terbawah, evaluasi rotasi display barang dan maksimalkan produk impulsif harga terjangkau."
             )
         elif any(k in p_lower for k in ["qty", "kuantitas", "banyak", "volume", "unit"]):
             o_top_q = outlets_by_qty[0] if outlets_by_qty else None
