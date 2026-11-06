@@ -1051,6 +1051,19 @@ def sync_database(force: bool = False) -> dict[str, Any]:
 
         outlet_mapping = read_outlet_mapping()
 
+        # 0. Clean up sales files that have been removed from disk
+        existing_file_keys = {str(p.resolve()) for p in sales_files}
+        cursor = conn.execute("SELECT file_path FROM sync_meta WHERE file_type = 'sales'")
+        for row in cursor.fetchall():
+            f_key = row["file_path"]
+            if f_key not in existing_file_keys:
+                f_name = Path(f_key).name
+                print(f"🗑️ Membersihkan data file sales yang telah dihapus: {f_name}")
+                conn.execute("BEGIN TRANSACTION;")
+                conn.execute("DELETE FROM sales_items WHERE file_source = ?", (f_name,))
+                conn.execute("DELETE FROM sync_meta WHERE file_path = ?", (f_key,))
+                conn.commit()
+
         # 1. Sync Sales Files
         for s_file in sales_files:
             file_stat = s_file.stat()
