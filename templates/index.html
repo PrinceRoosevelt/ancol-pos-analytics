@@ -4245,8 +4245,292 @@
     }
 
     /* ==========================================================================
-       ROLE-BASED ACCESS CONTROL (RBAC) & GLASSMORPHISM MODAL
+       GLASSMORPHISM PRODUCT DETAIL MODAL & DUAL CHART INTELLIGENCE
        ========================================================================== */
+    .product-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100010;
+      background: rgba(0, 24, 69, 0.55);
+      backdrop-filter: blur(12px) saturate(160%);
+      -webkit-backdrop-filter: blur(12px) saturate(160%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: pmFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes pmFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .product-modal-card {
+      width: 100%;
+      max-width: 960px;
+      max-height: 92vh;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(246, 250, 255, 0.90) 100%);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      box-shadow: 0 24px 60px -10px rgba(0, 32, 91, 0.30), 0 0 0 1px rgba(0, 51, 160, 0.08);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: pmScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    :root.dark .product-modal-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 41, 59, 0.90) 100%);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      color: #f8fafc;
+    }
+    @keyframes pmScaleUp {
+      from { opacity: 0; transform: scale(0.96) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .product-modal-header {
+      padding: 18px 22px;
+      border-bottom: 1px solid rgba(0, 51, 160, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.4);
+    }
+    :root.dark .product-modal-header {
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+      background: rgba(15, 23, 42, 0.4);
+    }
+    .product-modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+    :root.dark .product-modal-title {
+      color: #f8fafc;
+    }
+    .product-modal-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+    .product-modal-close-btn {
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+    .product-modal-close-btn:hover {
+      background: rgba(224, 0, 77, 0.12);
+      color: #E0004D;
+      border-color: rgba(224, 0, 77, 0.25);
+      transform: scale(1.05);
+    }
+    .product-modal-close-btn:active {
+      transform: scale(0.95);
+    }
+    :root.dark .product-modal-close-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+    }
+    .product-modal-body {
+      padding: 18px 22px;
+      overflow-y: auto;
+      max-height: calc(92vh - 80px);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .product-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 768px) {
+      .product-metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .product-metric-card {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(0, 51, 160, 0.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 2px 6px rgba(0, 32, 91, 0.03);
+    }
+    :root.dark .product-metric-card {
+      background: rgba(30, 41, 59, 0.65);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    .product-metric-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .product-metric-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .product-metric-val {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+    }
+    :root.dark .product-metric-val {
+      color: #f8fafc;
+    }
+    .product-metric-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-variant-numeric: tabular-nums;
+    }
+    .product-charts-split {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    @media (max-width: 860px) {
+      .product-charts-split {
+        grid-template-columns: 1fr;
+      }
+    }
+    .product-chart-card {
+      background: rgba(255, 255, 255, 0.70);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 51, 160, 0.08);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+    }
+    :root.dark .product-chart-card {
+      background: rgba(30, 41, 59, 0.70);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    .product-chart-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .product-chart-title {
+      font-size: 13.5px;
+      font-weight: 750;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+    }
+    :root.dark .product-chart-title {
+      color: #f8fafc;
+    }
+    .product-chart-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      display: block;
+      margin-top: 2px;
+    }
+    .product-canvas-wrap {
+      position: relative;
+      width: 100%;
+      flex: 1;
+      min-height: 220px;
+    }
+    .product-outlet-list-container {
+      max-height: 250px;
+      overflow-y: auto;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .product-outlet-row {
+      padding: 7px 10px;
+      background: rgba(0, 51, 160, 0.025);
+      border: 1px solid rgba(0, 51, 160, 0.06);
+      border-radius: 9px;
+      transition: background 0.15s ease;
+    }
+    .product-outlet-row:hover {
+      background: rgba(0, 51, 160, 0.06);
+    }
+    :root.dark .product-outlet-row {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.06);
+    }
+    :root.dark .product-outlet-row:hover {
+      background: rgba(255, 255, 255, 0.07);
+    }
+    .product-row-clickable {
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+    .product-row-clickable:hover {
+      background-color: rgba(0, 51, 160, 0.06) !important;
+    }
+    :root.dark .product-row-clickable:hover {
+      background-color: rgba(0, 181, 226, 0.08) !important;
+    }
+    .product-name-link {
+      color: var(--text);
+      font-weight: 600;
+      transition: color 0.15s ease;
+    }
+    .product-row-clickable:hover .product-name-link {
+      color: var(--brand);
+    }
+    .product-inspect-pill {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--brand);
+      background: var(--brand-subtle);
+      border: 1px solid var(--brand-border);
+      border-radius: 6px;
+      padding: 1.5px 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 4px;
+      opacity: 0.9;
+      transition: all 0.15s ease;
+    }
+    .product-row-clickable:hover .product-inspect-pill {
+      background: var(--brand);
+      color: #ffffff;
+      border-color: var(--brand);
+      opacity: 1;
+    }
     .role-modal-overlay {
       position: fixed;
       inset: 0;
@@ -5188,6 +5472,129 @@
     </div>
   </div>
 
+  <!-- Glassmorphism Product Intelligence & Dual Chart Detail Modal -->
+  <div id="productDetailModal" class="product-modal-backdrop" onclick="closeProductDetailModalOnBackdrop(event)" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="pmProductName">
+    <div class="product-modal-card" onclick="event.stopPropagation()">
+      <!-- Header -->
+      <div class="product-modal-header">
+        <div style="display:flex; align-items:flex-start; gap:12px; min-width:0; flex:1;">
+          <span class="flat-badge flat-badge-lg flat-badge-brand">
+            <!-- Box / Product Cube Flat Rounded Icon -->
+            <svg viewBox="0 0 24 24"><path d="M21 16.5l-9 5.25-9-5.25V7.5l9-5.25 9 5.25v9zM12 4.15L5.04 8.2 12 12.26l6.96-4.06L12 4.15zM4.5 9.87v6.23l6.75 3.94v-6.23L4.5 9.87zm15 0l-6.75 3.94v6.23l6.75-3.94V9.87z"/></svg>
+          </span>
+          <div style="min-width:0; flex:1;">
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <h2 id="pmProductName" class="product-modal-title">Nama Produk</h2>
+              <span id="pmPriceTag" class="badge-price-tag" style="font-size:12.5px; font-weight:700;">Rp 0</span>
+              <span id="pmJenisBadge" class="badge-model-konsin" style="font-size:11px;">KONSINYASI</span>
+            </div>
+            <div class="product-modal-meta">
+              <span id="pmSupplier" style="display:inline-flex; align-items:center; gap:4px;">
+                <span class="flat-badge flat-badge-xs flat-badge-slate"><svg viewBox="0 0 24 24"><path d="M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM10 4h4v3h-4V4z"/></svg></span>
+                <span id="pmSupplierText">Supplier</span>
+              </span>
+              <span>•</span>
+              <span id="pmCategory" style="display:inline-flex; align-items:center; gap:4px;">
+                <span class="flat-badge flat-badge-xs flat-badge-slate"><svg viewBox="0 0 24 24"><path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/></svg></span>
+                <span id="pmCategoryText">Kategori</span>
+              </span>
+              <span id="pmHppWrap" style="display:none;">
+                <span>•</span>
+                <span style="color:var(--text-muted); font-size:11.5px;">HPP Kasir: <strong id="pmHppVal" style="color:var(--text); font-variant-numeric:tabular-nums;">Rp 0</strong></span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="product-modal-close-btn" onclick="closeProductDetailModal()" title="Tutup (Esc)">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="product-modal-body">
+        <!-- 4 Quick Glanceable Metric Strips -->
+        <div class="product-metrics-grid">
+          <div class="product-metric-card">
+            <div class="product-metric-header">
+              <span class="flat-badge flat-badge-sm flat-badge-sky"><svg viewBox="0 0 24 24"><path d="M21 16.5l-9 5.25-9-5.25V7.5l9-5.25 9 5.25v9zM12 4.15L5.04 8.2 12 12.26l6.96-4.06L12 4.15zM4.5 9.87v6.23l6.75 3.94v-6.23L4.5 9.87zm15 0l-6.75 3.94v6.23l6.75-3.94V9.87z"/></svg></span>
+              <span class="product-metric-label">Total Qty (2026)</span>
+            </div>
+            <div class="product-metric-val" id="pmStatQty26">0 pcs</div>
+            <div class="product-metric-sub" id="pmStatQtyYoY">Histori '25: 0 pcs</div>
+          </div>
+
+          <div class="product-metric-card">
+            <div class="product-metric-header">
+              <span class="flat-badge flat-badge-sm flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></span>
+              <span class="product-metric-label">Total Omset (Net Sales)</span>
+            </div>
+            <div class="product-metric-val" id="pmStatSales26" style="color:var(--brand);">Rp 0</div>
+            <div class="product-metric-sub" id="pmStatLabaEst">Laba Kotor: Rp 0</div>
+          </div>
+
+          <div class="product-metric-card">
+            <div class="product-metric-header">
+              <span class="flat-badge flat-badge-sm flat-badge-amber"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg></span>
+              <span class="product-metric-label">Bulan Puncak (Peak)</span>
+            </div>
+            <div class="product-metric-val" id="pmStatPeakMonth">-</div>
+            <div class="product-metric-sub" id="pmStatPeakQty">Rekor: 0 pcs</div>
+          </div>
+
+          <div class="product-metric-card">
+            <div class="product-metric-header">
+              <span class="flat-badge flat-badge-sm flat-badge-purple"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></span>
+              <span class="product-metric-label">Konter Terlaris</span>
+            </div>
+            <div class="product-metric-val" id="pmStatTopOutlet" style="font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">-</div>
+            <div class="product-metric-sub" id="pmStatTopOutletShare">Kontribusi: 0%</div>
+          </div>
+        </div>
+
+        <!-- 2 Main Visual Charts Grid -->
+        <div class="product-charts-split">
+          <!-- Chart 1: Monthly Qty Trend (Atas / Main) -->
+          <div class="product-chart-card">
+            <div class="product-chart-header">
+              <div>
+                <h3 class="product-chart-title">
+                  <span class="flat-badge flat-badge-xs flat-badge-brand"><svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg></span>
+                  Tren Penjualan Bulanan (Qty Pcs)
+                </h3>
+                <span class="product-chart-sub">Volume barang terjual per bulan: 2026 vs 2025</span>
+              </div>
+              <div class="chart-legend" style="margin:0;">
+                <div class="legend-item"><span class="legend-dot" style="background:var(--brand);"></span> 2026</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#cbd5e1;"></span> 2025</div>
+              </div>
+            </div>
+            <div class="product-canvas-wrap">
+              <canvas id="productMonthlyCanvas"></canvas>
+              <div id="productMonthlyTooltip" class="chart-tooltip"></div>
+            </div>
+          </div>
+
+          <!-- Chart 2: Outlet Counter Distribution (Kanan / Bawah) -->
+          <div class="product-chart-card">
+            <div class="product-chart-header">
+              <div>
+                <h3 class="product-chart-title">
+                  <span class="flat-badge flat-badge-xs flat-badge-teal"><svg viewBox="0 0 24 24"><path d="M4 4h7v7H4zm10 0h7v7h-7zM4 14h7v7H4zm10 0h7v7h-7z"/></svg></span>
+                  Distribusi Penjualan per Konter
+                </h3>
+                <span class="product-chart-sub">Persebaran lokasi di mana barang ini paling laku terjual</span>
+              </div>
+              <span id="pmOutletCountBadge" class="flat-badge flat-badge-xs flat-badge-slate" style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px;">0 Konter</span>
+            </div>
+            <div id="productOutletList" class="product-outlet-list-container">
+              <!-- Dynamic Counter Distribution Bars generated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Glassmorphism Welcome & Role Selector Modal (Operasional vs Management) -->
   <div id="roleModalOverlay" class="role-modal-overlay" style="display:none;" onclick="handleRoleOverlayClick(event)">
     <div class="role-modal-card" role="dialog" aria-modal="true" aria-labelledby="roleModalTitle">
@@ -6123,7 +6530,7 @@
         <tbody id="productsTableBody">
           {% set max_product_sales = (data.products[0]['2026']['net_sales'] if data.products else 0) or 1 %}
           {% for item in data.products[:10] %}
-          <tr>
+          <tr class="product-row-clickable" onclick="openProductDetailModal('{{ item.name|replace('\\', '\\\\')|replace("'", "\\'") }}')" title="Klik untuk analisis detail produk &amp; grafik persebaran konter">
             <td class="text-center" style="color:var(--text-muted);">{{ loop.index }}</td>
             <td style="font-weight:600;">
               <div style="display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap;">
@@ -6131,6 +6538,7 @@
                 {% if item.harga_jual and item.harga_jual > 0 %}
                 <span class="badge-price-tag" title="Harga Jual Kasir">Rp {{ "{:,.0f}".format(item.harga_jual).replace(',', '.') }}</span>
                 {% endif %}
+                <span class="product-inspect-pill"><span class="flat-badge flat-badge-xs flat-badge-brand"><svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14.2h-2.8zm5.6 8h3V19h-3z"/></svg></span> Detail</span>
               </div>
             </td>
             <td class="text-right">
@@ -7984,6 +8392,10 @@
       const calModal = document.getElementById('calendarModalOverlay');
       if (calModal && calModal.style.display === 'flex') {
         closeCalendarModal();
+      }
+      const prodModal = document.getElementById('productDetailModal');
+      if (prodModal && prodModal.style.display === 'flex') {
+        closeProductDetailModal();
       }
     }
   });
@@ -11294,14 +11706,16 @@
       // Calculate unit price badge
       const priceVal = (p.harga_jual && p.harga_jual > 0) ? p.harga_jual : getProductPrice(p.name, s26, q26);
       const priceBadge = priceVal > 0 ? `<span class="badge-price-tag" title="Harga Jual Kasir: Rp ${priceVal.toLocaleString('id-ID')}">Rp ${priceVal.toLocaleString('id-ID')}</span>` : '';
+      const safeProdName = encodeURIComponent(p.name);
 
       html += `
-        <tr>
+        <tr class="product-row-clickable" onclick="openProductDetailModal('${safeProdName}')" title="Klik untuk analisis detail produk &amp; grafik persebaran konter">
           <td class="text-center" style="color:var(--text-muted);">${i + 1}</td>
           <td style="font-weight:600;">
             <div style="display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap;">
               <span>${highlightedName}</span>
               ${priceBadge}
+              <span class="product-inspect-pill"><span class="flat-badge flat-badge-xs flat-badge-brand"><svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14.2h-2.8zm5.6 8h3V19h-3z"/></svg></span> Detail</span>
             </div>
           </td>
           <td class="text-right">
@@ -11320,6 +11734,518 @@
     });
     tbody.innerHTML = html;
   }
+
+  // ==========================================================================
+  // GLASSMORPHISM PRODUCT INTELLIGENCE MODAL & DUAL CHART LOGIC
+  // ==========================================================================
+  let currentProductDetailName = null;
+
+  function closeProductDetailModal() {
+    const modal = document.getElementById('productDetailModal');
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
+    currentProductDetailName = null;
+  }
+
+  function closeProductDetailModalOnBackdrop(e) {
+    if (e && e.target && e.target.id === 'productDetailModal') {
+      closeProductDetailModal();
+    }
+  }
+
+  function openProductDetailModal(encodedOrRawName) {
+    let prodName = encodedOrRawName;
+    try {
+      if (typeof encodedOrRawName === 'string' && encodedOrRawName.includes('%')) {
+        prodName = decodeURIComponent(encodedOrRawName);
+      }
+    } catch(err) {
+      prodName = encodedOrRawName;
+    }
+    if (!prodName) return;
+    currentProductDetailName = prodName;
+
+    const modal = document.getElementById('productDetailModal');
+    if (!modal) return;
+
+    // 1. Resolve Master Lookup Data
+    let supplier = 'LAIN-LAIN';
+    let category = 'LAIN-LAIN';
+    let jenis = 'KONSINYASI';
+    let hppVal = 0;
+    let hjVal = 0;
+
+    if (typeof COMPACT_LOOKUP !== 'undefined' && COMPACT_LOOKUP && COMPACT_LOOKUP[prodName]) {
+      const lk = COMPACT_LOOKUP[prodName];
+      supplier = lk[1] || 'LAIN-LAIN';
+      category = lk[2] || 'LAIN-LAIN';
+      jenis = ((lk[3] || '').toUpperCase().includes('DAGANG')) ? 'DAGANGAN' : 'KONSINYASI';
+      hppVal = lk[4] || 0;
+      hjVal = lk[5] || 0;
+    }
+
+    const pi = (typeof _SD_PRODS !== 'undefined' && _SD_PRODS && _SD_PRODS.length) ? _SD_PRODS.indexOf(prodName) : -1;
+    if (pi >= 0) {
+      if (typeof _SD_PROD_SUPP !== 'undefined' && _SD_PROD_SUPP[pi]) supplier = _SD_PROD_SUPP[pi];
+      if (typeof _SD_PROD_CAT !== 'undefined' && _SD_PROD_CAT[pi]) category = _SD_PROD_CAT[pi];
+      if (typeof _SD_PROD_JENIS !== 'undefined' && _SD_PROD_JENIS[pi]) jenis = _SD_PROD_JENIS[pi];
+      if (typeof _SD_PROD_HPP !== 'undefined' && _SD_PROD_HPP[pi] > 0) hppVal = _SD_PROD_HPP[pi];
+    }
+
+    // 2. Scan RAW_SALES for Monthly Aggregates & Outlet Breakdown
+    const monthly26Qty = new Float64Array(12);
+    const monthly26Sales = new Float64Array(12);
+    const monthly25Qty = new Float64Array(12);
+    const monthly25Sales = new Float64Array(12);
+    const outletMap = {}; // outletName -> { name, qty26, sales26, qty25, sales25 }
+
+    let totalQty26 = 0;
+    let totalSales26 = 0;
+    let totalQty25 = 0;
+    let totalSales25 = 0;
+
+    const rawList = (typeof RAW_SALES !== 'undefined' && Array.isArray(RAW_SALES)) ? RAW_SALES : [];
+    const isCompact = (typeof _IS_COMPACT_SALES !== 'undefined') ? _IS_COMPACT_SALES : false;
+
+    if (isCompact && pi >= 0) {
+      for (let i = 0, len = rawList.length; i < len; i++) {
+        const r = rawList[i];
+        if (r[4] !== pi) continue;
+
+        const di = r[0];
+        const yr = _SD_DATE_YEAR[di];
+        const mk = parseInt(_SD_DATE_MK[di], 10) - 1; // 0..11
+        const oi = r[2];
+        const oName = _SD_OUTLETS[oi] || 'Outlet Lain';
+        const qty = r[5] || 0;
+        const sales = r[6] || 0;
+
+        if (!outletMap[oName]) {
+          outletMap[oName] = { name: oName, qty26: 0, sales26: 0, qty25: 0, sales25: 0 };
+        }
+
+        if (yr === 2026) {
+          totalQty26 += qty;
+          totalSales26 += sales;
+          if (mk >= 0 && mk < 12) {
+            monthly26Qty[mk] += qty;
+            monthly26Sales[mk] += sales;
+          }
+          outletMap[oName].qty26 += qty;
+          outletMap[oName].sales26 += sales;
+        } else if (yr === 2025) {
+          totalQty25 += qty;
+          totalSales25 += sales;
+          if (mk >= 0 && mk < 12) {
+            monthly25Qty[mk] += qty;
+            monthly25Sales[mk] += sales;
+          }
+          outletMap[oName].qty25 += qty;
+          outletMap[oName].sales25 += sales;
+        }
+      }
+    } else {
+      // Fallback if not compact or index not matched directly
+      for (let i = 0, len = rawList.length; i < len; i++) {
+        const r = rawList[i];
+        const itemProd = isCompact ? (_SD_PRODS[r[4]] || '') : r[4];
+        if (itemProd !== prodName) continue;
+
+        let yr, mk, oName;
+        if (isCompact) {
+          const di = r[0];
+          yr = _SD_DATE_YEAR[di];
+          mk = parseInt(_SD_DATE_MK[di], 10) - 1;
+          oName = _SD_OUTLETS[r[2]] || 'Outlet Lain';
+        } else {
+          yr = r[0];
+          mk = parseInt(String(r[1]).substring(5, 7), 10) - 1;
+          oName = r[2] || 'Outlet Lain';
+        }
+        const qty = r[5] || 0;
+        const sales = r[6] || 0;
+
+        if (!outletMap[oName]) {
+          outletMap[oName] = { name: oName, qty26: 0, sales26: 0, qty25: 0, sales25: 0 };
+        }
+
+        if (yr === 2026) {
+          totalQty26 += qty;
+          totalSales26 += sales;
+          if (mk >= 0 && mk < 12) {
+            monthly26Qty[mk] += qty;
+            monthly26Sales[mk] += sales;
+          }
+          outletMap[oName].qty26 += qty;
+          outletMap[oName].sales26 += sales;
+        } else if (yr === 2025) {
+          totalQty25 += qty;
+          totalSales25 += sales;
+          if (mk >= 0 && mk < 12) {
+            monthly25Qty[mk] += qty;
+            monthly25Sales[mk] += sales;
+          }
+          outletMap[oName].qty25 += qty;
+          outletMap[oName].sales25 += sales;
+        }
+      }
+    }
+
+    // 3. Fallback unit price if lookup had 0
+    if (!hjVal && totalQty26 > 0 && totalSales26 > 0) {
+      hjVal = Math.round((totalSales26 / totalQty26) * 1.11);
+    }
+
+    // 4. Peak Month
+    const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    let peakIdx = -1;
+    let peakQty = 0;
+    for (let m = 0; m < 12; m++) {
+      if (monthly26Qty[m] > peakQty) {
+        peakQty = monthly26Qty[m];
+        peakIdx = m;
+      }
+    }
+    const peakMonthName = peakIdx >= 0 ? monthNames[peakIdx] : '-';
+
+    // 5. Sorted Outlets (Distribution)
+    const sortedOutlets = Object.values(outletMap).sort((a, b) => b.qty26 - a.qty26);
+    const topOutlet = sortedOutlets.length ? sortedOutlets[0] : null;
+    const topOutletName = topOutlet ? topOutlet.name : '-';
+    const topOutletShare = (topOutlet && totalQty26 > 0) ? (topOutlet.qty26 / totalQty26 * 100).toFixed(1) : '0';
+
+    // 6. Margin / Laba Kotor Calculation
+    let labaSubText = 'Laba Kotor: -';
+    if (jenis === 'DAGANGAN' && hppVal > 0) {
+      const estCogs = totalQty26 * hppVal;
+      const estGross = totalSales26 - estCogs;
+      const marginPct = totalSales26 > 0 ? (estGross / totalSales26 * 100).toFixed(1) : '0';
+      labaSubText = `Laba Kotor: ${formatRp(estGross)} (${marginPct}%)`;
+    } else if (jenis === 'KONSINYASI') {
+      if (hppVal > 0) {
+        const estMargin = totalSales26 - (totalQty26 * hppVal);
+        const marginPct = totalSales26 > 0 ? (estMargin / totalSales26 * 100).toFixed(1) : '0';
+        labaSubText = `Estimasi Bagi Hasil: ${formatRp(estMargin)} (${marginPct}%)`;
+      } else {
+        labaSubText = `Model: Konsinyasi Rekanan`;
+      }
+    }
+
+    // 7. Render Header Elements
+    const elName = document.getElementById('pmProductName');
+    const elPrice = document.getElementById('pmPriceTag');
+    const elJenis = document.getElementById('pmJenisBadge');
+    const elSupp = document.getElementById('pmSupplierText');
+    const elCat = document.getElementById('pmCategoryText');
+    const elHppWrap = document.getElementById('pmHppWrap');
+    const elHppVal = document.getElementById('pmHppVal');
+
+    if (elName) elName.textContent = prodName;
+    if (elPrice) {
+      elPrice.textContent = hjVal > 0 ? ('Rp ' + hjVal.toLocaleString('id-ID')) : 'Rp -';
+      elPrice.style.display = hjVal > 0 ? 'inline-block' : 'none';
+    }
+    if (elJenis) {
+      elJenis.textContent = jenis;
+      elJenis.className = (jenis === 'DAGANGAN') ? 'badge-model-dagang' : 'badge-model-konsin';
+    }
+    if (elSupp) elSupp.textContent = supplier;
+    if (elCat) elCat.textContent = category;
+    if (elHppWrap && elHppVal) {
+      if (hppVal > 0) {
+        elHppWrap.style.display = 'inline-flex';
+        elHppVal.textContent = 'Rp ' + Math.round(hppVal).toLocaleString('id-ID');
+      } else {
+        elHppWrap.style.display = 'none';
+      }
+    }
+
+    // 8. Render 4 Quick Metric Cards
+    const elQ26 = document.getElementById('pmStatQty26');
+    const elQYoY = document.getElementById('pmStatQtyYoY');
+    const elS26 = document.getElementById('pmStatSales26');
+    const elLaba = document.getElementById('pmStatLabaEst');
+    const elPeakM = document.getElementById('pmStatPeakMonth');
+    const elPeakQ = document.getElementById('pmStatPeakQty');
+    const elTopOut = document.getElementById('pmStatTopOutlet');
+    const elTopShare = document.getElementById('pmStatTopOutletShare');
+
+    if (elQ26) elQ26.textContent = formatNum(totalQty26) + ' pcs';
+    if (elQYoY) {
+      if (totalQty25 > 0) {
+        const growth = ((totalQty26 - totalQty25) / totalQty25 * 100);
+        const sign = growth >= 0 ? '+' : '';
+        const color = growth >= 0 ? '#10b981' : '#f43f5e';
+        elQYoY.innerHTML = `<span style="color:${color}; font-weight:700;">${sign}${growth.toFixed(1)}%</span> vs '25 (${formatNum(totalQty25)} pcs)`;
+      } else {
+        elQYoY.textContent = "Histori '25: 0 pcs (Produk Baru)";
+      }
+    }
+    if (elS26) elS26.textContent = formatRp(totalSales26);
+    if (elLaba) elLaba.textContent = labaSubText;
+    if (elPeakM) elPeakM.textContent = peakIdx >= 0 ? `${peakMonthName} (Peak)` : '-';
+    if (elPeakQ) elPeakQ.textContent = `Rekor: ${formatNum(peakQty)} pcs`;
+    if (elTopOut) {
+      elTopOut.textContent = topOutletName;
+      elTopOut.title = topOutletName;
+    }
+    if (elTopShare) {
+      elTopShare.textContent = topOutlet ? `Kontribusi: ${topOutletShare}% (${formatNum(topOutlet.qty26)} pcs)` : 'Kontribusi: 0%';
+    }
+
+    // 9. Render Chart 2: Outlet Distribution Ranking
+    const outletListEl = document.getElementById('productOutletList');
+    const outletCountBadge = document.getElementById('pmOutletCountBadge');
+    if (outletCountBadge) {
+      outletCountBadge.textContent = `${sortedOutlets.length} Konter`;
+    }
+
+    if (outletListEl) {
+      if (!sortedOutlets.length || totalQty26 === 0) {
+        outletListEl.innerHTML = `
+          <div style="padding:24px 12px; text-align:center; color:var(--text-muted); font-size:12px;">
+            Belum ada catatan transaksi konter untuk produk ini pada periode 2026.
+          </div>`;
+      } else {
+        const maxOutletQty = sortedOutlets[0].qty26 || 1;
+        let outHtml = '';
+        sortedOutlets.forEach((o, idx) => {
+          const rank = idx + 1;
+          const sharePct = (totalQty26 > 0 ? (o.qty26 / totalQty26 * 100).toFixed(1) : 0);
+          const barWidth = Math.max((o.qty26 / maxOutletQty * 100), 2).toFixed(1);
+
+          const unitName = (typeof OUTLET_TO_VISITOR_MAP !== 'undefined') ? (OUTLET_TO_VISITOR_MAP[o.name] || '') : '';
+          let unitBadgeHtml = '';
+          if (unitName) {
+            let badgeColor = '#64748b';
+            let badgeBg = 'rgba(100, 116, 139, 0.12)';
+            if (unitName === 'Dufan') { badgeColor = '#E0004D'; badgeBg = 'rgba(224, 0, 77, 0.12)'; }
+            else if (unitName === 'SeaWorld') { badgeColor = '#006EB3'; badgeBg = 'rgba(0, 110, 179, 0.12)'; }
+            else if (unitName === 'Samudra') { badgeColor = '#00A497'; badgeBg = 'rgba(0, 164, 151, 0.12)'; }
+            else if (unitName === 'Atlantis') { badgeColor = '#5C068C'; badgeBg = 'rgba(92, 6, 140, 0.12)'; }
+            else if (unitName === 'Beachpark') { badgeColor = '#00B5E2'; badgeBg = 'rgba(0, 181, 226, 0.12)'; }
+
+            unitBadgeHtml = `<span style="font-size:10px; font-weight:700; padding:1px 6px; border-radius:4px; background:${badgeBg}; color:${badgeColor}; flex-shrink:0;">${unitName}</span>`;
+          }
+
+          outHtml += `
+            <div class="product-outlet-row">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; gap:8px;">
+                <div style="display:flex; align-items:center; gap:6px; min-width:0; flex:1;">
+                  <span style="font-size:11px; font-weight:800; color:var(--text-muted); width:20px; flex-shrink:0;">#${rank}</span>
+                  <span style="font-weight:600; font-size:12.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${o.name}">${o.name}</span>
+                  ${unitBadgeHtml}
+                </div>
+                <div style="text-align:right; flex-shrink:0;">
+                  <strong style="font-size:12.5px; font-variant-numeric:tabular-nums; color:var(--text);">${formatNum(o.qty26)} pcs</strong>
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="flex:1; height:6px; background:rgba(0, 51, 160, 0.08); border-radius:999px; overflow:hidden;">
+                  <div style="height:100%; width:${barWidth}%; background:linear-gradient(90deg, #0033A0, #00B5E2); border-radius:999px;"></div>
+                </div>
+                <span style="font-size:11px; font-variant-numeric:tabular-nums; color:var(--text-muted); width:95px; text-align:right; flex-shrink:0;">
+                  ${formatRp(o.sales26)} (${sharePct}%)
+                </span>
+              </div>
+            </div>`;
+        });
+        outletListEl.innerHTML = outHtml;
+      }
+    }
+
+    // 10. Display Modal & Draw Chart 1
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    // Request animation frame so container widths are calculated accurately
+    requestAnimationFrame(() => {
+      drawProductMonthlyChart(monthly26Qty, monthly25Qty, monthly26Sales, prodName);
+    });
+  }
+
+  function drawProductMonthlyChart(monthly26Qty, monthly25Qty, monthly26Sales, prodName) {
+    const canvas = document.getElementById('productMonthlyCanvas');
+    const tooltip = document.getElementById('productMonthlyTooltip');
+    if (!canvas) return;
+
+    const wrap = canvas.parentElement;
+    const width = wrap.clientWidth || 500;
+    const height = 240;
+    const ratio = window.devicePixelRatio || 1;
+
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    canvas.style.height = height + 'px';
+    canvas.style.width = width + 'px';
+
+    const ctx = canvas.getContext('2d');
+    ctx.scale(ratio, ratio);
+
+    const isDark = document.documentElement.classList.contains('dark');
+    const gridColor = isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)';
+    const textColor = isDark ? '#94a3b8' : '#64748b';
+    const bar26Color = isDark ? '#00B5E2' : '#0033A0';
+    const bar25Color = isDark ? '#475569' : '#cbd5e1';
+
+    const left = 48, right = 16, top = 20, bottom = 30;
+    const plotW = width - left - right;
+    const plotH = height - top - bottom;
+
+    let maxVal = Math.max(...monthly26Qty, ...monthly25Qty, 10);
+    // Nice ceiling round
+    const order = Math.pow(10, Math.floor(Math.log10(maxVal)));
+    const factor = maxVal / order;
+    let mult = 10;
+    if (factor <= 1.2) mult = 1.2;
+    else if (factor <= 2.5) mult = 2.5;
+    else if (factor <= 5) mult = 5;
+    maxVal = Math.ceil(mult * order);
+    if (maxVal < 10) maxVal = 10;
+
+    // Horizontal Grid Lines
+    ctx.font = '10px Plus Jakarta Sans, sans-serif';
+    ctx.fillStyle = textColor;
+    ctx.strokeStyle = gridColor;
+    ctx.lineWidth = 1;
+
+    const steps = 4;
+    for (let s = 0; s <= steps; s++) {
+      const t = s / steps;
+      const y = top + plotH * (1 - t);
+      ctx.beginPath();
+      ctx.moveTo(left, y);
+      ctx.lineTo(width - right, y);
+      ctx.stroke();
+
+      const val = Math.round(maxVal * t);
+      const label = val >= 1000 ? (val / 1000).toFixed(val % 1000 === 0 ? 0 : 1) + 'k' : String(val);
+      ctx.textAlign = 'right';
+      ctx.fillText(label, left - 6, y + 3.5);
+    }
+
+    // 12 Months Grouped Bars
+    const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    const monthColW = plotW / 12;
+    const barW = Math.max(Math.min((monthColW - 6) / 2, 11), 3);
+    const barGap = 1.5;
+
+    const hitAreas = [];
+
+    function fillBar(x, y, w, h, r) {
+      if (h <= 0) return;
+      r = Math.min(r, w / 2, h);
+      ctx.beginPath();
+      ctx.moveTo(x, y + h);
+      ctx.lineTo(x, y + r);
+      ctx.arcTo(x, y, x + r, y, r);
+      ctx.lineTo(x + w - r, y);
+      ctx.arcTo(x + w, y, x + w, y + r, r);
+      ctx.lineTo(x + w, y + h);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    for (let m = 0; m < 12; m++) {
+      const cx = left + m * monthColW + monthColW / 2;
+      const q26 = monthly26Qty[m] || 0;
+      const q25 = monthly25Qty[m] || 0;
+
+      const h26 = (q26 / maxVal) * plotH;
+      const h25 = (q25 / maxVal) * plotH;
+
+      const x25 = cx - barW - (barGap / 2);
+      const y25 = top + (plotH - h25);
+
+      const x26 = cx + (barGap / 2);
+      const y26 = top + (plotH - h26);
+
+      // 2025 Bar
+      if (q25 > 0) {
+        ctx.fillStyle = bar25Color;
+        fillBar(x25, y25, barW, h25, 2.5);
+      }
+
+      // 2026 Bar
+      if (q26 > 0) {
+        ctx.fillStyle = bar26Color;
+        fillBar(x26, y26, barW, h26, 2.5);
+      }
+
+      // Month Label on X-axis
+      ctx.textAlign = 'center';
+      ctx.fillStyle = textColor;
+      ctx.font = '10px Plus Jakarta Sans, sans-serif';
+      ctx.fillText(monthLabels[m], cx, height - 10);
+
+      hitAreas.push({
+        monthIdx: m,
+        left: left + m * monthColW,
+        right: left + (m + 1) * monthColW,
+        q26: q26,
+        q25: q25,
+        s26: monthly26Sales[m] || 0,
+        cx: cx
+      });
+    }
+
+    // Hover Tooltip Interactions
+    if (tooltip) {
+      canvas.onmousemove = function(e) {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const hit = hitAreas.find(a => mx >= a.left && mx < a.right);
+
+        if (hit && (hit.q26 > 0 || hit.q25 > 0)) {
+          const fullMonths = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+          const growthStr = hit.q25 > 0 ? (((hit.q26 - hit.q25) / hit.q25) * 100).toFixed(1) + '%' : '-';
+
+          tooltip.style.display = 'block';
+          tooltip.innerHTML = `
+            <div style="font-weight:700; margin-bottom:4px; font-size:12px; border-bottom:1px solid rgba(255,255,255,0.15); padding-bottom:3px; color:#f8fafc;">${fullMonths[hit.monthIdx]}</div>
+            <div style="display:flex; justify-content:space-between; gap:12px; font-size:11.5px; margin:2px 0;">
+              <span style="color:#38bdf8; font-weight:700;">● 2026 Qty:</span>
+              <strong style="color:#ffffff;">${formatNum(hit.q26)} pcs</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; gap:12px; font-size:11px; margin:2px 0; color:#cbd5e1;">
+              <span>Omset '26:</span>
+              <span>${formatRp(hit.s26)}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; gap:12px; font-size:11.5px; margin:2px 0;">
+              <span style="color:#94a3b8;">○ 2025 Qty:</span>
+              <span style="color:#e2e8f0;">${formatNum(hit.q25)} pcs</span>
+            </div>
+            ${hit.q25 > 0 ? `
+            <div style="display:flex; justify-content:space-between; gap:12px; font-size:11px; margin-top:4px; padding-top:3px; border-top:1px solid rgba(255,255,255,0.1);">
+              <span style="color:#94a3b8;">YoY Growth:</span>
+              <span style="font-weight:700; color:${hit.q26 >= hit.q25 ? '#34d399' : '#fb7185'};">${hit.q26 >= hit.q25 ? '+' : ''}${growthStr}</span>
+            </div>` : ''}
+          `;
+
+          let ttX = hit.cx - (tooltip.offsetWidth / 2);
+          if (ttX < 8) ttX = 8;
+          if (ttX + tooltip.offsetWidth > width - 8) ttX = width - tooltip.offsetWidth - 8;
+          const ttY = Math.max(top, 8);
+          tooltip.style.left = ttX + 'px';
+          tooltip.style.top = ttY + 'px';
+        } else {
+          tooltip.style.display = 'none';
+        }
+      };
+
+      canvas.onmouseleave = function() {
+        tooltip.style.display = 'none';
+      };
+    }
+  }
+
+  // Window resize re-draws chart if modal is currently open
+  window.addEventListener('resize', () => {
+    const modal = document.getElementById('productDetailModal');
+    if (modal && modal.style.display === 'flex' && currentProductDetailName) {
+      openProductDetailModal(currentProductDetailName);
+    }
+  });
 
   // Supplier Table Sorting State (Net Sales vs Qty)
   let currentSupplierSortCol = 'sales'; // 'sales' | 'qty'
