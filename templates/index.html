@@ -4265,8 +4265,8 @@
       to { opacity: 1; }
     }
     .product-modal-card {
-      width: 100%;
-      max-width: 960px;
+      width: min(1260px, 95vw);
+      max-width: 1260px;
       max-height: 92vh;
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(246, 250, 255, 0.90) 100%);
       backdrop-filter: blur(20px) saturate(180%);
@@ -4291,12 +4291,12 @@
       to { opacity: 1; transform: scale(1) translateY(0); }
     }
     .product-modal-header {
-      padding: 18px 22px;
+      padding: 18px 24px;
       border-bottom: 1px solid rgba(0, 51, 160, 0.08);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 16px;
       background: rgba(255, 255, 255, 0.4);
     }
     :root.dark .product-modal-header {
@@ -4304,7 +4304,7 @@
       background: rgba(15, 23, 42, 0.4);
     }
     .product-modal-title {
-      font-size: 17px;
+      font-size: 18.5px;
       font-weight: 800;
       color: var(--text);
       margin: 0;
@@ -4465,10 +4465,10 @@
       position: relative;
       width: 100%;
       flex: 1;
-      min-height: 220px;
+      min-height: 260px;
     }
     .product-outlet-list-container {
-      max-height: 250px;
+      max-height: 275px;
       overflow-y: auto;
       padding-right: 4px;
       display: flex;
@@ -4476,10 +4476,10 @@
       gap: 8px;
     }
     .product-outlet-row {
-      padding: 7px 10px;
+      padding: 8px 12px;
       background: rgba(0, 51, 160, 0.025);
       border: 1px solid rgba(0, 51, 160, 0.06);
-      border-radius: 9px;
+      border-radius: 10px;
       transition: background 0.15s ease;
     }
     .product-outlet-row:hover {
@@ -5546,7 +5546,7 @@
               <span class="flat-badge flat-badge-sm flat-badge-purple"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></span>
               <span class="product-metric-label">Konter Terlaris</span>
             </div>
-            <div class="product-metric-val" id="pmStatTopOutlet" style="font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">-</div>
+            <div class="product-metric-val" id="pmStatTopOutlet" style="font-size:15.5px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">-</div>
             <div class="product-metric-sub" id="pmStatTopOutletShare">Kontribusi: 0%</div>
           </div>
         </div>
@@ -12030,22 +12030,22 @@
 
           outHtml += `
             <div class="product-outlet-row">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; gap:8px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; gap:8px;">
                 <div style="display:flex; align-items:center; gap:6px; min-width:0; flex:1;">
                   <span style="font-size:11px; font-weight:800; color:var(--text-muted); width:20px; flex-shrink:0;">#${rank}</span>
-                  <span style="font-weight:600; font-size:12.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${o.name}">${o.name}</span>
+                  <span style="font-weight:700; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${o.name}">${o.name}</span>
                   ${unitBadgeHtml}
                 </div>
                 <div style="text-align:right; flex-shrink:0;">
-                  <strong style="font-size:12.5px; font-variant-numeric:tabular-nums; color:var(--text);">${formatNum(o.qty26)} pcs</strong>
+                  <strong style="font-size:13px; font-variant-numeric:tabular-nums; color:var(--text);">${formatNum(o.qty26)} pcs</strong>
                 </div>
               </div>
-              <div style="display:flex; align-items:center; gap:8px;">
-                <div style="flex:1; height:6px; background:rgba(0, 51, 160, 0.08); border-radius:999px; overflow:hidden;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div style="flex:1; height:7px; background:rgba(0, 51, 160, 0.08); border-radius:999px; overflow:hidden;">
                   <div style="height:100%; width:${barWidth}%; background:linear-gradient(90deg, #0033A0, #00B5E2); border-radius:999px;"></div>
                 </div>
-                <span style="font-size:11px; font-variant-numeric:tabular-nums; color:var(--text-muted); width:95px; text-align:right; flex-shrink:0;">
-                  ${formatRp(o.sales26)} (${sharePct}%)
+                <span style="font-size:11.5px; font-variant-numeric:tabular-nums; color:var(--text-muted); white-space:nowrap; text-align:right; flex-shrink:0;">
+                  ${formatRp(o.sales26)} <span style="color:var(--text); font-weight:600;">(${sharePct}%)</span>
                 </span>
               </div>
             </div>`;
@@ -12071,7 +12071,7 @@
 
     const wrap = canvas.parentElement;
     const width = wrap.clientWidth || 500;
-    const height = 240;
+    const height = 260;
     const ratio = window.devicePixelRatio || 1;
 
     canvas.width = width * ratio;
@@ -12104,7 +12104,7 @@
     if (maxVal < 10) maxVal = 10;
 
     // Horizontal Grid Lines
-    ctx.font = '10px Plus Jakarta Sans, sans-serif';
+    ctx.font = '10.5px Plus Jakarta Sans, sans-serif';
     ctx.fillStyle = textColor;
     ctx.strokeStyle = gridColor;
     ctx.lineWidth = 1;
@@ -12127,8 +12127,8 @@
     // 12 Months Grouped Bars
     const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
     const monthColW = plotW / 12;
-    const barW = Math.max(Math.min((monthColW - 6) / 2, 11), 3);
-    const barGap = 1.5;
+    const barW = Math.max(Math.min((monthColW - 8) / 2, 15), 4);
+    const barGap = 2;
 
     const hitAreas = [];
 
@@ -12163,19 +12163,19 @@
       // 2025 Bar
       if (q25 > 0) {
         ctx.fillStyle = bar25Color;
-        fillBar(x25, y25, barW, h25, 2.5);
+        fillBar(x25, y25, barW, h25, 3);
       }
 
       // 2026 Bar
       if (q26 > 0) {
         ctx.fillStyle = bar26Color;
-        fillBar(x26, y26, barW, h26, 2.5);
+        fillBar(x26, y26, barW, h26, 3);
       }
 
       // Month Label on X-axis
       ctx.textAlign = 'center';
       ctx.fillStyle = textColor;
-      ctx.font = '10px Plus Jakarta Sans, sans-serif';
+      ctx.font = '10.5px Plus Jakarta Sans, sans-serif';
       ctx.fillText(monthLabels[m], cx, height - 10);
 
       hitAreas.push({
