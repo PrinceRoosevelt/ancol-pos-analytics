@@ -1,0 +1,3221 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ancol Mitra Inhouse — Peta Kinerja Omset</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f7fc;
+      --bg-gradient: radial-gradient(circle at 12% 8%, rgba(0, 181, 226, 0.10), transparent 40%),
+                     radial-gradient(circle at 88% 12%, rgba(0, 51, 160, 0.08), transparent 44%),
+                     #f4f7fc;
+      --surface: rgba(255, 255, 255, 0.92);
+      --surface-solid: #ffffff;
+      --surface-soft: #eef3fb;
+      --surface-hover: #e5eefb;
+      --border: rgba(0, 32, 91, 0.11);
+      --border-strong: rgba(0, 51, 160, 0.24);
+      --text: #00205B;
+      --text-secondary: #334e7d;
+      --muted: #5c7094;
+      --brand: #0033A0;
+      --brand-deep: #00205B;
+      --brand-sky: #00B5E2;
+      --success: #059669;
+      --success-bg: rgba(5, 150, 105, 0.12);
+      --amber: #D97706;
+      --amber-bg: rgba(217, 119, 6, 0.13);
+      --danger: #DC2626;
+      --shadow-sm: 0 2px 8px rgba(0, 32, 91, 0.06);
+      --shadow-md: 0 10px 30px rgba(0, 32, 91, 0.10);
+      --shadow-lg: 0 24px 64px rgba(0, 20, 60, 0.22);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #040914;
+      --bg-gradient: radial-gradient(circle at 12% 8%, rgba(0, 181, 226, 0.14), transparent 42%),
+                     radial-gradient(circle at 88% 12%, rgba(0, 51, 160, 0.18), transparent 46%),
+                     #040914;
+      --surface: rgba(10, 19, 36, 0.92);
+      --surface-solid: #0d182d;
+      --surface-soft: #13223e;
+      --surface-hover: #1a2d52;
+      --border: rgba(148, 179, 232, 0.14);
+      --border-strong: rgba(0, 181, 226, 0.34);
+      --text: #edf4ff;
+      --text-secondary: #b9cbe8;
+      --muted: #8ca3c8;
+      --brand: #2563eb;
+      --brand-deep: #0033A0;
+      --brand-sky: #22d3ee;
+      --success: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.16);
+      --amber: #f59e0b;
+      --amber-bg: rgba(245, 158, 11, 0.18);
+      --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.35);
+      --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 24px 72px rgba(0, 0, 0, 0.65);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      font-family: 'Plus Jakarta Sans', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .tabular {
+      font-variant-numeric: tabular-nums;
+    }
+
+    button, input, select {
+      font-family: inherit;
+    }
+
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--brand-sky);
+      outline-offset: 2px;
+    }
+
+    /* Sticky Corporate Header */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      padding: 10px 18px;
+    }
+
+    .topbar-inner {
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .topbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      max-width: 100%;
+      flex: 1 1 auto;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0033A0, #00205B);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(0, 51, 160, 0.28);
+      flex-shrink: 0;
+    }
+
+    .brand-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .brand-titles h1 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .phase-pill {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(0, 181, 226, 0.14);
+      color: #0077a8;
+      border: 1px solid rgba(0, 181, 226, 0.30);
+    }
+
+    html[data-theme="dark"] .phase-pill {
+      color: #67e8f9;
+      background: rgba(34, 211, 238, 0.14);
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .actions-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Unified Interactive Buttons (38px+ touch target, spring feel) */
+    .btn {
+      min-height: 38px;
+      padding: 0 13px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: var(--surface-solid);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      cursor: pointer;
+      transition: transform 180ms var(--ease), background 180ms var(--ease), border-color 180ms var(--ease), box-shadow 180ms var(--ease);
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--surface-soft);
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: #0033A0;
+      color: #ffffff;
+      border-color: #0033A0;
+      box-shadow: 0 4px 12px rgba(0, 51, 160, 0.24);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #00205B;
+      border-color: #00205B;
+    }
+
+    .btn-icon {
+      width: 38px;
+      padding: 0;
+    }
+
+    .btn.is-active {
+      background: rgba(0, 51, 160, 0.10);
+      border-color: var(--brand);
+      color: var(--brand);
+    }
+
+    html[data-theme="dark"] .btn.is-active {
+      background: rgba(34, 211, 238, 0.15);
+      border-color: var(--brand-sky);
+      color: #67e8f9;
+    }
+
+    /* Simulation Toggle Switch */
+    .sim-toggle {
+      min-height: 38px;
+      padding: 4px 12px 4px 8px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: var(--surface-solid);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      transition: all 180ms var(--ease);
+    }
+
+    .sim-toggle:hover {
+      border-color: var(--border-strong);
+    }
+
+    .sim-toggle:active {
+      transform: scale(0.98);
+    }
+
+    .sim-toggle.active {
+      background: var(--amber-bg);
+      border-color: rgba(217, 119, 6, 0.45);
+      color: var(--amber);
+    }
+
+    .switch-track {
+      width: 32px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(92, 112, 148, 0.35);
+      position: relative;
+      transition: background 180ms var(--ease);
+      flex-shrink: 0;
+    }
+
+    .sim-toggle.active .switch-track {
+      background: var(--amber);
+    }
+
+    .switch-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ffffff;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 200ms var(--ease);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    }
+
+    .sim-toggle.active .switch-thumb {
+      transform: translateX(14px);
+    }
+
+    /* Filter Strip */
+    .filter-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .zone-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .zone-pill {
+      min-height: 38px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-solid);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 180ms var(--ease);
+    }
+
+    .zone-pill:hover {
+      background: var(--surface-soft);
+      border-color: var(--border-strong);
+    }
+
+    .zone-pill:active {
+      transform: scale(0.98);
+    }
+
+    .zone-pill.active {
+      background: #0033A0;
+      color: #ffffff;
+      border-color: #0033A0;
+      box-shadow: 0 3px 10px rgba(0, 51, 160, 0.25);
+    }
+
+    .search-period-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrap svg {
+      position: absolute;
+      left: 11px;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .search-input {
+      min-height: 38px;
+      width: 230px;
+      padding: 0 12px 0 34px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface-solid);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 500;
+    }
+
+    .period-select {
+      min-height: 38px;
+      padding: 0 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface-solid);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Main Workspace Layout */
+    .main-stage {
+      max-width: 1600px;
+      margin: 14px auto 24px;
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sim-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: var(--amber-bg);
+      border: 1px solid rgba(217, 119, 6, 0.35);
+      color: var(--amber);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .sim-banner.visible {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    /* Map Viewport Shell */
+    .map-shell {
+      position: relative;
+      width: 100%;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: #1d2633;
+      border: 1px solid var(--border-strong);
+      box-shadow: var(--shadow-md);
+      user-select: none;
+    }
+
+    .map-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 14445 / 6617;
+      overflow: hidden;
+      cursor: grab;
+      touch-action: none;
+      background: #242b35;
+    }
+
+    .map-viewport.dragging {
+      cursor: grabbing;
+    }
+
+    .map-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+
+    .map-img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: fill;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+
+    /* Circular Tenant Hotspots */
+    .hotspot {
+      position: absolute;
+      width: 4.07%;
+      aspect-ratio: 1 / 1;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      transition: transform 220ms var(--ease), box-shadow 220ms var(--ease), opacity 220ms var(--ease), border-color 220ms var(--ease);
+      z-index: 5;
+    }
+
+    .hotspot:hover, .hotspot:focus-visible, .hotspot.hovered {
+      transform: translate(-50%, -50%) scale(1.18);
+      z-index: 25;
+      box-shadow: 0 0 0 4px rgba(0, 181, 226, 0.45), 0 8px 20px rgba(0, 20, 60, 0.35);
+      border-color: #00B5E2;
+    }
+
+    .hotspot:active {
+      transform: translate(-50%, -50%) scale(1.06);
+    }
+
+    .hotspot.dimmed {
+      opacity: 0.25;
+      filter: grayscale(0.75);
+    }
+
+    .hotspot.status-real {
+      border-color: #059669;
+      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.35);
+    }
+
+    .hotspot.status-real::after {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      border: 2px solid #10b981;
+      animation: pulseRing 2.2s infinite ease-out;
+      pointer-events: none;
+    }
+
+    .hotspot.status-sim {
+      border-color: #0033A0;
+      box-shadow: 0 0 0 2px rgba(0, 181, 226, 0.32);
+    }
+
+    .hotspot.status-empty {
+      border-color: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    }
+
+    @keyframes pulseRing {
+      0% { transform: scale(0.96); opacity: 0.9; }
+      75%, 100% { transform: scale(1.36); opacity: 0; }
+    }
+
+    /* Compact Micro Revenue Pill beneath Logo */
+    .hotspot-pill {
+      position: absolute;
+      top: 106%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 1.5px 5px;
+      border-radius: 999px;
+      font-size: clamp(7.5px, 0.58vw, 10px);
+      font-weight: 800;
+      line-height: 1.2;
+      white-space: nowrap;
+      pointer-events: none;
+      font-variant-numeric: tabular-nums;
+      box-shadow: 0 2px 6px rgba(0, 15, 45, 0.28);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      transition: opacity 180ms var(--ease);
+    }
+
+    .hotspot-pill.real {
+      background: #059669;
+      color: #ffffff;
+    }
+
+    .hotspot-pill.sim {
+      background: rgba(0, 32, 91, 0.92);
+      color: #e0f7ff;
+    }
+
+    .hotspot.hide-pill .hotspot-pill {
+      opacity: 0;
+    }
+
+    .hotspot:hover .hotspot-pill {
+      opacity: 1 !important;
+    }
+
+    /* Floating Map Tooltip on Hover */
+    .map-tooltip {
+      position: fixed;
+      z-index: 60;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 150ms var(--ease), transform 150ms var(--ease);
+      min-width: 220px;
+      max-width: 280px;
+      padding: 10px 12px;
+      border-radius: 13px;
+      background: rgba(0, 22, 66, 0.94);
+      backdrop-filter: blur(12px);
+      color: #ffffff;
+      border: 1px solid rgba(0, 181, 226, 0.38);
+      box-shadow: 0 12px 28px rgba(0, 10, 35, 0.45);
+    }
+
+    .map-tooltip.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tt-head {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 6px;
+    }
+
+    .tt-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      flex-shrink: 0;
+    }
+
+    .tt-name {
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .tt-zone {
+      font-size: 10.5px;
+      color: #8fe3fa;
+      margin-top: 1px;
+    }
+
+    .tt-val {
+      font-size: 14px;
+      font-weight: 800;
+      color: #34d399;
+      margin-top: 2px;
+    }
+
+    .tt-sub {
+      font-size: 11px;
+      color: #cbd5e1;
+      margin-top: 2px;
+    }
+
+    /* Map Overlay Controls (Top-Left Info Pill, Bottom-Left Zoom) */
+    .map-overlay-top {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      pointer-events: none;
+    }
+
+    .map-overlay-top > * {
+      pointer-events: auto;
+    }
+
+    .glass-chip {
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: rgba(6, 20, 48, 0.78);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #f1f6ff;
+      font-size: 11.5px;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+    }
+
+    .dot-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .map-zoom-controls {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      border-radius: 12px;
+      background: rgba(6, 20, 48, 0.82);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.30);
+    }
+
+    .zoom-btn {
+      min-width: 38px;
+      height: 38px;
+      padding: 0 9px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: background 150ms var(--ease), transform 150ms var(--ease);
+    }
+
+    .zoom-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .zoom-btn:active {
+      transform: scale(0.95);
+    }
+
+    .zoom-readout {
+      min-width: 44px;
+      text-align: center;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #8fe3fa;
+    }
+
+    /* Floating Leaderboard Card Anchored in Dark-Grey Bottom-Right Area on Desktop */
+    .floating-board {
+      position: absolute;
+      right: 1.5%;
+      bottom: 3%;
+      width: 41.5%;
+      height: 39.5%;
+      z-index: 18;
+      display: flex;
+      flex-direction: column;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.93);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      box-shadow: 0 18px 42px rgba(0, 12, 36, 0.36);
+      overflow: hidden;
+      color: #00205B;
+    }
+
+    html[data-theme="dark"] .floating-board {
+      background: rgba(10, 19, 36, 0.92);
+      border: 1px solid rgba(0, 181, 226, 0.28);
+      color: #edf4ff;
+    }
+
+    .board-header {
+      padding: 10px 14px 8px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .board-title {
+      font-size: 12.5px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      letter-spacing: -0.01em;
+    }
+
+    .board-kpis {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 8px 14px;
+      background: var(--surface-soft);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .mini-kpi {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .mini-kpi-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--muted);
+    }
+
+    .mini-kpi-val {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .board-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .board-row {
+      display: grid;
+      grid-template-columns: 24px 30px 1fr auto;
+      align-items: center;
+      gap: 9px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+      min-height: 40px;
+      transition: background 150ms var(--ease), border-color 150ms var(--ease), transform 150ms var(--ease);
+    }
+
+    .board-row:hover {
+      background: var(--surface-soft);
+      border-color: var(--border-strong);
+    }
+
+    .board-row:active {
+      transform: scale(0.99);
+    }
+
+    .board-rank {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .board-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #ffffff;
+      border: 1px solid var(--border);
+    }
+
+    .board-meta {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .board-name {
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .board-zone {
+      font-size: 10.5px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .board-metric {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+    }
+
+    .board-omset {
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .status-tag {
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .tag-real {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .tag-sim {
+      background: var(--amber-bg);
+      color: var(--amber);
+    }
+
+    .tag-empty {
+      background: rgba(92, 112, 148, 0.14);
+      color: var(--muted);
+    }
+
+    /* Stack Leaderboard Below Map on Tablet / Mobile / Smaller Laptop Viewports */
+    @media (max-width: 1120px) {
+      .floating-board {
+        position: static;
+        width: 100%;
+        height: auto;
+        max-height: 440px;
+        margin-top: 12px;
+      }
+      .map-shell {
+        overflow: visible;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+      }
+      .map-viewport {
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-strong);
+        box-shadow: var(--shadow-md);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .hotspot-pill { display: none; }
+      .map-overlay-top { top: 8px; left: 8px; right: 8px; }
+      .glass-chip { font-size: 10px; padding: 4px 8px; max-width: 100%; }
+      .map-zoom-controls { left: 8px; bottom: 8px; }
+      .zoom-btn { min-width: 32px; height: 32px; padding: 0 6px; font-size: 11px; }
+    }
+
+    @media (max-width: 680px) {
+      .topbar { padding: 10px 12px; }
+      .brand-sub { white-space: normal; }
+      .search-period-group { width: 100%; }
+      .input-wrap { flex: 1 1 100%; width: 100%; }
+      .search-input { width: 100%; min-width: 0; }
+      .period-select { width: 100%; max-width: 100%; }
+      .sim-banner { padding: 10px 12px; }
+      .sim-banner > div { min-width: 0; word-break: break-word; }
+      .board-header { flex-wrap: wrap; }
+      .board-kpis { grid-template-columns: 1fr; }
+    }
+
+    /* Glassmorphism Modals (Detail Mitra & Upload Preview) */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background: rgba(0, 18, 54, 0.56);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      opacity: 0;
+      transition: opacity 220ms var(--ease);
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 1120px;
+      max-height: 92vh;
+      border-radius: 24px;
+      background: var(--surface);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: translateY(10px) scale(0.985);
+      transition: transform 240ms var(--ease);
+    }
+
+    html[data-theme="dark"] .modal-card {
+      border-color: rgba(0, 181, 226, 0.25);
+    }
+
+    .modal-backdrop.open .modal-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .modal-id {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .modal-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #ffffff;
+      border: 2px solid var(--border-strong);
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+    }
+
+    .modal-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .badge-chip {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .chip-blue { background: rgba(0, 51, 160, 0.11); color: var(--brand); }
+    .chip-sky { background: rgba(0, 181, 226, 0.14); color: #0077a8; }
+    .chip-green { background: var(--success-bg); color: var(--success); }
+    .chip-amber { background: var(--amber-bg); color: var(--amber); }
+
+    html[data-theme="dark"] .chip-blue { color: #93c5fd; background: rgba(59, 130, 246, 0.20); }
+    html[data-theme="dark"] .chip-sky { color: #67e8f9; background: rgba(34, 211, 238, 0.18); }
+
+    .modal-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .modal-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .modal-body {
+      padding: 18px 22px 22px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* 4 KPI Cards inside Modal (Matching POS Merch Modal Craft) */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    @media (max-width: 960px) {
+      .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+    }
+
+    .kpi-card {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: var(--surface-solid);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .kpi-label {
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .kpi-value {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .kpi-foot {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.35;
+    }
+
+    /* Dual Chart Grid */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 960px) {
+      .charts-grid { grid-template-columns: 1fr; }
+    }
+
+    .chart-card {
+      padding: 16px;
+      border-radius: 18px;
+      background: var(--surface-solid);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+
+    .chart-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chart-title {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .chart-sub {
+      margin: 2px 0 0;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .chart-legend {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 3px;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      width: 100%;
+      height: 235px;
+    }
+
+    .canvas-wrap canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: pointer;
+    }
+
+    .chart-tooltip {
+      position: absolute;
+      z-index: 30;
+      pointer-events: none;
+      opacity: 0;
+      background: rgba(0, 22, 66, 0.94);
+      color: #ffffff;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 11.5px;
+      border: 1px solid rgba(0, 181, 226, 0.40);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      white-space: nowrap;
+      transition: opacity 120ms ease;
+    }
+
+    .chart-tooltip.visible {
+      opacity: 1;
+    }
+
+    /* Analyst So-What Insight Strip */
+    .insight-strip {
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: linear-gradient(90deg, rgba(0, 51, 160, 0.08), rgba(0, 181, 226, 0.08));
+      border: 1px solid rgba(0, 51, 160, 0.16);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    /* Tabs & Finance Audit Table */
+    .detail-tabs {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tab-group {
+      display: inline-flex;
+      padding: 4px;
+      border-radius: 12px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      min-height: 36px;
+      padding: 0 14px;
+      border-radius: 9px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 160ms var(--ease);
+    }
+
+    .tab-btn.active {
+      background: var(--surface-solid);
+      color: var(--text);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .table-wrap {
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-solid);
+      overflow-x: auto;
+    }
+
+    table.finance-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    table.finance-table th,
+    table.finance-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    table.finance-table th {
+      background: var(--surface-soft);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--text-secondary);
+      position: sticky;
+      top: 0;
+    }
+
+    table.finance-table th.num,
+    table.finance-table td.num {
+      text-align: right;
+    }
+
+    table.finance-table tr.weekend-row {
+      background: rgba(0, 181, 226, 0.055);
+    }
+
+    table.finance-table tr.peak-row {
+      background: rgba(5, 150, 105, 0.09);
+      font-weight: 700;
+    }
+
+    table.finance-table tfoot td {
+      background: var(--surface-soft);
+      font-weight: 800;
+      border-top: 2px solid var(--border-strong);
+      border-bottom: none;
+    }
+
+    .audit-note {
+      font-size: 11px;
+      color: var(--muted);
+      padding: 8px 12px;
+      background: var(--surface-soft);
+      border-top: 1px solid var(--border);
+    }
+
+    /* Empty State inside Modal */
+    .empty-card {
+      padding: 34px 24px;
+      border-radius: 18px;
+      background: var(--surface-solid);
+      border: 1px dashed var(--border-strong);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .empty-card h3 {
+      margin: 4px 0 0;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .empty-card p {
+      margin: 0;
+      max-width: 520px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Upload Opsi A Preview Modal */
+    .upload-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 14px;
+      align-items: end;
+    }
+
+    @media (max-width: 720px) {
+      .upload-grid { grid-template-columns: 1fr; }
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .dropzone {
+      border: 2px dashed var(--border-strong);
+      border-radius: 16px;
+      padding: 22px;
+      background: var(--surface-soft);
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      transition: all 180ms var(--ease);
+    }
+
+    .dropzone:hover, .dropzone.dragover {
+      background: var(--surface-hover);
+      border-color: var(--brand-sky);
+    }
+
+    /* Toast Feedback */
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translate(-50%, 16px);
+      z-index: 120;
+      padding: 10px 16px;
+      border-radius: 12px;
+      background: #00205B;
+      color: #ffffff;
+      font-size: 12.5px;
+      font-weight: 700;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(0, 181, 226, 0.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms var(--ease), transform 180ms var(--ease);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-row">
+        <div class="brand-group">
+          <div class="brand-badge" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+              <line x1="9" y1="3" x2="9" y2="18"></line>
+              <line x1="15" y1="6" x2="15" y2="21"></line>
+            </svg>
+          </div>
+          <div class="brand-titles">
+            <h1>
+              <span>Ancol Mitra Inhouse</span>
+              <span class="phase-pill">Tahap 1 • Prototype Lokal</span>
+            </h1>
+            <div class="brand-sub">Peta Interaktif 17 Mitra Kuliner &amp; Retail Kawasan Ancol • Terisolasi penuh dari sistem POS Merchandise</div>
+          </div>
+        </div>
+
+        <div class="actions-group">
+          <button type="button" class="sim-toggle" id="simToggleBtn" title="Tampilkan estimasi simulasi untuk semua 17 mitra agar vibe peta & grafik teruji">
+            <span class="switch-track"><span class="switch-thumb"></span></span>
+            <span>Mode Simulasi 17 Mitra</span>
+          </button>
+
+          <button type="button" class="btn is-active" id="toggleLabelsBtn" title="Tampilkan / sembunyikan badge omset di peta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+              <line x1="7" y1="7" x2="7.01" y2="7"></line>
+            </svg>
+            <span>Label Omset</span>
+          </button>
+
+          <button type="button" class="btn btn-primary" id="openUploadBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <span>Upload &amp; Preview PDF (Demo)</span>
+          </button>
+
+          <button type="button" class="btn btn-icon" id="themeToggleBtn" aria-label="Ubah tema terang/gelap" title="Ganti Tema Terang / Gelap">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-strip">
+        <div class="zone-pills" id="zonePills">
+          <button type="button" class="zone-pill active" data-zone="all">Semua Zona (17)</button>
+          <button type="button" class="zone-pill" data-zone="barat">Zona Barat (3)</button>
+          <button type="button" class="zone-pill" data-zone="tengah">Tengah &amp; Promenade (7)</button>
+          <button type="button" class="zone-pill" data-zone="lagoon">Pantai Lagoon (4)</button>
+          <button type="button" class="zone-pill" data-zone="timur">Pantai Carnaval (3)</button>
+        </div>
+
+        <div class="search-period-group">
+          <div class="input-wrap">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" class="search-input" id="searchInput" placeholder="Cari mitra (A&amp;W, Starbucks)..." />
+          </div>
+
+          <select class="period-select" id="periodSelect" aria-label="Pilih periode laporan">
+            <option value="2026-09" selected>September 2026 (Audit PDF)</option>
+            <option value="2026-08">Agustus 2026</option>
+            <option value="2026-07">Juli 2026 (High Season)</option>
+            <option value="2026-06">Juni 2026</option>
+            <option value="2026-05">Mei 2026</option>
+            <option value="2026-04">April 2026</option>
+            <option value="2026-03">Maret 2026</option>
+            <option value="2026-02">Februari 2026</option>
+            <option value="2026-01">Januari 2026</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-stage">
+    <div class="sim-banner" id="simBanner">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span><strong>MODE SIMULASI PREVIEW AKTIF:</strong> Mitra selain A&amp;W September 2026 menampilkan angka estimasi ilustrasi untuk menguji visual peta, 2 grafik, dan peringkat kawasan.</span>
+      </div>
+      <button type="button" class="btn" id="disableSimBtn" style="min-height:32px;font-size:11.5px;">Kembali ke Data Real Saja</button>
+    </div>
+
+    <div class="map-shell">
+      <div class="map-viewport" id="mapViewport">
+        <div class="map-canvas" id="mapCanvas">
+          <img src="./image/map_ancol_web.jpg" alt="Peta Kawasan Mitra Inhouse Ancol" class="map-img" draggable="false" />
+          <div id="hotspotsLayer"></div>
+        </div>
+
+        <div class="map-overlay-top">
+          <span class="glass-chip" id="mapStatusChip">
+            <span class="dot-indicator" style="background:#10b981;"></span>
+            <span>Klik logo mitra di peta untuk buka rincian omset bulanan &amp; harian</span>
+          </span>
+        </div>
+
+        <div class="map-zoom-controls" aria-label="Kontrol zoom peta">
+          <button type="button" class="zoom-btn" id="zoomOutBtn" title="Perkecil peta" aria-label="Perkecil peta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </button>
+          <span class="zoom-readout tabular" id="zoomReadout">100%</span>
+          <button type="button" class="zoom-btn" id="zoomInBtn" title="Perbesar peta" aria-label="Perbesar peta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </button>
+          <button type="button" class="zoom-btn" id="zoomResetBtn" title="Reset tampilan peta">Reset</button>
+        </div>
+      </div>
+
+      <!-- Floating Summary & Leaderboard positioned cleanly inside bottom-right empty map space -->
+      <aside class="floating-board" aria-label="Ringkasan dan Peringkat Mitra Inhouse">
+        <div class="board-header">
+          <div class="board-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0033A0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+            <span>Peringkat Omset Mitra (<span id="boardPeriodLabel">Sep 2026</span>)</span>
+          </div>
+          <span class="badge-chip chip-blue" id="boardCountBadge">1 / 17 Real</span>
+        </div>
+
+        <div class="board-kpis">
+          <div class="mini-kpi">
+            <span class="mini-kpi-label">Pendapatan Terdata</span>
+            <span class="mini-kpi-val tabular" id="kpiBoardRevenue">Rp 282,4 Jt</span>
+          </div>
+          <div class="mini-kpi">
+            <span class="mini-kpi-label">Hak Dept. Retail</span>
+            <span class="mini-kpi-val tabular" id="kpiBoardAncol" style="color:var(--success);">Rp 28,2 Jt</span>
+          </div>
+          <div class="mini-kpi">
+            <span class="mini-kpi-label">Kontributor #1</span>
+            <span class="mini-kpi-val" id="kpiBoardTop" style="font-size:12.5px;">A&amp;W Food</span>
+          </div>
+        </div>
+
+        <div class="board-list" id="boardList"></div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Floating Map Tooltip -->
+  <div class="map-tooltip" id="mapTooltip" role="tooltip"></div>
+
+  <!-- Glassmorphism Detail Mitra Pop-Up Modal -->
+  <div class="modal-backdrop" id="mitraDetailModal" role="dialog" aria-modal="true" aria-labelledby="modalMitraTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-id">
+          <img src="" alt="" class="modal-logo" id="modalMitraLogo" />
+          <div>
+            <div class="modal-title-row">
+              <h2 class="modal-title" id="modalMitraTitle">A&amp;W All American Food</h2>
+              <span class="badge-chip chip-blue" id="modalSplitBadge">Mitra 90% • Dept. Retail 10%</span>
+              <span class="badge-chip chip-green" id="modalStatusBadge">DATA REAL FINANCE PDF</span>
+            </div>
+            <div class="modal-sub" id="modalMitraSub">
+              <span>Zona Barat • Pantai Indah</span>
+              <span>•</span>
+              <span>Fast Food</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-header-actions">
+          <select class="period-select" id="modalPeriodSelect" aria-label="Pilih bulan detail mitra"></select>
+          <button type="button" class="btn" id="copyWaBtn" title="Salin ringkasan eksekutif untuk WhatsApp">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>Salin Ringkasan WA</span>
+          </button>
+          <button type="button" class="btn btn-icon" id="closeDetailModalBtn" aria-label="Tutup pop-up detail">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-body" id="modalDetailBody"></div>
+    </div>
+  </div>
+
+  <!-- Upload PDF & Instant Table Preview Modal (Opsi A Concept) -->
+  <div class="modal-backdrop" id="uploadPreviewModal" role="dialog" aria-modal="true" aria-labelledby="uploadModalTitle">
+    <div class="modal-card" style="max-width: 900px;">
+      <div class="modal-header">
+        <div class="modal-id">
+          <div class="brand-badge" style="width:44px;height:44px;border-radius:50%;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+          </div>
+          <div>
+            <div class="modal-title-row">
+              <h2 class="modal-title" id="uploadModalTitle">Alur Upload PDF Finance &amp; Preview Audit (Opsi A)</h2>
+              <span class="badge-chip chip-sky">Simulasi Alur Tahap 2</span>
+            </div>
+            <div class="modal-sub">Pilih mitra, unggah file laporan bulanan (.pdf / .csv), cek kecocokan tabel, lalu terapkan ke peta lokal</div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-icon" id="closeUploadModalBtn" aria-label="Tutup modal upload">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="upload-grid">
+          <div class="field-group">
+            <label class="field-label" for="uploadMitraSelect">1. Pilih Rekanan Mitra</label>
+            <select class="period-select" id="uploadMitraSelect" style="width:100%;"></select>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="uploadPeriodSelect">2. Periode Bulan Laporan</label>
+            <select class="period-select" id="uploadPeriodSelect" style="width:100%;">
+              <option value="2026-09">September 2026</option>
+              <option value="2026-10">Oktober 2026</option>
+              <option value="2026-08">Agustus 2026</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="dropzone" id="uploadDropzone" tabindex="0">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0033A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <div style="font-size:13.5px;font-weight:800;">Klik atau seret file PDF / CSV Finance ke area ini</div>
+          <div style="font-size:12px;color:var(--muted);">Pada Tahap 1 Lokal: file CSV langsung terbaca; file PDF/Excel memicu contoh ekstraksi otomatis untuk uji coba preview tabel.</div>
+          <input type="file" id="uploadFileInput" accept=".pdf,.csv,.xlsx,.xls" style="display:none;" />
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+            <button type="button" class="btn" id="pickFileBtn">Pilih File dari Komputer</button>
+            <button type="button" class="btn btn-primary" id="loadSampleAwBtn">Muat Contoh Ekstraksi A&amp;W Sept 2026</button>
+          </div>
+        </div>
+
+        <div id="uploadPreviewArea"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toastEl" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // =========================================================================
+      // 1. MASTER METADATA 17 MITRA INHOUSE ANCOL (Koordinat terkalibrasi 14445x6617)
+      // =========================================================================
+      const MITRA_LIST = [
+        { id: 'aw', name: 'A&W All American Food', short: 'A&W Food', zone: 'barat', zoneLabel: 'Zona Barat • Pantai Indah', category: 'Fast Food', mitraPct: 90, ancolPct: 10, cx: 16.68, cy: 37.00, baseDaily: 9.4 },
+        { id: 'simpang_raya', name: 'Restoran Simpang Raya', short: 'Simpang Raya', zone: 'barat', zoneLabel: 'Zona Barat • Pantai Indah', category: 'Restoran Padang', mitraPct: 85, ancolPct: 15, cx: 22.74, cy: 40.12, baseDaily: 11.2 },
+        { id: 'nyiur', name: 'Nyiur Resto', short: 'Nyiur Resto', zone: 'barat', zoneLabel: 'Zona Barat • Putri Duyung', category: 'Resort Dining', mitraPct: 85, ancolPct: 15, cx: 34.53, cy: 32.49, baseDaily: 7.8 },
+        { id: 'starbucks', name: 'Starbucks Ancol', short: 'Starbucks', zone: 'tengah', zoneLabel: 'Zona Tengah • Bundaran', category: 'Coffee & Bakery', mitraPct: 88, ancolPct: 12, cx: 39.70, cy: 41.65, baseDaily: 14.5 },
+        { id: 'ayam_tepi_laut', name: 'Ayam Tepi Laut', short: 'Ayam Tepi Laut', zone: 'tengah', zoneLabel: 'Zona Tengah • Promenade', category: 'Casual Dining', mitraPct: 85, ancolPct: 15, cx: 42.32, cy: 31.63, baseDaily: 6.9 },
+        { id: 'lawson', name: 'Lawson Station Ancol', short: 'Lawson', zone: 'tengah', zoneLabel: 'Zona Tengah • Jalur Pantai', category: 'Minimarket & RTE', mitraPct: 90, ancolPct: 10, cx: 46.99, cy: 38.67, baseDaily: 8.8 },
+        { id: 'cfc', name: 'CFC (California Fried Chicken)', short: 'CFC Ancol', zone: 'tengah', zoneLabel: 'Zona Tengah • Promenade', category: 'Fast Food', mitraPct: 88, ancolPct: 12, cx: 49.95, cy: 30.91, baseDaily: 6.4 },
+        { id: 'solaria', name: 'Solaria Ancol', short: 'Solaria', zone: 'tengah', zoneLabel: 'Zona Tengah • Area Samudra', category: 'Family Restaurant', mitraPct: 85, ancolPct: 15, cx: 39.04, cy: 75.55, baseDaily: 13.6 },
+        { id: 'afung', name: 'Baso Sapi Asli A Fung', short: 'Baso Afung', zone: 'tengah', zoneLabel: 'Zona Tengah • Area SeaWorld', category: 'Noodle & Meatball', mitraPct: 85, ancolPct: 15, cx: 43.63, cy: 75.46, baseDaily: 8.2 },
+        { id: 'bandar_djakarta', name: 'Bandar Djakarta Ancol', short: 'Bandar Djakarta', zone: 'tengah', zoneLabel: 'Zona Tengah • Pesisir SeaWorld', category: 'Seafood Destination', mitraPct: 82, ancolPct: 18, cx: 47.95, cy: 75.55, baseDaily: 38.5 },
+        { id: 'columbus', name: 'Columbus Fine Dining', short: 'Columbus', zone: 'lagoon', zoneLabel: 'Pantai Lagoon • Dermaga', category: 'Seaside Dining', mitraPct: 82, ancolPct: 18, cx: 53.57, cy: 21.22, baseDaily: 12.1 },
+        { id: 'indomaret', name: 'Indomaret Point Ancol', short: 'Indomaret', zone: 'lagoon', zoneLabel: 'Pantai Lagoon Utama', category: 'Minimarket & Retail', mitraPct: 92, ancolPct: 8, cx: 58.15, cy: 21.22, baseDaily: 10.6 },
+        { id: 'mcd', name: "McDonald's Ancol", short: "McDonald's", zone: 'lagoon', zoneLabel: 'Pantai Lagoon Utama', category: 'Fast Food', mitraPct: 90, ancolPct: 10, cx: 62.53, cy: 21.40, baseDaily: 21.8 },
+        { id: 'kafe_hoax', name: 'Kafe Hoax Ancol', short: 'Kafe Hoax', zone: 'lagoon', zoneLabel: 'Pantai Lagoon Timur', category: 'Cafe & Hangout', mitraPct: 85, ancolPct: 15, cx: 64.77, cy: 30.89, baseDaily: 5.9 },
+        { id: 'ombak_laut', name: 'Ombak Laut Resto', short: 'Ombak Laut', zone: 'timur', zoneLabel: 'Zona Timur • Pantai Carnaval', category: 'Beach & Seafood', mitraPct: 83, ancolPct: 17, cx: 80.12, cy: 13.25, baseDaily: 15.2 },
+        { id: 'walking_drums', name: 'Walking Drums By The Beach', short: 'Walking Drums', zone: 'timur', zoneLabel: 'Zona Timur • Pantai Carnaval', category: 'Beach Club & Cafe', mitraPct: 82, ancolPct: 18, cx: 84.72, cy: 13.30, baseDaily: 24.4 },
+        { id: 'jimbaran', name: 'Ancol Jimbaran Resto', short: 'Jimbaran Resto', zone: 'timur', zoneLabel: 'Zona Timur • Sirkuit Carnaval', category: 'Grilled Seafood', mitraPct: 82, ancolPct: 18, cx: 89.34, cy: 13.25, baseDaily: 16.8 }
+      ];
+
+      const MONTHS_2026 = [
+        { key: '2026-01', label: 'Jan', full: 'Januari 2026', daysCount: 31 },
+        { key: '2026-02', label: 'Feb', full: 'Februari 2026', daysCount: 28 },
+        { key: '2026-03', label: 'Mar', full: 'Maret 2026', daysCount: 31 },
+        { key: '2026-04', label: 'Apr', full: 'April 2026', daysCount: 30 },
+        { key: '2026-05', label: 'Mei', full: 'Mei 2026', daysCount: 31 },
+        { key: '2026-06', label: 'Jun', full: 'Juni 2026', daysCount: 30 },
+        { key: '2026-07', label: 'Jul', full: 'Juli 2026', daysCount: 31 },
+        { key: '2026-08', label: 'Agu', full: 'Agustus 2026', daysCount: 31 },
+        { key: '2026-09', label: 'Sep', full: 'September 2026', daysCount: 30 },
+        { key: '2026-10', label: 'Okt', full: 'Oktober 2026', daysCount: 31 },
+        { key: '2026-11', label: 'Nov', full: 'November 2026', daysCount: 30 },
+        { key: '2026-12', label: 'Des', full: 'Desember 2026', daysCount: 31 }
+      ];
+
+      const ZONE_VIEWBOX = {
+        all: { scale: 1, x: 0, y: 0 },
+        barat: { scale: 1.9, x: -4, y: -25 },
+        tengah: { scale: 1.6, x: -35, y: -35 },
+        lagoon: { scale: 2.0, x: -73, y: -8 },
+        timur: { scale: 2.2, x: -120, y: -2 }
+      };
+
+      // =========================================================================
+      // 2. DATA REAL FINANCE PDF: A&W ALL AMERICAN FOOD — SEPTEMBER 2026
+      // Sumber verbatim dari tabel Finance PDF periode 1-Sep-2026 s.d. 30-Sep-2026
+      // =========================================================================
+      const AW_SEP_2026_DAYS = [
+        ['2026-09-01', 'Tue', 5776818, 5199136, 577682],
+        ['2026-09-02', 'Wed', 4098636, 3688772, 409864],
+        ['2026-09-03', 'Thu', 4350000, 3915000, 435000],
+        ['2026-09-04', 'Fri', 7041818, 6337636, 704182],
+        ['2026-09-05', 'Sat', 28747591, 25872832, 2874759],
+        ['2026-09-06', 'Sun', 10151364, 9136228, 1015136],
+        ['2026-09-07', 'Mon', 3770727, 3393654, 377073],
+        ['2026-09-08', 'Tue', 2413636, 2172272, 241364],
+        ['2026-09-09', 'Wed', 2692273, 2423046, 269227],
+        ['2026-09-10', 'Thu', 3320455, 2988410, 332046],
+        ['2026-09-11', 'Fri', 5599318, 5039386, 559932],
+        ['2026-09-12', 'Sat', 22447464, 20202718, 2244746],
+        ['2026-09-13', 'Sun', 18936436, 17042792, 1893644],
+        ['2026-09-14', 'Mon', 1632727, 1469454, 163273],
+        ['2026-09-15', 'Tue', 1742273, 1568046, 174227],
+        ['2026-09-16', 'Wed', 4500000, 4050000, 450000],
+        ['2026-09-17', 'Thu', 3811364, 3430228, 381136],
+        ['2026-09-18', 'Fri', 7315000, 6583500, 731500],
+        ['2026-09-19', 'Sat', 17107955, 15397160, 1710796],
+        ['2026-09-20', 'Sun', 14300091, 12870082, 1430009],
+        ['2026-09-21', 'Mon', 3673182, 3305864, 367318],
+        ['2026-09-22', 'Tue', 3000009, 2700008, 300001],
+        ['2026-09-23', 'Wed', 8667273, 7800546, 866727],
+        ['2026-09-24', 'Thu', 6097727, 5487954, 609773],
+        ['2026-09-25', 'Fri', 6547955, 5893160, 654796],
+        ['2026-09-26', 'Sat', 37792273, 34013046, 3779227],
+        ['2026-09-27', 'Sun', 24059908, 21653917, 2405991],
+        ['2026-09-28', 'Mon', 8053636, 7248272, 805364],
+        ['2026-09-29', 'Tue', 7689545, 6920591, 768955],
+        ['2026-09-30', 'Wed', 7077273, 6369546, 707727]
+      ].map(r => ({ date: r[0], day: r[1], rev: r[2], mitra: r[3], ancol: r[4], note: '' }));
+
+      // Storage in memory + localStorage for real or local-uploaded periods
+      const LOCAL_STORAGE_KEY = 'ancol_mitra_inhouse_local_uploads_v1';
+
+      function loadUserUploadedReports() {
+        try {
+          const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+          return raw ? JSON.parse(raw) : {};
+        } catch (err) {
+          return {};
+        }
+      }
+
+      const REAL_REPORTS = Object.assign({
+        'aw|2026-09': {
+          isReal: true,
+          sourceLabel: 'DATA REAL FINANCE PDF',
+          mitraPct: 90,
+          ancolPct: 10,
+          printedTotals: { rev: 282414726, mitra: 254173254, ancol: 28241473 },
+          days: AW_SEP_2026_DAYS,
+          auditNote: 'Total resmi PDF Finance: Pendapatan Rp 282.414.726 | A&W 90% Rp 254.173.254 | Dept. Retail 10% Rp 28.241.473 (terdapat selisih pembulatan desimal Rp 1–2 terhadap jumlah angka tampilan bulat Excel).'
+        }
+      }, loadUserUploadedReports());
+
+      // =========================================================================
+      // 3. STATE & DETERMINISTIC SIMULATION GENERATOR
+      // =========================================================================
+      const state = {
+        simMode: false,
+        showMapPills: true,
+        zoneFilter: 'all',
+        searchQuery: '',
+        period: '2026-09',
+        selectedMitraId: null,
+        modalTab: 'summary', // 'summary' | 'finance'
+        zoom: 1,
+        panX: 0, // percentage of canvas width
+        panY: 0,
+        pendingUploadReport: null
+      };
+
+      function hashCode(str) {
+        let h = 2166136261;
+        for (let i = 0; i < str.length; i++) {
+          h ^= str.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return (h >>> 0) / 4294967295;
+      }
+
+      const SEASONAL_WEIGHT = {
+        '2026-01': 1.12, '2026-02': 0.88, '2026-03': 0.94, '2026-04': 1.08,
+        '2026-05': 1.05, '2026-06': 1.28, '2026-07': 1.38, '2026-08': 1.14,
+        '2026-09': 1.00, '2026-10': 0.98, '2026-11': 1.02, '2026-12': 1.34
+      };
+
+      const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const DAY_ID = { Sun: 'Minggu', Mon: 'Senin', Tue: 'Selasa', Wed: 'Rabu', Thu: 'Kamis', Fri: 'Jumat', Sat: 'Sabtu' };
+
+      const simCache = {};
+
+      function getSimulatedReport(mitraId, periodKey) {
+        const cacheKey = `${mitraId}|${periodKey}`;
+        if (simCache[cacheKey]) return simCache[cacheKey];
+
+        // Simulasi hanya menyediakan Jan–Sep 2026 + proyeksi Q4 yang diberi label jelas
+        const mInfo = MONTHS_2026.find(m => m.key === periodKey);
+        const mitra = MITRA_LIST.find(m => m.id === mitraId);
+        if (!mInfo || !mitra) return null;
+
+        // Jangan membuat data historis palsu untuk bulan masa depan Q4 di luar Sep kecuali saat melihat Chart 1
+        const season = SEASONAL_WEIGHT[periodKey] || 1.0;
+        const [yr, mo] = periodKey.split('-').map(Number);
+        const days = [];
+        let sumRev = 0;
+        let sumMitra = 0;
+        let sumAncol = 0;
+
+        for (let d = 1; d <= mInfo.daysCount; d++) {
+          const dt = new Date(yr, mo - 1, d);
+          const dayShort = DAY_NAMES[dt.getDay()];
+          const isWeekend = dayShort === 'Sat' || dayShort === 'Sun';
+          const isFri = dayShort === 'Fri';
+          const n = hashCode(`${mitraId}|${periodKey}|${d}`);
+          const wkBoost = dayShort === 'Sat' ? (3.1 + n * 1.4) : (dayShort === 'Sun' ? (2.5 + n * 1.1) : (isFri ? (1.25 + n * 0.45) : (0.48 + n * 0.62)));
+          const dateStr = `${yr}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+          const rev = Math.round(mitra.baseDaily * 1000000 * 0.62 * season * wkBoost);
+          const mShare = Math.round(rev * (mitra.mitraPct / 100));
+          const aShare = rev - mShare;
+          sumRev += rev;
+          sumMitra += mShare;
+          sumAncol += aShare;
+          days.push({ date: dateStr, day: dayShort, rev, mitra: mShare, ancol: aShare, note: isWeekend ? 'Weekend Peak' : '' });
+        }
+
+        const rep = {
+          isReal: false,
+          isSim: true,
+          sourceLabel: 'SIMULASI PREVIEW (NON-FINANCE)',
+          mitraPct: mitra.mitraPct,
+          ancolPct: mitra.ancolPct,
+          printedTotals: { rev: sumRev, mitra: sumMitra, ancol: sumAncol },
+          days,
+          auditNote: `Data simulasi estimasi (pola historis rekreasi Ancol) untuk uji coba visualisasi peta & grafik. Asumsi bagi hasil: ${mitra.mitraPct}% Mitra / ${mitra.ancolPct}% Dept. Retail.`
+        };
+        simCache[cacheKey] = rep;
+        return rep;
+      }
+
+      function getReportForMitraPeriod(mitraId, periodKey) {
+        const real = REAL_REPORTS[`${mitraId}|${periodKey}`];
+        if (real) return real;
+        if (state.simMode && parseInt(periodKey.split('-')[1], 10) <= 9) {
+          return getSimulatedReport(mitraId, periodKey);
+        }
+        return null;
+      }
+
+      function computeReportStats(rep) {
+        if (!rep || !rep.days || !rep.days.length) return null;
+        let weekendRev = 0, weekendCount = 0;
+        let weekdayRev = 0, weekdayCount = 0;
+        let peakDay = rep.days[0];
+        let lowDay = rep.days[0];
+        let sumDaysRev = 0;
+
+        for (const d of rep.days) {
+          sumDaysRev += d.rev;
+          if (d.day === 'Sat' || d.day === 'Sun') {
+            weekendRev += d.rev;
+            weekendCount++;
+          } else {
+            weekdayRev += d.rev;
+            weekdayCount++;
+          }
+          if (d.rev > peakDay.rev) peakDay = d;
+          if (d.rev < lowDay.rev) lowDay = d;
+        }
+
+        const totalRev = rep.printedTotals ? rep.printedTotals.rev : sumDaysRev;
+        const totalMitra = rep.printedTotals ? rep.printedTotals.mitra : rep.days.reduce((a, b) => a + b.mitra, 0);
+        const totalAncol = rep.printedTotals ? rep.printedTotals.ancol : rep.days.reduce((a, b) => a + b.ancol, 0);
+        const avgDaily = totalRev / rep.days.length;
+        const avgWeekend = weekendCount ? weekendRev / weekendCount : 0;
+        const avgWeekday = weekdayCount ? weekdayRev / weekdayCount : 0;
+        const weekendRatio = avgWeekday > 0 ? avgWeekend / avgWeekday : 0;
+        const weekendSharePct = totalRev > 0 ? (weekendRev / totalRev) * 100 : 0;
+
+        return {
+          totalRev, totalMitra, totalAncol, avgDaily,
+          weekendRev, weekendCount, avgWeekend,
+          weekdayRev, weekdayCount, avgWeekday,
+          weekendRatio, weekendSharePct,
+          peakDay, lowDay,
+          daysCount: rep.days.length
+        };
+      }
+
+      // =========================================================================
+      // 4. FORMATTING HELPERS
+      // =========================================================================
+      const fmtIDR = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 });
+      function rp(val) {
+        return 'Rp ' + fmtIDR.format(Math.round(val || 0));
+      }
+      function numId(val) {
+        return fmtIDR.format(Math.round(val || 0));
+      }
+      function shortRp(val) {
+        if (!val) return 'Rp 0';
+        if (val >= 1e9) return 'Rp ' + (val / 1e9).toFixed(2).replace('.', ',') + ' M';
+        if (val >= 1e6) return 'Rp ' + (val / 1e6).toFixed(1).replace('.', ',') + ' Jt';
+        if (val >= 1e3) return 'Rp ' + Math.round(val / 1e3) + ' Rb';
+        return 'Rp ' + Math.round(val);
+      }
+      function formatDateId(iso) {
+        const [y, m, d] = iso.split('-');
+        const mNames = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        return `${parseInt(d, 10)} ${mNames[parseInt(m, 10)]} ${y}`;
+      }
+
+      function showToast(msg) {
+        const el = document.getElementById('toastEl');
+        el.textContent = msg;
+        el.classList.add('show');
+        clearTimeout(showToast._timer);
+        showToast._timer = setTimeout(() => el.classList.remove('show'), 2800);
+      }
+
+      // =========================================================================
+      // 5. MAP RENDERING, PAN & ZOOM ENGINE
+      // =========================================================================
+      const mapViewport = document.getElementById('mapViewport');
+      const mapCanvas = document.getElementById('mapCanvas');
+      const hotspotsLayer = document.getElementById('hotspotsLayer');
+      const mapTooltip = document.getElementById('mapTooltip');
+      const zoomReadout = document.getElementById('zoomReadout');
+
+      function applyMapTransform(animate = true) {
+        mapCanvas.style.transition = animate ? 'transform 320ms cubic-bezier(0.16, 1, 0.3, 1)' : 'none';
+        const minPanX = -(state.zoom - 1) * 100;
+        const minPanY = -(state.zoom - 1) * 100;
+        state.panX = Math.max(minPanX, Math.min(0, state.panX));
+        state.panY = Math.max(minPanY, Math.min(0, state.panY));
+        mapCanvas.style.transform = `translate(${state.panX}%, ${state.panY}%) scale(${state.zoom})`;
+        zoomReadout.textContent = Math.round(state.zoom * 100) + '%';
+      }
+
+      function focusZone(zoneKey) {
+        const preset = ZONE_VIEWBOX[zoneKey] || ZONE_VIEWBOX.all;
+        state.zoom = preset.scale;
+        state.panX = preset.x;
+        state.panY = preset.y;
+        applyMapTransform(true);
+      }
+
+      let isDraggingMap = false;
+      let dragMoved = false;
+      let pointerCaptured = false;
+      let activePointerId = null;
+      let suppressNextClick = false;
+      let dragStartX = 0, dragStartY = 0;
+      let startPanX = 0, startPanY = 0;
+
+      mapViewport.addEventListener('pointerdown', (e) => {
+        suppressNextClick = false;
+        if (e.target.closest('.map-zoom-controls') || e.target.closest('.glass-chip')) return;
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        isDraggingMap = true;
+        dragMoved = false;
+        pointerCaptured = false;
+        activePointerId = e.pointerId;
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+        startPanX = state.panX;
+        startPanY = state.panY;
+      });
+
+      mapViewport.addEventListener('pointermove', (e) => {
+        if (!isDraggingMap || e.pointerId !== activePointerId) return;
+        const dx = e.clientX - dragStartX;
+        const dy = e.clientY - dragStartY;
+        if (!dragMoved && Math.hypot(dx, dy) > 5) {
+          dragMoved = true;
+          mapViewport.classList.add('dragging');
+          hideMapTooltip();
+          if (!pointerCaptured && mapViewport.setPointerCapture) {
+            try {
+              mapViewport.setPointerCapture(e.pointerId);
+              pointerCaptured = true;
+            } catch (err) { /* ignore */ }
+          }
+        }
+        if (!dragMoved) return;
+        const rect = mapViewport.getBoundingClientRect();
+        state.panX = startPanX + (dx / rect.width) * 100;
+        state.panY = startPanY + (dy / rect.height) * 100;
+        applyMapTransform(false);
+      });
+
+      function endMapDrag(e) {
+        if (!isDraggingMap) return;
+        if (dragMoved) {
+          suppressNextClick = true;
+          setTimeout(() => { suppressNextClick = false; }, 60);
+        }
+        isDraggingMap = false;
+        dragMoved = false;
+        mapViewport.classList.remove('dragging');
+        if (pointerCaptured && activePointerId !== null && mapViewport.hasPointerCapture && mapViewport.hasPointerCapture(activePointerId)) {
+          try {
+            mapViewport.releasePointerCapture(activePointerId);
+          } catch (err) { /* ignore */ }
+        }
+        pointerCaptured = false;
+        activePointerId = null;
+      }
+      mapViewport.addEventListener('pointerup', endMapDrag);
+      mapViewport.addEventListener('pointercancel', endMapDrag);
+
+      document.getElementById('zoomInBtn').addEventListener('click', () => {
+        const prev = state.zoom;
+        state.zoom = Math.min(3.2, +(state.zoom + 0.35).toFixed(2));
+        if (state.zoom !== prev) {
+          const factor = (state.zoom - prev) * 50;
+          state.panX -= factor;
+          state.panY -= factor;
+        }
+        applyMapTransform(true);
+      });
+
+      document.getElementById('zoomOutBtn').addEventListener('click', () => {
+        state.zoom = Math.max(1, +(state.zoom - 0.35).toFixed(2));
+        if (state.zoom === 1) { state.panX = 0; state.panY = 0; }
+        applyMapTransform(true);
+      });
+
+      document.getElementById('zoomResetBtn').addEventListener('click', () => focusZone('all'));
+
+      mapViewport.addEventListener('wheel', (e) => {
+        if (!e.ctrlKey && state.zoom === 1 && e.deltaY > 0) return;
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 0.2 : -0.2;
+        const nextZoom = Math.max(1, Math.min(3.2, +(state.zoom + delta).toFixed(2)));
+        if (nextZoom === state.zoom) return;
+        const rect = mapViewport.getBoundingClientRect();
+        const mx = ((e.clientX - rect.left) / rect.width);
+        const my = ((e.clientY - rect.top) / rect.height);
+        const dz = nextZoom - state.zoom;
+        state.zoom = nextZoom;
+        state.panX -= mx * dz * 100;
+        state.panY -= my * dz * 100;
+        applyMapTransform(false);
+      }, { passive: false });
+
+      function matchesFilters(mitra) {
+        if (state.zoneFilter !== 'all' && mitra.zone !== state.zoneFilter) return false;
+        if (state.searchQuery.trim()) {
+          const q = state.searchQuery.trim().toLowerCase();
+          return mitra.name.toLowerCase().includes(q) || mitra.zoneLabel.toLowerCase().includes(q) || mitra.category.toLowerCase().includes(q);
+        }
+        return true;
+      }
+
+      function renderHotspots() {
+        hotspotsLayer.innerHTML = '';
+        MITRA_LIST.forEach((m) => {
+          const rep = getReportForMitraPeriod(m.id, state.period);
+          const stats = computeReportStats(rep);
+          const match = matchesFilters(m);
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'hotspot ' + (rep ? (rep.isReal ? 'status-real' : 'status-sim') : 'status-empty');
+          if (!match) btn.classList.add('dimmed');
+          if (!state.showMapPills) btn.classList.add('hide-pill');
+          btn.style.left = m.cx + '%';
+          btn.style.top = m.cy + '%';
+          btn.setAttribute('aria-label', `${m.name} — ${m.zoneLabel}`);
+          btn.dataset.mitraId = m.id;
+
+          if (stats) {
+            const pill = document.createElement('span');
+            pill.className = 'hotspot-pill ' + (rep.isReal ? 'real' : 'sim');
+            pill.textContent = shortRp(stats.totalRev).replace('Rp ', '');
+            btn.appendChild(pill);
+          }
+
+          btn.addEventListener('mouseenter', (ev) => showMapTooltip(m, rep, stats, ev));
+          btn.addEventListener('mousemove', (ev) => positionMapTooltip(ev));
+          btn.addEventListener('mouseleave', hideMapTooltip);
+          btn.addEventListener('click', () => {
+            if (suppressNextClick) return;
+            openMitraModal(m.id);
+          });
+
+          hotspotsLayer.appendChild(btn);
+        });
+      }
+
+      function showMapTooltip(m, rep, stats, ev) {
+        let html = `
+          <div class="tt-head">
+            <img src="./image/logos/${m.id}.png" alt="${m.short}" class="tt-logo" />
+            <div>
+              <div class="tt-name">${m.name}</div>
+              <div class="tt-zone">${m.zoneLabel}</div>
+            </div>
+          </div>`;
+
+        if (stats) {
+          html += `
+            <div class="tt-val tabular">${rp(stats.totalRev)}</div>
+            <div class="tt-sub">${rep.isReal ? 'Data Real Finance PDF' : 'Simulasi Preview'} • Bagi Hasil ${rep.mitraPct}/${rep.ancolPct}</div>
+            <div class="tt-sub" style="color:#8fe3fa;margin-top:4px;">Klik logo untuk buka 2 grafik &amp; tabel harian</div>`;
+        } else {
+          html += `
+            <div class="tt-sub" style="color:#fbbf24;font-weight:700;">Belum ada PDF Finance (${MONTHS_2026.find(x => x.key === state.period)?.full || state.period})</div>
+            <div class="tt-sub" style="margin-top:3px;">Klik logo untuk lihat profil / contoh upload</div>`;
+        }
+
+        mapTooltip.innerHTML = html;
+        positionMapTooltip(ev);
+        mapTooltip.classList.add('visible');
+      }
+
+      function positionMapTooltip(ev) {
+        const pad = 14;
+        const w = mapTooltip.offsetWidth || 240;
+        const h = mapTooltip.offsetHeight || 110;
+        let x = ev.clientX + 16;
+        let y = ev.clientY - h - 10;
+        if (x + w > window.innerWidth - pad) x = ev.clientX - w - 16;
+        if (y < pad) y = ev.clientY + 18;
+        mapTooltip.style.left = Math.max(pad, x) + 'px';
+        mapTooltip.style.top = Math.max(pad, y) + 'px';
+      }
+
+      function hideMapTooltip() {
+        mapTooltip.classList.remove('visible');
+      }
+
+      // =========================================================================
+      // 6. FLOATING LEADERBOARD & EXECUTIVE SUMMARY
+      // =========================================================================
+      function renderLeaderboard() {
+        const boardList = document.getElementById('boardList');
+        const mInfo = MONTHS_2026.find(m => m.key === state.period);
+        document.getElementById('boardPeriodLabel').textContent = mInfo ? `${mInfo.label} 2026` : state.period;
+
+        let totalRevAll = 0;
+        let totalAncolAll = 0;
+        let realCount = 0;
+        let simCount = 0;
+
+        const rows = MITRA_LIST.map((m) => {
+          const rep = getReportForMitraPeriod(m.id, state.period);
+          const stats = computeReportStats(rep);
+          if (stats) {
+            totalRevAll += stats.totalRev;
+            totalAncolAll += stats.totalAncol;
+            if (rep.isReal) realCount++;
+            else simCount++;
+          }
+          return { mitra: m, rep, stats, match: matchesFilters(m) };
+        });
+
+        rows.sort((a, b) => {
+          const av = a.stats ? a.stats.totalRev : -1;
+          const bv = b.stats ? b.stats.totalRev : -1;
+          return bv - av;
+        });
+
+        const topWithData = rows.find(r => r.stats);
+        document.getElementById('kpiBoardRevenue').textContent = shortRp(totalRevAll);
+        document.getElementById('kpiBoardAncol').textContent = shortRp(totalAncolAll);
+        document.getElementById('kpiBoardTop').textContent = topWithData ? topWithData.mitra.short : 'Belum Ada';
+
+        const countBadge = document.getElementById('boardCountBadge');
+        if (state.simMode) {
+          countBadge.className = 'badge-chip chip-amber';
+          countBadge.textContent = `${realCount} Real • ${simCount} Simulasi`;
+        } else {
+          countBadge.className = realCount > 0 ? 'badge-chip chip-green' : 'badge-chip chip-blue';
+          countBadge.textContent = `${realCount} / 17 Real`;
+        }
+
+        const filteredRows = rows.filter(r => r.match);
+        boardList.innerHTML = '';
+
+        if (!filteredRows.length) {
+          boardList.innerHTML = `<div style="padding:18px;text-align:center;font-size:12px;color:var(--muted);">Tidak ada mitra yang cocok dengan filter pencarian.</div>`;
+          return;
+        }
+
+        filteredRows.forEach((item, idx) => {
+          const row = document.createElement('button');
+          row.type = 'button';
+          row.className = 'board-row';
+          const statusClass = item.rep ? (item.rep.isReal ? 'tag-real' : 'tag-sim') : 'tag-empty';
+          const statusText = item.rep ? (item.rep.isReal ? 'REAL PDF' : 'SIMULASI') : 'NO PDF';
+
+          row.innerHTML = `
+            <span class="board-rank tabular">#${idx + 1}</span>
+            <img src="./image/logos/${item.mitra.id}.png" alt="${item.mitra.short}" class="board-logo" />
+            <div class="board-meta">
+              <div class="board-name">${item.mitra.name}</div>
+              <div class="board-zone">${item.mitra.zoneLabel}</div>
+            </div>
+            <div class="board-metric">
+              <span class="board-omset tabular">${item.stats ? shortRp(item.stats.totalRev) : 'Menunggu PDF'}</span>
+              <span class="status-tag ${statusClass}">${statusText}</span>
+            </div>
+          `;
+
+          row.addEventListener('mouseenter', () => {
+            const spot = hotspotsLayer.querySelector(`[data-mitra-id="${item.mitra.id}"]`);
+            if (spot) spot.classList.add('hovered');
+          });
+          row.addEventListener('mouseleave', () => {
+            const spot = hotspotsLayer.querySelector(`[data-mitra-id="${item.mitra.id}"]`);
+            if (spot) spot.classList.remove('hovered');
+          });
+          row.addEventListener('click', () => openMitraModal(item.mitra.id));
+
+          boardList.appendChild(row);
+        });
+      }
+
+      // =========================================================================
+      // 7. GLASSMORPHISM DETAIL MODAL + HIGH-DPI DUAL CANVAS CHARTS
+      // =========================================================================
+      const detailModal = document.getElementById('mitraDetailModal');
+      const modalPeriodSelect = document.getElementById('modalPeriodSelect');
+      let chart1HitBoxes = [];
+      let chart2HitBoxes = [];
+
+      function populateModalPeriodSelect() {
+        modalPeriodSelect.innerHTML = '';
+        MONTHS_2026.forEach((m) => {
+          const opt = document.createElement('option');
+          opt.value = m.key;
+          opt.textContent = m.full;
+          modalPeriodSelect.appendChild(opt);
+        });
+      }
+      populateModalPeriodSelect();
+
+      function openMitraModal(mitraId) {
+        state.selectedMitraId = mitraId;
+        state.modalTab = 'summary';
+        modalPeriodSelect.value = state.period;
+        renderMitraModal();
+        detailModal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMitraModal() {
+        detailModal.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      document.getElementById('closeDetailModalBtn').addEventListener('click', closeMitraModal);
+      detailModal.addEventListener('click', (e) => {
+        if (e.target === detailModal) closeMitraModal();
+      });
+
+      modalPeriodSelect.addEventListener('change', (e) => {
+        state.period = e.target.value;
+        document.getElementById('periodSelect').value = state.period;
+        renderAll();
+        renderMitraModal();
+      });
+
+      function renderMitraModal() {
+        const m = MITRA_LIST.find(x => x.id === state.selectedMitraId);
+        if (!m) return;
+
+        const rep = getReportForMitraPeriod(m.id, state.period);
+        const stats = computeReportStats(rep);
+        const mInfo = MONTHS_2026.find(x => x.key === state.period);
+
+        document.getElementById('modalMitraLogo').src = `./image/logos/${m.id}.png`;
+        document.getElementById('modalMitraLogo').alt = m.name;
+        document.getElementById('modalMitraTitle').textContent = m.name;
+
+        const splitBadge = document.getElementById('modalSplitBadge');
+        splitBadge.textContent = rep && rep.isReal
+          ? `Mitra ${rep.mitraPct}% • Dept. Retail ${rep.ancolPct}%`
+          : `Est. Split ${m.mitraPct}% / ${m.ancolPct}%`;
+
+        const statusBadge = document.getElementById('modalStatusBadge');
+        if (rep && rep.isReal) {
+          statusBadge.className = 'badge-chip chip-green';
+          statusBadge.textContent = 'DATA REAL FINANCE PDF';
+        } else if (rep && rep.isSim) {
+          statusBadge.className = 'badge-chip chip-amber';
+          statusBadge.textContent = 'SIMULASI PREVIEW';
+        } else {
+          statusBadge.className = 'badge-chip chip-sky';
+          statusBadge.textContent = 'MENUNGGU UPLOAD PDF';
+        }
+
+        document.getElementById('modalMitraSub').innerHTML = `
+          <span>${m.zoneLabel}</span>
+          <span>•</span>
+          <span>${m.category}</span>
+          <span>•</span>
+          <span>Periode: <strong>${mInfo ? mInfo.full : state.period}</strong></span>
+        `;
+
+        const body = document.getElementById('modalDetailBody');
+
+        if (!stats) {
+          body.innerHTML = `
+            <div class="empty-card">
+              <div class="brand-badge" style="width:50px;height:50px;border-radius:50%;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="12" y1="18" x2="12" y2="12"></line>
+                  <line x1="9" y1="15" x2="15" y2="15"></line>
+                </svg>
+              </div>
+              <h3>Belum Ada Data Finance untuk ${m.name} (${mInfo ? mInfo.full : state.period})</h3>
+              <p>Pada Tahap 1 Lokal ini, data real terverifikasi baru menggunakan contoh PDF Finance <strong>A&amp;W September 2026</strong>. Anda dapat langsung menguji alur upload preview (Opsi A) atau menyalakan Mode Simulasi untuk melihat tampilan 2 grafik.</p>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:6px;">
+                <button type="button" class="btn btn-primary" id="modalOpenUploadBtn">Upload / Preview Tabel untuk Mitra Ini</button>
+                <button type="button" class="btn" id="modalEnableSimBtn">Aktifkan Mode Simulasi 17 Mitra</button>
+              </div>
+            </div>
+          `;
+
+          document.getElementById('modalOpenUploadBtn').addEventListener('click', () => {
+            closeMitraModal();
+            openUploadModal(m.id);
+          });
+          document.getElementById('modalEnableSimBtn').addEventListener('click', () => {
+            setSimMode(true);
+            renderMitraModal();
+          });
+          document.getElementById('copyWaBtn').disabled = true;
+          return;
+        }
+
+        document.getElementById('copyWaBtn').disabled = false;
+
+        body.innerHTML = `
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0033A0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                <span>TOTAL PENDAPATAN</span>
+              </div>
+              <div class="kpi-value tabular">${rp(stats.totalRev)}</div>
+              <div class="kpi-foot">${stats.daysCount} hari operasi (${mInfo ? mInfo.full : state.period})</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>HAK DEPT. RETAIL (${rep.ancolPct}%)</span>
+              </div>
+              <div class="kpi-value tabular" style="color:var(--success);">${rp(stats.totalAncol)}</div>
+              <div class="kpi-foot tabular">Hak Mitra (${rep.mitraPct}%): ${rp(stats.totalMitra)}</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00B5E2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                <span>RATA-RATA HARIAN</span>
+              </div>
+              <div class="kpi-value tabular">${rp(stats.avgDaily)}</div>
+              <div class="kpi-foot tabular">Weekend: <strong>${shortRp(stats.avgWeekend)}/hr</strong> (${stats.weekendRatio.toFixed(1)}x Weekday)</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <span>HARI PUNCAK (PEAK)</span>
+              </div>
+              <div class="kpi-value" style="font-size:17px;">${DAY_ID[stats.peakDay.day]}, ${formatDateId(stats.peakDay.date)}</div>
+              <div class="kpi-foot tabular">Rekor: <strong>${rp(stats.peakDay.rev)}</strong> (${((stats.peakDay.rev / stats.totalRev) * 100).toFixed(1)}% bulan)</div>
+            </div>
+          </div>
+
+          <div class="charts-grid">
+            <div class="chart-card" id="chart1Card">
+              <div class="chart-head">
+                <div>
+                  <h3 class="chart-title">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0033A0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <span>Tren Omset Bulanan (2026)</span>
+                  </h3>
+                  <p class="chart-sub">Klik batang bulan untuk pindah rincian harian di sebelah kanan</p>
+                </div>
+                <div class="chart-legend">
+                  <span class="legend-item"><span class="legend-dot" style="background:#059669;"></span>Real PDF</span>
+                  ${state.simMode ? '<span class="legend-item"><span class="legend-dot" style="background:rgba(0,51,160,0.45);"></span>Simulasi</span>' : ''}
+                </div>
+              </div>
+              <div class="canvas-wrap">
+                <canvas id="monthlyChartCanvas"></canvas>
+                <div class="chart-tooltip" id="chart1Tooltip"></div>
+              </div>
+            </div>
+
+            <div class="chart-card" id="chart2Card">
+              <div class="chart-head">
+                <div>
+                  <h3 class="chart-title">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00B5E2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    <span>Detail Omset Harian (${mInfo ? mInfo.full : state.period})</span>
+                  </h3>
+                  <p class="chart-sub">Pola kunjungan harian: Senin–Jumat vs Sabtu–Minggu</p>
+                </div>
+                <div class="chart-legend">
+                  <span class="legend-item"><span class="legend-dot" style="background:#0033A0;"></span>Sen–Jum</span>
+                  <span class="legend-item"><span class="legend-dot" style="background:#00B5E2;"></span>Sab–Min</span>
+                  <span class="legend-item"><span class="legend-dot" style="background:#059669;"></span>Puncak</span>
+                </div>
+              </div>
+              <div class="canvas-wrap">
+                <canvas id="dailyChartCanvas"></canvas>
+                <div class="chart-tooltip" id="chart2Tooltip"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-strip">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0033A0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px;">
+              <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <div>
+              <strong>Analisa Eksekutif:</strong> Sebanyak <strong>${stats.weekendCount} hari akhir pekan (Sabtu–Minggu)</strong> menyumbang <strong>${stats.weekendSharePct.toFixed(1)}%</strong> (${rp(stats.weekendRev)}) dari total omset ${mInfo ? mInfo.full : state.period}, dengan rata-rata <strong class="tabular">${rp(stats.avgWeekend)}/hari</strong> dibanding <strong class="tabular">${rp(stats.avgWeekday)}/hari</strong> di hari kerja (${stats.weekendCount ? stats.weekendRatio.toFixed(1) : '0'}x lipat). Hari terendah tercatat pada ${DAY_ID[stats.lowDay.day]}, ${formatDateId(stats.lowDay.date)} (${rp(stats.lowDay.rev)}).
+            </div>
+          </div>
+
+          <div class="detail-tabs">
+            <div class="tab-group">
+              <button type="button" class="tab-btn ${state.modalTab === 'summary' ? 'active' : ''}" data-tab="summary">Ringkasan Top Hari &amp; Pola</button>
+              <button type="button" class="tab-btn ${state.modalTab === 'finance' ? 'active' : ''}" data-tab="finance">Tabel Lengkap Finance (${stats.daysCount} Hari)</button>
+            </div>
+            <button type="button" class="btn" id="openUploadFromDetailBtn" style="min-height:36px;font-size:12px;">Perbarui / Upload File Bulan Lain</button>
+          </div>
+
+          <div id="tabContentArea"></div>
+        `;
+
+        body.querySelectorAll('.tab-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            state.modalTab = btn.dataset.tab;
+            body.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+            renderModalTabTable(rep, stats);
+          });
+        });
+
+        document.getElementById('openUploadFromDetailBtn').addEventListener('click', () => {
+          closeMitraModal();
+          openUploadModal(m.id);
+        });
+
+        renderModalTabTable(rep, stats);
+
+        requestAnimationFrame(() => {
+          drawMonthlyChart(m);
+          drawDailyChart(m, rep, stats);
+          bindChartInteractions(m, rep, stats);
+        });
+      }
+
+      function renderModalTabTable(rep, stats) {
+        const container = document.getElementById('tabContentArea');
+        if (!container) return;
+
+        if (state.modalTab === 'summary') {
+          const top5 = [...rep.days].sort((a, b) => b.rev - a.rev).slice(0, 5);
+          container.innerHTML = `
+            <div class="table-wrap">
+              <table class="finance-table">
+                <thead>
+                  <tr>
+                    <th>Peringkat</th>
+                    <th>Hari / Tanggal</th>
+                    <th class="num">Pendapatan (Rp)</th>
+                    <th class="num">Hak Mitra ${rep.mitraPct}%</th>
+                    <th class="num">Dept. Retail ${rep.ancolPct}%</th>
+                    <th class="num">Porsi Bulan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${top5.map((d, i) => `
+                    <tr class="${i === 0 ? 'peak-row' : ((d.day === 'Sat' || d.day === 'Sun') ? 'weekend-row' : '')}">
+                      <td class="tabular">#${i + 1}</td>
+                      <td><strong>${d.day}</strong> • ${formatDateId(d.date)}</td>
+                      <td class="num tabular">${numId(d.rev)}</td>
+                      <td class="num tabular">${numId(d.mitra)}</td>
+                      <td class="num tabular">${numId(d.ancol)}</td>
+                      <td class="num tabular">${((d.rev / stats.totalRev) * 100).toFixed(1)}%</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          `;
+        } else {
+          container.innerHTML = `
+            <div class="table-wrap" style="max-height:360px;overflow-y:auto;">
+              <table class="finance-table">
+                <thead>
+                  <tr>
+                    <th>Hari</th>
+                    <th>Tanggal</th>
+                    <th class="num">Pendapatan</th>
+                    <th class="num">Mitra ${rep.mitraPct}%</th>
+                    <th class="num">Dept. Retail ${rep.ancolPct}%</th>
+                    <th>Keterangan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rep.days.map((d) => {
+                    const isPeak = d.date === stats.peakDay.date;
+                    const isWk = d.day === 'Sat' || d.day === 'Sun';
+                    return `
+                      <tr class="${isPeak ? 'peak-row' : (isWk ? 'weekend-row' : '')}">
+                        <td>${d.day}</td>
+                        <td class="tabular">${formatDateId(d.date)}</td>
+                        <td class="num tabular">${numId(d.rev)}</td>
+                        <td class="num tabular">${numId(d.mitra)}</td>
+                        <td class="num tabular">${numId(d.ancol)}</td>
+                        <td style="color:var(--muted);">${isPeak ? 'Hari Puncak' : (d.note || (isWk ? 'Weekend' : 'Weekday'))}</td>
+                      </tr>
+                    `;
+                  }).join('')}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="2">TOTAL RESMI</td>
+                    <td class="num tabular">${numId(stats.totalRev)}</td>
+                    <td class="num tabular">${numId(stats.totalMitra)}</td>
+                    <td class="num tabular">${numId(stats.totalAncol)}</td>
+                    <td>${rep.isReal ? 'Audit PDF Terverifikasi' : 'Simulasi'}</td>
+                  </tr>
+                </tfoot>
+              </table>
+              <div class="audit-note">${rep.auditNote || ''}</div>
+            </div>
+          `;
+        }
+      }
+
+      function roundRectSafe(ctx, x, y, w, h, radii) {
+        if (typeof ctx.roundRect === 'function') {
+          ctx.roundRect(x, y, w, h, radii);
+          return;
+        }
+        const r = Array.isArray(radii) ? radii[0] : (radii || 0);
+        ctx.rect(x, y, w, h);
+        void r;
+      }
+
+      // Draw Chart 1: Monthly Trend (Jan - Des 2026)
+      function drawMonthlyChart(mitra, hoveredIdx = -1) {
+        const canvas = document.getElementById('monthlyChartCanvas');
+        if (!canvas) return;
+        const rect = canvas.parentElement.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(rect.width * dpr);
+        canvas.height = Math.round(rect.height * dpr);
+        const ctx = canvas.getContext('2d');
+        ctx.scale(dpr, dpr);
+
+        const W = rect.width;
+        const H = rect.height;
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+        const series = MONTHS_2026.map((m) => {
+          const r = getReportForMitraPeriod(mitra.id, m.key);
+          const s = computeReportStats(r);
+          return { month: m, rep: r, stats: s, val: s ? s.totalRev : 0 };
+        });
+
+        const maxVal = Math.max(100000000, ...series.map(x => x.val)) * 1.15;
+        const padL = 56, padR = 12, padT = 18, padB = 28;
+        const plotW = W - padL - padR;
+        const plotH = H - padT - padB;
+
+        ctx.clearRect(0, 0, W, H);
+        ctx.font = '600 10px "Plus Jakarta Sans", sans-serif';
+
+        // Gridlines
+        for (let i = 0; i <= 4; i++) {
+          const y = padT + (plotH * i) / 4;
+          const v = maxVal * (1 - i / 4);
+          ctx.strokeStyle = isDark ? 'rgba(148,179,232,0.12)' : 'rgba(0,32,91,0.08)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(padL, y);
+          ctx.lineTo(W - padR, y);
+          ctx.stroke();
+
+          ctx.fillStyle = isDark ? '#8ca3c8' : '#5c7094';
+          ctx.textAlign = 'right';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(v >= 1e9 ? (v / 1e9).toFixed(1) + 'M' : Math.round(v / 1e6) + 'Jt', padL - 8, y);
+        }
+
+        const slotW = plotW / series.length;
+        const barW = Math.max(10, Math.min(24, slotW * 0.58));
+        chart1HitBoxes = [];
+
+        series.forEach((item, idx) => {
+          const cx = padL + slotW * idx + slotW / 2;
+          const isSelected = item.month.key === state.period;
+          const isHovered = idx === hoveredIdx;
+          const barH = item.val > 0 ? Math.max(6, (item.val / maxVal) * plotH) : 4;
+          const x = cx - barW / 2;
+          const y = padT + plotH - barH;
+
+          chart1HitBoxes.push({ x: cx - slotW / 2, y: padT, w: slotW, h: plotH + padB, item, idx });
+
+          let color;
+          if (item.val === 0) {
+            color = isDark ? 'rgba(148,179,232,0.15)' : 'rgba(0,32,91,0.10)';
+          } else if (item.rep && item.rep.isReal) {
+            color = isSelected ? '#059669' : '#10b981';
+          } else if (isSelected) {
+            color = '#0033A0';
+          } else {
+            color = isHovered ? '#00B5E2' : (isDark ? 'rgba(56,189,248,0.48)' : 'rgba(0,51,160,0.42)');
+          }
+
+          if (isSelected) {
+            ctx.fillStyle = isDark ? 'rgba(0, 181, 226, 0.14)' : 'rgba(0, 51, 160, 0.08)';
+            ctx.beginPath();
+            roundRectSafe(ctx, cx - slotW * 0.42, padT, slotW * 0.84, plotH, 6);
+            ctx.fill();
+          }
+
+          ctx.fillStyle = color;
+          ctx.beginPath();
+          roundRectSafe(ctx, x, y, barW, barH, [6, 6, 0, 0]);
+          ctx.fill();
+
+          if (isSelected && item.val > 0) {
+            ctx.fillStyle = isDark ? '#ffffff' : '#00205B';
+            ctx.font = '800 10px "Plus Jakarta Sans", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(shortRp(item.val).replace('Rp ', ''), cx, y - 4);
+          }
+
+          ctx.fillStyle = isSelected ? (isDark ? '#67e8f9' : '#0033A0') : (isDark ? '#8ca3c8' : '#5c7094');
+          ctx.font = isSelected ? '800 10.5px "Plus Jakarta Sans", sans-serif' : '600 10px "Plus Jakarta Sans", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'top';
+          ctx.fillText(item.month.label, cx, padT + plotH + 8);
+        });
+      }
+
+      // Draw Chart 2: Daily Revenue Bars (Days 1 - 30/31)
+      function drawDailyChart(mitra, rep, stats, hoveredIdx = -1) {
+        const canvas = document.getElementById('dailyChartCanvas');
+        if (!canvas || !rep) return;
+        const rect = canvas.parentElement.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(rect.width * dpr);
+        canvas.height = Math.round(rect.height * dpr);
+        const ctx = canvas.getContext('2d');
+        ctx.scale(dpr, dpr);
+
+        const W = rect.width;
+        const H = rect.height;
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+        const days = rep.days;
+        const maxVal = Math.max(5000000, ...days.map(d => d.rev)) * 1.14;
+        const padL = 52, padR = 10, padT = 18, padB = 28;
+        const plotW = W - padL - padR;
+        const plotH = H - padT - padB;
+
+        ctx.clearRect(0, 0, W, H);
+        ctx.font = '600 10px "Plus Jakarta Sans", sans-serif';
+
+        for (let i = 0; i <= 4; i++) {
+          const y = padT + (plotH * i) / 4;
+          const v = maxVal * (1 - i / 4);
+          ctx.strokeStyle = isDark ? 'rgba(148,179,232,0.12)' : 'rgba(0,32,91,0.08)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(padL, y);
+          ctx.lineTo(W - padR, y);
+          ctx.stroke();
+
+          ctx.fillStyle = isDark ? '#8ca3c8' : '#5c7094';
+          ctx.textAlign = 'right';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(Math.round(v / 1e6) + 'Jt', padL - 7, y);
+        }
+
+        // Dashed Average Line
+        const avgY = padT + plotH - (stats.avgDaily / maxVal) * plotH;
+        ctx.save();
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = isDark ? 'rgba(245, 158, 11, 0.7)' : 'rgba(217, 119, 6, 0.75)';
+        ctx.lineWidth = 1.25;
+        ctx.beginPath();
+        ctx.moveTo(padL, avgY);
+        ctx.lineTo(W - padR, avgY);
+        ctx.stroke();
+        ctx.restore();
+
+        const slotW = plotW / days.length;
+        const barW = Math.max(4, Math.min(14, slotW * 0.68));
+        chart2HitBoxes = [];
+
+        days.forEach((d, idx) => {
+          const cx = padL + slotW * idx + slotW / 2;
+          const barH = Math.max(3, (d.rev / maxVal) * plotH);
+          const x = cx - barW / 2;
+          const y = padT + plotH - barH;
+          const isPeak = d.date === stats.peakDay.date;
+          const isWeekend = d.day === 'Sat' || d.day === 'Sun';
+          const isHovered = idx === hoveredIdx;
+
+          chart2HitBoxes.push({ x: cx - slotW / 2, y: padT, w: slotW, h: plotH + padB, dayObj: d, idx });
+
+          let color;
+          if (isPeak) color = '#059669';
+          else if (isWeekend) color = isHovered ? '#38bdf8' : '#00B5E2';
+          else color = isHovered ? '#3b82f6' : (isDark ? '#2563eb' : '#0033A0');
+
+          if (isHovered) {
+            ctx.fillStyle = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,51,160,0.06)';
+            ctx.fillRect(cx - slotW / 2, padT, slotW, plotH);
+          }
+
+          ctx.fillStyle = color;
+          ctx.beginPath();
+          roundRectSafe(ctx, x, y, barW, barH, [4, 4, 0, 0]);
+          ctx.fill();
+
+          const dayNum = parseInt(d.date.split('-')[2], 10);
+          if (dayNum === 1 || dayNum % 5 === 0 || dayNum === days.length) {
+            ctx.fillStyle = isDark ? '#8ca3c8' : '#5c7094';
+            ctx.font = '600 9.5px "Plus Jakarta Sans", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            ctx.fillText(String(dayNum), cx, padT + plotH + 8);
+          }
+        });
+      }
+
+      function bindChartInteractions(mitra, rep, stats) {
+        const c1 = document.getElementById('monthlyChartCanvas');
+        const t1 = document.getElementById('chart1Tooltip');
+        const c2 = document.getElementById('dailyChartCanvas');
+        const t2 = document.getElementById('chart2Tooltip');
+
+        if (c1 && t1) {
+          c1.onmousemove = (e) => {
+            const r = c1.getBoundingClientRect();
+            const mx = e.clientX - r.left;
+            const hit = chart1HitBoxes.find(b => mx >= b.x && mx <= b.x + b.w);
+            drawMonthlyChart(mitra, hit ? hit.idx : -1);
+            if (!hit) { t1.classList.remove('visible'); return; }
+            const it = hit.item;
+            t1.innerHTML = `
+              <div style="font-weight:800;margin-bottom:2px;">${it.month.full}</div>
+              <div class="tabular">${it.stats ? rp(it.stats.totalRev) : 'Belum ada data'}</div>
+              ${it.stats ? `<div style="font-size:10.5px;color:#8fe3fa;">${it.rep.isReal ? 'Real PDF Finance' : 'Simulasi'} • Klik untuk rincian harian</div>` : ''}
+            `;
+            t1.style.left = Math.min(r.width - 170, Math.max(8, mx - 60)) + 'px';
+            t1.style.top = '8px';
+            t1.classList.add('visible');
+          };
+          c1.onmouseleave = () => {
+            drawMonthlyChart(mitra, -1);
+            t1.classList.remove('visible');
+          };
+          c1.onclick = (e) => {
+            const r = c1.getBoundingClientRect();
+            const mx = e.clientX - r.left;
+            const hit = chart1HitBoxes.find(b => mx >= b.x && mx <= b.x + b.w);
+            if (hit && hit.item.stats) {
+              state.period = hit.item.month.key;
+              document.getElementById('periodSelect').value = state.period;
+              modalPeriodSelect.value = state.period;
+              renderAll();
+              renderMitraModal();
+            } else if (hit) {
+              showToast(`Belum ada data untuk ${hit.item.month.full}. Aktifkan Mode Simulasi atau upload PDF.`);
+            }
+          };
+        }
+
+        if (c2 && t2) {
+          c2.onmousemove = (e) => {
+            const r = c2.getBoundingClientRect();
+            const mx = e.clientX - r.left;
+            const hit = chart2HitBoxes.find(b => mx >= b.x && mx <= b.x + b.w);
+            drawDailyChart(mitra, rep, stats, hit ? hit.idx : -1);
+            if (!hit) { t2.classList.remove('visible'); return; }
+            const d = hit.dayObj;
+            t2.innerHTML = `
+              <div style="font-weight:800;margin-bottom:2px;">${DAY_ID[d.day]}, ${formatDateId(d.date)}</div>
+              <div class="tabular" style="color:#34d399;font-weight:800;">Omset: ${rp(d.rev)}</div>
+              <div class="tabular" style="font-size:10.5px;color:#cbd5e1;">Mitra (${rep.mitraPct}%): ${rp(d.mitra)} • Retail (${rep.ancolPct}%): ${rp(d.ancol)}</div>
+            `;
+            t2.style.left = Math.min(r.width - 210, Math.max(8, mx - 80)) + 'px';
+            t2.style.top = '8px';
+            t2.classList.add('visible');
+          };
+          c2.onmouseleave = () => {
+            drawDailyChart(mitra, rep, stats, -1);
+            t2.classList.remove('visible');
+          };
+        }
+      }
+
+      // Copy WhatsApp Executive Summary
+      document.getElementById('copyWaBtn').addEventListener('click', () => {
+        const m = MITRA_LIST.find(x => x.id === state.selectedMitraId);
+        const rep = m ? getReportForMitraPeriod(m.id, state.period) : null;
+        const stats = computeReportStats(rep);
+        const mInfo = MONTHS_2026.find(x => x.key === state.period);
+        if (!m || !stats) return;
+
+        const text = [
+          `*RINGKASAN MITRA INHOUSE ANCOL*`,
+          `Mitra: *${m.name}* (${m.zoneLabel})`,
+          `Periode: ${mInfo ? mInfo.full : state.period} [${rep.isReal ? 'DATA REAL FINANCE PDF' : 'SIMULASI PREVIEW'}]`,
+          ``,
+          `• Total Pendapatan: *${rp(stats.totalRev)}*`,
+          `• Hak Mitra (${rep.mitraPct}%): ${rp(stats.totalMitra)}`,
+          `• Hak Dept. Retail (${rep.ancolPct}%): *${rp(stats.totalAncol)}*`,
+          `• Rata-rata Harian: ${rp(stats.avgDaily)}/hr`,
+          `• Pola Weekend (Sab–Min): ${rp(stats.avgWeekend)}/hr (${stats.weekendRatio.toFixed(1)}x Weekday)`,
+          `• Hari Puncak: ${DAY_ID[stats.peakDay.day]}, ${formatDateId(stats.peakDay.date)} (${rp(stats.peakDay.rev)})`
+        ].join('\n');
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => showToast('Ringkasan WhatsApp berhasil disalin!'));
+        } else {
+          showToast('Ringkasan siap: clipboard browser tidak aktif.');
+        }
+      });
+
+      // =========================================================================
+      // 8. UPLOAD & PREVIEW TABLE DEMO MODAL (OPSI A CONCEPT)
+      // =========================================================================
+      const uploadModal = document.getElementById('uploadPreviewModal');
+      const uploadMitraSelect = document.getElementById('uploadMitraSelect');
+      const uploadFileInput = document.getElementById('uploadFileInput');
+      const uploadDropzone = document.getElementById('uploadDropzone');
+
+      function populateUploadSelect() {
+        uploadMitraSelect.innerHTML = '';
+        MITRA_LIST.forEach((m) => {
+          const opt = document.createElement('option');
+          opt.value = m.id;
+          opt.textContent = `${m.name} (${m.mitraPct}/${m.ancolPct})`;
+          uploadMitraSelect.appendChild(opt);
+        });
+      }
+      populateUploadSelect();
+
+      function openUploadModal(preselectMitraId) {
+        if (preselectMitraId) uploadMitraSelect.value = preselectMitraId;
+        document.getElementById('uploadPeriodSelect').value = state.period === '2026-09' ? '2026-09' : state.period;
+        document.getElementById('uploadPreviewArea').innerHTML = '';
+        state.pendingUploadReport = null;
+        uploadModal.classList.add('open');
+      }
+
+      function closeUploadModal() {
+        uploadModal.classList.remove('open');
+      }
+
+      document.getElementById('openUploadBtn').addEventListener('click', () => openUploadModal('aw'));
+      document.getElementById('closeUploadModalBtn').addEventListener('click', closeUploadModal);
+      uploadModal.addEventListener('click', (e) => {
+        if (e.target === uploadModal) closeUploadModal();
+      });
+
+      document.getElementById('pickFileBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        uploadFileInput.click();
+      });
+      uploadDropzone.addEventListener('click', () => uploadFileInput.click());
+      uploadDropzone.addEventListener('dragover', (e) => { e.preventDefault(); uploadDropzone.classList.add('dragover'); });
+      uploadDropzone.addEventListener('dragleave', () => uploadDropzone.classList.remove('dragover'));
+      uploadDropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadDropzone.classList.remove('dragover');
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) handleSelectedFile(e.dataTransfer.files[0]);
+      });
+
+      uploadFileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) handleSelectedFile(e.target.files[0]);
+        e.target.value = '';
+      });
+
+      function handleSelectedFile(file) {
+        const mitraId = uploadMitraSelect.value;
+        const periodKey = document.getElementById('uploadPeriodSelect').value;
+        const ext = file.name.split('.').pop().toLowerCase();
+
+        if (ext === 'csv') {
+          const reader = new FileReader();
+          reader.onload = () => parseCsvUpload(String(reader.result || ''), mitraId, periodKey, file.name);
+          reader.readAsText(file);
+        } else {
+          // Stage 1 Local Prototype cannot run Python pdfplumber without backend server; show realistic preview sample
+          const sample = generatePreviewExtraction(mitraId, periodKey, file.name);
+          renderUploadPreview(mitraId, periodKey, sample, `Preview Ekstraksi Lokal (${file.name})`);
+        }
+      }
+
+      function parseCsvUpload(csvText, mitraId, periodKey, fileName) {
+        const m = MITRA_LIST.find(x => x.id === mitraId);
+        const lines = csvText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+        const days = [];
+        for (const line of lines) {
+          const cols = line.split(/[;,]/).map(c => c.trim());
+          const dateMatch = cols.find(c => /^\d{4}-\d{2}-\d{2}$/.test(c));
+          const revNum = cols.map(c => Number(c.replace(/[^0-9]/g, ''))).find(n => n > 1000);
+          if (dateMatch && revNum) {
+            const dt = new Date(dateMatch + 'T00:00:00');
+            const dayShort = DAY_NAMES[dt.getDay()];
+            const mitraVal = Math.round(revNum * (m.mitraPct / 100));
+            days.push({ date: dateMatch, day: dayShort, rev: revNum, mitra: mitraVal, ancol: revNum - mitraVal, note: 'CSV Lokal' });
+          }
+        }
+        if (!days.length) {
+          showToast('Format CSV tidak dikenali (butuh kolom tanggal YYYY-MM-DD dan nominal). Memuat contoh preview.');
+          const fallback = generatePreviewExtraction(mitraId, periodKey, fileName);
+          renderUploadPreview(mitraId, periodKey, fallback, `Contoh Preview (${fileName})`);
+          return;
+        }
+        const sumRev = days.reduce((s, d) => s + d.rev, 0);
+        const sumM = days.reduce((s, d) => s + d.mitra, 0);
+        const sumA = days.reduce((s, d) => s + d.ancol, 0);
+        renderUploadPreview(mitraId, periodKey, {
+          isReal: true,
+          sourceLabel: 'CSV LOKAL USER',
+          mitraPct: m.mitraPct,
+          ancolPct: m.ancolPct,
+          printedTotals: { rev: sumRev, mitra: sumM, ancol: sumA },
+          days,
+          auditNote: `Berhasil diimpor lokal dari file CSV (${fileName}).`
+        }, `File CSV Terbaca: ${fileName}`);
+      }
+
+      function generatePreviewExtraction(mitraId, periodKey, fileName) {
+        if (mitraId === 'aw' && periodKey === '2026-09') {
+          return Object.assign({}, REAL_REPORTS['aw|2026-09'], { fileName });
+        }
+        const sim = getSimulatedReport(mitraId, periodKey) || getSimulatedReport(mitraId, '2026-09');
+        return Object.assign({}, sim, {
+          isReal: false,
+          isSim: true,
+          sourceLabel: 'PREVIEW EKSTRAKSI SIMULASI',
+          auditNote: `Preview ekstraksi dari "${fileName}" pada Tahap 1 Lokal. Parser PDF Python otomatis akan diaktifkan di Tahap 2.`
+        });
+      }
+
+      document.getElementById('loadSampleAwBtn').addEventListener('click', () => {
+        uploadMitraSelect.value = 'aw';
+        document.getElementById('uploadPeriodSelect').value = '2026-09';
+        const sample = REAL_REPORTS['aw|2026-09'];
+        renderUploadPreview('aw', '2026-09', sample, 'PDF Finance Asli: A&W PERIODE BULAN SEPTEMBER 2026.pdf');
+      });
+
+      function renderUploadPreview(mitraId, periodKey, report, bannerTitle) {
+        const m = MITRA_LIST.find(x => x.id === mitraId);
+        const stats = computeReportStats(report);
+        state.pendingUploadReport = { mitraId, periodKey, report };
+
+        const diff = Math.abs(stats.totalRev - (stats.totalMitra + stats.totalAncol));
+        const area = document.getElementById('uploadPreviewArea');
+        area.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px;padding:12px 14px;border-radius:14px;background:var(--success-bg);border:1px solid rgba(5,150,105,0.3);">
+            <div>
+              <div style="font-size:13px;font-weight:800;color:var(--success);">${bannerTitle}</div>
+              <div style="font-size:11.5px;color:var(--text-secondary);">Terdeteksi ${stats.daysCount} baris harian • Checksum (Pendapatan - [Mitra + Retail]): Diff ${rp(diff)}</div>
+            </div>
+            <button type="button" class="btn btn-primary" id="applyPreviewToMapBtn">Terapkan ke Peta &amp; Buka Detail</button>
+          </div>
+
+          <div class="table-wrap" style="max-height:260px;overflow-y:auto;">
+            <table class="finance-table">
+              <thead>
+                <tr>
+                  <th>Hari</th>
+                  <th>Tanggal</th>
+                  <th class="num">Pendapatan</th>
+                  <th class="num">Mitra ${report.mitraPct}%</th>
+                  <th class="num">Dept. Retail ${report.ancolPct}%</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${report.days.slice(0, 12).map(d => `
+                  <tr>
+                    <td>${d.day}</td>
+                    <td class="tabular">${formatDateId(d.date)}</td>
+                    <td class="num tabular">${numId(d.rev)}</td>
+                    <td class="num tabular">${numId(d.mitra)}</td>
+                    <td class="num tabular">${numId(d.ancol)}</td>
+                  </tr>
+                `).join('')}
+                ${report.days.length > 12 ? `<tr><td colspan="5" style="text-align:center;color:var(--muted);">... dan ${report.days.length - 12} hari lainnya hingga ${formatDateId(report.days[report.days.length - 1].date)} ...</td></tr>` : ''}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="2">TOTAL AUDIT PREVIEW</td>
+                  <td class="num tabular">${numId(stats.totalRev)}</td>
+                  <td class="num tabular">${numId(stats.totalMitra)}</td>
+                  <td class="num tabular">${numId(stats.totalAncol)}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        `;
+
+        document.getElementById('applyPreviewToMapBtn').addEventListener('click', () => {
+          const pending = state.pendingUploadReport;
+          if (!pending) return;
+          const key = `${pending.mitraId}|${pending.periodKey}`;
+          REAL_REPORTS[key] = pending.report;
+          try {
+            const saved = loadUserUploadedReports();
+            saved[key] = pending.report;
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(saved));
+          } catch (err) { /* ignore quota error on local file */ }
+          state.period = pending.periodKey;
+          document.getElementById('periodSelect').value = state.period;
+          closeUploadModal();
+          renderAll();
+          openMitraModal(pending.mitraId);
+          showToast(`Data ${m.short} (${pending.periodKey}) berhasil diterapkan ke peta lokal!`);
+        });
+      }
+
+      // =========================================================================
+      // 9. TOOLBAR CONTROLS, SIMULATION TOGGLE & RESPONSIVE RESIZE
+      // =========================================================================
+      function setSimMode(enabled) {
+        state.simMode = enabled;
+        document.getElementById('simToggleBtn').classList.toggle('active', enabled);
+        document.getElementById('simBanner').classList.toggle('visible', enabled);
+        renderAll();
+      }
+
+      document.getElementById('simToggleBtn').addEventListener('click', () => setSimMode(!state.simMode));
+      document.getElementById('disableSimBtn').addEventListener('click', () => setSimMode(false));
+
+      document.getElementById('toggleLabelsBtn').addEventListener('click', (e) => {
+        state.showMapPills = !state.showMapPills;
+        e.currentTarget.classList.toggle('is-active', state.showMapPills);
+        renderHotspots();
+        showToast(state.showMapPills ? 'Label omset di peta ditampilkan' : 'Label omset di peta disembunyikan');
+      });
+
+      document.getElementById('themeToggleBtn').addEventListener('click', () => {
+        const html = document.documentElement;
+        const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        const icon = document.getElementById('themeIcon');
+        if (icon) {
+          icon.innerHTML = next === 'dark'
+            ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+            : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+        }
+        if (detailModal.classList.contains('open')) renderMitraModal();
+      });
+
+      document.getElementById('zonePills').addEventListener('click', (e) => {
+        const pill = e.target.closest('.zone-pill');
+        if (!pill) return;
+        state.zoneFilter = pill.dataset.zone;
+        document.querySelectorAll('.zone-pill').forEach(p => p.classList.toggle('active', p === pill));
+        focusZone(state.zoneFilter);
+        renderAll();
+      });
+
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        state.searchQuery = e.target.value;
+        renderAll();
+      });
+
+      document.getElementById('periodSelect').addEventListener('change', (e) => {
+        state.period = e.target.value;
+        renderAll();
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (detailModal.classList.contains('open')) closeMitraModal();
+          if (uploadModal.classList.contains('open')) closeUploadModal();
+        }
+      });
+
+      window.addEventListener('resize', () => {
+        if (detailModal.classList.contains('open') && state.selectedMitraId) {
+          const m = MITRA_LIST.find(x => x.id === state.selectedMitraId);
+          const rep = m ? getReportForMitraPeriod(m.id, state.period) : null;
+          const stats = computeReportStats(rep);
+          if (m && stats) {
+            drawMonthlyChart(m);
+            drawDailyChart(m, rep, stats);
+          }
+        }
+      });
+
+      function renderAll() {
+        renderHotspots();
+        renderLeaderboard();
+      }
+
+      // Initial render + deep-link query support (?sim=1&mitra=aw)
+      applyMapTransform(false);
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('sim') === '1') setSimMode(true);
+        else renderAll();
+        const deepMitra = params.get('mitra');
+        if (deepMitra && MITRA_LIST.some(x => x.id === deepMitra)) {
+          openMitraModal(deepMitra);
+        }
+      } catch (err) {
+        renderAll();
+      }
+    })();
+  </script>
+</body>
+</html>
