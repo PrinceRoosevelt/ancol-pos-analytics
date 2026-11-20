@@ -1511,6 +1511,32 @@ def build_dashboard(
             "visitors_2025": v25,
         })
 
+    # Build SSR dataset for Chart 7 (Spending Revenue vs Struk Transaksi YoY)
+    spending_struk_chart = []
+    for item in daily_chart:
+        d_val = item["date"]
+        d_key = d_val[5:] if not item.get("is_monthly") else d_val[5:]
+        sp26 = item.get("2026", 0)
+        sp25 = item.get("2025", 0)
+        st26 = by_month.get(d_key, {}).get("2026", {}).get("transactions", 0) if item.get("is_monthly") else by_day.get(d_key, {}).get("2026", {}).get("transactions", 0)
+        st25 = by_month.get(d_key, {}).get("2025", {}).get("transactions", 0) if item.get("is_monthly") else by_day.get(d_key, {}).get("2025", {}).get("transactions", 0)
+        atv26 = (sp26 / st26) if st26 > 0 else 0
+        atv25 = (sp25 / st25) if st25 > 0 else 0
+
+        spending_struk_chart.append({
+            "date": d_val,
+            "comparison_date": item.get("comparison_date", ""),
+            "label": item["label"],
+            "short_label": item.get("short_label", item["label"]),
+            "is_monthly": item.get("is_monthly", False),
+            "spending_2026": sp26,
+            "spending_2025": sp25,
+            "struk_2026": st26,
+            "struk_2025": st25,
+            "atv_2026": atv26,
+            "atv_2025": atv25,
+        })
+
     unit_benchmarks = compute_unit_benchmarks(rows, all_raw_visitors, current_period_dates, comparison_day_months)
 
     return {
@@ -1610,6 +1636,7 @@ def build_dashboard(
         "target_chart": target_chart,
         "visitor_revenue_chart": visitor_revenue_chart,
         "visitor_trend_chart": visitor_trend_chart,
+        "spending_struk_chart": spending_struk_chart,
         "comparison_period": {
             "current": period(2026),
             "comparison": period(2025),

@@ -2663,6 +2663,220 @@
       font-weight: 700;
     }
 
+    /* Full-Width Spending vs Struk Panel & Interactive Quarter Ribbon */
+    .chart-panel-full {
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+
+    .chart-level-pills {
+      display: inline-flex;
+      gap: 4px;
+      background: var(--bg);
+      padding: 3px;
+      border-radius: 8px;
+      border: 1px solid var(--panel-border);
+    }
+
+    .chart-level-pill {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 650;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .chart-level-pill:hover {
+      color: var(--text);
+      background: var(--panel-hover);
+    }
+
+    .chart-level-pill:active {
+      transform: scale(0.96);
+    }
+
+    .chart-level-pill.active {
+      background: var(--brand);
+      color: #ffffff;
+      box-shadow: 0 1px 4px rgba(0, 51, 160, 0.25);
+    }
+
+    :root.dark .chart-level-pill.active {
+      background: #00B5E2;
+      color: #00205B;
+      box-shadow: 0 1px 6px rgba(0, 181, 226, 0.35);
+    }
+
+    .quarter-ribbon-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .quarter-ribbon-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 540px) {
+      .quarter-ribbon-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .quarter-card {
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    :root.dark .quarter-card {
+      background: rgba(15, 23, 42, 0.6);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .quarter-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--brand);
+      box-shadow: 0 4px 14px rgba(0, 51, 160, 0.12);
+    }
+
+    :root.dark .quarter-card:hover {
+      border-color: #00B5E2;
+      box-shadow: 0 4px 16px rgba(0, 181, 226, 0.18);
+    }
+
+    .quarter-card:active {
+      transform: scale(0.98);
+    }
+
+    .quarter-card.active {
+      border-color: var(--brand);
+      background: rgba(0, 51, 160, 0.06);
+      box-shadow: 0 0 0 2px var(--brand);
+    }
+
+    :root.dark .quarter-card.active {
+      border-color: #00B5E2;
+      background: rgba(0, 181, 226, 0.1);
+      box-shadow: 0 0 0 2px #00B5E2;
+    }
+
+    .quarter-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+
+    .quarter-card-title {
+      font-size: 12px;
+      font-weight: 750;
+      color: var(--text);
+    }
+
+    .quarter-card-months {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .quarter-sales-val {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--brand);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.3px;
+      line-height: 1.25;
+    }
+
+    :root.dark .quarter-sales-val {
+      color: #38bdf8;
+    }
+
+    .quarter-growth-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 3px;
+      margin-bottom: 5px;
+      font-size: 11px;
+    }
+
+    .quarter-growth-badge {
+      font-weight: 750;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .quarter-growth-badge.positive {
+      background: rgba(16, 185, 129, 0.15);
+      color: #059669;
+    }
+
+    :root.dark .quarter-growth-badge.positive {
+      background: rgba(16, 185, 129, 0.25);
+      color: #34d399;
+    }
+
+    .quarter-growth-badge.negative {
+      background: rgba(239, 68, 68, 0.15);
+      color: #dc2626;
+    }
+
+    :root.dark .quarter-growth-badge.negative {
+      background: rgba(239, 68, 68, 0.25);
+      color: #f87171;
+    }
+
+    .quarter-growth-badge.neutral {
+      background: rgba(148, 163, 184, 0.15);
+      color: var(--text-muted);
+    }
+
+    .quarter-sales-base {
+      color: var(--text-muted);
+      font-size: 10.5px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .quarter-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px dashed var(--panel-border);
+      padding-top: 5px;
+      font-size: 10.5px;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .quarter-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
     /* Tables Section - Clean Modern Card */
     .table-section {
       background: rgba(255, 255, 255, 0.82);
@@ -6218,7 +6432,11 @@
     <div class="charts-view-pills">
       <button type="button" class="chart-view-pill active" id="btnViewAllCharts" onclick="switchChartView('all', this)">
         <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="14" rx="1"></rect><rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
-        <span>Semua (6 Grafik)</span>
+        <span>Semua (7 Grafik)</span>
+      </button>
+      <button type="button" class="chart-view-pill" id="btnViewSpendingCharts" onclick="switchChartView('spending', this)">
+        <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        <span>Spending &amp; Struk (Kuartal &amp; YoY)</span>
       </button>
       <button type="button" class="chart-view-pill" id="btnViewTrendCharts" onclick="switchChartView('trend', this)">
         <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
@@ -6343,6 +6561,125 @@
       <div class="chart-wrap">
         <canvas id="visitorTrendChart"></canvas>
         <div id="visitorTrendTooltip" class="chart-tooltip"></div>
+      </div>
+    </div>
+
+    <!-- Chart 7: Full-Width Spending Revenue vs Struk Transaksi with Quarterly Detail & YoY Comparison -->
+    <div class="chart-panel chart-panel-spending chart-panel-full" id="panelSpendingStruk">
+      <div class="chart-header" style="flex-wrap: wrap; gap: 12px; align-items: center;">
+        <div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <h2 id="spendingChartTitle" style="font-size:15px; font-weight:750; color:var(--text); margin:0;">
+              Korelasi Spending Revenue vs Struk Transaksi (2026 vs 2025)
+            </h2>
+            <span class="badge-spending-mode" id="spendingModeBadge" style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; background:rgba(0,51,160,0.1); color:var(--brand); border:1px solid rgba(0,51,160,0.25);">
+              Bulanan
+            </span>
+          </div>
+          <span id="spendingChartSubtitle" style="font-size:12px; color:var(--text-muted); display:block; margin-top:3px;">
+            Analisis efektivitas spending (omzet penjualan) terhadap volume struk transaksi &amp; daya beli (ATV) per kuartal/periode
+          </span>
+        </div>
+        
+        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+          <!-- Level Switcher Pills -->
+          <div class="chart-level-pills" id="spendingLevelPills">
+            <button type="button" class="chart-level-pill" id="btnSpendingLevelQuarter" onclick="setSpendingChartLevel('quarter')">
+              Kuartal (Q1–Q4)
+            </button>
+            <button type="button" class="chart-level-pill active" id="btnSpendingLevelMonthly" onclick="setSpendingChartLevel('monthly')">
+              Bulanan (Jan–Des)
+            </button>
+            <button type="button" class="chart-level-pill" id="btnSpendingLevelDaily" onclick="setSpendingChartLevel('daily')">
+              Harian (Tgl)
+            </button>
+          </div>
+
+          <!-- Legend Items -->
+          <div class="chart-legend" style="gap:12px;">
+            <div class="legend-item"><span class="legend-dot" style="background:var(--brand);"></span> <span>Spending '26</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:#a78bfa;"></span> <span>Spending '25</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span> <span>Struk '26 (Kanan)</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:#f59e0b;"></span> <span>Struk '25 (Kanan)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quarter Detail Ribbon (Q1, Q2, Q3, Q4 Interactive Cards) -->
+      <div class="quarter-ribbon-grid" id="quarterRibbonGrid">
+        <!-- Q1 Card -->
+        <div class="quarter-card" id="qCardQ1" onclick="toggleQuarterFocus('Q1')" title="Klik untuk fokus visual Kuartal 1">
+          <div class="quarter-card-header">
+            <span class="quarter-card-title">Kuartal 1 (Q1)</span>
+            <span class="quarter-card-months">Jan – Mar</span>
+          </div>
+          <div class="quarter-sales-val" id="qSales26Q1">Rp 0</div>
+          <div class="quarter-growth-row">
+            <span class="quarter-growth-badge neutral" id="qGrowthQ1">+0.0% YoY</span>
+            <span class="quarter-sales-base" id="qSales25Q1">2025: Rp 0</span>
+          </div>
+          <div class="quarter-meta-row">
+            <span class="quarter-meta-item" id="qStrukQ1"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> 0 Struk</span>
+            <span class="quarter-meta-item" id="qAtvQ1">ATV: Rp 0</span>
+          </div>
+        </div>
+
+        <!-- Q2 Card -->
+        <div class="quarter-card" id="qCardQ2" onclick="toggleQuarterFocus('Q2')" title="Klik untuk fokus visual Kuartal 2">
+          <div class="quarter-card-header">
+            <span class="quarter-card-title">Kuartal 2 (Q2)</span>
+            <span class="quarter-card-months">Apr – Jun</span>
+          </div>
+          <div class="quarter-sales-val" id="qSales26Q2">Rp 0</div>
+          <div class="quarter-growth-row">
+            <span class="quarter-growth-badge neutral" id="qGrowthQ2">+0.0% YoY</span>
+            <span class="quarter-sales-base" id="qSales25Q2">2025: Rp 0</span>
+          </div>
+          <div class="quarter-meta-row">
+            <span class="quarter-meta-item" id="qStrukQ2"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> 0 Struk</span>
+            <span class="quarter-meta-item" id="qAtvQ2">ATV: Rp 0</span>
+          </div>
+        </div>
+
+        <!-- Q3 Card -->
+        <div class="quarter-card" id="qCardQ3" onclick="toggleQuarterFocus('Q3')" title="Klik untuk fokus visual Kuartal 3">
+          <div class="quarter-card-header">
+            <span class="quarter-card-title">Kuartal 3 (Q3)</span>
+            <span class="quarter-card-months">Jul – Sep</span>
+          </div>
+          <div class="quarter-sales-val" id="qSales26Q3">Rp 0</div>
+          <div class="quarter-growth-row">
+            <span class="quarter-growth-badge neutral" id="qGrowthQ3">+0.0% YoY</span>
+            <span class="quarter-sales-base" id="qSales25Q3">2025: Rp 0</span>
+          </div>
+          <div class="quarter-meta-row">
+            <span class="quarter-meta-item" id="qStrukQ3"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> 0 Struk</span>
+            <span class="quarter-meta-item" id="qAtvQ3">ATV: Rp 0</span>
+          </div>
+        </div>
+
+        <!-- Q4 Card -->
+        <div class="quarter-card" id="qCardQ4" onclick="toggleQuarterFocus('Q4')" title="Klik untuk fokus visual Kuartal 4">
+          <div class="quarter-card-header">
+            <span class="quarter-card-title">Kuartal 4 (Q4)</span>
+            <span class="quarter-card-months">Okt – Des</span>
+          </div>
+          <div class="quarter-sales-val" id="qSales26Q4">Rp 0</div>
+          <div class="quarter-growth-row">
+            <span class="quarter-growth-badge neutral" id="qGrowthQ4">+0.0% YoY</span>
+            <span class="quarter-sales-base" id="qSales25Q4">2025: Rp 0</span>
+          </div>
+          <div class="quarter-meta-row">
+            <span class="quarter-meta-item" id="qStrukQ4"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> 0 Struk</span>
+            <span class="quarter-meta-item" id="qAtvQ4">ATV: Rp 0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart Canvas & Tooltip -->
+      <div class="chart-wrap" style="position:relative; margin-top:14px;">
+        <canvas id="spendingStrukChart" style="height:360px;"></canvas>
+        <div id="spendingStrukTooltip" class="chart-tooltip" style="min-width:280px;"></div>
       </div>
     </div>
 
@@ -9689,6 +10026,7 @@
     let targetChartList = [];
     let visitorRevenueChartList = [];
     let visitorTrendChartList = [];
+    let spendingStrukChartList = [];
 
     const chart1Title = document.getElementById('chart1Title');
     const chart1Subtitle = document.getElementById('chart1Subtitle');
@@ -9845,6 +10183,213 @@
           visitors_2025: mdEntry ? mdEntry.v25Full : (vis25ByDay[dayKey] || 0)
         };
       });
+    }
+
+    // ----------------------------------------------------
+    // Chart 7: Spending Revenue vs Struk Transaksi Data & Quarter Ribbon
+    // ----------------------------------------------------
+    try {
+      // 1. Calculate Quarter Aggregates (Q1, Q2, Q3, Q4)
+      const quarterDefs = [
+        { key: 'Q1', title: 'Kuartal 1 (Q1)', sub: 'Jan – Mar', months: ['01', '02', '03'] },
+        { key: 'Q2', title: 'Kuartal 2 (Q2)', sub: 'Apr – Jun', months: ['04', '05', '06'] },
+        { key: 'Q3', title: 'Kuartal 3 (Q3)', sub: 'Jul – Sep', months: ['07', '08', '09'] },
+        { key: 'Q4', title: 'Kuartal 4 (Q4)', sub: 'Okt – Des', months: ['10', '11', '12'] }
+      ];
+
+      const quarterData = {};
+      quarterDefs.forEach(qd => {
+        let s26Q = 0, s25Q_matched = 0, s25Q_full = 0, q26Q = 0, q25Q = 0;
+        const tx26SetQ = new Set();
+        const tx25SetQ_matched = new Set();
+        const tx25SetQ_full = new Set();
+        let has26Q = false;
+
+        qd.months.forEach(m => {
+          const mm = matrixMonthData[m];
+          if (mm) {
+            s26Q += mm.s26;
+            s25Q_matched += mm.s25;
+            s25Q_full += mm.s25Full;
+            q26Q += mm.q26;
+            q25Q += mm.q25;
+            if (mm.has26Sales) has26Q = true;
+            if (mm.tx26) mm.tx26.forEach(t => tx26SetQ.add(t));
+            if (mm.tx25) mm.tx25.forEach(t => tx25SetQ_matched.add(t));
+            if (mm.tx25Full) mm.tx25Full.forEach(t => tx25SetQ_full.add(t));
+          }
+        });
+
+        const tx26Q = tx26SetQ.size;
+        const tx25Q_matched = tx25SetQ_matched.size;
+        const tx25Q_full = tx25SetQ_full.size;
+
+        // Strict Apples-to-Apples YoY matching
+        const s25Base = (has26Q && s25Q_matched > 0) ? s25Q_matched : s25Q_full;
+        const tx25Base = (has26Q && tx25Q_matched > 0) ? tx25Q_matched : tx25Q_full;
+
+        const atv26Q = tx26Q > 0 ? (s26Q / tx26Q) : 0;
+        const atv25Q = tx25Base > 0 ? (s25Base / tx25Base) : 0;
+        const growthSalesQ = s25Base > 0 ? ((s26Q - s25Base) / s25Base * 100) : 0;
+        const growthTxQ = tx25Base > 0 ? ((tx26Q - tx25Base) / tx25Base * 100) : 0;
+        const growthAtvQ = atv25Q > 0 ? ((atv26Q - atv25Q) / atv25Q * 100) : 0;
+
+        quarterData[qd.key] = {
+          ...qd,
+          s26: s26Q,
+          s25: s25Base,
+          s25Full: s25Q_full,
+          has26: has26Q,
+          tx26: tx26Q,
+          tx25: tx25Base,
+          atv26: atv26Q,
+          atv25: atv25Q,
+          growthSales: growthSalesQ,
+          growthTx: growthTxQ,
+          growthAtv: growthAtvQ
+        };
+
+        // Update Quarter Card DOM elements
+        const qSales26El = document.getElementById('qSales26' + qd.key);
+        const qGrowthEl = document.getElementById('qGrowth' + qd.key);
+        const qSales25El = document.getElementById('qSales25' + qd.key);
+        const qStrukEl = document.getElementById('qStruk' + qd.key);
+        const qAtvEl = document.getElementById('qAtv' + qd.key);
+
+        if (qSales26El) qSales26El.textContent = has26Q ? formatRp(s26Q) : (s25Q_full > 0 ? '(Proyeksi)' : 'Rp 0');
+        if (qGrowthEl) {
+          if (has26Q && s25Base > 0) {
+            const gPrefix = growthSalesQ >= 0 ? '+' : '';
+            qGrowthEl.textContent = `${gPrefix}${growthSalesQ.toFixed(1)}% YoY`;
+            qGrowthEl.className = 'quarter-growth-badge ' + (growthSalesQ >= 0 ? 'positive' : 'negative');
+          } else {
+            qGrowthEl.textContent = has26Q ? 'N/A' : 'Horizon 2026';
+            qGrowthEl.className = 'quarter-growth-badge neutral';
+          }
+        }
+        if (qSales25El) qSales25El.textContent = `2025: ${formatRp(s25Base)}`;
+        if (qStrukEl) qStrukEl.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> ${formatNum(tx26Q)} Struk`;
+        if (qAtvEl) qAtvEl.textContent = `ATV: ${formatRp(atv26Q)}`;
+      });
+
+      // 2. Auto Level Selection:
+      // If single month or date range selected, default level to 'daily' (user can still toggle pills)
+      if (typeof spendingChartState !== 'undefined') {
+        if (hasDateRange || selMonth) {
+          if (!spendingChartManualOverride) {
+            spendingChartState.level = 'daily';
+          }
+        } else {
+          if (!spendingChartManualOverride && spendingChartState.level === 'daily') {
+            spendingChartState.level = 'monthly';
+          }
+        }
+        if (typeof updateSpendingLevelPills === 'function') {
+          updateSpendingLevelPills();
+        }
+
+        const activeLevel = spendingChartState.level;
+        const focusedQ = spendingChartState.focusedQuarter;
+
+        if (activeLevel === 'quarter') {
+          spendingStrukChartList = quarterDefs.map(qd => {
+            const q = quarterData[qd.key];
+            return {
+              key: qd.key,
+              label: qd.title,
+              short_label: qd.key,
+              sub_label: qd.sub,
+              is_quarter: true,
+              has26: q.has26,
+              spending_2026: q.has26 ? q.s26 : null,
+              spending_2025: q.s25,
+              struk_2026: q.has26 ? q.tx26 : null,
+              struk_2025: q.tx25,
+              atv_2026: q.has26 ? q.atv26 : null,
+              atv_2025: q.atv25
+            };
+          });
+        } else if (activeLevel === 'monthly') {
+          let monthsToInclude = Object.keys(matrixMonthData).sort();
+          if (focusedQ && quarterData[focusedQ]) {
+            monthsToInclude = quarterData[focusedQ].months;
+          }
+          spendingStrukChartList = monthsToInclude.map(mk => {
+            const mIdx = parseInt(mk, 10);
+            const mm = matrixMonthData[mk] || { s26: 0, s25: 0, s25Full: 0, tx26: new Set(), tx25: new Set(), tx25Full: new Set(), has26Sales: false };
+            const tx26Count = mm.tx26 ? mm.tx26.size : 0;
+            const tx25Count = (mm.has26Sales && mm.tx25 && mm.tx25.size > 0) ? mm.tx25.size : (mm.tx25Full ? mm.tx25Full.size : 0);
+            const s25Base = (mm.has26Sales && mm.s25 > 0) ? mm.s25 : mm.s25Full;
+            const atv26Val = tx26Count > 0 ? (mm.s26 / tx26Count) : 0;
+            const atv25Val = tx25Count > 0 ? (s25Base / tx25Count) : 0;
+            return {
+              date: '2026-' + mk,
+              comparison_date: '2025-' + mk,
+              label: mFullNames[mIdx] || mk,
+              short_label: mNames[mIdx] || mk,
+              is_monthly: true,
+              has26: mm.has26Sales,
+              spending_2026: mm.has26Sales ? mm.s26 : null,
+              spending_2025: s25Base,
+              struk_2026: mm.has26Sales ? tx26Count : null,
+              struk_2025: tx25Count,
+              atv_2026: mm.has26Sales ? atv26Val : null,
+              atv_2025: atv25Val
+            };
+          });
+        } else {
+          // Daily Level
+          let dayKeys = Array.from(new Set(Object.keys(matrixDayData))).sort();
+          if (focusedQ && quarterData[focusedQ]) {
+            const qMonths = new Set(quarterData[focusedQ].months);
+            dayKeys = dayKeys.filter(dk => qMonths.has(dk.substring(0, 2)));
+          }
+          spendingStrukChartList = dayKeys.map(dayKey => {
+            const parts = dayKey.split('-');
+            const dNum = parseInt(parts[1], 10);
+            const mLabel = mNames[parseInt(parts[0], 10)] || parts[0];
+            const md = matrixDayData[dayKey] || { s26: 0, s25: 0, s25Full: 0, tx26: new Set(), tx25: new Set(), tx25Full: new Set(), has26Sales: false };
+            const isDateActive26 = GLOBAL_ACTIVE_26_DM.has(dayKey) && (md.has26Sales || (byDay[dayKey] && byDay[dayKey].s26 > 0));
+            const s26Val = isDateActive26 ? (byDay[dayKey] ? byDay[dayKey].s26 : md.s26) : null;
+            const s25Val = isDateActive26 ? (byDay[dayKey] ? byDay[dayKey].s25 : md.s25) : (md.s25Full || (byDay[dayKey] ? byDay[dayKey].s25 : 0));
+            const tx26Count = (isDateActive26 && md.tx26) ? md.tx26.size : null;
+            const tx25Count = (isDateActive26 && md.tx25 && md.tx25.size > 0) ? md.tx25.size : (md.tx25Full ? md.tx25Full.size : 0);
+            const atv26Val = (tx26Count && tx26Count > 0 && s26Val) ? (s26Val / tx26Count) : null;
+            const atv25Val = (tx25Count > 0 && s25Val > 0) ? (s25Val / tx25Count) : 0;
+
+            return {
+              date: '2026-' + dayKey,
+              comparison_date: '2025-' + dayKey,
+              label: dNum + ' ' + mLabel,
+              short_label: dNum + ' ' + mLabel,
+              is_monthly: false,
+              has26: isDateActive26,
+              spending_2026: s26Val,
+              spending_2025: s25Val,
+              struk_2026: tx26Count,
+              struk_2025: tx25Count,
+              atv_2026: atv26Val,
+              atv_2025: atv25Val
+            };
+          });
+        }
+
+        // Update Subtitle / Mode Badge in DOM
+        const modeBadgeEl = document.getElementById('spendingModeBadge');
+        const chartSubEl = document.getElementById('spendingChartSubtitle');
+        if (modeBadgeEl) {
+          if (activeLevel === 'quarter') modeBadgeEl.textContent = 'Kuartal (Q1–Q4)';
+          else if (activeLevel === 'monthly') modeBadgeEl.textContent = focusedQ ? `Bulanan (${focusedQ})` : 'Bulanan (Jan–Des)';
+          else modeBadgeEl.textContent = focusedQ ? `Harian (${focusedQ})` : (selMonth ? `Harian (Bulan ${selMonth})` : 'Harian (Kalender)');
+        }
+        if (chartSubEl) {
+          if (activeLevel === 'quarter') chartSubEl.textContent = 'Ringkasan performa spending revenue vs struk per kuartal (YoY 2026 vs 2025)';
+          else if (activeLevel === 'monthly') chartSubEl.textContent = focusedQ ? `Detail spending & struk bulanan untuk ${focusedQ} (2026 vs 2025)` : 'Tren spending vs struk transaksi bulanan Jan – Des (YoY)';
+          else chartSubEl.textContent = 'Pergerakan spending omzet vs struk harian (Dual Y-Axis)';
+        }
+      }
+    } catch (e) {
+      console.error('Spending Struk Chart calculation error:', e);
     }
 
     const chart5LegendVisDot = document.getElementById('chart5LegendVisDot');
@@ -10179,6 +10724,7 @@
       hourly_chart: hourlyList,
       visitor_revenue_chart: visitorRevenueChartList,
       visitor_trend_chart: visitorTrendChartList,
+      spending_struk_chart: spendingStrukChartList,
       peak_sales_hour: peakHourSales,
       peak_tx_hour: peakHourTx,
       executive_narrative: document.getElementById('narrativeText') ? document.getElementById('narrativeText').textContent : ''
@@ -13059,6 +13605,56 @@
   // ----------------------------------------------------
   // CHARTS RENDERING ENGINE
   // ----------------------------------------------------
+  let spendingChartState = {
+    level: 'monthly',
+    focusedQuarter: null
+  };
+  let spendingChartManualOverride = false;
+
+  function updateSpendingLevelPills() {
+    const qPill = document.getElementById('btnSpendingLevelQuarter');
+    const mPill = document.getElementById('btnSpendingLevelMonthly');
+    const dPill = document.getElementById('btnSpendingLevelDaily');
+    if (qPill) qPill.classList.toggle('active', spendingChartState.level === 'quarter');
+    if (mPill) mPill.classList.toggle('active', spendingChartState.level === 'monthly');
+    if (dPill) dPill.classList.toggle('active', spendingChartState.level === 'daily');
+
+    ['Q1', 'Q2', 'Q3', 'Q4'].forEach(qk => {
+      const card = document.getElementById('qCard' + qk);
+      if (card) {
+        card.classList.toggle('active', spendingChartState.focusedQuarter === qk);
+      }
+    });
+  }
+
+  function setSpendingChartLevel(lvl) {
+    spendingChartManualOverride = true;
+    spendingChartState.level = lvl;
+    if (lvl === 'quarter') {
+      spendingChartState.focusedQuarter = null;
+    }
+    updateSpendingLevelPills();
+    if (typeof applyFilters === 'function') {
+      applyFilters();
+    }
+  }
+
+  function toggleQuarterFocus(qKey) {
+    spendingChartManualOverride = true;
+    if (spendingChartState.focusedQuarter === qKey) {
+      spendingChartState.focusedQuarter = null;
+    } else {
+      spendingChartState.focusedQuarter = qKey;
+      if (spendingChartState.level === 'quarter') {
+        spendingChartState.level = 'monthly';
+      }
+    }
+    updateSpendingLevelPills();
+    if (typeof applyFilters === 'function') {
+      applyFilters();
+    }
+  }
+
   function redrawAllCharts() {
     drawDailySalesChart();
     drawTargetChart();
@@ -13066,6 +13662,7 @@
     drawHourlyTxChart();
     drawVisitorRevenueChart();
     drawVisitorTrendChart();
+    drawSpendingStrukChart();
   }
 
   // Chart 1: YoY Daily Sales
@@ -14104,6 +14701,327 @@
     });
   }
 
+  // ----------------------------------------------------
+  // Chart 7: Full-Width Spending Revenue vs Struk Transaksi Dual-Axis Canvas
+  // ----------------------------------------------------
+  const spendingCanvas = document.getElementById('spendingStrukChart');
+  const spendingTooltip = document.getElementById('spendingStrukTooltip');
+  let spendingPoints = [];
+
+  function drawSpendingStrukChart() {
+    if (!spendingCanvas) return;
+    const isDark = root.classList.contains('dark');
+    const gridColor = isDark ? '#1f2937' : '#e2e8f0';
+    const textColor = isDark ? '#94a3b8' : '#64748b';
+
+    const box = spendingCanvas.parentElement;
+    const ratio = window.devicePixelRatio || 1;
+    const width = box.clientWidth || 800;
+    const height = 360;
+    spendingCanvas.width = width * ratio;
+    spendingCanvas.height = height * ratio;
+    spendingCanvas.style.height = height + 'px';
+
+    const ctx = spendingCanvas.getContext('2d');
+    ctx.scale(ratio, ratio);
+
+    const chartData = (currentDashboardData && currentDashboardData.spending_struk_chart) ? currentDashboardData.spending_struk_chart : [];
+    if (!chartData.length) {
+      ctx.fillStyle = textColor;
+      ctx.textAlign = 'center';
+      ctx.font = '13px sans-serif';
+      ctx.fillText('Tidak ada data spending & struk untuk filter ini', width / 2, height / 2);
+      return;
+    }
+
+    const spending26Color = isDark ? '#00B5E2' : '#0033A0';
+    const spending25Color = isDark ? '#818cf8' : '#a78bfa';
+    const struk26Color = '#10b981';
+    const struk25Color = '#f59e0b';
+
+    const maxSpending = Math.max(...chartData.flatMap(x => [x.spending_2026 || 0, x.spending_2025 || 0]), 1000000);
+    const maxStruk = Math.max(...chartData.flatMap(x => [x.struk_2026 || 0, x.struk_2025 || 0]), 10);
+
+    const left = 78, bottom = 40, top = 28, right = 70;
+    const plotW = width - left - right;
+    const plotH = height - top - bottom;
+
+    ctx.font = '11px sans-serif';
+    ctx.lineWidth = 1;
+
+    // Gridlines & Dual Y-Axis Labels
+    [0, 0.25, 0.5, 0.75, 1].forEach(t => {
+      const y = top + plotH * (1 - t);
+      ctx.strokeStyle = gridColor;
+      ctx.beginPath();
+      ctx.moveTo(left, y);
+      ctx.lineTo(width - right, y);
+      ctx.stroke();
+
+      // Left Y-Axis: Spending (Rp)
+      ctx.fillStyle = spending26Color;
+      ctx.textAlign = 'left';
+      const spVal = maxSpending * t;
+      let spStr = 'Rp 0';
+      if (spVal >= 1000000000) {
+        spStr = 'Rp ' + (spVal / 1000000000).toFixed(1) + 'M';
+      } else if (spVal > 0) {
+        spStr = 'Rp ' + Math.round(spVal / 1000000) + 'jt';
+      }
+      ctx.fillText(spStr, 6, y + 4);
+
+      // Right Y-Axis: Struk (Invoices)
+      ctx.fillStyle = struk26Color;
+      ctx.textAlign = 'right';
+      const stVal = Math.round(maxStruk * t);
+      const stStr = stVal >= 1000 ? (Math.round(stVal / 1000) + 'rb') : stVal.toLocaleString('id-ID');
+      ctx.fillText(stStr + ' tx', width - 6, y + 4);
+    });
+
+    const numItems = chartData.length;
+    const slotW = plotW / Math.max(numItems, 1);
+    const isQuarter = (spendingChartState.level === 'quarter');
+    const isMonthly = (spendingChartState.level === 'monthly');
+    const isDaily = (spendingChartState.level === 'daily');
+
+    // Bar width depends on density
+    let barW = Math.min(26, Math.max(4, slotW * 0.28));
+    if (isDaily && numItems > 20) {
+      barW = Math.min(8, Math.max(3, slotW * 0.35));
+    }
+
+    spendingPoints = [];
+
+    // Helper: draw rounded top rect
+    function drawRoundedBar(x, y, w, h, radius, fillStyle) {
+      if (h <= 0) return;
+      ctx.fillStyle = fillStyle;
+      ctx.beginPath();
+      const r = Math.min(radius, w / 2, h);
+      ctx.moveTo(x, y + h);
+      ctx.lineTo(x, y + r);
+      ctx.arcTo(x, y, x + r, y, r);
+      ctx.lineTo(x + w - r, y);
+      ctx.arcTo(x + w, y, x + w, y + r, r);
+      ctx.lineTo(x + w, y + h);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // 1. Draw Dual Bars (Spending 2025 & Spending 2026)
+    chartData.forEach((item, i) => {
+      const cx = left + i * slotW + slotW / 2;
+      const sp25 = item.spending_2025 || 0;
+      const sp26 = item.spending_2026;
+
+      // 2025 Bar (Left)
+      const h25 = (sp25 / maxSpending) * plotH;
+      const y25 = top + plotH - h25;
+      const x25 = cx - barW - 1.5;
+      drawRoundedBar(x25, y25, barW, h25, 4, isDark ? 'rgba(129, 140, 248, 0.45)' : 'rgba(167, 139, 250, 0.55)');
+
+      // 2026 Bar (Right)
+      let h26 = 0, y26 = top + plotH, x26 = cx + 1.5;
+      if (sp26 !== null && sp26 !== undefined) {
+        h26 = (sp26 / maxSpending) * plotH;
+        y26 = top + plotH - h26;
+        drawRoundedBar(x26, y26, barW, h26, 4, spending26Color);
+      }
+
+      // Store anchor point for interaction & line plots
+      const st26 = item.struk_2026;
+      const st25 = item.struk_2025 || 0;
+      const yStruk26 = (st26 !== null && st26 !== undefined) ? (top + plotH - (st26 / maxStruk) * plotH) : null;
+      const yStruk25 = top + plotH - (st25 / maxStruk) * plotH;
+
+      spendingPoints.push({
+        x: cx,
+        x25, y25,
+        x26, y26,
+        yStruk26, yStruk25,
+        item
+      });
+    });
+
+    // 2. Draw Struk 2025 Baseline Line (Dashed Amber)
+    ctx.strokeStyle = struk25Color;
+    ctx.lineWidth = 1.8;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    let hasStartedSt25 = false;
+    spendingPoints.forEach((pt, i) => {
+      if (pt.yStruk25 !== null) {
+        if (!hasStartedSt25) { ctx.moveTo(pt.x, pt.yStruk25); hasStartedSt25 = true; }
+        else { ctx.lineTo(pt.x, pt.yStruk25); }
+      }
+    });
+    ctx.stroke();
+    ctx.setLineDash([]); // Reset line dash
+
+    // 3. Draw Struk 2026 Active Line (Solid Emerald)
+    ctx.strokeStyle = struk26Color;
+    ctx.lineWidth = 2.8;
+    ctx.beginPath();
+    let hasStartedSt26 = false;
+    spendingPoints.forEach((pt, i) => {
+      if (pt.yStruk26 !== null) {
+        if (!hasStartedSt26) { ctx.moveTo(pt.x, pt.yStruk26); hasStartedSt26 = true; }
+        else { ctx.lineTo(pt.x, pt.yStruk26); }
+      }
+    });
+    ctx.stroke();
+
+    // 4. Draw Markers for Struk & Peak Highlights
+    let peakIndex = -1;
+    let maxSpending26 = -1;
+    spendingPoints.forEach((pt, i) => {
+      const sp26 = pt.item.spending_2026;
+      if (sp26 !== null && sp26 !== undefined && sp26 > maxSpending26) {
+        maxSpending26 = sp26;
+        peakIndex = i;
+      }
+
+      // Hollow dot for Struk 2025
+      if (pt.yStruk25 !== null) {
+        ctx.fillStyle = isDark ? '#0f172a' : '#ffffff';
+        ctx.strokeStyle = struk25Color;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.yStruk25, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      }
+
+      // Filled dot for Struk 2026
+      if (pt.yStruk26 !== null) {
+        ctx.fillStyle = struk26Color;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.yStruk26, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      }
+    });
+
+    // 5. Peak Annotation Badge
+    if (peakIndex >= 0 && maxSpending26 > 0) {
+      const pt = spendingPoints[peakIndex];
+      const pinText = '★ Puncak: ' + formatRp(maxSpending26);
+      ctx.font = 'bold 10px sans-serif';
+      const textW = ctx.measureText(pinText).width;
+      const bW = textW + 16, bH = 20;
+      let bX = pt.x - bW / 2;
+      if (bX < left) bX = left;
+      if (bX + bW > width - right) bX = width - right - bW;
+      const bY = Math.max((pt.y26 || top) - 26, top);
+
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(bX, bY, bW, bH, 6);
+      else ctx.rect(bX, bY, bW, bH);
+      ctx.fill();
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.fillStyle = '#fbbf24';
+      ctx.textAlign = 'center';
+      ctx.fillText(pinText, bX + bW / 2, bY + 14);
+    }
+
+    // 6. X-Axis Labels
+    ctx.fillStyle = textColor;
+    ctx.textAlign = 'center';
+    ctx.font = '11px sans-serif';
+    chartData.forEach((item, i) => {
+      const cx = left + i * slotW + slotW / 2;
+      const lbl = item.short_label || item.label;
+      if (numItems <= 12) {
+        ctx.fillText(lbl, cx, height - 12);
+      } else {
+        if (i === 0 || i === numItems - 1 || i % Math.ceil(numItems / 10) === 0) {
+          ctx.fillText(lbl, cx, height - 12);
+        }
+      }
+    });
+  }
+
+  if (spendingCanvas) {
+    spendingCanvas.addEventListener('mousemove', function(e) {
+      if (!spendingPoints.length) return;
+      const rect = spendingCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      let nearest = spendingPoints.reduce((a, p) => Math.abs(p.x - x) < Math.abs(a.x - x) ? p : a);
+      if (Math.abs(nearest.x - x) < 40) {
+        const it = nearest.item;
+        const sp26 = it.spending_2026;
+        const sp25 = it.spending_2025 || 0;
+        const st26 = it.struk_2026;
+        const st25 = it.struk_2025 || 0;
+        const atv26 = it.atv_2026;
+        const atv25 = it.atv_2025 || 0;
+
+        let titleHtml = '';
+        if (it.is_quarter) {
+          titleHtml = `<div class="tooltip-title">📊 ${it.label} (${it.sub_label})</div>`;
+        } else if (it.is_monthly) {
+          titleHtml = `<div class="tooltip-title">📅 ${it.label} (2026 vs 2025)</div>`;
+        } else {
+          const day26 = getDayNameFromDateStr(it.date);
+          const day25 = getDayNameFromDateStr(it.comparison_date);
+          titleHtml = `<div class="tooltip-title">📅 ${it.label} (${day26} '26 vs ${day25} '25)</div>`;
+        }
+
+        const spDiff = (sp26 !== null && sp26 !== undefined) ? (sp26 - sp25) : null;
+        const spGrowth = (sp25 > 0 && spDiff !== null) ? ((spDiff / sp25) * 100).toFixed(1) + '%' : '-';
+        const stDiff = (st26 !== null && st26 !== undefined) ? (st26 - st25) : null;
+        const stGrowth = (st25 > 0 && stDiff !== null) ? ((stDiff / st25) * 100).toFixed(1) + '%' : '-';
+        const atvDiff = (atv26 !== null && atv26 !== undefined && atv25 > 0) ? (atv26 - atv25) : null;
+        const atvGrowth = (atv25 > 0 && atvDiff !== null) ? ((atvDiff / atv25) * 100).toFixed(1) + '%' : '-';
+
+        let contentHtml = '';
+        if (sp26 === null || sp26 === undefined) {
+          contentHtml = `
+            ${titleHtml}
+            <div class="tooltip-row"><span class="tooltip-label" style="color:#60a5fa;">● Spending 2026:</span> <span class="tooltip-val" style="color:var(--text-muted); font-style:italic;">(Belum Berjalan)</span></div>
+            <div class="tooltip-row"><span class="tooltip-label" style="color:#c4b5fd;">● Spending 2025:</span> <span class="tooltip-val">${formatRp(sp25)}</span></div>
+            <div class="tooltip-row"><span class="tooltip-label" style="color:#f59e0b;">● Struk 2025:</span> <span class="tooltip-val">${formatNum(st25)} transaksi</span></div>
+            <div class="tooltip-row"><span class="tooltip-label">● ATV 2025:</span> <span class="tooltip-val">${formatRp(atv25)} /struk</span></div>
+          `;
+        } else {
+          contentHtml = `
+            ${titleHtml}
+            <div class="tooltip-row"><span class="tooltip-label" style="color:#60a5fa;">● Spending '26:</span> <span class="tooltip-val">${formatRp(sp26)}</span></div>
+            <div class="tooltip-row"><span class="tooltip-label" style="color:#c4b5fd;">● Spending '25:</span> <span class="tooltip-val">${formatRp(sp25)}</span></div>
+            <div class="tooltip-row"><span class="tooltip-label">YoY Spending:</span> <span class="tooltip-val" style="color:${(spDiff||0)>=0?'#34d399':'#f87171'};">${(spDiff||0)>=0?'+':''}${spGrowth} (${(spDiff||0)>=0?'+':''}${formatRp(spDiff)})</span></div>
+            <div style="border-top:1px dashed rgba(255,255,255,0.15); margin:5px 0;"></div>
+            <div class="tooltip-row"><span class="tooltip-label" style="color:#10b981;">● Struk Transaksi '26:</span> <span class="tooltip-val">${formatNum(st26)} struk</span></div>
+            <div class="tooltip-row"><span class="tooltip-label" style="color:#f59e0b;">● Struk Transaksi '25:</span> <span class="tooltip-val">${formatNum(st25)} struk</span></div>
+            <div class="tooltip-row"><span class="tooltip-label">YoY Struk:</span> <span class="tooltip-val" style="color:${(stDiff||0)>=0?'#34d399':'#f87171'};">${(stDiff||0)>=0?'+':''}${stGrowth} (${(stDiff||0)>=0?'+':''}${formatNum(stDiff)} tx)</span></div>
+            <div style="border-top:1px dashed rgba(255,255,255,0.15); margin:5px 0;"></div>
+            <div class="tooltip-row"><span class="tooltip-label">● Basket Size (ATV) '26:</span> <span class="tooltip-val">${formatRp(atv26)}</span></div>
+            <div class="tooltip-row"><span class="tooltip-label">● Basket Size (ATV) '25:</span> <span class="tooltip-val">${formatRp(atv25)}</span></div>
+            <div class="tooltip-row"><span class="tooltip-label">YoY ATV:</span> <span class="tooltip-val" style="color:${(atvDiff||0)>=0?'#34d399':'#f87171'};">${(atvDiff||0)>=0?'+':''}${atvGrowth}</span></div>
+          `;
+        }
+
+        spendingTooltip.style.display = 'block';
+        spendingTooltip.style.left = Math.min(nearest.x + 12, spendingCanvas.clientWidth - 300) + 'px';
+        spendingTooltip.style.top = Math.max(10, Math.min(y - 50, spendingCanvas.clientHeight - 200)) + 'px';
+        spendingTooltip.innerHTML = contentHtml;
+      } else {
+        spendingTooltip.style.display = 'none';
+      }
+    });
+
+    spendingCanvas.addEventListener('mouseleave', () => {
+      if (spendingTooltip) spendingTooltip.style.display = 'none';
+    });
+  }
+
   // Initial load & draw (initOutletMultiselect already ran; applyFilters handles tags & charts in 1 pass)
   applyFilters();
 
@@ -14136,22 +15054,32 @@
     const trendPanels = document.querySelectorAll('.chart-panel-trend');
     const hourlyPanels = document.querySelectorAll('.chart-panel-hourly');
     const visitorPanels = document.querySelectorAll('.chart-panel-visitor');
+    const spendingPanels = document.querySelectorAll('.chart-panel-spending');
     if (mode === 'trend') {
       trendPanels.forEach(p => p.style.display = 'block');
       hourlyPanels.forEach(p => p.style.display = 'none');
       visitorPanels.forEach(p => p.style.display = 'none');
+      spendingPanels.forEach(p => p.style.display = 'none');
     } else if (mode === 'hourly') {
       trendPanels.forEach(p => p.style.display = 'none');
       hourlyPanels.forEach(p => p.style.display = 'block');
       visitorPanels.forEach(p => p.style.display = 'none');
+      spendingPanels.forEach(p => p.style.display = 'none');
     } else if (mode === 'visitor') {
       trendPanels.forEach(p => p.style.display = 'none');
       hourlyPanels.forEach(p => p.style.display = 'none');
       visitorPanels.forEach(p => p.style.display = 'block');
+      spendingPanels.forEach(p => p.style.display = 'none');
+    } else if (mode === 'spending') {
+      trendPanels.forEach(p => p.style.display = 'none');
+      hourlyPanels.forEach(p => p.style.display = 'none');
+      visitorPanels.forEach(p => p.style.display = 'none');
+      spendingPanels.forEach(p => p.style.display = 'block');
     } else {
       trendPanels.forEach(p => p.style.display = 'block');
       hourlyPanels.forEach(p => p.style.display = 'block');
       visitorPanels.forEach(p => p.style.display = 'block');
+      spendingPanels.forEach(p => p.style.display = 'block');
     }
     requestAnimationFrame(() => {
       try {
