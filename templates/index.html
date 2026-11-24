@@ -374,6 +374,41 @@
       outline-offset: 2px;
     }
 
+    /* Universal Accessible Focus-Visible & Tactile Micro-Physics (Impeccable & Addy Osmani Standards) */
+    button:focus-visible,
+    select:focus-visible,
+    input:focus-visible,
+    .btn:focus-visible,
+    .searchable-trigger:focus-visible,
+    .custom-date-trigger:focus-visible,
+    .preset-chip:focus-visible,
+    .chart-view-pill:focus-visible,
+    .tab-item:focus-visible {
+      outline: 2px solid var(--brand-sky) !important;
+      outline-offset: 2px !important;
+    }
+
+    button:active,
+    .btn:active,
+    .preset-chip:active,
+    .chart-view-pill:active,
+    .custom-date-trigger:active,
+    .searchable-trigger:active,
+    .unit-benchmark-card:active {
+      transform: scale(0.98) !important;
+      transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    button,
+    .btn,
+    .preset-chip,
+    .chart-view-pill,
+    .searchable-trigger,
+    .custom-date-trigger,
+    canvas {
+      touch-action: manipulation;
+    }
+
     .btn-primary {
       background: var(--brand);
       color: #ffffff !important;
@@ -436,7 +471,8 @@
     .filter-card.is-scrolled .custom-date-trigger {
       padding: 6px 10px;
       font-size: 12.5px;
-      min-height: 32px;
+      min-height: 38px;
+      touch-action: manipulation;
     }
 
     :root.dark .filter-card {
@@ -584,7 +620,7 @@
       align-items: center;
       gap: 6px;
       padding: 6px 13px;
-      min-height: 34px;
+      min-height: 38px;
       font-size: 12.5px;
       font-weight: 600;
       color: var(--text);
@@ -592,13 +628,14 @@
       border: 1px solid var(--panel-border);
       border-radius: 20px;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       user-select: none;
+      touch-action: manipulation;
     }
     .filter-card.is-scrolled .preset-chip {
-      min-height: 28px;
-      padding: 4px 10px;
-      font-size: 11.5px;
+      min-height: 38px;
+      padding: 6px 11px;
+      font-size: 12px;
     }
 
     .preset-chip:hover {
@@ -709,13 +746,25 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 16px;
-      height: 16px;
-      font-size: 10px;
+      width: 20px;
+      height: 20px;
+      font-size: 11px;
       border-radius: 50%;
       margin-left: 4px;
-      opacity: 0.6;
+      opacity: 0.7;
       transition: all 0.15s;
+      position: relative;
+      touch-action: manipulation;
+    }
+    /* Expand touch hit target to >= 38px for POS touchscreen monitors */
+    .preset-delete-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 38px;
+      height: 38px;
     }
     .preset-delete-btn:hover {
       opacity: 1;
@@ -902,7 +951,8 @@
     .filter-card.is-scrolled .searchable-trigger {
       padding: 6px 10px;
       font-size: 12.5px;
-      min-height: 32px;
+      min-height: 38px;
+      touch-action: manipulation;
     }
 
     .filter-card.is-scrolled .btn-toggle-filter {
@@ -1024,15 +1074,27 @@
       background: rgba(148, 163, 184, 0.25);
       color: var(--text-muted);
       border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      font-size: 10px;
+      width: 22px;
+      height: 22px;
+      font-size: 11px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all .2s;
       flex-shrink: 0;
+      position: relative;
+      touch-action: manipulation;
+    }
+    /* Touch target expander >= 38px for POS touchscreens */
+    .btn-clear-date::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 38px;
+      height: 38px;
     }
     .btn-clear-date:hover {
       background: var(--danger);
@@ -1108,14 +1170,17 @@
       background: #f1f5f9;
       color: #64748b;
       border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      font-size: 12px;
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      min-height: 38px;
+      font-size: 14px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all .2s;
+      touch-action: manipulation;
     }
     :root.dark .cal-btn-close-icon {
       background: #1e293b;
@@ -1203,8 +1268,10 @@
       background: #f1f5f9;
       color: #334155;
       border-radius: 50%;
-      width: 32px;
-      height: 32px;
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      min-height: 38px;
       font-size: 18px;
       line-height: 1;
       cursor: pointer;
@@ -1212,6 +1279,7 @@
       align-items: center;
       justify-content: center;
       transition: all .2s;
+      touch-action: manipulation;
     }
     :root.dark .cal-nav-btn {
       background: #1e293b;
@@ -5332,8 +5400,8 @@
 
     <div class="filter-grid" id="filterGrid">
       <div class="filter-group">
-        <label class="filter-label">Periode Bulan (2026)</label>
-        <select id="filterMonth" onchange="applyFilters()">
+        <label for="filterMonth" class="filter-label">Periode Bulan (2026)</label>
+        <select id="filterMonth" aria-label="Pilih Periode Bulan Transaksi" onchange="applyFilters()">
           <option value="">Semua Bulan (YTD)</option>
           {% for m in data.months %}
           <option value="{{ m }}" {% if m == selected_month %}selected{% endif %}>{{ data.month_labels[m] }}</option>
@@ -5342,8 +5410,8 @@
       </div>
 
       <div class="filter-group">
-        <label class="filter-label">Rentang Tanggal (Kalender)</label>
-        <div class="custom-date-trigger" id="customDateTrigger" onclick="openCalendarModal(event)">
+        <label for="customDateTrigger" class="filter-label">Rentang Tanggal (Kalender)</label>
+        <div class="custom-date-trigger" id="customDateTrigger" role="button" aria-haspopup="dialog" aria-label="Pilih Rentang Tanggal Kalender" tabindex="0" onclick="openCalendarModal(event)" onkeydown="if(event.key==='Enter'||event.key===' ')openCalendarModal(event)">
           <div class="trigger-content">
             <span class="trigger-icon">
               <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
@@ -5351,7 +5419,7 @@
             <span id="dateRangeDisplayLabel" class="trigger-text">Semua Tanggal (YTD)</span>
           </div>
           <div class="trigger-actions">
-            <button type="button" id="clearDateBtn" class="btn-clear-date" onclick="event.stopPropagation(); clearDateRange();" title="Reset Tanggal" style="display:none;"><svg viewBox="0 0 24 24" style="width:10px;height:10px;fill:currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+            <button type="button" id="clearDateBtn" class="btn-clear-date" onclick="event.stopPropagation(); clearDateRange();" title="Reset Tanggal" aria-label="Reset Filter Tanggal" style="display:none;"><svg viewBox="0 0 24 24" style="width:10px;height:10px;fill:currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
             <span class="trigger-arrow">▾</span>
           </div>
         </div>
@@ -5360,8 +5428,8 @@
       </div>
 
       <div class="filter-group">
-        <label class="filter-label">Area Operasional</label>
-        <select id="filterArea" onchange="onAreaChange()">
+        <label for="filterArea" class="filter-label">Area Operasional</label>
+        <select id="filterArea" aria-label="Pilih Area Unit Rekreasi" onchange="onAreaChange()">
           <option value="">Semua Area</option>
           {% for a in data.area_options %}
           <option value="{{ a }}" {% if a == selected_area %}selected{% endif %}>{{ a }}</option>
@@ -5370,22 +5438,22 @@
       </div>
 
       <div class="filter-group" id="filterGroupOutlet">
-        <label class="filter-label">Lokasi Konter / Outlet</label>
-        <select id="filterOutlet" onchange="applyFilters()" style="display:none;">
+        <label for="filterOutlet" class="filter-label">Lokasi Konter / Outlet</label>
+        <select id="filterOutlet" aria-label="Pilih Konter Outlet" onchange="applyFilters()" style="display:none;">
           <option value="">Semua Outlet ({{ data.outlet_options|length }})</option>
           {% for o in data.outlet_options %}
           <option value="{{ o }}" {% if o == selected_outlet %}selected{% endif %}>{{ o }}</option>
           {% endfor %}
         </select>
         <div class="searchable-select" id="customOutletSelect">
-          <button type="button" class="searchable-trigger" id="outletTriggerBtn" onclick="toggleOutletDropdown(event)" aria-haspopup="listbox" aria-expanded="false">
+          <button type="button" class="searchable-trigger" id="outletTriggerBtn" onclick="toggleOutletDropdown(event)" aria-haspopup="listbox" aria-expanded="false" aria-label="Menu dropdown pilihan outlet konter">
             <span class="searchable-trigger-text" id="outletTriggerLabel">Semua Outlet ({{ data.outlet_options|length }})</span>
             <span class="searchable-trigger-arrow">▾</span>
           </button>
           <div class="searchable-dropdown-menu outlet-multiselect-dropdown" id="outletDropdownMenu" style="display:none;" onclick="event.stopPropagation()">
             <div class="searchable-search-box">
-              <input type="text" class="searchable-search-input" id="outletSearchInput" placeholder="Cari nama konter..." oninput="filterOutletList()" autocomplete="off">
-              <button type="button" class="searchable-clear-btn" onclick="clearOutletSearch()">✕</button>
+              <input type="text" class="searchable-search-input" id="outletSearchInput" placeholder="Cari nama konter..." aria-label="Cari nama konter outlet" oninput="filterOutletList()" autocomplete="off">
+              <button type="button" class="searchable-clear-btn" onclick="clearOutletSearch()" aria-label="Hapus pencarian konter">✕</button>
             </div>
             <div class="outlet-quick-toolbar" style="display:flex; justify-content:space-between; align-items:center; padding:7px 12px; border-bottom:1px solid rgba(0,0,0,0.06); font-size:11px; background:var(--bg-subtle, #f8fafc);">
               <span id="outletCountSelected" style="font-weight:700; color:var(--brand, #0033a0);">Semua Dipilih</span>
@@ -5407,7 +5475,7 @@
               <div class="outlet-group-items" data-group="Dufan">
                 {% for o in data.outlet_options if o.startswith('DF') or 'DUFAN' in o|upper %}
                 <label class="outlet-item-label" data-name="{{ o|lower }}">
-                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" onchange="onOutletCheckboxChange()" checked>
+                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" aria-label="Outlet {{ o }}" onchange="onOutletCheckboxChange()" checked>
                   <span>{{ o }}</span>
                 </label>
                 {% endfor %}
@@ -5424,7 +5492,7 @@
               <div class="outlet-group-items" data-group="Atlantis">
                 {% for o in data.outlet_options if o.startswith('AW') or 'ATLANTIS' in o|upper or 'AWA' in o|upper %}
                 <label class="outlet-item-label" data-name="{{ o|lower }}">
-                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" onchange="onOutletCheckboxChange()" checked>
+                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" aria-label="Outlet {{ o }}" onchange="onOutletCheckboxChange()" checked>
                   <span>{{ o }}</span>
                 </label>
                 {% endfor %}
@@ -5441,7 +5509,7 @@
               <div class="outlet-group-items" data-group="Samudra">
                 {% for o in data.outlet_options if o.startswith('ODIN') or ('SAMUDRA' in o|upper and 'JB' not in o|upper) %}
                 <label class="outlet-item-label" data-name="{{ o|lower }}">
-                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" onchange="onOutletCheckboxChange()" checked>
+                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" aria-label="Outlet {{ o }}" onchange="onOutletCheckboxChange()" checked>
                   <span>{{ o }}</span>
                 </label>
                 {% endfor %}
@@ -5458,7 +5526,7 @@
               <div class="outlet-group-items" data-group="SeaWorld">
                 {% for o in data.outlet_options if o.startswith('SWIN') or 'SEA WORLD' in o|upper %}
                 <label class="outlet-item-label" data-name="{{ o|lower }}">
-                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" onchange="onOutletCheckboxChange()" checked>
+                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" aria-label="Outlet {{ o }}" onchange="onOutletCheckboxChange()" checked>
                   <span>{{ o }}</span>
                 </label>
                 {% endfor %}
@@ -5475,7 +5543,7 @@
               <div class="outlet-group-items" data-group="Beachpark">
                 {% for o in data.outlet_options if o.startswith('OL') or o.startswith('TJ') or o.startswith('JB') or 'JBL' in o|upper or 'BEACH' in o|upper or 'OMBAK' in o|upper or 'SYMPHONY' in o|upper %}
                 <label class="outlet-item-label" data-name="{{ o|lower }}">
-                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" onchange="onOutletCheckboxChange()" checked>
+                  <input type="checkbox" class="outlet-checkbox" value="{{ o }}" aria-label="Outlet {{ o }}" onchange="onOutletCheckboxChange()" checked>
                   <span>{{ o }}</span>
                 </label>
                 {% endfor %}
@@ -5486,22 +5554,22 @@
       </div>
 
       <div class="filter-group">
-        <label class="filter-label">Rekanan Supplier</label>
-        <select id="filterSupplier" onchange="applyFilters()" style="display:none;">
+        <label for="filterSupplier" class="filter-label">Rekanan Supplier</label>
+        <select id="filterSupplier" aria-label="Pilih Rekanan Supplier" onchange="applyFilters()" style="display:none;">
           <option value="">Semua Supplier ({{ data.supplier_options|length if data.supplier_options else 0 }})</option>
           {% for s in data.supplier_options %}
           <option value="{{ s }}">{{ s }}</option>
           {% endfor %}
         </select>
         <div class="searchable-select" id="customSupplierSelect">
-          <button type="button" class="searchable-trigger" id="supplierTriggerBtn" onclick="toggleSearchableDropdown('supplier', event)">
+          <button type="button" class="searchable-trigger" id="supplierTriggerBtn" onclick="toggleSearchableDropdown('supplier', event)" aria-label="Menu dropdown pilihan rekanan supplier">
             <span class="searchable-trigger-text" id="supplierTriggerLabel">Semua Supplier ({{ data.supplier_options|length if data.supplier_options else 0 }})</span>
             <span class="searchable-trigger-arrow">▾</span>
           </button>
           <div class="searchable-dropdown-menu" id="supplierDropdownMenu" style="display:none;" onclick="event.stopPropagation()">
             <div class="searchable-search-box">
-              <input type="text" class="searchable-search-input" id="supplierSearchInput" placeholder="Ketik nama supplier..." oninput="filterSearchableList('supplier')" autocomplete="off">
-              <button type="button" class="searchable-clear-btn" onclick="clearSearchableInput('supplier')">✕</button>
+              <input type="text" class="searchable-search-input" id="supplierSearchInput" placeholder="Ketik nama supplier..." aria-label="Cari nama supplier" oninput="filterSearchableList('supplier')" autocomplete="off">
+              <button type="button" class="searchable-clear-btn" onclick="clearSearchableInput('supplier')" aria-label="Hapus pencarian supplier">✕</button>
             </div>
             <div class="searchable-options-list" id="supplierOptionsList">
               <div class="searchable-option is-selected" onclick="selectSearchableOption('supplier', '', 'Semua Supplier ({{ data.supplier_options|length if data.supplier_options else 0 }})')">
@@ -5518,22 +5586,22 @@
       </div>
 
       <div class="filter-group">
-        <label class="filter-label">Kategori Barang</label>
-        <select id="filterCategory" onchange="applyFilters()" style="display:none;">
+        <label for="filterCategory" class="filter-label">Kategori Barang</label>
+        <select id="filterCategory" aria-label="Pilih Kategori Barang" onchange="applyFilters()" style="display:none;">
           <option value="">Semua Kategori ({{ data.category_options|length if data.category_options else 0 }})</option>
           {% for c in data.category_options %}
           <option value="{{ c }}">{{ c }}</option>
           {% endfor %}
         </select>
         <div class="searchable-select" id="customCategorySelect">
-          <button type="button" class="searchable-trigger" id="categoryTriggerBtn" onclick="toggleSearchableDropdown('category', event)">
+          <button type="button" class="searchable-trigger" id="categoryTriggerBtn" onclick="toggleSearchableDropdown('category', event)" aria-label="Menu dropdown pilihan kategori barang">
             <span class="searchable-trigger-text" id="categoryTriggerLabel">Semua Kategori ({{ data.category_options|length if data.category_options else 0 }})</span>
             <span class="searchable-trigger-arrow">▾</span>
           </button>
           <div class="searchable-dropdown-menu" id="categoryDropdownMenu" style="display:none;" onclick="event.stopPropagation()">
             <div class="searchable-search-box">
-              <input type="text" class="searchable-search-input" id="categorySearchInput" placeholder="Ketik nama kategori..." oninput="filterSearchableList('category')" autocomplete="off">
-              <button type="button" class="searchable-clear-btn" onclick="clearSearchableInput('category')">✕</button>
+              <input type="text" class="searchable-search-input" id="categorySearchInput" placeholder="Ketik nama kategori..." aria-label="Cari nama kategori" oninput="filterSearchableList('category')" autocomplete="off">
+              <button type="button" class="searchable-clear-btn" onclick="clearSearchableInput('category')" aria-label="Hapus pencarian kategori">✕</button>
             </div>
             <div class="searchable-options-list" id="categoryOptionsList">
               <div class="searchable-option is-selected" onclick="selectSearchableOption('category', '', 'Semua Kategori ({{ data.category_options|length if data.category_options else 0 }})')">
@@ -5550,8 +5618,8 @@
       </div>
 
       <div class="filter-group">
-        <label class="filter-label">Model Bisnis</label>
-        <select id="filterModelBisnis" onchange="applyFilters()">
+        <label for="filterModelBisnis" class="filter-label">Model Bisnis</label>
+        <select id="filterModelBisnis" aria-label="Pilih Model Bisnis Konsinyasi atau Dagangan" onchange="applyFilters()">
           <option value="">Semua Model Bisnis</option>
           <option value="KONSINYASI" {% if selected_jenis == 'KONSINYASI' %}selected{% endif %}>Konsinyasi (Vendor Titip Jual)</option>
           <option value="DAGANGAN" {% if selected_jenis == 'DAGANGAN' %}selected{% endif %}>Dagangan (Beli Putus)</option>
@@ -5571,13 +5639,13 @@
 
   <!-- Custom Calendar Modal Popup (Matching Mockup UI) -->
   <div id="calendarModalOverlay" class="cal-overlay" onclick="closeCalendarModal(event)" style="display:none;">
-    <div class="cal-card" onclick="event.stopPropagation()">
+    <div class="cal-card" role="dialog" aria-modal="true" aria-labelledby="calTitleText" onclick="event.stopPropagation()">
       <div class="cal-top-header">
         <div class="cal-title-area">
-          <h3 class="cal-title">Select Date</h3>
+          <h3 class="cal-title" id="calTitleText">Select Date</h3>
           <span class="cal-subtitle">Weekend &amp; Tanggal Merah Indonesia ditandai warna khusus</span>
         </div>
-        <button type="button" class="cal-btn-close-icon" onclick="closeCalendarModal(event)">✕</button>
+        <button type="button" class="cal-btn-close-icon" onclick="closeCalendarModal(event)" aria-label="Tutup Kalender">✕</button>
       </div>
 
       <!-- From / To Header Pills (Matching Screenshot) -->
@@ -5594,9 +5662,9 @@
 
       <!-- Navigation & Month/Year Selector -->
       <div class="cal-nav-bar">
-        <button type="button" class="cal-nav-btn" onclick="navCalendarMonth(-1)" title="Bulan Sebelumnya">‹</button>
+        <button type="button" class="cal-nav-btn" onclick="navCalendarMonth(-1)" title="Bulan Sebelumnya" aria-label="Bulan Sebelumnya">‹</button>
         <div class="cal-selectors">
-          <select id="calMonthSelect" class="cal-select-pill" onchange="onCalSelectChange()">
+          <select id="calMonthSelect" class="cal-select-pill" onchange="onCalSelectChange()" aria-label="Pilih Bulan Kalender">
             <option value="0">Januari</option>
             <option value="1">Februari</option>
             <option value="2">Maret</option>
@@ -5610,12 +5678,12 @@
             <option value="10">November</option>
             <option value="11">Desember</option>
           </select>
-          <select id="calYearSelect" class="cal-select-pill" onchange="onCalSelectChange()">
+          <select id="calYearSelect" class="cal-select-pill" onchange="onCalSelectChange()" aria-label="Pilih Tahun Kalender">
             <option value="2026">2026</option>
             <option value="2025">2025</option>
           </select>
         </div>
-        <button type="button" class="cal-nav-btn" onclick="navCalendarMonth(1)" title="Bulan Berikutnya">›</button>
+        <button type="button" class="cal-nav-btn" onclick="navCalendarMonth(1)" title="Bulan Berikutnya" aria-label="Bulan Berikutnya">›</button>
       </div>
 
       <!-- Weekdays Header -->
@@ -5681,7 +5749,7 @@
         <label style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:6px;">
           Masukkan Webhook URL Google Apps Script:
         </label>
-        <input type="text" id="gsheetInputId" placeholder="https://script.google.com/macros/s/AKfycb.../exec" style="width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:12.5px;" />
+        <input type="text" id="gsheetInputId" aria-label="Webhook URL Google Apps Script" placeholder="https://script.google.com/macros/s/AKfycb.../exec" style="width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:12.5px;" />
         <span style="font-size:11px; color:#64748b; display:block; margin-top:4px;">Didapatkan dari menu <strong>Extensions ➔ Apps Script ➔ Deploy as Web App</strong> di Google Sheet Anda.</span>
       </div>
 
@@ -5789,7 +5857,7 @@
               </div>
             </div>
             <div class="product-canvas-wrap">
-              <canvas id="productMonthlyCanvas"></canvas>
+              <canvas id="productMonthlyCanvas" role="img" aria-label="Grafik Tren Penjualan dan Kuantitas Produk Bulanan"></canvas>
               <div id="productMonthlyTooltip" class="chart-tooltip"></div>
             </div>
           </div>
@@ -5874,7 +5942,7 @@
 
       <div class="role-modal-footer">
         <label class="role-checkbox-label">
-          <input type="checkbox" id="chkRememberRole" checked>
+          <input type="checkbox" id="chkRememberRole" aria-label="Ingat pilihan profil ini" checked>
           <span>Ingat pilihan profil ini di perangkat ini</span>
         </label>
         <button type="button" onclick="closeRoleModal()" class="btn" style="padding:6px 14px; font-size:12px; background:var(--panel-hover); color:var(--text); border:1px solid var(--panel-border); border-radius:8px; cursor:pointer;">Lanjutkan</button>
@@ -5898,7 +5966,7 @@
 
       <div class="infographic-modal-body">
         <div class="infographic-canvas-wrap">
-          <canvas id="infographicCanvas" width="1920" height="1080" style="width:100%; max-width:1040px; height:auto; border-radius:12px; box-shadow:0 12px 36px rgba(0,0,0,0.35); display:block; margin:0 auto;"></canvas>
+          <canvas id="infographicCanvas" width="1920" height="1080" role="img" aria-label="Kanvas Infografis Laporan Eksekutif Ancol POS" style="width:100%; max-width:1040px; height:auto; border-radius:12px; box-shadow:0 12px 36px rgba(0,0,0,0.35); display:block; margin:0 auto;"></canvas>
         </div>
       </div>
 
@@ -6475,7 +6543,7 @@
         </div>
       </div>
       <div class="chart-wrap">
-        <canvas id="salesChart"></canvas>
+        <canvas id="salesChart" role="img" aria-label="Grafik Tren Penjualan Harian dan Komparasi YoY 2026 vs 2025"></canvas>
         <div id="chartTooltip" class="chart-tooltip"></div>
       </div>
     </div>
@@ -6493,7 +6561,7 @@
         </div>
       </div>
       <div class="chart-wrap">
-        <canvas id="targetChart"></canvas>
+        <canvas id="targetChart" role="img" aria-label="Grafik Monitoring Target Penjualan vs Realisasi Aktual"></canvas>
         <div id="targetTooltip" class="chart-tooltip"></div>
       </div>
     </div>
@@ -6511,7 +6579,7 @@
         </div>
       </div>
       <div class="chart-wrap">
-        <canvas id="hourlySalesChart"></canvas>
+        <canvas id="hourlySalesChart" role="img" aria-label="Grafik Distribusi Net Sales Revenue per Jam Operasional"></canvas>
         <div id="hourlySalesTooltip" class="chart-tooltip"></div>
       </div>
     </div>
@@ -6529,7 +6597,7 @@
         </div>
       </div>
       <div class="chart-wrap">
-        <canvas id="hourlyTransactionsChart"></canvas>
+        <canvas id="hourlyTransactionsChart" role="img" aria-label="Grafik Kepadatan Transaksi Struk per Jam Operasional"></canvas>
         <div id="hourlyTransactionsTooltip" class="chart-tooltip"></div>
       </div>
     </div>
@@ -6547,7 +6615,7 @@
         </div>
       </div>
       <div class="chart-wrap">
-        <canvas id="visitorRevenueChart"></canvas>
+        <canvas id="visitorRevenueChart" role="img" aria-label="Grafik Korelasi Omzet Penjualan vs Volume Pengunjung"></canvas>
         <div id="visitorRevenueTooltip" class="chart-tooltip"></div>
       </div>
     </div>
@@ -6565,7 +6633,7 @@
         </div>
       </div>
       <div class="chart-wrap">
-        <canvas id="visitorTrendChart"></canvas>
+        <canvas id="visitorTrendChart" role="img" aria-label="Grafik Tren Perbandingan Kunjungan Pengunjung Harian YoY"></canvas>
         <div id="visitorTrendTooltip" class="chart-tooltip"></div>
       </div>
     </div>
@@ -6684,7 +6752,7 @@
 
       <!-- Chart Canvas & Tooltip -->
       <div class="chart-wrap" style="position:relative; margin-top:14px;">
-        <canvas id="spendingStrukChart" style="height:360px;"></canvas>
+        <canvas id="spendingStrukChart" role="img" aria-label="Grafik Distribusi Spending Penjualan vs Struk Transaksi dan ATV" style="height:360px;"></canvas>
         <div id="spendingStrukTooltip" class="chart-tooltip" style="min-width:280px;"></div>
       </div>
     </div>
@@ -6739,7 +6807,7 @@
 
         <!-- Search Input Bar -->
         <div class="search-wrapper" style="position:relative; display:flex; align-items:center; min-width:260px;">
-          <input type="text" id="tableSearchInput" class="table-search" placeholder="Cari nama konter / outlet..." oninput="onSearchInput(this.value)" style="padding-right:28px;">
+          <input type="text" id="tableSearchInput" class="table-search" placeholder="Cari nama konter / outlet..." aria-label="Cari transaksi pada tabel" oninput="onSearchInput(this.value)" style="padding-right:28px;">
           <button type="button" id="clearSearchBtn" onclick="clearSearch()" style="position:absolute; right:8px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:13px; display:none; align-items:center; justify-content:center;" title="Hapus pencarian">
             <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
@@ -7476,7 +7544,7 @@
       <span id="aiKeyStatusBadge" style="font-size:11px; color:var(--text-muted);">Memeriksa...</span>
     </div>
     <div class="ai-settings-row">
-      <input type="password" id="aiApiKeyInput" class="ai-settings-input" placeholder="Masukkan AIzaSy... (Gratis di Google AI Studio)">
+      <input type="password" id="aiApiKeyInput" class="ai-settings-input" placeholder="Masukkan AIzaSy... (Gratis di Google AI Studio)" aria-label="Google Gemini API Key">
       <button type="button" class="ai-settings-save" onclick="saveGeminiKey()">Simpan</button>
     </div>
     <div style="color:var(--text-muted); font-size:11px; line-height:1.4;">
@@ -7540,7 +7608,7 @@
   <!-- Footer Input Area -->
   <form id="aiChatForm" class="ai-chat-footer" onsubmit="handleAISubmit(event)">
     <div class="ai-input-row">
-      <input type="text" id="aiChatInput" class="ai-chat-input" placeholder="Tanyakan seputar data, toko, atau omset..." autocomplete="off">
+      <input type="text" id="aiChatInput" class="ai-chat-input" placeholder="Tanyakan seputar data, toko, atau omset..." aria-label="Ketik pertanyaan analitik ke asisten AI" autocomplete="off">
       <button type="submit" id="btnAISend" class="ai-btn-send" title="Kirim Pertanyaan" aria-label="Kirim">
         <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
       </button>
@@ -13840,15 +13908,16 @@
     });
   }
 
-  salesCanvas.addEventListener('mousemove', function(e) {
+  function handleSalesPointer(e) {
     if (!salesPoints.length) return;
+    const touch = e.touches ? e.touches[0] : e;
     const rect = salesCanvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
 
     const ptDist = p => Math.min(Math.hypot(p.x - x, p.y - y), Math.hypot(p.x - x, (p.y25 ?? p.y) - y));
     let nearest = salesPoints.reduce((a, p) => ptDist(p) < ptDist(a) ? p : a);
-    if (ptDist(nearest) < 35) {
+    if (ptDist(nearest) < 42 || Math.abs(nearest.x - x) < 25) {
       const it = nearest.item;
       const diff = it['2026'] - it['2025'];
       const growth = it['2025'] > 0 ? ((diff / it['2025']) * 100).toFixed(1) + '%' : '-';
@@ -13902,8 +13971,13 @@
     } else {
       salesTooltip.style.display = 'none';
     }
-  });
+  }
+
+  salesCanvas.addEventListener('mousemove', handleSalesPointer);
+  salesCanvas.addEventListener('touchstart', handleSalesPointer, { passive: true });
+  salesCanvas.addEventListener('touchmove', handleSalesPointer, { passive: true });
   salesCanvas.addEventListener('mouseleave', () => salesTooltip.style.display = 'none');
+  salesCanvas.addEventListener('touchend', () => salesTooltip.style.display = 'none');
 
   // Chart 2: Target vs Actual
   const targetCanvas = document.getElementById('targetChart');
@@ -14020,15 +14094,16 @@
     });
   }
 
-  targetCanvas.addEventListener('mousemove', function(e) {
+  function handleTargetPointer(e) {
     if (!targetPoints.length) return;
+    const touch = e.touches ? e.touches[0] : e;
     const rect = targetCanvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
 
     const ptDist = p => Math.min(Math.hypot(p.x - x, p.y - y), Math.hypot(p.x - x, (p.yTarget ?? p.y) - y));
     let nearest = targetPoints.reduce((a, p) => ptDist(p) < ptDist(a) ? p : a);
-    if (ptDist(nearest) < 35) {
+    if (ptDist(nearest) < 42 || Math.abs(nearest.x - x) < 25) {
       const it = nearest.item;
       const achieve = it.target > 0 ? ((it.actual / it.target) * 100).toFixed(1) + '%' : '-';
       const gap = it.actual - it.target;
@@ -14070,8 +14145,13 @@
     } else {
       targetTooltip.style.display = 'none';
     }
-  });
+  }
+
+  targetCanvas.addEventListener('mousemove', handleTargetPointer);
+  targetCanvas.addEventListener('touchstart', handleTargetPointer, { passive: true });
+  targetCanvas.addEventListener('touchmove', handleTargetPointer, { passive: true });
   targetCanvas.addEventListener('mouseleave', () => targetTooltip.style.display = 'none');
+  targetCanvas.addEventListener('touchend', () => targetTooltip.style.display = 'none');
 
   // Hourly Charts
   function drawGenericHourlyChart(canvasId, tooltipId, key26, key25, color26, color25, formatter) {
@@ -14206,13 +14286,14 @@
       }
     });
 
-    cvs.onmousemove = function(e) {
+    const handleHourlyPointer = function(e) {
+      const touch = e.touches ? e.touches[0] : e;
       const rect = cvs.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
 
       let nearest = points.reduce((a, p) => Math.hypot(p.x - x, p.y - y) < Math.hypot(a.x - x, a.y - y) ? p : a);
-      if (Math.hypot(nearest.x - x, nearest.y - y) < 30) {
+      if (Math.hypot(nearest.x - x, nearest.y - y) < 40 || Math.abs(nearest.x - x) < 22) {
         const it = nearest.item;
         tip.style.display = 'block';
         tip.style.left = Math.min(nearest.x + 12, cvs.clientWidth - 200) + 'px';
@@ -14226,7 +14307,11 @@
         tip.style.display = 'none';
       }
     };
+    cvs.onmousemove = handleHourlyPointer;
+    cvs.ontouchstart = handleHourlyPointer;
+    cvs.ontouchmove = handleHourlyPointer;
     cvs.onmouseleave = () => tip.style.display = 'none';
+    cvs.ontouchend = () => tip.style.display = 'none';
   }
 
   function drawHourlySalesChart() {
@@ -14416,11 +14501,12 @@
   }
 
   if (visRevCanvas) {
-    visRevCanvas.addEventListener('mousemove', function(e) {
+    const handleVisRevPointer = function(e) {
       if (!visRevPoints.length) return;
+      const touch = e.touches ? e.touches[0] : e;
       const rect = visRevCanvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
 
       let nearest = visRevPoints.reduce((a, p) => Math.hypot(p.x - x, p.yVis - y) < Math.hypot(a.x - x, a.yVis - y) ? p : a);
       const nearRev = visRevPoints.reduce((a, p) => Math.hypot(p.x - x, p.yRev - y) < Math.hypot(a.x - x, a.yRev - y) ? p : a);
@@ -14428,7 +14514,7 @@
         nearest = nearRev;
       }
 
-      if (Math.hypot(nearest.x - x, Math.min(Math.abs(nearest.yVis - y), Math.abs(nearest.yRev - y))) < 40) {
+      if (Math.hypot(nearest.x - x, Math.min(Math.abs(nearest.yVis - y), Math.abs(nearest.yRev - y))) < 45 || Math.abs(nearest.x - x) < 25) {
         const it = nearest.item;
         const rev = it.revenue_2026 || 0;
         const vis = it.visitors_2026 || 0;
@@ -14464,9 +14550,15 @@
       } else {
         visRevTooltip.style.display = 'none';
       }
-    });
+    };
 
+    visRevCanvas.addEventListener('mousemove', handleVisRevPointer);
+    visRevCanvas.addEventListener('touchstart', handleVisRevPointer, { passive: true });
+    visRevCanvas.addEventListener('touchmove', handleVisRevPointer, { passive: true });
     visRevCanvas.addEventListener('mouseleave', () => {
+      if (visRevTooltip) visRevTooltip.style.display = 'none';
+    });
+    visRevCanvas.addEventListener('touchend', () => {
       if (visRevTooltip) visRevTooltip.style.display = 'none';
     });
   }
@@ -14638,15 +14730,16 @@
   }
 
   if (visTrendCanvas) {
-    visTrendCanvas.addEventListener('mousemove', function(e) {
+    const handleVisTrendPointer = function(e) {
       if (!visTrendPoints.length) return;
+      const touch = e.touches ? e.touches[0] : e;
       const rect = visTrendCanvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
 
       const ptDist = p => Math.min(Math.hypot(p.x - x, p.y - y), Math.hypot(p.x - x, (p.y25 ?? p.y) - y));
       let nearest = visTrendPoints.reduce((a, p) => ptDist(p) < ptDist(a) ? p : a);
-      if (ptDist(nearest) < 35) {
+      if (ptDist(nearest) < 42 || Math.abs(nearest.x - x) < 25) {
         const it = nearest.item;
         const v26 = it.visitors_2026 || 0;
         const v25 = it.visitors_2025 || 0;
@@ -14700,9 +14793,15 @@
       } else {
         visTrendTooltip.style.display = 'none';
       }
-    });
+    };
 
+    visTrendCanvas.addEventListener('mousemove', handleVisTrendPointer);
+    visTrendCanvas.addEventListener('touchstart', handleVisTrendPointer, { passive: true });
+    visTrendCanvas.addEventListener('touchmove', handleVisTrendPointer, { passive: true });
     visTrendCanvas.addEventListener('mouseleave', () => {
+      if (visTrendTooltip) visTrendTooltip.style.display = 'none';
+    });
+    visTrendCanvas.addEventListener('touchend', () => {
       if (visTrendTooltip) visTrendTooltip.style.display = 'none';
     });
   }
@@ -14954,14 +15053,15 @@
   }
 
   if (spendingCanvas) {
-    spendingCanvas.addEventListener('mousemove', function(e) {
+    const handleSpendingPointer = function(e) {
       if (!spendingPoints.length) return;
+      const touch = e.touches ? e.touches[0] : e;
       const rect = spendingCanvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
 
       let nearest = spendingPoints.reduce((a, p) => Math.abs(p.x - x) < Math.abs(a.x - x) ? p : a);
-      if (Math.abs(nearest.x - x) < 40) {
+      if (Math.abs(nearest.x - x) < 42) {
         const it = nearest.item;
         const sp26 = it.spending_2026;
         const sp25 = it.spending_2025 || 0;
@@ -15021,12 +15121,52 @@
       } else {
         spendingTooltip.style.display = 'none';
       }
-    });
+    };
 
+    spendingCanvas.addEventListener('mousemove', handleSpendingPointer);
+    spendingCanvas.addEventListener('touchstart', handleSpendingPointer, { passive: true });
+    spendingCanvas.addEventListener('touchmove', handleSpendingPointer, { passive: true });
     spendingCanvas.addEventListener('mouseleave', () => {
       if (spendingTooltip) spendingTooltip.style.display = 'none';
     });
+    spendingCanvas.addEventListener('touchend', () => {
+      if (spendingTooltip) spendingTooltip.style.display = 'none';
+    });
   }
+
+  // Global Accessible Keyboard Navigation: Universal Escape Key Handler
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      // 1. Close Calendar Modal
+      const calOverlay = document.getElementById('calendarModalOverlay');
+      if (calOverlay && calOverlay.style.display !== 'none') {
+        if (typeof closeCalendarModal === 'function') closeCalendarModal(e);
+      }
+      // 2. Close Product Detail Modal
+      const prodModal = document.getElementById('productDetailModal');
+      if (prodModal && prodModal.style.display !== 'none') {
+        if (typeof closeProductDetailModal === 'function') closeProductDetailModal();
+      }
+      // 3. Close Infographic Modal
+      const infoOverlay = document.getElementById('infographicModalOverlay');
+      if (infoOverlay && infoOverlay.style.display !== 'none') {
+        if (typeof closeInfographicModal === 'function') closeInfographicModal();
+      }
+      // 4. Close Role Modal
+      const roleOverlay = document.getElementById('roleModalOverlay');
+      if (roleOverlay && roleOverlay.style.display !== 'none') {
+        if (typeof closeRoleModal === 'function') closeRoleModal();
+      }
+      // 5. Close AI Drawer
+      const aiDrawer = document.getElementById('aiDrawer');
+      if (aiDrawer && aiDrawer.classList.contains('active')) {
+        if (typeof toggleAiDrawer === 'function') toggleAiDrawer();
+      }
+      // 6. Close all open custom comboboxes & multiselects
+      document.querySelectorAll('.searchable-dropdown-menu, .outlet-multiselect-dropdown').forEach(m => m.style.display = 'none');
+      document.querySelectorAll('.searchable-trigger').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    }
+  });
 
   // Initial load & draw (initOutletMultiselect already ran; applyFilters handles tags & charts in 1 pass)
   applyFilters();
