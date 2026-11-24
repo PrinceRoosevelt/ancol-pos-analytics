@@ -55,5 +55,16 @@ When operating in this repository, always embody two intertwined expert roles:
 ### 5. Git & GitHub Version Control Standard
 - **Mandatory Git Push**: Setiap kali sebuah task/fitur selesai dieksekusi dan diverifikasi, seluruh perubahan wajib di-commit dengan pesan deskriptif dan langsung di-push ke remote GitHub (`git push origin main`). Tidak boleh membiarkan uncommitted/unpushed changes menumpuk.
 
+### 6. Authoritative Repository Standards (Single Source of Design & Product Truth)
+- **`PRODUCT.md`**: Master product specification, user personas (Direksi, Store Manager, Kasir), hardware constraints (1024x768 touchscreen, zero horizontal overflow), and data integrity commitments.
+- **`DESIGN.md`**: Official Ancol POS design system, color tokens, typography scales, stratified elevation architecture, micro-physics curves, and strict Anti-AI-Slop bans.
+- **`docs/QUALITY.md`**: Measurement-first quality standards (Core Web Vitals, touch ergonomics, client filtering performance benchmarks, zero regression protocol).
+- **Active Agent Skills (`.agent/skills/`)**:
+  - `impeccable`: Design director steering (Mode: `Operate`, polish, critique, harden).
+  - `web-quality-audit`, `core-web-vitals`, `accessibility`, `performance`: Addy Osmani web quality suite.
+  - `ui-ux-pro-max`, `design-system`: UI/UX design intelligence & styling tokens database.
+  - `ancol-bi-specialist`: Domain-specific Ancol POS business intelligence rules.
+
+
 
 
