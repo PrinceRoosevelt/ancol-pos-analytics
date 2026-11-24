@@ -241,22 +241,22 @@
 
     /* Vibrant semantic colors with soft squircle tinted containers */
     .flat-badge-brand   { background: rgba(0, 51, 160, 0.10); color: #0033A0; }
-    .flat-badge-sky     { background: rgba(2, 132, 199, 0.12); color: #0284c7; }
+    .flat-badge-sky     { background: rgba(0, 181, 226, 0.12); color: #008eb3; }
     .flat-badge-emerald { background: rgba(5, 150, 105, 0.12); color: #059669; }
     .flat-badge-amber   { background: rgba(217, 119, 6, 0.12); color: #d97706; }
     .flat-badge-rose    { background: rgba(224, 0, 77, 0.12);  color: #E0004D; }
-    .flat-badge-purple  { background: rgba(126, 34, 206, 0.12); color: #7e22ce; }
+    .flat-badge-purple  { background: rgba(92, 6, 140, 0.12); color: #5C068C; }
     .flat-badge-teal    { background: rgba(13, 148, 136, 0.12); color: #0d9488; }
     .flat-badge-indigo  { background: rgba(79, 70, 229, 0.12); color: #4f46e5; }
     .flat-badge-slate   { background: rgba(100, 116, 139, 0.12); color: #475569; }
     .flat-badge-white   { background: rgba(255, 255, 255, 0.20); color: #ffffff; }
 
     :root.dark .flat-badge-brand   { background: rgba(0, 181, 226, 0.16); color: #38c8ee; }
-    :root.dark .flat-badge-sky     { background: rgba(56, 189, 248, 0.18); color: #38bdf8; }
+    :root.dark .flat-badge-sky     { background: rgba(0, 181, 226, 0.20); color: #38c8ee; }
     :root.dark .flat-badge-emerald { background: rgba(16, 185, 129, 0.18); color: #34d399; }
     :root.dark .flat-badge-amber   { background: rgba(245, 158, 11, 0.18); color: #fbbf24; }
     :root.dark .flat-badge-rose    { background: rgba(244, 63, 94, 0.18);  color: #fb7185; }
-    :root.dark .flat-badge-purple  { background: rgba(168, 85, 247, 0.18); color: #c084fc; }
+    :root.dark .flat-badge-purple  { background: rgba(92, 6, 140, 0.28); color: #b862eb; }
     :root.dark .flat-badge-teal    { background: rgba(20, 184, 166, 0.18); color: #2dd4bf; }
 
     .brand-info h1 {
@@ -1341,7 +1341,7 @@
       color: #ef4444 !important; /* Hari Minggu Merah */
     }
     .cal-wd-sat {
-      color: #0284c7 !important; /* Hari Sabtu Biru */
+      color: #009fc7 !important; /* Hari Sabtu Biru Ancol */
     }
 
     /* Days Grid */
@@ -1390,7 +1390,7 @@
       color: #ef4444; /* Merah untuk hari Minggu */
     }
     .cal-day-cell.saturday {
-      color: #0284c7; /* Biru/Cyan untuk hari Sabtu */
+      color: #009fc7; /* Biru/Cyan Ancol untuk hari Sabtu */
     }
     .cal-day-cell.holiday {
       color: #ef4444 !important; /* Merah terang untuk Libur Nasional */
@@ -1409,10 +1409,10 @@
     .cal-day-cell.in-range {
       background: #e0f2fe !important;
       border-radius: 0 !important;
-      color: #0369a1 !important;
+      color: #0033A0 !important;
     }
     :root.dark .cal-day-cell.in-range {
-      background: rgba(2, 132, 199, 0.25) !important;
+      background: rgba(0, 181, 226, 0.22) !important;
       color: #7dd3fc !important;
     }
     .cal-day-cell.range-start {
@@ -1424,10 +1424,10 @@
       border-bottom-right-radius: 50% !important;
     }
     .cal-day-cell.active-endpoint {
-      background: #0284c7 !important;
+      background: var(--brand, #0033A0) !important;
       color: #ffffff !important;
       border-radius: 50% !important;
-      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4);
+      box-shadow: 0 4px 10px rgba(0, 51, 160, 0.4);
       font-weight: 700 !important;
     }
     .cal-day-cell.active-endpoint .holiday-dot {
@@ -1794,9 +1794,9 @@
       border-color: rgba(16, 185, 129, 0.4);
     }
     .badge-margin-mid {
-      background: rgba(2, 132, 199, 0.1);
-      color: #0284c7;
-      border: 1px solid rgba(2, 132, 199, 0.25);
+      background: rgba(0, 181, 226, 0.12);
+      color: var(--brand, #0033A0);
+      border: 1px solid rgba(0, 181, 226, 0.3);
       padding: 2px 7px;
       border-radius: 999px;
       font-weight: 700;
@@ -2034,7 +2034,7 @@
       background: #fb7185 !important;
     }
     .kpi-card-dufan .traffic-bar-ra {
-      background: #c084fc !important;
+      background: #f472b6 !important;
     }
 
     /* SeaWorld Marine Ocean Brand Theme for KPI Card 5 */
@@ -5322,11 +5322,11 @@
         <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
         <span>Upload &amp; Input Pengunjung</span>
       </a>
-      <a href="/inventory" class="btn" style="background:linear-gradient(135deg, #1e40af, #2563eb); color:#ffffff; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px; border:none; box-shadow:0 2px 8px rgba(37,99,235,0.25);" title="Buka Smart Inventory &amp; Balancing Engine">
+      <a href="/inventory" class="btn" style="background:var(--brand, #0033A0); color:#ffffff; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px; border:none; box-shadow:0 2px 8px rgba(0,51,160,0.25);" title="Buka Smart Inventory &amp; Balancing Engine">
         <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
         <span>Smart Inventory</span>
       </a>
-      <button type="button" class="btn" id="btnDownloadExcel" onclick="downloadCuratedExcel()" style="background:#0284c7; color:#ffffff; font-weight:700; display:inline-flex; align-items:center; gap:6px; border:none; box-shadow:0 2px 8px rgba(2,132,199,0.25); cursor:pointer; transition:all 0.2s ease;" title="Unduh Analisis Kurasi Excel (.xlsx) Sesuai Filter Aktif">
+      <button type="button" class="btn" id="btnDownloadExcel" onclick="downloadCuratedExcel()" style="background:var(--brand, #0033A0); color:#ffffff; font-weight:700; display:inline-flex; align-items:center; gap:6px; border:none; box-shadow:0 2px 8px rgba(0,51,160,0.25); cursor:pointer; transition:all 0.2s ease;" title="Unduh Analisis Kurasi Excel (.xlsx) Sesuai Filter Aktif">
         <svg class="svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         <span>Unduh Excel</span>
       </button>
@@ -5703,7 +5703,7 @@
       <!-- Holiday Legend & Info Note -->
       <div class="cal-legend-bar">
         <div class="cal-legend-item"><span class="holiday-dot" style="position:static; display:inline-block; margin-right:4px;"></span> <span style="color:#ef4444; font-weight:700;">Tanggal Merah</span> (Libur Nasional)</div>
-        <div class="cal-legend-item"><span style="color:#ef4444; font-weight:700;">SUN</span>: Minggu | <span style="color:#0284c7; font-weight:700;">SAT</span>: Sabtu</div>
+        <div class="cal-legend-item"><span style="color:#ef4444; font-weight:700;">SUN</span>: Minggu | <span style="color:#009fc7; font-weight:700;">SAT</span>: Sabtu</div>
       </div>
 
       <!-- Quick Presets -->
@@ -6675,6 +6675,8 @@
             <div class="legend-item"><span class="legend-dot" style="background:#a78bfa;"></span> <span>Spending '25</span></div>
             <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span> <span>Struk '26 (Kanan)</span></div>
             <div class="legend-item"><span class="legend-dot" style="background:#f59e0b;"></span> <span>Struk '25 (Kanan)</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:#00B5E2;"></span> <span>ATV '26 (Daya Beli)</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:rgba(0,181,226,0.5);"></span> <span>ATV '25</span></div>
           </div>
         </div>
       </div>
@@ -11457,7 +11459,7 @@
           <div class="tooltip-title">👥 Rincian 4 Aspek Visitor ${yr} — ${r.label}</div>
           <div class="tooltip-row" style="margin-bottom:6px;"><span class="tooltip-label">Total Keseluruhan:</span> <span class="tooltip-val" style="color:#34d399; font-size:13px;">${formatNum(totalV)} Orang (100%)</span></div>
           <div style="height:6px; border-radius:3px; display:flex; overflow:hidden; background:rgba(255,255,255,0.12); margin-bottom:8px; gap:1px;">
-            <div style="width:${pIb.toFixed(1)}%; background:#3b82f6;"></div>
+            <div style="width:${pIb.toFixed(1)}%; background:var(--brand, #0033A0);"></div>
             <div style="width:${pRl.toFixed(1)}%; background:#00b5e2;"></div>
             <div style="width:${pRa.toFixed(1)}%; background:#f59e0b;"></div>
             <div style="width:${pTb.toFixed(1)}%; background:#94a3b8;"></div>
@@ -13371,13 +13373,18 @@
       alert('Silakan masukkan Spreadsheet ID atau URL Google Sheet.');
       return;
     }
+    const pin = prompt('Masukkan PIN Admin untuk mengubah pengaturan Google Sheets:') || '';
+    if (!pin) {
+      alert('PIN Admin diperlukan untuk menyimpan konfigurasi Google Sheets.');
+      return;
+    }
     try {
       const btn = document.getElementById('btnSaveGsheetId');
       if (btn) btn.textContent = 'Menyimpan...';
       const res = await fetch('/api/gsheet-config', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ spreadsheet_id: val })
+        body: JSON.stringify({ spreadsheet_id: val, pin: pin })
       });
       const data = await res.json();
       if (btn) btn.textContent = 'Simpan Pengaturan';
@@ -13386,7 +13393,7 @@
         checkGsheetStatus();
         closeGsheetModal({ target: { classList: { contains: () => true } } });
       } else {
-        alert('Gagal menyimpan: ' + (data.error || 'Unknown error'));
+        alert('Gagal menyimpan: ' + (data.error || 'PIN Salah atau server error'));
       }
     } catch (err) {
       alert('Error menyimpan pengaturan: ' + err.message);
@@ -14528,7 +14535,7 @@
                           (currentFilter.area && currentFilter.area.toUpperCase().includes('SAMUDRA'));
         const isAtlantis = (currentFilter.outlet && (currentFilter.outlet.toUpperCase().includes('AWIN') || currentFilter.outlet.toUpperCase().includes('ATLANTIS') || currentFilter.outlet.toUpperCase().includes('AWKL') || currentFilter.outlet.toUpperCase().includes('AWA'))) ||
                            (currentFilter.area && currentFilter.area.toUpperCase().includes('ATLANTIS'));
-        const visColor = isDufan ? '#f43f5e' : (isSeaWorld ? '#38bdf8' : (isSamudra ? '#2dd4bf' : (isAtlantis ? '#c084fc' : '#10b981')));
+        const visColor = isDufan ? '#f43f5e' : (isSeaWorld ? '#38bdf8' : (isSamudra ? '#2dd4bf' : (isAtlantis ? '#9d4edd' : '#10b981')));
 
         let titleHtml = '';
         if (!it.is_monthly && it.date && it.date.length >= 10) {
@@ -14754,7 +14761,7 @@
                           (currentFilter.area && currentFilter.area.toUpperCase().includes('SAMUDRA'));
         const isAtlantis = (currentFilter.outlet && (currentFilter.outlet.toUpperCase().includes('AWIN') || currentFilter.outlet.toUpperCase().includes('ATLANTIS') || currentFilter.outlet.toUpperCase().includes('AWKL') || currentFilter.outlet.toUpperCase().includes('AWA'))) ||
                            (currentFilter.area && currentFilter.area.toUpperCase().includes('ATLANTIS'));
-        const vis26Color = isDufan ? '#f43f5e' : (isSeaWorld ? '#38bdf8' : (isSamudra ? '#2dd4bf' : (isAtlantis ? '#c084fc' : '#60a5fa')));
+        const vis26Color = isDufan ? '#f43f5e' : (isSeaWorld ? '#38bdf8' : (isSamudra ? '#2dd4bf' : (isAtlantis ? '#9d4edd' : '#60a5fa')));
 
         let titleHtml = '';
         let row26Label = '● 2026 (Aktual):';
@@ -14846,6 +14853,7 @@
 
     const maxSpending = Math.max(...chartData.flatMap(x => [x.spending_2026 || 0, x.spending_2025 || 0]), 1000000);
     const maxStruk = Math.max(...chartData.flatMap(x => [x.struk_2026 || 0, x.struk_2025 || 0]), 10);
+    const maxAtv = Math.max(...chartData.flatMap(x => [x.atv_2026 || 0, x.atv_2025 || 0]), 10000);
 
     const left = 78, bottom = 40, top = 28, right = 70;
     const plotW = width - left - right;
@@ -14881,6 +14889,15 @@
       const stVal = Math.round(maxStruk * t);
       const stStr = stVal >= 1000 ? (Math.round(stVal / 1000) + 'rb') : stVal.toLocaleString('id-ID');
       ctx.fillText(stStr + ' tx', width - 6, y + 4);
+
+      if (t === 1) {
+        ctx.fillStyle = '#00B5E2';
+        ctx.textAlign = 'right';
+        ctx.font = 'bold 10px sans-serif';
+        const atvTopStr = 'ATV ~' + (maxAtv >= 1000000 ? ('Rp ' + (maxAtv/1000000).toFixed(1) + 'M') : ('Rp ' + Math.round(maxAtv/1000) + 'rb'));
+        ctx.fillText(atvTopStr, width - 6, top - 10);
+        ctx.font = '11px sans-serif';
+      }
     });
 
     const numItems = chartData.length;
@@ -14936,14 +14953,19 @@
       // Store anchor point for interaction & line plots
       const st26 = item.struk_2026;
       const st25 = item.struk_2025 || 0;
+      const atv26 = item.atv_2026;
+      const atv25 = item.atv_2025 || 0;
       const yStruk26 = (st26 !== null && st26 !== undefined) ? (top + plotH - (st26 / maxStruk) * plotH) : null;
       const yStruk25 = top + plotH - (st25 / maxStruk) * plotH;
+      const yAtv26 = (atv26 !== null && atv26 !== undefined && atv26 > 0) ? (top + plotH - (atv26 / maxAtv) * plotH) : null;
+      const yAtv25 = atv25 > 0 ? (top + plotH - (atv25 / maxAtv) * plotH) : null;
 
       spendingPoints.push({
         x: cx,
         x25, y25,
         x26, y26,
         yStruk26, yStruk25,
+        yAtv26, yAtv25,
         item
       });
     });
@@ -15006,6 +15028,73 @@
         ctx.arc(pt.x, pt.yStruk26, 4.5, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
+      }
+    });
+
+    // 5. Draw ATV 2025 Baseline Line (Dashed Sky Blue)
+    const atv25Color = isDark ? 'rgba(0, 181, 226, 0.45)' : 'rgba(0, 181, 226, 0.55)';
+    const atv26Color = isDark ? '#38c8ee' : '#00B5E2';
+
+    ctx.strokeStyle = atv25Color;
+    ctx.lineWidth = 1.6;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    let hasStartedAtv25 = false;
+    spendingPoints.forEach((pt) => {
+      if (pt.yAtv25 !== null) {
+        if (!hasStartedAtv25) { ctx.moveTo(pt.x, pt.yAtv25); hasStartedAtv25 = true; }
+        else { ctx.lineTo(pt.x, pt.yAtv25); }
+      }
+    });
+    ctx.stroke();
+    ctx.setLineDash([]); // Reset line dash
+
+    // 6. Draw ATV 2026 Active Line (Solid Ancol Sky Blue)
+    ctx.strokeStyle = atv26Color;
+    ctx.lineWidth = 2.4;
+    ctx.beginPath();
+    let hasStartedAtv26 = false;
+    spendingPoints.forEach((pt) => {
+      if (pt.yAtv26 !== null) {
+        if (!hasStartedAtv26) { ctx.moveTo(pt.x, pt.yAtv26); hasStartedAtv26 = true; }
+        else { ctx.lineTo(pt.x, pt.yAtv26); }
+      }
+    });
+    ctx.stroke();
+
+    // 7. Draw Markers for ATV
+    spendingPoints.forEach((pt) => {
+      // Hollow dot for ATV 2025
+      if (pt.yAtv25 !== null) {
+        ctx.fillStyle = isDark ? '#0f172a' : '#ffffff';
+        ctx.strokeStyle = atv25Color;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.yAtv25, 2.8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      }
+
+      // Filled dot for ATV 2026
+      if (pt.yAtv26 !== null) {
+        ctx.fillStyle = atv26Color;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.yAtv26, 4.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Data callout label for quarterly / monthly view
+        if (numItems <= 12) {
+          const atvVal = pt.item.atv_2026;
+          const atvStr = 'Rp ' + Math.round(atvVal / 1000) + 'rb';
+          ctx.font = 'bold 9.5px sans-serif';
+          ctx.fillStyle = isDark ? '#38c8ee' : '#008eb3';
+          ctx.textAlign = 'center';
+          ctx.fillText(atvStr, pt.x, Math.max(pt.yAtv26 - 7, top + 10));
+          ctx.font = '11px sans-serif';
+        }
       }
     });
 
@@ -15095,7 +15184,7 @@
             <div class="tooltip-row"><span class="tooltip-label" style="color:#60a5fa;">● Spending 2026:</span> <span class="tooltip-val" style="color:var(--text-muted); font-style:italic;">(Belum Berjalan)</span></div>
             <div class="tooltip-row"><span class="tooltip-label" style="color:#c4b5fd;">● Spending 2025:</span> <span class="tooltip-val">${formatRp(sp25)}</span></div>
             <div class="tooltip-row"><span class="tooltip-label" style="color:#f59e0b;">● Struk 2025:</span> <span class="tooltip-val">${formatNum(st25)} transaksi</span></div>
-            <div class="tooltip-row"><span class="tooltip-label">● ATV 2025:</span> <span class="tooltip-val">${formatRp(atv25)} /struk</span></div>
+            <div class="tooltip-row"><span class="tooltip-label" style="color:#00B5E2;">● ATV 2025:</span> <span class="tooltip-val">${formatRp(atv25)} /struk</span></div>
           `;
         } else {
           contentHtml = `
@@ -15108,9 +15197,9 @@
             <div class="tooltip-row"><span class="tooltip-label" style="color:#f59e0b;">● Struk Transaksi '25:</span> <span class="tooltip-val">${formatNum(st25)} struk</span></div>
             <div class="tooltip-row"><span class="tooltip-label">YoY Struk:</span> <span class="tooltip-val" style="color:${(stDiff||0)>=0?'#34d399':'#f87171'};">${(stDiff||0)>=0?'+':''}${stGrowth} (${(stDiff||0)>=0?'+':''}${formatNum(stDiff)} tx)</span></div>
             <div style="border-top:1px dashed rgba(255,255,255,0.15); margin:5px 0;"></div>
-            <div class="tooltip-row"><span class="tooltip-label">● Basket Size (ATV) '26:</span> <span class="tooltip-val">${formatRp(atv26)}</span></div>
-            <div class="tooltip-row"><span class="tooltip-label">● Basket Size (ATV) '25:</span> <span class="tooltip-val">${formatRp(atv25)}</span></div>
-            <div class="tooltip-row"><span class="tooltip-label">YoY ATV:</span> <span class="tooltip-val" style="color:${(atvDiff||0)>=0?'#34d399':'#f87171'};">${(atvDiff||0)>=0?'+':''}${atvGrowth}</span></div>
+            <div class="tooltip-row"><span class="tooltip-label" style="color:#00B5E2;">● Basket Size (ATV) '26:</span> <span class="tooltip-val" style="color:#00B5E2; font-weight:700;">${formatRp(atv26)}</span></div>
+            <div class="tooltip-row"><span class="tooltip-label" style="color:rgba(0,181,226,0.75);">● Basket Size (ATV) '25:</span> <span class="tooltip-val">${formatRp(atv25)}</span></div>
+            <div class="tooltip-row"><span class="tooltip-label">YoY ATV:</span> <span class="tooltip-val" style="color:${(atvDiff||0)>=0?'#34d399':'#f87171'}; font-weight:700;">${(atvDiff||0)>=0?'+':''}${atvGrowth}</span></div>
           `;
         }
 
@@ -15399,11 +15488,16 @@
   async function saveGeminiKey() {
     if (!aiApiKeyInput) return;
     const key = aiApiKeyInput.value.trim();
+    const pin = prompt('Masukkan PIN Admin untuk memverifikasi perubahan API Key:') || '';
+    if (!pin) {
+      alert('PIN Admin diperlukan untuk menyimpan Google Gemini API Key.');
+      return;
+    }
     try {
       const res = await fetch('/api/save-ai-key', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ key: key })
+        body: JSON.stringify({ key: key, pin: pin })
       });
       const d = await res.json();
       if (d.ok) {
@@ -15411,7 +15505,7 @@
         checkAIStatus();
         if (aiSettingsBanner) aiSettingsBanner.classList.remove('open');
       } else {
-        alert('❌ Gagal menyimpan API key: ' + (d.error || 'Unknown error'));
+        alert('❌ Gagal menyimpan API key: ' + (d.error || 'PIN Salah atau server error'));
       }
     } catch (e) {
       alert('❌ Terjadi kesalahan jaringan: ' + e.message);

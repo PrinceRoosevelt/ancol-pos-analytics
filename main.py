@@ -2354,7 +2354,12 @@ def _get_data_state_signature() -> tuple[int, int, int]:
 
 @app.after_request
 def compress_large_response(response):
-    """Reduce transfer size for the data-heavy legacy client without UI changes."""
+    """Reduce transfer size for the data-heavy legacy client and inject security headers."""
+    response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+    response.headers.setdefault("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+
     accepts_gzip = "gzip" in request.headers.get("Accept-Encoding", "").lower()
     compressible = response.mimetype in {"text/html", "application/json"}
     if (
@@ -2940,6 +2945,9 @@ def api_ai_status():
 def api_save_ai_key():
     try:
         data = request.get_json(force=True) or {}
+        req_pin = str(data.get("pin") or request.headers.get("X-Admin-Pin") or "").strip()
+        if req_pin != ADMIN_PIN:
+            return jsonify({"ok": False, "error": "Unauthorized: PIN Admin tidak valid atau belum diisi."}), 401
         key = data.get("key", "").strip()
         with open(AI_KEY_FILE, "w", encoding="utf-8") as f:
             f.write(key)
@@ -4625,7 +4633,7 @@ TOP PRODUK PRIORITAS (FAST-MOVING VELOCITY):
                 })
 
                 for model_name in candidate_models:
-                    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
+                    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent"
                     payload = {
                         "contents": contents,
                         "generationConfig": {
@@ -4637,7 +4645,10 @@ TOP PRODUK PRIORITAS (FAST-MOVING VELOCITY):
                     req = urllib.request.Request(
                         url,
                         data=json.dumps(payload).encode("utf-8"),
-                        headers={"Content-Type": "application/json"}
+                        headers={
+                            "Content-Type": "application/json",
+                            "x-goog-api-key": api_key,
+                        }
                     )
 
                     try:
@@ -5033,6 +5044,9 @@ def api_save_gsheet_config():
     try:
         from services.google_sheets_sync import load_config, save_config
         data = request.get_json(silent=True) or {}
+        req_pin = str(data.get("pin") or request.headers.get("X-Admin-Pin") or "").strip()
+        if req_pin != ADMIN_PIN:
+            return jsonify({"ok": False, "error": "Unauthorized: PIN Admin tidak valid atau belum diisi."}), 401
         raw_val = (data.get("webhook_url") or data.get("spreadsheet_id") or "").strip()
         
         cfg = load_config()

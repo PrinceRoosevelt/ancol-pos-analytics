@@ -23,7 +23,8 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     host = "0.0.0.0"
     admin_pin = os.environ.get("ADMIN_PIN", "1234")
+    pin_status = "SET (masked)" if admin_pin != "1234" else "DEFAULT (1234 - Disarankan ubah via ADMIN_PIN)"
     print(f"[server] Starting on http://{host}:{port}")
-    print(f"[server] Admin PIN: {admin_pin}  |  Upload: http://localhost:{port}/upload")
+    print(f"[server] Admin PIN: {'*' * len(admin_pin)} [{pin_status}]  |  Upload: http://localhost:{port}/upload")
     threading.Thread(target=_prewarm_dashboard_cache, daemon=True).start()
     serve(app, host=host, port=port, threads=4)
