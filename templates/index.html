@@ -1180,13 +1180,14 @@
       color: #f8fafc;
     }
     .cal-range-val-pill.active {
-      border-color: #0284c7;
-      background: #f0f9ff;
-      color: #0369a1;
+      border-color: var(--brand);
+      background: var(--brand-subtle);
+      color: var(--brand);
     }
     :root.dark .cal-range-val-pill.active {
-      background: rgba(2, 132, 199, 0.2);
-      color: #38bdf8;
+      background: rgba(0, 181, 226, 0.15);
+      color: var(--brand-sky);
+      border-color: var(--brand-sky);
     }
 
     /* Month & Year Selectors with Navigation (Matching Screenshot) */
@@ -1217,7 +1218,7 @@
       color: #cbd5e1;
     }
     .cal-nav-btn:hover {
-      background: #0284c7;
+      background: var(--brand);
       color: #fff;
     }
     .cal-selectors {
@@ -1243,7 +1244,8 @@
       color: #f8fafc;
     }
     .cal-select-pill:focus {
-      border-color: #0284c7;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 2px rgba(0, 51, 160, 0.15);
     }
 
     /* Weekday Headers */
@@ -1411,12 +1413,12 @@
       color: #cbd5e1;
     }
     .cal-preset-btn:hover {
-      background: #0284c7;
+      background: var(--brand);
       color: #fff;
-      border-color: #0284c7;
+      border-color: var(--brand);
     }
 
-    /* Footer Buttons (Matching Screenshot: Close in peach, Confirm in lime/green) */
+    /* Footer Buttons (Matching Screenshot: Close in peach, Confirm in Ancol Ocean Blue) */
     .cal-footer-actions {
       display: flex;
       align-items: center;
@@ -1446,17 +1448,26 @@
       transform: translateY(-1px);
     }
     .cal-btn-confirm {
-      background: #ecfccb;
-      color: #4d7c0f;
+      background: var(--brand);
+      color: #ffffff;
+      border: 1px solid var(--brand);
+      box-shadow: 0 2px 8px rgba(0, 51, 160, 0.25);
     }
     :root.dark .cal-btn-confirm {
-      background: rgba(132, 204, 22, 0.2);
-      color: #bef264;
+      background: var(--brand-sky);
+      color: #00205B;
+      border-color: var(--brand-sky);
     }
     .cal-btn-confirm:hover {
-      background: #d9f99d;
+      background: var(--brand-hover);
+      color: #ffffff;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(101, 163, 13, 0.25);
+      box-shadow: 0 4px 14px rgba(0, 51, 160, 0.35);
+    }
+    :root.dark .cal-btn-confirm:hover {
+      background: #38bdf8;
+      color: #00205B;
+      box-shadow: 0 4px 14px rgba(0, 181, 226, 0.4);
     }
 
     .active-filters {
@@ -1535,8 +1546,6 @@
     /* Executive Narrative Banner - Compact Glassmorphism Ticker */
     .narrative-banner {
       background: linear-gradient(135deg, rgba(0, 51, 160, 0.05) 0%, rgba(0, 181, 226, 0.08) 100%);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(0, 51, 160, 0.18);
       border-radius: 12px;
       padding: 9px 16px;
@@ -1571,7 +1580,7 @@
 
     .narrative-content h3 {
       font-size: 11px;
-      font-weight: 750;
+      font-weight: 700;
       color: var(--brand);
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -1582,7 +1591,7 @@
       font-size: 12.5px;
       line-height: 1.45;
       color: var(--text);
-      font-weight: 450;
+      font-weight: 400;
       margin: 0;
     }
 
@@ -1596,19 +1605,17 @@
       display: flex;
       align-items: center;
       gap: 5px;
-      padding: 5px 8px;
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(0, 51, 160, 0.2);
+      padding: 5px 10px;
+      background: #ffffff;
+      border: 1.5px solid var(--brand-border);
       border-radius: 999px;
-      box-shadow: 0 8px 28px rgba(0, 51, 160, 0.18), 0 2px 6px rgba(0, 0, 0, 0.06);
-      transition: all 0.25s ease;
+      box-shadow: 0 8px 30px rgba(0, 51, 160, 0.16), 0 2px 8px rgba(0, 0, 0, 0.05);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     :root.dark .quick-jump-dock {
-      background: rgba(15, 23, 42, 0.92);
-      border-color: rgba(0, 181, 226, 0.35);
-      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55);
+      background: #0f172a;
+      border-color: rgba(0, 181, 226, 0.4);
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.65), 0 0 12px rgba(0, 181, 226, 0.15);
     }
     .jump-btn {
       padding: 6px 12px;
@@ -1675,7 +1682,7 @@
       border: 1px solid var(--panel-border);
       background: var(--panel-hover);
       font-size: 11.5px;
-      font-weight: 650;
+      font-weight: 600;
       color: var(--text-muted);
       cursor: pointer;
       display: inline-flex;
@@ -1709,7 +1716,7 @@
       border: 1px solid rgba(5, 150, 105, 0.3);
       padding: 2px 7px;
       border-radius: 999px;
-      font-weight: 750;
+      font-weight: 700;
       font-size: 11px;
       display: inline-block;
     }
@@ -1877,13 +1884,13 @@
     }
 
     .kpi-card {
-      background: rgba(255, 255, 255, 0.78);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.75);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1.5px solid rgba(255, 255, 255, 0.95);
       border-radius: 14px;
       padding: 16px 18px;
-      box-shadow: 0 4px 16px -2px rgba(0, 32, 91, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      box-shadow: 0 6px 20px -2px rgba(0, 32, 91, 0.08), inset 0 1px 0 #ffffff;
       position: relative;
       overflow: hidden;
       transition: transform .2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .2s cubic-bezier(0.16, 1, 0.3, 1), border-color .2s;
@@ -1892,9 +1899,11 @@
       justify-content: space-between;
     }
     :root.dark .kpi-card {
-      background: rgba(10, 19, 36, 0.74);
-      border-color: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 6px 20px -2px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 6px 20px -2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
     .kpi-card:hover {
@@ -2062,10 +2071,10 @@
       background: var(--unit-atlantis) !important;
     }
     .kpi-card-atlantis .traffic-bar-rl {
-      background: #a855f7 !important;
+      background: rgba(92, 6, 140, 0.75) !important;
     }
     .kpi-card-atlantis .traffic-bar-ra {
-      background: #c084fc !important;
+      background: rgba(92, 6, 140, 0.45) !important;
     }
 
     .kpi-card-header {
@@ -2077,7 +2086,7 @@
 
     .kpi-title {
       font-size: 12.5px;
-      font-weight: 650;
+      font-weight: 600;
       color: var(--text-muted);
       letter-spacing: -0.01em;
     }
@@ -2178,7 +2187,7 @@
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #3b82f6, #10b981);
+      background: linear-gradient(90deg, var(--brand) 0%, var(--brand-sky) 100%);
       border-radius: var(--radius-full);
       transition: width .4s ease-out;
     }
@@ -2276,7 +2285,7 @@
     }
     .unit-metric-label {
       font-size: 10px;
-      font-weight: 750;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: rgba(255, 255, 255, 0.88);
@@ -2284,7 +2293,7 @@
     }
     .unit-metric-val {
       font-size: 24px;
-      font-weight: 850;
+      font-weight: 800;
       font-variant-numeric: tabular-nums;
       line-height: 1.15;
       color: #ffffff;
@@ -2315,13 +2324,13 @@
     }
     .unit-stat-label {
       font-size: 9.5px;
-      font-weight: 650;
+      font-weight: 600;
       text-transform: uppercase;
       color: rgba(255, 255, 255, 0.78);
     }
     .unit-stat-col strong {
       font-size: 13.5px;
-      font-weight: 750;
+      font-weight: 700;
       color: #ffffff;
       margin-top: 1px;
     }
@@ -2557,19 +2566,17 @@
     }
 
     .chart-panel {
-      background: rgba(255, 255, 255, 0.78);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.7);
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
       border-radius: 14px;
       padding: 18px 20px;
-      box-shadow: 0 4px 18px -2px rgba(0, 32, 91, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+      box-shadow: var(--shadow);
       transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
     }
     :root.dark .chart-panel {
-      background: rgba(10, 19, 36, 0.75);
-      border-color: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 6px 22px -2px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      background: var(--panel);
+      border-color: var(--panel-border);
+      box-shadow: 0 6px 22px -2px rgba(0, 0, 0, 0.45);
     }
 
     .chart-panel:hover {
@@ -2682,7 +2689,7 @@
       padding: 4px 10px;
       border-radius: 6px;
       font-size: 11.5px;
-      font-weight: 650;
+      font-weight: 600;
       border: none;
       background: transparent;
       color: var(--text-muted);
@@ -2789,7 +2796,7 @@
 
     .quarter-card-title {
       font-size: 12px;
-      font-weight: 750;
+      font-weight: 700;
       color: var(--text);
     }
 
@@ -2822,7 +2829,7 @@
     }
 
     .quarter-growth-badge {
-      font-weight: 750;
+      font-weight: 700;
       padding: 1px 6px;
       border-radius: 4px;
       font-size: 10.5px;
@@ -2879,20 +2886,18 @@
 
     /* Tables Section - Clean Modern Card */
     .table-section {
-      background: rgba(255, 255, 255, 0.82);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.75);
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
       border-radius: 14px;
       padding: 18px 20px;
-      box-shadow: 0 4px 20px -2px rgba(0, 32, 91, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      box-shadow: var(--shadow);
       margin-bottom: 24px;
       transition: border-color .2s ease, box-shadow .2s ease;
     }
     :root.dark .table-section {
-      background: rgba(10, 19, 36, 0.78);
-      border-color: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 6px 24px -2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      background: var(--panel);
+      border-color: var(--panel-border);
+      box-shadow: 0 6px 24px -2px rgba(0, 0, 0, 0.5);
     }
 
     .table-controls {
@@ -2969,7 +2974,7 @@
       padding: 9px 12px;
       background: var(--bg);
       color: var(--text-muted);
-      font-weight: 650;
+      font-weight: 600;
       border-bottom: 1px solid var(--panel-border);
       white-space: nowrap;
       text-transform: uppercase;
@@ -3035,7 +3040,7 @@
       padding: 10px 18px;
       border-radius: 999px;
       font-size: 12.5px;
-      font-weight: 650;
+      font-weight: 600;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
       display: flex;
       align-items: center;
@@ -3124,21 +3129,19 @@
 
     /* Periodical Visitor & Revenue Comparison Matrix Section */
     .period-matrix-section {
-      background: rgba(255, 255, 255, 0.86);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(0, 51, 160, 0.14);
+      background: var(--panel);
+      border: 1px solid var(--brand-border);
       border-radius: var(--radius);
       padding: 20px 22px;
       margin-bottom: 24px;
-      box-shadow: 0 6px 24px -4px rgba(0, 32, 91, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+      box-shadow: 0 6px 24px -4px rgba(0, 32, 91, 0.07);
       position: relative;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     :root.dark .period-matrix-section {
-      background: rgba(10, 19, 36, 0.82);
+      background: var(--panel);
       border-color: rgba(255, 255, 255, 0.1);
-      box-shadow: 0 8px 28px -4px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      box-shadow: 0 8px 28px -4px rgba(0, 0, 0, 0.55);
     }
 
     .matrix-summary-strip {
@@ -3191,7 +3194,7 @@
     }
     .matrix-summary-val {
       font-size: 12.5px;
-      font-weight: 750;
+      font-weight: 700;
       color: var(--text);
       white-space: nowrap;
       overflow: hidden;
@@ -3218,7 +3221,7 @@
       border: 1px solid var(--panel-border);
       background: var(--bg);
       font-size: 11.5px;
-      font-weight: 650;
+      font-weight: 600;
       color: var(--text-muted);
       cursor: pointer;
       display: inline-flex;
@@ -3264,7 +3267,7 @@
       z-index: 8;
       padding: 10px 12px;
       font-size: 11px;
-      font-weight: 750;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       border-bottom: 2px solid var(--panel-border);
@@ -3327,7 +3330,7 @@
     /* Subtle Column Group Tints (Matching Excel Screenshot 2) */
     .matrix-table tbody td.td-2026 {
       background: rgba(22, 163, 74, 0.06);
-      font-weight: 650;
+      font-weight: 600;
     }
     .matrix-table tbody td.td-2025 {
       background: rgba(37, 99, 235, 0.06);
@@ -3336,12 +3339,12 @@
     .matrix-table tbody td.td-growth-pos {
       background: rgba(22, 163, 74, 0.11);
       color: #15803d;
-      font-weight: 750;
+      font-weight: 700;
     }
     .matrix-table tbody td.td-growth-neg {
       background: rgba(239, 68, 68, 0.10);
       color: #dc2626;
-      font-weight: 750;
+      font-weight: 700;
     }
     .matrix-table tbody td.td-growth-neutral {
       background: rgba(148, 163, 184, 0.06);
@@ -3388,7 +3391,7 @@
     .matrix-table tbody tr.matrix-row-holiday td.td-period {
       background: rgba(224, 0, 77, 0.11);
       border-left: 4px solid #E0004D;
-      font-weight: 750;
+      font-weight: 700;
     }
     :root.dark .matrix-table tbody tr.matrix-row-holiday td.td-period {
       background: rgba(244, 63, 94, 0.20);
@@ -3445,7 +3448,7 @@
       align-items: center;
       gap: 3px;
       font-size: 10px;
-      font-weight: 750;
+      font-weight: 700;
       padding: 1px 6px;
       border-radius: 999px;
       margin-left: 5px;
@@ -3506,6 +3509,7 @@
     .business-insight-section {
       background: var(--panel);
       border: 1px solid var(--panel-border);
+      border-left: 4px solid var(--brand);
       border-radius: var(--radius);
       padding: 22px 24px;
       margin-bottom: 24px;
@@ -3673,14 +3677,14 @@
     .biz-point-tag.target { background: #fef3c7; color: #b45309; }
     .biz-point-tag.driver { background: #e0f2fe; color: #0369a1; }
     .biz-point-tag.star { background: #fef08a; color: #854d0e; }
-    .biz-point-tag.action { background: #f3e8ff; color: #7e22ce; }
+    .biz-point-tag.action { background: rgba(92, 6, 140, 0.12); color: var(--unit-atlantis); border: 1px solid rgba(92, 6, 140, 0.25); }
 
     :root.dark .biz-point-tag.growth { background: rgba(34, 197, 94, 0.2); color: #86efac; }
     :root.dark .biz-point-tag.drop { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
     :root.dark .biz-point-tag.target { background: rgba(245, 158, 11, 0.2); color: #fde68a; }
     :root.dark .biz-point-tag.driver { background: rgba(2, 132, 199, 0.2); color: #7dd3fc; }
     :root.dark .biz-point-tag.star { background: rgba(234, 179, 8, 0.2); color: #fef08a; }
-    :root.dark .biz-point-tag.action { background: rgba(168, 85, 247, 0.2); color: #d8b4fe; }
+    :root.dark .biz-point-tag.action { background: rgba(92, 6, 140, 0.25); color: #d8b4fe; border-color: rgba(92, 6, 140, 0.4); }
 
     .biz-point-text {
       flex: 1;
@@ -3797,10 +3801,11 @@
       height: 48px;
       padding: 0 18px 0 14px;
       border-radius: 24px;
-      background: linear-gradient(135deg, #00205B 0%, #0033A0 60%, #00B5E2 100%);
+      background: #00205B;
       color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      box-shadow: 0 4px 18px rgba(0, 51, 160, 0.4), 0 2px 6px rgba(0, 32, 91, 0.2);
+      border: 1px solid rgba(0, 181, 226, 0.4);
+      border-top: 2px solid #00B5E2;
+      box-shadow: 0 6px 20px rgba(0, 32, 91, 0.35), 0 2px 6px rgba(0, 0, 0, 0.15);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -3815,8 +3820,9 @@
 
     .btn-ai-float:hover {
       transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 8px 25px rgba(0, 181, 226, 0.45), 0 3px 8px rgba(0, 32, 91, 0.25);
-      background: linear-gradient(135deg, #0033A0 0%, #00B5E2 100%);
+      box-shadow: 0 10px 28px rgba(0, 51, 160, 0.45), 0 0 14px rgba(0, 181, 226, 0.3);
+      background: #0033A0;
+      border-top-color: #38bdf8;
     }
 
     .btn-ai-float:active {
@@ -3890,12 +3896,12 @@
     /* Header */
     .ai-drawer-header {
       padding: 16px 20px;
-      background: linear-gradient(135deg, #00205B 0%, #0033A0 100%);
+      background: #00205B;
       color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(0, 181, 226, 0.25);
+      border-bottom: 2px solid var(--brand-sky);
       flex-shrink: 0;
     }
 
@@ -4213,7 +4219,7 @@
     }
 
     .ai-btn-send:hover {
-      background: #1d4ed8;
+      background: var(--brand-hover);
       transform: scale(1.05);
     }
 
@@ -4309,7 +4315,7 @@
       }
       #btnSyncGoogleSheets {
         flex: 1 1 100%;
-        font-weight: 750;
+        font-weight: 700;
       }
 
       /* 3. Sticky Filter Bar Ergonomics */
@@ -4659,7 +4665,7 @@
     }
     .product-chart-title {
       font-size: 13.5px;
-      font-weight: 750;
+      font-weight: 700;
       color: var(--text);
       display: inline-flex;
       align-items: center;
@@ -5656,7 +5662,7 @@
         <div style="display:flex; align-items:center; gap:12px;">
           <span class="flat-badge flat-badge-lg flat-badge-emerald"><svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14.2h-2.8zm5.6 8h2.8v6.2h-2.8zM2 22h20V20H2z"/></svg></span>
           <div>
-            <h3 style="margin:0; font-size:16px; font-weight:750; color:#1e293b;">Google Sheets Live Auto-Sync</h3>
+            <h3 style="margin:0; font-size:16px; font-weight:700; color:#1e293b;">Google Sheets Live Auto-Sync</h3>
             <span style="font-size:12px; color:#64748b;">Sinkronisasi Real-time via Google Apps Script (Tanpa Cloud Console)</span>
           </div>
         </div>
@@ -5672,7 +5678,7 @@
       </div>
 
       <div style="margin-bottom:18px;">
-        <label style="display:block; font-size:12.5px; font-weight:650; color:#334155; margin-bottom:6px;">
+        <label style="display:block; font-size:12.5px; font-weight:600; color:#334155; margin-bottom:6px;">
           Masukkan Webhook URL Google Apps Script:
         </label>
         <input type="text" id="gsheetInputId" placeholder="https://script.google.com/macros/s/AKfycb.../exec" style="width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:12.5px;" />
@@ -6569,7 +6575,7 @@
       <div class="chart-header" style="flex-wrap: wrap; gap: 12px; align-items: center;">
         <div>
           <div style="display:flex; align-items:center; gap:8px;">
-            <h2 id="spendingChartTitle" style="font-size:15px; font-weight:750; color:var(--text); margin:0;">
+            <h2 id="spendingChartTitle" style="font-size:15px; font-weight:700; color:var(--text); margin:0;">
               Korelasi Spending Revenue vs Struk Transaksi (2026 vs 2025)
             </h2>
             <span class="badge-spending-mode" id="spendingModeBadge" style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; background:rgba(0,51,160,0.1); color:var(--brand); border:1px solid rgba(0,51,160,0.25);">
@@ -7121,11 +7127,11 @@
           <span>↩</span>
           <span>Kembali ke Semua Bulan (YTD)</span>
         </button>
-        <button type="button" id="btnCopyMatrixTable" onclick="copyPeriodMatrixToClipboard(this)" class="btn" style="padding:6px 12px; font-size:12px; font-weight:650; background:var(--bg); color:var(--text); border:1px solid var(--panel-border); border-radius:8px; display:inline-flex; align-items:center; gap:5px; cursor:pointer;" title="Salin tabel ke WhatsApp / Excel">
+        <button type="button" id="btnCopyMatrixTable" onclick="copyPeriodMatrixToClipboard(this)" class="btn" style="padding:6px 12px; font-size:12px; font-weight:600; background:var(--bg); color:var(--text); border:1px solid var(--panel-border); border-radius:8px; display:inline-flex; align-items:center; gap:5px; cursor:pointer;" title="Salin tabel ke WhatsApp / Excel">
           <span>📋</span>
           <span>Salin Tabel</span>
         </button>
-        <button type="button" id="btnToggleMatrixBody" onclick="togglePeriodMatrixCollapse()" class="btn" style="padding:6px 12px; font-size:12px; font-weight:650; background:var(--bg); color:var(--text-muted); border:1px solid var(--panel-border); border-radius:8px; display:inline-flex; align-items:center; gap:5px; cursor:pointer;" title="Sembunyikan atau tampilkan tabel">
+        <button type="button" id="btnToggleMatrixBody" onclick="togglePeriodMatrixCollapse()" class="btn" style="padding:6px 12px; font-size:12px; font-weight:600; background:var(--bg); color:var(--text-muted); border:1px solid var(--panel-border); border-radius:8px; display:inline-flex; align-items:center; gap:5px; cursor:pointer;" title="Sembunyikan atau tampilkan tabel">
           <span id="toggleMatrixIcon">▲</span>
           <span id="toggleMatrixText">Ringkas</span>
         </button>
