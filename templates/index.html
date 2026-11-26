@@ -6703,17 +6703,7 @@
           </span>
         </div>
         
-        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-          <!-- View Mode Switcher Pills (Fokus ATV vs Gabungan) -->
-          <div class="chart-level-pills" id="spendingViewModePills" aria-label="Pilih mode tampilan grafik">
-            <button type="button" class="chart-level-pill active" id="btnSpendingModeAtv" onclick="setSpendingChartViewMode('atv')">
-              Fokus ATV
-            </button>
-            <button type="button" class="chart-level-pill" id="btnSpendingModeCombined" onclick="setSpendingChartViewMode('combined')">
-              Gabungan
-            </button>
-          </div>
-
+        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
           <!-- Level Switcher Pills -->
           <div class="chart-level-pills" id="spendingLevelPills">
             <button type="button" class="chart-level-pill" id="btnSpendingLevelQuarter" onclick="setSpendingChartLevel('quarter')">
@@ -6727,22 +6717,12 @@
             </button>
           </div>
 
-          <!-- Legend Items: Mode Fokus ATV -->
+          <!-- Legend Items: Fokus ATV -->
           <div class="chart-legend" id="spendingLegendAtv" style="gap:12px;">
             <div class="legend-item"><span class="legend-dot" style="background:#00B5E2;"></span> <span>ATV '26 (Daya Beli)</span></div>
             <div class="legend-item"><span class="legend-dot" style="background:rgba(0,181,226,0.45); border:1px dashed #00B5E2;"></span> <span>ATV '25 (Baseline)</span></div>
             <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span> <span>YoY Naik</span></div>
             <div class="legend-item"><span class="legend-dot" style="background:#ef4444;"></span> <span>YoY Turun</span></div>
-          </div>
-
-          <!-- Legend Items: Mode Gabungan -->
-          <div class="chart-legend" id="spendingLegendCombined" style="gap:12px; display:none;">
-            <div class="legend-item"><span class="legend-dot" style="background:var(--brand);"></span> <span>Spending '26</span></div>
-            <div class="legend-item"><span class="legend-dot" style="background:#a78bfa;"></span> <span>Spending '25</span></div>
-            <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span> <span>Struk '26 (Kanan)</span></div>
-            <div class="legend-item"><span class="legend-dot" style="background:#f59e0b;"></span> <span>Struk '25 (Kanan)</span></div>
-            <div class="legend-item"><span class="legend-dot" style="background:#00B5E2;"></span> <span>ATV '26 (Daya Beli)</span></div>
-            <div class="legend-item"><span class="legend-dot" style="background:rgba(0,181,226,0.5);"></span> <span>ATV '25</span></div>
           </div>
         </div>
       </div>
@@ -10709,16 +10689,9 @@
           else modeBadgeEl.textContent = focusedQ ? `Harian (${focusedQ})` : (selMonth ? `Harian (Bulan ${selMonth})` : 'Harian (Kalender)');
         }
         if (chartSubEl) {
-          const isAtvMode = (typeof spendingChartState !== 'undefined' && spendingChartState.viewMode === 'atv');
-          if (isAtvMode) {
-            if (activeLevel === 'quarter') chartSubEl.textContent = 'Perbandingan daya beli per struk (ATV) per kuartal (YoY 2026 vs 2025) — arahkan kursor untuk detail spending & struk';
-            else if (activeLevel === 'monthly') chartSubEl.textContent = focusedQ ? `Tren ATV bulanan untuk ${focusedQ} (2026 vs 2025) — arahkan kursor untuk detail spending & insight` : 'Tren rata-rata belanja per struk (ATV) bulanan Jan – Des (2026 vs 2025)';
-            else chartSubEl.textContent = 'Pergerakan harian rata-rata belanja per struk (ATV 2026 vs 2025)';
-          } else {
-            if (activeLevel === 'quarter') chartSubEl.textContent = 'Ringkasan performa spending revenue vs struk per kuartal (YoY 2026 vs 2025)';
-            else if (activeLevel === 'monthly') chartSubEl.textContent = focusedQ ? `Detail spending & struk bulanan untuk ${focusedQ} (2026 vs 2025)` : 'Tren spending vs struk transaksi bulanan Jan – Des (YoY)';
-            else chartSubEl.textContent = 'Pergerakan spending omzet vs struk harian (Dual Y-Axis)';
-          }
+          if (activeLevel === 'quarter') chartSubEl.textContent = 'Perbandingan daya beli per struk (ATV) per kuartal (YoY 2026 vs 2025) — arahkan kursor untuk detail spending & struk';
+          else if (activeLevel === 'monthly') chartSubEl.textContent = focusedQ ? `Tren ATV bulanan untuk ${focusedQ} (2026 vs 2025) — arahkan kursor untuk detail spending & insight` : 'Tren rata-rata belanja per struk (ATV) bulanan Jan – Des (2026 vs 2025)';
+          else chartSubEl.textContent = 'Pergerakan harian rata-rata belanja per struk (ATV 2026 vs 2025)';
         }
       }
     } catch (e) {
@@ -13960,8 +13933,7 @@
   // ----------------------------------------------------
   let spendingChartState = {
     level: 'monthly',
-    focusedQuarter: null,
-    viewMode: 'atv'
+    focusedQuarter: null
   };
   let spendingChartManualOverride = false;
 
@@ -13973,52 +13945,12 @@
     if (mPill) mPill.classList.toggle('active', spendingChartState.level === 'monthly');
     if (dPill) dPill.classList.toggle('active', spendingChartState.level === 'daily');
 
-    const atvModeBtn = document.getElementById('btnSpendingModeAtv');
-    const combModeBtn = document.getElementById('btnSpendingModeCombined');
-    const isAtvMode = (spendingChartState.viewMode !== 'combined');
-    if (atvModeBtn) atvModeBtn.classList.toggle('active', isAtvMode);
-    if (combModeBtn) combModeBtn.classList.toggle('active', !isAtvMode);
-
-    const legendAtv = document.getElementById('spendingLegendAtv');
-    const legendCombined = document.getElementById('spendingLegendCombined');
-    if (legendAtv) legendAtv.style.display = isAtvMode ? 'flex' : 'none';
-    if (legendCombined) legendCombined.style.display = isAtvMode ? 'none' : 'flex';
-
-    const titleEl = document.getElementById('spendingChartTitle');
-    if (titleEl) {
-      titleEl.textContent = isAtvMode
-        ? 'Perbandingan Basket Size / ATV (2026 vs 2025)'
-        : 'Korelasi Spending Revenue vs Struk Transaksi (2026 vs 2025)';
-    }
-
     ['Q1', 'Q2', 'Q3', 'Q4'].forEach(qk => {
       const card = document.getElementById('qCard' + qk);
       if (card) {
         card.classList.toggle('active', spendingChartState.focusedQuarter === qk);
       }
     });
-  }
-
-  function setSpendingChartViewMode(mode) {
-    spendingChartState.viewMode = (mode === 'combined') ? 'combined' : 'atv';
-    updateSpendingLevelPills();
-    const chartSubEl = document.getElementById('spendingChartSubtitle');
-    if (chartSubEl) {
-      const lvl = spendingChartState.level;
-      const fq = spendingChartState.focusedQuarter;
-      if (spendingChartState.viewMode === 'atv') {
-        if (lvl === 'quarter') chartSubEl.textContent = 'Perbandingan daya beli per struk (ATV) per kuartal (YoY 2026 vs 2025) — arahkan kursor untuk detail spending & struk';
-        else if (lvl === 'monthly') chartSubEl.textContent = fq ? `Tren ATV bulanan untuk ${fq} (2026 vs 2025) — arahkan kursor untuk detail spending & insight` : 'Tren rata-rata belanja per struk (ATV) bulanan Jan – Des (2026 vs 2025)';
-        else chartSubEl.textContent = 'Pergerakan harian rata-rata belanja per struk (ATV 2026 vs 2025)';
-      } else {
-        if (lvl === 'quarter') chartSubEl.textContent = 'Ringkasan performa spending revenue vs struk per kuartal (YoY 2026 vs 2025)';
-        else if (lvl === 'monthly') chartSubEl.textContent = fq ? `Detail spending & struk bulanan untuk ${fq} (2026 vs 2025)` : 'Tren spending vs struk transaksi bulanan Jan – Des (YoY)';
-        else chartSubEl.textContent = 'Pergerakan spending omzet vs struk harian (Dual Y-Axis)';
-      }
-    }
-    if (typeof drawSpendingStrukChart === 'function') {
-      drawSpendingStrukChart();
-    }
   }
 
   function setSpendingChartLevel(lvl) {
@@ -15159,205 +15091,36 @@
       return;
     }
 
-    const isAtvOnlyMode = (typeof spendingChartState !== 'undefined' && spendingChartState.viewMode !== 'combined');
-    if (isAtvOnlyMode) {
-      // ====================================================
-      // MODE FOKUS ATV: Perbandingan Murni ATV 2026 vs 2025
-      // ====================================================
-      const allAtvVals = chartData.flatMap(x => [x.atv_2026 || 0, x.atv_2025 || 0]).filter(v => v > 0);
-      if (!allAtvVals.length) {
-        ctx.fillStyle = textColor;
-        ctx.textAlign = 'center';
-        ctx.font = '13px sans-serif';
-        ctx.fillText('Tidak ada data ATV untuk filter ini', width / 2, height / 2);
-        return;
-      }
-
-      const rawMin = Math.min(...allAtvVals);
-      const rawMax = Math.max(...allAtvVals);
-      const span = Math.max(rawMax - rawMin, 10000);
-      const pad = span * 0.22;
-      const yMin = Math.max(0, Math.floor((rawMin - pad) / 5000) * 5000);
-      let yMax = Math.ceil((rawMax + pad) / 5000) * 5000;
-      if (yMax <= yMin) yMax = yMin + 10000;
-      const yRange = yMax - yMin;
-
-      const left = 72, bottom = 40, top = 34, right = 28;
-      const plotW = width - left - right;
-      const plotH = height - top - bottom;
-      const numItems = chartData.length;
-      const slotW = plotW / Math.max(numItems, 1);
-
-      // Gridlines & Single Y-Axis (ATV in Rp)
-      ctx.font = '11px sans-serif';
-      ctx.lineWidth = 1;
-      [0, 0.25, 0.5, 0.75, 1].forEach(t => {
-        const y = top + plotH * (1 - t);
-        ctx.strokeStyle = gridColor;
-        ctx.beginPath();
-        ctx.moveTo(left, y);
-        ctx.lineTo(width - right, y);
-        ctx.stroke();
-
-        const val = yMin + yRange * t;
-        let lblStr = 'Rp 0';
-        if (val >= 1000000) lblStr = 'Rp ' + (val / 1000000).toFixed(2).replace(/\.00$/, '') + 'jt';
-        else if (val > 0) lblStr = 'Rp ' + Math.round(val / 1000) + 'rb';
-        ctx.fillStyle = textColor;
-        ctx.textAlign = 'right';
-        ctx.fillText(lblStr, left - 10, y + 4);
-      });
-
-      spendingPoints = [];
-      let peakIdx = -1, peakAtv26 = -1;
-      chartData.forEach((item, i) => {
-        const cx = left + i * slotW + slotW / 2;
-        const a26 = (item.atv_2026 !== null && item.atv_2026 !== undefined && item.atv_2026 > 0) ? item.atv_2026 : null;
-        const a25 = (item.atv_2025 && item.atv_2025 > 0) ? item.atv_2025 : null;
-        const yAtv26 = a26 !== null ? (top + plotH - ((a26 - yMin) / yRange) * plotH) : null;
-        const yAtv25 = a25 !== null ? (top + plotH - ((a25 - yMin) / yRange) * plotH) : null;
-        if (a26 !== null && a26 > peakAtv26) {
-          peakAtv26 = a26;
-          peakIdx = i;
-        }
-        spendingPoints.push({ x: cx, yAtv26, yAtv25, item });
-      });
-
-      // 1. Area Gradient Fill under ATV 2026
-      const active26Pts = spendingPoints.filter(pt => pt.yAtv26 !== null);
-      if (active26Pts.length >= 2) {
-        const grad = ctx.createLinearGradient(0, top, 0, top + plotH);
-        grad.addColorStop(0, isDark ? 'rgba(0, 181, 226, 0.28)' : 'rgba(0, 181, 226, 0.18)');
-        grad.addColorStop(1, 'rgba(0, 181, 226, 0.0)');
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.moveTo(active26Pts[0].x, top + plotH);
-        active26Pts.forEach(pt => ctx.lineTo(pt.x, pt.yAtv26));
-        ctx.lineTo(active26Pts[active26Pts.length - 1].x, top + plotH);
-        ctx.closePath();
-        ctx.fill();
-      }
-
-      // 2. ATV 2025 Baseline Line (Dashed)
-      const atv25Color = isDark ? 'rgba(148, 163, 184, 0.65)' : 'rgba(0, 181, 226, 0.55)';
-      const atv26Color = isDark ? '#38c8ee' : '#00B5E2';
-      ctx.strokeStyle = atv25Color;
-      ctx.lineWidth = 2;
-      ctx.setLineDash([5, 4]);
-      ctx.beginPath();
-      let started25 = false;
-      spendingPoints.forEach(pt => {
-        if (pt.yAtv25 !== null) {
-          if (!started25) { ctx.moveTo(pt.x, pt.yAtv25); started25 = true; }
-          else ctx.lineTo(pt.x, pt.yAtv25);
-        }
-      });
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // 3. ATV 2026 Active Line (Solid)
-      ctx.strokeStyle = atv26Color;
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      let started26 = false;
-      spendingPoints.forEach(pt => {
-        if (pt.yAtv26 !== null) {
-          if (!started26) { ctx.moveTo(pt.x, pt.yAtv26); started26 = true; }
-          else ctx.lineTo(pt.x, pt.yAtv26);
-        }
-      });
-      ctx.stroke();
-
-      // 4. Markers & Value Callouts
-      spendingPoints.forEach((pt, i) => {
-        if (pt.yAtv25 !== null) {
-          ctx.fillStyle = isDark ? '#0f172a' : '#ffffff';
-          ctx.strokeStyle = atv25Color;
-          ctx.lineWidth = 1.8;
-          ctx.beginPath();
-          ctx.arc(pt.x, pt.yAtv25, 3.5, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-        }
-        if (pt.yAtv26 !== null) {
-          const a26 = pt.item.atv_2026;
-          const a25 = pt.item.atv_2025 || 0;
-          const dotColor = (a25 > 0) ? (a26 >= a25 ? '#10b981' : '#ef4444') : atv26Color;
-          ctx.fillStyle = dotColor;
-          ctx.strokeStyle = '#ffffff';
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.arc(pt.x, pt.yAtv26, 5, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-
-          if (numItems <= 12) {
-            const valStr = a26 >= 1000000 ? ('Rp ' + (a26 / 1000000).toFixed(1) + 'jt') : ('Rp ' + Math.round(a26 / 1000) + 'rb');
-            ctx.font = 'bold 10.5px sans-serif';
-            ctx.fillStyle = isDark ? '#e2e8f0' : '#0f172a';
-            ctx.textAlign = 'center';
-            ctx.fillText(valStr, pt.x, Math.max(pt.yAtv26 - 10, top + 12));
-          }
-        }
-      });
-
-      // 5. Peak ATV Badge
-      if (peakIdx >= 0 && peakAtv26 > 0) {
-        const pt = spendingPoints[peakIdx];
-        const pinText = '★ Puncak ATV: ' + formatRp(peakAtv26);
-        ctx.font = 'bold 10px sans-serif';
-        const textW = ctx.measureText(pinText).width;
-        const bW = textW + 16, bH = 20;
-        let bX = pt.x - bW / 2;
-        if (bX < left) bX = left;
-        if (bX + bW > width - right) bX = width - right - bW;
-        const bY = Math.max((pt.yAtv26 || top) - 34, 4);
-
-        ctx.fillStyle = '#1e293b';
-        ctx.beginPath();
-        if (ctx.roundRect) ctx.roundRect(bX, bY, bW, bH, 6);
-        else ctx.rect(bX, bY, bW, bH);
-        ctx.fill();
-        ctx.strokeStyle = '#00B5E2';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-
-        ctx.fillStyle = '#38c8ee';
-        ctx.textAlign = 'center';
-        ctx.fillText(pinText, bX + bW / 2, bY + 14);
-      }
-
-      // 6. X-Axis Labels
+    // ====================================================
+    // FOKUS ATV: Perbandingan Murni ATV 2026 vs 2025
+    // ====================================================
+    const allAtvVals = chartData.flatMap(x => [x.atv_2026 || 0, x.atv_2025 || 0]).filter(v => v > 0);
+    if (!allAtvVals.length) {
       ctx.fillStyle = textColor;
       ctx.textAlign = 'center';
-      ctx.font = '11px sans-serif';
-      chartData.forEach((item, i) => {
-        const cx = left + i * slotW + slotW / 2;
-        const lbl = item.short_label || item.label;
-        if (numItems <= 12 || i === 0 || i === numItems - 1 || i % Math.ceil(numItems / 10) === 0) {
-          ctx.fillText(lbl, cx, height - 12);
-        }
-      });
+      ctx.font = '13px sans-serif';
+      ctx.fillText('Tidak ada data ATV untuk filter ini', width / 2, height / 2);
       return;
     }
 
-    const spending26Color = isDark ? '#00B5E2' : '#0033A0';
-    const spending25Color = isDark ? '#818cf8' : '#a78bfa';
-    const struk26Color = '#10b981';
-    const struk25Color = '#f59e0b';
+    const rawMin = Math.min(...allAtvVals);
+    const rawMax = Math.max(...allAtvVals);
+    const span = Math.max(rawMax - rawMin, 10000);
+    const pad = span * 0.22;
+    const yMin = Math.max(0, Math.floor((rawMin - pad) / 5000) * 5000);
+    let yMax = Math.ceil((rawMax + pad) / 5000) * 5000;
+    if (yMax <= yMin) yMax = yMin + 10000;
+    const yRange = yMax - yMin;
 
-    const maxSpending = Math.max(...chartData.flatMap(x => [x.spending_2026 || 0, x.spending_2025 || 0]), 1000000);
-    const maxStruk = Math.max(...chartData.flatMap(x => [x.struk_2026 || 0, x.struk_2025 || 0]), 10);
-    const maxAtv = Math.max(...chartData.flatMap(x => [x.atv_2026 || 0, x.atv_2025 || 0]), 10000);
-
-    const left = 78, bottom = 40, top = 28, right = 70;
+    const left = 72, bottom = 40, top = 34, right = 28;
     const plotW = width - left - right;
     const plotH = height - top - bottom;
+    const numItems = chartData.length;
+    const slotW = plotW / Math.max(numItems, 1);
 
+    // Gridlines & Single Y-Axis (ATV in Rp)
     ctx.font = '11px sans-serif';
     ctx.lineWidth = 1;
-
-    // Gridlines & Dual Y-Axis Labels
     [0, 0.25, 0.5, 0.75, 1].forEach(t => {
       const y = top + plotH * (1 - t);
       ctx.strokeStyle = gridColor;
@@ -15366,255 +15129,130 @@
       ctx.lineTo(width - right, y);
       ctx.stroke();
 
-      // Left Y-Axis: Spending (Rp)
-      ctx.fillStyle = spending26Color;
-      ctx.textAlign = 'left';
-      const spVal = maxSpending * t;
-      let spStr = 'Rp 0';
-      if (spVal >= 1000000000) {
-        spStr = 'Rp ' + (spVal / 1000000000).toFixed(1) + 'M';
-      } else if (spVal > 0) {
-        spStr = 'Rp ' + Math.round(spVal / 1000000) + 'jt';
-      }
-      ctx.fillText(spStr, 6, y + 4);
-
-      // Right Y-Axis: Struk (Invoices)
-      ctx.fillStyle = struk26Color;
+      const val = yMin + yRange * t;
+      let lblStr = 'Rp 0';
+      if (val >= 1000000) lblStr = 'Rp ' + (val / 1000000).toFixed(2).replace(/\.00$/, '') + 'jt';
+      else if (val > 0) lblStr = 'Rp ' + Math.round(val / 1000) + 'rb';
+      ctx.fillStyle = textColor;
       ctx.textAlign = 'right';
-      const stVal = Math.round(maxStruk * t);
-      const stStr = stVal >= 1000 ? (Math.round(stVal / 1000) + 'rb') : stVal.toLocaleString('id-ID');
-      ctx.fillText(stStr + ' tx', width - 6, y + 4);
-
-      if (t === 1) {
-        ctx.fillStyle = '#00B5E2';
-        ctx.textAlign = 'right';
-        ctx.font = 'bold 10px sans-serif';
-        const atvTopStr = 'ATV ~' + (maxAtv >= 1000000 ? ('Rp ' + (maxAtv/1000000).toFixed(1) + 'M') : ('Rp ' + Math.round(maxAtv/1000) + 'rb'));
-        ctx.fillText(atvTopStr, width - 6, top - 10);
-        ctx.font = '11px sans-serif';
-      }
+      ctx.fillText(lblStr, left - 10, y + 4);
     });
 
-    const numItems = chartData.length;
-    const slotW = plotW / Math.max(numItems, 1);
-    const isQuarter = (spendingChartState.level === 'quarter');
-    const isMonthly = (spendingChartState.level === 'monthly');
-    const isDaily = (spendingChartState.level === 'daily');
-
-    // Bar width depends on density
-    let barW = Math.min(26, Math.max(4, slotW * 0.28));
-    if (isDaily && numItems > 20) {
-      barW = Math.min(8, Math.max(3, slotW * 0.35));
-    }
-
     spendingPoints = [];
+    let peakIdx = -1, peakAtv26 = -1;
+    chartData.forEach((item, i) => {
+      const cx = left + i * slotW + slotW / 2;
+      const a26 = (item.atv_2026 !== null && item.atv_2026 !== undefined && item.atv_2026 > 0) ? item.atv_2026 : null;
+      const a25 = (item.atv_2025 && item.atv_2025 > 0) ? item.atv_2025 : null;
+      const yAtv26 = a26 !== null ? (top + plotH - ((a26 - yMin) / yRange) * plotH) : null;
+      const yAtv25 = a25 !== null ? (top + plotH - ((a25 - yMin) / yRange) * plotH) : null;
+      if (a26 !== null && a26 > peakAtv26) {
+        peakAtv26 = a26;
+        peakIdx = i;
+      }
+      spendingPoints.push({ x: cx, yAtv26, yAtv25, item });
+    });
 
-    // Helper: draw rounded top rect
-    function drawRoundedBar(x, y, w, h, radius, fillStyle) {
-      if (h <= 0) return;
-      ctx.fillStyle = fillStyle;
+    // 1. Area Gradient Fill under ATV 2026
+    const active26Pts = spendingPoints.filter(pt => pt.yAtv26 !== null);
+    if (active26Pts.length >= 2) {
+      const grad = ctx.createLinearGradient(0, top, 0, top + plotH);
+      grad.addColorStop(0, isDark ? 'rgba(0, 181, 226, 0.28)' : 'rgba(0, 181, 226, 0.18)');
+      grad.addColorStop(1, 'rgba(0, 181, 226, 0.0)');
+      ctx.fillStyle = grad;
       ctx.beginPath();
-      const r = Math.min(radius, w / 2, h);
-      ctx.moveTo(x, y + h);
-      ctx.lineTo(x, y + r);
-      ctx.arcTo(x, y, x + r, y, r);
-      ctx.lineTo(x + w - r, y);
-      ctx.arcTo(x + w, y, x + w, y + r, r);
-      ctx.lineTo(x + w, y + h);
+      ctx.moveTo(active26Pts[0].x, top + plotH);
+      active26Pts.forEach(pt => ctx.lineTo(pt.x, pt.yAtv26));
+      ctx.lineTo(active26Pts[active26Pts.length - 1].x, top + plotH);
       ctx.closePath();
       ctx.fill();
     }
 
-    // 1. Draw Dual Bars (Spending 2025 & Spending 2026)
-    chartData.forEach((item, i) => {
-      const cx = left + i * slotW + slotW / 2;
-      const sp25 = item.spending_2025 || 0;
-      const sp26 = item.spending_2026;
-
-      // 2025 Bar (Left)
-      const h25 = (sp25 / maxSpending) * plotH;
-      const y25 = top + plotH - h25;
-      const x25 = cx - barW - 1.5;
-      drawRoundedBar(x25, y25, barW, h25, 4, isDark ? 'rgba(129, 140, 248, 0.45)' : 'rgba(167, 139, 250, 0.55)');
-
-      // 2026 Bar (Right)
-      let h26 = 0, y26 = top + plotH, x26 = cx + 1.5;
-      if (sp26 !== null && sp26 !== undefined) {
-        h26 = (sp26 / maxSpending) * plotH;
-        y26 = top + plotH - h26;
-        drawRoundedBar(x26, y26, barW, h26, 4, spending26Color);
-      }
-
-      // Store anchor point for interaction & line plots
-      const st26 = item.struk_2026;
-      const st25 = item.struk_2025 || 0;
-      const atv26 = item.atv_2026;
-      const atv25 = item.atv_2025 || 0;
-      const yStruk26 = (st26 !== null && st26 !== undefined) ? (top + plotH - (st26 / maxStruk) * plotH) : null;
-      const yStruk25 = top + plotH - (st25 / maxStruk) * plotH;
-      const yAtv26 = (atv26 !== null && atv26 !== undefined && atv26 > 0) ? (top + plotH - (atv26 / maxAtv) * plotH) : null;
-      const yAtv25 = atv25 > 0 ? (top + plotH - (atv25 / maxAtv) * plotH) : null;
-
-      spendingPoints.push({
-        x: cx,
-        x25, y25,
-        x26, y26,
-        yStruk26, yStruk25,
-        yAtv26, yAtv25,
-        item
-      });
-    });
-
-    // 2. Draw Struk 2025 Baseline Line (Dashed Amber)
-    ctx.strokeStyle = struk25Color;
-    ctx.lineWidth = 1.8;
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    let hasStartedSt25 = false;
-    spendingPoints.forEach((pt, i) => {
-      if (pt.yStruk25 !== null) {
-        if (!hasStartedSt25) { ctx.moveTo(pt.x, pt.yStruk25); hasStartedSt25 = true; }
-        else { ctx.lineTo(pt.x, pt.yStruk25); }
-      }
-    });
-    ctx.stroke();
-    ctx.setLineDash([]); // Reset line dash
-
-    // 3. Draw Struk 2026 Active Line (Solid Emerald)
-    ctx.strokeStyle = struk26Color;
-    ctx.lineWidth = 2.8;
-    ctx.beginPath();
-    let hasStartedSt26 = false;
-    spendingPoints.forEach((pt, i) => {
-      if (pt.yStruk26 !== null) {
-        if (!hasStartedSt26) { ctx.moveTo(pt.x, pt.yStruk26); hasStartedSt26 = true; }
-        else { ctx.lineTo(pt.x, pt.yStruk26); }
-      }
-    });
-    ctx.stroke();
-
-    // 4. Draw Markers for Struk & Peak Highlights
-    let peakIndex = -1;
-    let maxSpending26 = -1;
-    spendingPoints.forEach((pt, i) => {
-      const sp26 = pt.item.spending_2026;
-      if (sp26 !== null && sp26 !== undefined && sp26 > maxSpending26) {
-        maxSpending26 = sp26;
-        peakIndex = i;
-      }
-
-      // Hollow dot for Struk 2025
-      if (pt.yStruk25 !== null) {
-        ctx.fillStyle = isDark ? '#0f172a' : '#ffffff';
-        ctx.strokeStyle = struk25Color;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.arc(pt.x, pt.yStruk25, 3, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-      }
-
-      // Filled dot for Struk 2026
-      if (pt.yStruk26 !== null) {
-        ctx.fillStyle = struk26Color;
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(pt.x, pt.yStruk26, 4.5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-      }
-    });
-
-    // 5. Draw ATV 2025 Baseline Line (Dashed Sky Blue)
-    const atv25Color = isDark ? 'rgba(0, 181, 226, 0.45)' : 'rgba(0, 181, 226, 0.55)';
+    // 2. ATV 2025 Baseline Line (Dashed)
+    const atv25Color = isDark ? 'rgba(148, 163, 184, 0.65)' : 'rgba(0, 181, 226, 0.55)';
     const atv26Color = isDark ? '#38c8ee' : '#00B5E2';
-
     ctx.strokeStyle = atv25Color;
-    ctx.lineWidth = 1.6;
-    ctx.setLineDash([3, 3]);
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 4]);
     ctx.beginPath();
-    let hasStartedAtv25 = false;
-    spendingPoints.forEach((pt) => {
+    let started25 = false;
+    spendingPoints.forEach(pt => {
       if (pt.yAtv25 !== null) {
-        if (!hasStartedAtv25) { ctx.moveTo(pt.x, pt.yAtv25); hasStartedAtv25 = true; }
-        else { ctx.lineTo(pt.x, pt.yAtv25); }
+        if (!started25) { ctx.moveTo(pt.x, pt.yAtv25); started25 = true; }
+        else ctx.lineTo(pt.x, pt.yAtv25);
       }
     });
     ctx.stroke();
-    ctx.setLineDash([]); // Reset line dash
+    ctx.setLineDash([]);
 
-    // 6. Draw ATV 2026 Active Line (Solid Ancol Sky Blue)
+    // 3. ATV 2026 Active Line (Solid)
     ctx.strokeStyle = atv26Color;
-    ctx.lineWidth = 2.4;
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    let hasStartedAtv26 = false;
-    spendingPoints.forEach((pt) => {
+    let started26 = false;
+    spendingPoints.forEach(pt => {
       if (pt.yAtv26 !== null) {
-        if (!hasStartedAtv26) { ctx.moveTo(pt.x, pt.yAtv26); hasStartedAtv26 = true; }
-        else { ctx.lineTo(pt.x, pt.yAtv26); }
+        if (!started26) { ctx.moveTo(pt.x, pt.yAtv26); started26 = true; }
+        else ctx.lineTo(pt.x, pt.yAtv26);
       }
     });
     ctx.stroke();
 
-    // 7. Draw Markers for ATV
+    // 4. Markers & Value Callouts
     spendingPoints.forEach((pt) => {
-      // Hollow dot for ATV 2025
       if (pt.yAtv25 !== null) {
         ctx.fillStyle = isDark ? '#0f172a' : '#ffffff';
         ctx.strokeStyle = atv25Color;
-        ctx.lineWidth = 1.4;
+        ctx.lineWidth = 1.8;
         ctx.beginPath();
-        ctx.arc(pt.x, pt.yAtv25, 2.8, 0, Math.PI * 2);
+        ctx.arc(pt.x, pt.yAtv25, 3.5, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
       }
-
-      // Filled dot for ATV 2026
       if (pt.yAtv26 !== null) {
-        ctx.fillStyle = atv26Color;
+        const a26 = pt.item.atv_2026;
+        const a25 = pt.item.atv_2025 || 0;
+        const dotColor = (a25 > 0) ? (a26 >= a25 ? '#10b981' : '#ef4444') : atv26Color;
+        ctx.fillStyle = dotColor;
         ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1.8;
+        ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.arc(pt.x, pt.yAtv26, 4.2, 0, Math.PI * 2);
+        ctx.arc(pt.x, pt.yAtv26, 5, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
 
-        // Data callout label for quarterly / monthly view
         if (numItems <= 12) {
-          const atvVal = pt.item.atv_2026;
-          const atvStr = 'Rp ' + Math.round(atvVal / 1000) + 'rb';
-          ctx.font = 'bold 9.5px sans-serif';
-          ctx.fillStyle = isDark ? '#38c8ee' : '#008eb3';
+          const valStr = a26 >= 1000000 ? ('Rp ' + (a26 / 1000000).toFixed(1) + 'jt') : ('Rp ' + Math.round(a26 / 1000) + 'rb');
+          ctx.font = 'bold 10.5px sans-serif';
+          ctx.fillStyle = isDark ? '#e2e8f0' : '#0f172a';
           ctx.textAlign = 'center';
-          ctx.fillText(atvStr, pt.x, Math.max(pt.yAtv26 - 7, top + 10));
-          ctx.font = '11px sans-serif';
+          ctx.fillText(valStr, pt.x, Math.max(pt.yAtv26 - 10, top + 12));
         }
       }
     });
 
-    // 5. Peak Annotation Badge
-    if (peakIndex >= 0 && maxSpending26 > 0) {
-      const pt = spendingPoints[peakIndex];
-      const pinText = '★ Puncak: ' + formatRp(maxSpending26);
+    // 5. Peak ATV Badge
+    if (peakIdx >= 0 && peakAtv26 > 0) {
+      const pt = spendingPoints[peakIdx];
+      const pinText = '★ Puncak ATV: ' + formatRp(peakAtv26);
       ctx.font = 'bold 10px sans-serif';
       const textW = ctx.measureText(pinText).width;
       const bW = textW + 16, bH = 20;
       let bX = pt.x - bW / 2;
       if (bX < left) bX = left;
       if (bX + bW > width - right) bX = width - right - bW;
-      const bY = Math.max((pt.y26 || top) - 26, top);
+      const bY = Math.max((pt.yAtv26 || top) - 34, 4);
 
       ctx.fillStyle = '#1e293b';
       ctx.beginPath();
       if (ctx.roundRect) ctx.roundRect(bX, bY, bW, bH, 6);
       else ctx.rect(bX, bY, bW, bH);
       ctx.fill();
-      ctx.strokeStyle = '#f59e0b';
+      ctx.strokeStyle = '#00B5E2';
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      ctx.fillStyle = '#fbbf24';
+      ctx.fillStyle = '#38c8ee';
       ctx.textAlign = 'center';
       ctx.fillText(pinText, bX + bW / 2, bY + 14);
     }
@@ -15626,12 +15264,8 @@
     chartData.forEach((item, i) => {
       const cx = left + i * slotW + slotW / 2;
       const lbl = item.short_label || item.label;
-      if (numItems <= 12) {
+      if (numItems <= 12 || i === 0 || i === numItems - 1 || i % Math.ceil(numItems / 10) === 0) {
         ctx.fillText(lbl, cx, height - 12);
-      } else {
-        if (i === 0 || i === numItems - 1 || i % Math.ceil(numItems / 10) === 0) {
-          ctx.fillText(lbl, cx, height - 12);
-        }
       }
     });
   }
