@@ -2516,12 +2516,16 @@
     :root.dark .outlet-item-label:hover {
       background: rgba(255, 255, 255, 0.06);
     }
-    .outlet-checkbox {
+    .outlet-checkbox, .category-checkbox {
       width: 17px;
       height: 17px;
       accent-color: var(--brand);
       cursor: pointer;
       flex-shrink: 0;
+    }
+    :root.dark .outlet-quick-toolbar {
+      background: rgba(255, 255, 255, 0.04) !important;
+      border-bottom-color: rgba(255, 255, 255, 0.08) !important;
     }
 
     /* Operational Insights 4-column Grid - Modern Card Tiles */
@@ -5632,28 +5636,29 @@
           {% endfor %}
         </select>
         <div class="searchable-select" id="customCategorySelect">
-          <button type="button" class="searchable-trigger" id="categoryTriggerBtn" onclick="toggleSearchableDropdown('category', event)" aria-label="Menu dropdown pilihan kategori barang">
+          <button type="button" class="searchable-trigger" id="categoryTriggerBtn" onclick="toggleCategoryDropdown(event)" aria-haspopup="listbox" aria-expanded="false" aria-label="Menu dropdown pilihan kategori barang">
             <span class="searchable-trigger-text" id="categoryTriggerLabel">Semua Kategori ({{ data.category_options|length if data.category_options else 0 }})</span>
             <span class="searchable-trigger-arrow">▾</span>
           </button>
-          <div class="searchable-dropdown-menu" id="categoryDropdownMenu" style="display:none;" onclick="event.stopPropagation()">
+          <div class="searchable-dropdown-menu outlet-multiselect-dropdown" id="categoryDropdownMenu" style="display:none;" onclick="event.stopPropagation()">
             <div class="searchable-search-box">
-              <input type="text" class="searchable-search-input" id="categorySearchInput" placeholder="Ketik nama kategori..." aria-label="Cari nama kategori" oninput="filterSearchableList('category')" autocomplete="off">
-              <button type="button" class="searchable-clear-btn" onclick="clearSearchableInput('category')" aria-label="Hapus pencarian kategori">✕</button>
+              <input type="text" class="searchable-search-input" id="categorySearchInput" placeholder="Cari nama kategori..." aria-label="Cari nama kategori" oninput="filterCategoryList()" autocomplete="off">
+              <button type="button" class="searchable-clear-btn" onclick="clearCategorySearch()" aria-label="Hapus pencarian kategori">✕</button>
             </div>
-            <div class="category-select-actions" style="padding:8px 12px; border-bottom:1px solid var(--border); display:flex; gap:8px;">
-              <button type="button" class="btn-sm" onclick="toggleAllCategoryOptions(true)" aria-label="Pilih semua kategori">Pilih Semua</button>
-              <button type="button" class="btn-sm" onclick="toggleAllCategoryOptions(false)" aria-label="Kosongkan semua kategori">Kosongkan</button>
-            </div>
-            <div class="searchable-options-list" id="categoryOptionsList">
-              <div class="searchable-option is-selected" data-value="" onclick="selectSearchableOption('category', '', 'Semua Kategori ({{ data.category_options|length if data.category_options else 0 }})')">
-                <span>Semua Kategori ({{ data.category_options|length if data.category_options else 0 }})</span>
+            <div class="outlet-quick-toolbar" style="display:flex; justify-content:space-between; align-items:center; padding:7px 12px; border-bottom:1px solid rgba(0,0,0,0.06); font-size:11px; background:var(--bg-subtle, #f8fafc);">
+              <span id="categoryCountSelected" style="font-weight:700; color:var(--brand, #0033a0);">Semua Dipilih ({{ data.category_options|length if data.category_options else 0 }})</span>
+              <div style="display:flex; gap:10px; align-items:center;">
+                <button type="button" onclick="selectAllCategories(true)" style="background:none; border:none; color:var(--brand, #0033a0); font-size:11px; cursor:pointer; font-weight:700; padding:0;">Pilih Semua</button>
+                <span style="color:#cbd5e1;">|</span>
+                <button type="button" onclick="selectAllCategories(false)" style="background:none; border:none; color:#ef4444; font-size:11px; cursor:pointer; font-weight:700; padding:0;">Reset</button>
               </div>
+            </div>
+            <div class="outlet-options-scroll" id="categoryOptionsList" style="max-height:280px; overflow-y:auto; padding:4px 0;">
               {% for c in data.category_options %}
-              <div class="searchable-option" data-value="{{ c }}" onclick="selectSearchableOption('category', '{{ c|replace("'", "\\'") }}', '{{ c|replace("'", "\\'") }}')">
-                <span class="option-checkbox">☐</span>
+              <label class="outlet-item-label" data-name="{{ c|lower }}">
+                <input type="checkbox" class="category-checkbox" value="{{ c }}" aria-label="Kategori {{ c }}" onchange="onCategoryCheckboxChange()" checked>
                 <span>{{ c }}</span>
-              </div>
+              </label>
               {% endfor %}
             </div>
           </div>
@@ -7871,29 +7876,19 @@
 
     // Reset Supplier & Category
     if (suppSelect) suppSelect.value = '';
-    // Reset category multi-select state
-    currentFilter.category = [];
-    if (catSelect) {
-      const catOpts = catSelect.querySelectorAll('option');
-      catOpts.forEach(opt => { opt.selected = (opt.value === ''); });
+    // Reset category multi-select state (semua terpilih di awal)
+    document.querySelectorAll('.category-checkbox').forEach(cb => { cb.checked = true; });
+    if (typeof updateCategoryTriggerLabel === 'function') {
+      updateCategoryTriggerLabel();
     }
     const suppLabel = document.getElementById('supplierTriggerLabel');
     if (suppLabel) {
       const first = document.querySelector('#supplierOptionsList .searchable-option');
       if (first) suppLabel.textContent = first.textContent.trim();
     }
-    const catLabel = document.getElementById('categoryTriggerLabel');
-    const totalCatPreset = (typeof data !== 'undefined' && data.category_options) ? data.category_options.length : 0;
-    if (catLabel) catLabel.textContent = `Semua Kategori (${totalCatPreset})`;
     document.querySelectorAll('#supplierOptionsList .searchable-option').forEach(opt => {
       if (opt.getAttribute('data-value')) opt.classList.remove('is-selected');
       else opt.classList.add('is-selected');
-    });
-    document.querySelectorAll('#categoryOptionsList .searchable-option').forEach(opt => {
-      const optVal = opt.getAttribute('data-value') || '';
-      if (optVal === '') { opt.classList.add('is-selected'); } else { opt.classList.remove('is-selected'); }
-      const cb = opt.querySelector('.option-checkbox');
-      if (cb) cb.textContent = (optVal === '') ? '☑' : '☐';
     });
 
     if (presetId === 'dufan_weekend') {
@@ -8044,32 +8039,20 @@
       else opt.classList.remove('is-selected');
     });
 
-    const catSel = document.getElementById('filterCategory');
-    // Category: f.category disimpan sebagai comma-separated string, restore ke array
+    // Category: f.category disimpan sebagai comma-separated string, restore ke checkbox
     const fCatArr = f.category ? f.category.split(',').map(s => s.trim()).filter(Boolean) : [];
-    currentFilter.category = fCatArr;
-    if (catSel) {
-      const catOpts = catSel.querySelectorAll('option');
-      catOpts.forEach(opt => {
-        opt.selected = (opt.value === '') ? (fCatArr.length === 0) : fCatArr.includes(opt.value);
-      });
+    const catCbs = document.querySelectorAll('.category-checkbox');
+    if (fCatArr.length === 0) {
+      catCbs.forEach(cb => { cb.checked = true; });
+    } else if (fCatArr.length === 1 && fCatArr[0] === '__NONE__') {
+      catCbs.forEach(cb => { cb.checked = false; });
+    } else {
+      const fCatSet = new Set(fCatArr);
+      catCbs.forEach(cb => { cb.checked = fCatSet.has(cb.value); });
     }
-    const catLabel = document.getElementById('categoryTriggerLabel');
-    const totalCatLoad = (typeof data !== 'undefined' && data.category_options) ? data.category_options.length : 0;
-    if (catLabel) {
-      if (fCatArr.length === 0 || fCatArr.length === totalCatLoad) {
-        catLabel.textContent = `Semua Kategori (${totalCatLoad})`;
-      } else {
-        catLabel.textContent = `${fCatArr.length} Kategori Dipilih`;
-      }
+    if (typeof updateCategoryTriggerLabel === 'function') {
+      updateCategoryTriggerLabel();
     }
-    document.querySelectorAll('#categoryOptionsList .searchable-option').forEach(opt => {
-      const optVal = opt.getAttribute('data-value') || '';
-      const isSel = (optVal === '') ? (fCatArr.length === 0) : fCatArr.includes(optVal);
-      if (isSel) opt.classList.add('is-selected'); else opt.classList.remove('is-selected');
-      const cb = opt.querySelector('.option-checkbox');
-      if (cb) cb.textContent = isSel ? '☑' : '☐';
-    });
 
     const modelSel = document.getElementById('filterModelBisnis');
     if (modelSel) modelSel.value = f.modelBisnis || '';
@@ -8732,7 +8715,13 @@
     if (currentFilter.area) parts.push(`Area: ${currentFilter.area}`);
     if (currentFilter.outlet) parts.push(`Outlet: ${currentFilter.outlet}`);
     if (currentFilter.supplier) parts.push(`Supplier: ${currentFilter.supplier}`);
-    if (currentFilter.category && currentFilter.category.length > 0) parts.push(`Kategori: ${currentFilter.category.join(', ')}`);
+    if (currentFilter.category && currentFilter.category.length > 0) {
+      if (currentFilter.category.length === 1 && currentFilter.category[0] === '__NONE__') {
+        parts.push('Kategori: 0 Dipilih');
+      } else {
+        parts.push(`Kategori: ${currentFilter.category.join(', ')}`);
+      }
+    }
     if (currentFilter.modelBisnis) parts.push(`Model: ${currentFilter.modelBisnis === 'KONSINYASI' ? 'Konsinyasi' : 'Dagangan'}`);
     if (currentFilter.weekendOnly) parts.push('Khusus Akhir Pekan (Sabtu-Minggu)');
 
@@ -8743,6 +8732,9 @@
   // SEARCHABLE SELECT DROPDOWNS (Supplier & Category)
   // ----------------------------------------------------
   function toggleSearchableDropdown(type, event) {
+    if (type === 'category') {
+      return toggleCategoryDropdown(event);
+    }
     if (event) event.stopPropagation();
     const menu = document.getElementById(type + 'DropdownMenu');
     const trigger = document.getElementById(type + 'TriggerBtn');
@@ -8774,6 +8766,9 @@
     });
     if (typeof closeOutletDropdown === 'function') {
       closeOutletDropdown();
+    }
+    if (typeof closeCategoryDropdown === 'function') {
+      closeCategoryDropdown();
     }
   }
 
@@ -8836,60 +8831,15 @@
     const triggerLabel = document.getElementById(type + 'TriggerLabel');
     const list = document.getElementById(type + 'OptionsList');
 
-    // --- Kategori: multi-select toggle ---
+    // --- Kategori: backward-compat jika dipanggil dari kode lain ---
     if (type === 'category') {
-      if (!Array.isArray(currentFilter.category)) currentFilter.category = [];
-
-      // Klik "Semua Kategori" (value === '') -> kosongkan semua pilihan kategori
+      const cbs = document.querySelectorAll('.category-checkbox');
       if (value === '') {
-        currentFilter.category = [];
+        cbs.forEach(cb => { cb.checked = true; });
       } else {
-        const idx = currentFilter.category.indexOf(value);
-        if (idx >= 0) {
-          currentFilter.category.splice(idx, 1); // hapus jika sudah dipilih
-        } else {
-          currentFilter.category.push(value); // tambah jika belum dipilih
-        }
+        cbs.forEach(cb => { cb.checked = (cb.value === value); });
       }
-
-      // Sinkronkan native <select multiple>
-      if (nativeSelect) {
-        const opts = nativeSelect.querySelectorAll('option');
-        opts.forEach(opt => {
-          opt.selected = (opt.value === '') ? (currentFilter.category.length === 0) : currentFilter.category.includes(opt.value);
-        });
-      }
-
-      // Update label trigger
-      const totalCat = (typeof data !== 'undefined' && data.category_options) ? data.category_options.length : 0;
-      if (triggerLabel) {
-        if (currentFilter.category.length === 0) {
-          triggerLabel.textContent = `Semua Kategori (${totalCat})`;
-        } else if (currentFilter.category.length === totalCat) {
-          triggerLabel.textContent = `Semua Kategori (${totalCat})`;
-        } else {
-          triggerLabel.textContent = `${currentFilter.category.length} Kategori Dipilih`;
-        }
-      }
-
-      // Update is-selected class pada setiap opsi di daftar
-      if (list) {
-        const options = list.querySelectorAll('.searchable-option');
-        options.forEach(opt => {
-          const optVal = opt.getAttribute('data-value') || '';
-          const isAll = (optVal === '');
-          const selected = isAll ? (currentFilter.category.length === 0) : currentFilter.category.includes(optVal);
-          if (selected) {
-            opt.classList.add('is-selected');
-          } else {
-            opt.classList.remove('is-selected');
-          }
-          // Update checkbox visual
-          const cb = opt.querySelector('.option-checkbox');
-          if (cb) cb.textContent = selected ? '☑' : '☐';
-        });
-      }
-
+      updateCategoryTriggerLabel();
       closeAllSearchableDropdowns();
       applyFilters();
       return;
@@ -8920,59 +8870,158 @@
     applyFilters();
   }
 
-  // Pilih / kosongkan semua opsi kategori sekaligus
-  function toggleAllCategoryOptions(selectAll) {
-    const list = document.getElementById('categoryOptionsList');
-    const triggerLabel = document.getElementById('categoryTriggerLabel');
-    const nativeSelect = document.getElementById('filterCategory');
-    const totalCat = (typeof data !== 'undefined' && data.category_options) ? data.category_options.length : 0;
+  // ----------------------------------------------------
+  // MULTI-SELECT CATEGORY DROPDOWN (Persis dengan Outlet UI)
+  // ----------------------------------------------------
+  function toggleCategoryDropdown(event) {
+    if (event) event.stopPropagation();
+    const menu = document.getElementById('categoryDropdownMenu');
+    const trigger = document.getElementById('categoryTriggerBtn');
+    if (!menu) return;
 
-    if (selectAll) {
-      currentFilter.category = (data.category_options || []).map(c => c);
-    } else {
-      currentFilter.category = [];
-    }
+    const isCurrentlyOpen = menu.style.display === 'block' || menu.style.display === 'flex';
+    closeAllSearchableDropdowns();
 
-    // Sinkronkan native <select multiple>
-    if (nativeSelect) {
-      const opts = nativeSelect.querySelectorAll('option');
-      opts.forEach(opt => {
-        opt.selected = (opt.value === '') ? (!selectAll) : currentFilter.category.includes(opt.value);
-      });
-    }
-
-    // Update label trigger
-    if (triggerLabel) {
-      if (currentFilter.category.length === 0 || currentFilter.category.length === totalCat) {
-        triggerLabel.textContent = `Semua Kategori (${totalCat})`;
-      } else {
-        triggerLabel.textContent = `${currentFilter.category.length} Kategori Dipilih`;
+    if (!isCurrentlyOpen) {
+      menu.style.display = 'block';
+      if (trigger) {
+        trigger.classList.add('is-open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+      const searchInput = document.getElementById('categorySearchInput');
+      if (searchInput) {
+        setTimeout(() => searchInput.focus(), 50);
       }
     }
+  }
 
-    // Update is-selected class + checkbox visual
-    if (list) {
-      const options = list.querySelectorAll('.searchable-option');
-      options.forEach(opt => {
-        const optVal = opt.getAttribute('data-value') || '';
-        const isAll = (optVal === '');
-        const selected = isAll ? (!selectAll && currentFilter.category.length === 0) : (selectAll ? true : currentFilter.category.includes(optVal));
-        // Jika selectAll=true, semua kategori terpilih (kecuali "Semua Kategori" opsi)
-        // Jika selectAll=false, hanya "Semua Kategori" yang terpilih
-        const isSelected = selectAll ? (optVal !== '') : (optVal === '');
-        if (isSelected) {
-          opt.classList.add('is-selected');
-        } else {
-          opt.classList.remove('is-selected');
-        }
-        const cb = opt.querySelector('.option-checkbox');
-        if (cb) cb.textContent = isSelected ? '☑' : '☐';
-      });
+  function closeCategoryDropdown() {
+    const menu = document.getElementById('categoryDropdownMenu');
+    const trigger = document.getElementById('categoryTriggerBtn');
+    if (menu) menu.style.display = 'none';
+    if (trigger) {
+      trigger.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
     }
+  }
 
-    closeAllSearchableDropdowns();
+  function filterCategoryList() {
+    const input = document.getElementById('categorySearchInput');
+    const list = document.getElementById('categoryOptionsList');
+    if (!list) return;
+    const q = (input ? input.value : '').toLowerCase().trim();
+    const labels = list.querySelectorAll('.outlet-item-label');
+
+    let visibleCount = 0;
+    labels.forEach(lbl => {
+      const name = lbl.getAttribute('data-name') || '';
+      const show = (!q || name.includes(q));
+      lbl.style.display = show ? 'flex' : 'none';
+      if (show) visibleCount++;
+    });
+
+    let emptyMsg = list.querySelector('.searchable-option-empty');
+    if (visibleCount === 0) {
+      if (!emptyMsg) {
+        emptyMsg = document.createElement('div');
+        emptyMsg.className = 'searchable-option-empty';
+        emptyMsg.textContent = 'Tidak ada kategori ditemukan';
+        list.appendChild(emptyMsg);
+      } else {
+        emptyMsg.style.display = '';
+      }
+    } else if (emptyMsg) {
+      emptyMsg.style.display = 'none';
+    }
+  }
+
+  function clearCategorySearch() {
+    const input = document.getElementById('categorySearchInput');
+    if (input) {
+      input.value = '';
+      filterCategoryList();
+      input.focus();
+    }
+  }
+
+  function selectAllCategories(check) {
+    const cbs = document.querySelectorAll('.category-checkbox');
+    cbs.forEach(cb => { cb.checked = check; });
+    onCategoryCheckboxChange();
+  }
+
+  // Alias backward-compat jika dipanggil dari tempat lain
+  function toggleAllCategoryOptions(selectAll) {
+    selectAllCategories(selectAll);
+  }
+
+  function updateCategoryTriggerLabel() {
+    const cbs = document.querySelectorAll('.category-checkbox');
+    const total = cbs.length || ((typeof data !== 'undefined' && data.category_options) ? data.category_options.length : 0);
+    const triggerLabel = document.getElementById('categoryTriggerLabel');
+    const countSelected = document.getElementById('categoryCountSelected');
+    const nativeSelect = document.getElementById('filterCategory');
+
+    const selectedArr = [];
+    cbs.forEach(cb => {
+      if (cb.checked) selectedArr.push(cb.value);
+    });
+    const selectedSet = new Set(selectedArr);
+    const count = selectedArr.length;
+
+    if (count === total) {
+      if (triggerLabel) triggerLabel.textContent = `Semua Kategori (${total})`;
+      if (countSelected) countSelected.textContent = `Semua Dipilih (${total})`;
+      currentFilter.category = [];
+      if (nativeSelect) {
+        nativeSelect.querySelectorAll('option').forEach(opt => {
+          opt.selected = (opt.value === '');
+        });
+      }
+    } else if (count === 0) {
+      if (triggerLabel) triggerLabel.textContent = '0 Kategori Dipilih';
+      if (countSelected) countSelected.textContent = '0 Dipilih';
+      currentFilter.category = ['__NONE__'];
+      if (nativeSelect) {
+        nativeSelect.querySelectorAll('option').forEach(opt => {
+          opt.selected = false;
+        });
+      }
+    } else if (count === 1) {
+      const singleName = selectedArr[0];
+      if (triggerLabel) triggerLabel.textContent = singleName;
+      if (countSelected) countSelected.textContent = `1 dari ${total} Dipilih`;
+      currentFilter.category = [singleName];
+      if (nativeSelect) {
+        nativeSelect.querySelectorAll('option').forEach(opt => {
+          opt.selected = (opt.value === singleName);
+        });
+      }
+    } else {
+      if (triggerLabel) triggerLabel.textContent = `${count} Kategori Dipilih`;
+      if (countSelected) countSelected.textContent = `${count} dari ${total} Dipilih`;
+      currentFilter.category = selectedArr;
+      if (nativeSelect) {
+        nativeSelect.querySelectorAll('option').forEach(opt => {
+          opt.selected = selectedSet.has(opt.value);
+        });
+      }
+    }
+  }
+
+  function onCategoryCheckboxChange() {
+    updateCategoryTriggerLabel();
     applyFilters();
   }
+
+  function initCategoryMultiselect() {
+    const cbs = document.querySelectorAll('.category-checkbox');
+    cbs.forEach(cb => { cb.checked = true; });
+    updateCategoryTriggerLabel();
+  }
+
+  // Segera inisialisasi category multiselect agar semua kategori terpilih di awal
+  initCategoryMultiselect();
 
   // Global listeners for searchable dropdowns
   document.addEventListener('click', function(e) {
@@ -11934,7 +11983,13 @@
       parts.push({ text: `Outlet: ${currentFilter.outlet}`, cls: '' });
     }
     if (currentFilter.supplier) parts.push({ text: `Supplier: ${currentFilter.supplier}`, cls: '' });
-    if (currentFilter.category && currentFilter.category.length > 0) parts.push({ text: `Kategori: ${currentFilter.category.join(', ')}`, cls: '' });
+    if (currentFilter.category && currentFilter.category.length > 0) {
+      if (currentFilter.category.length === 1 && currentFilter.category[0] === '__NONE__') {
+        parts.push({ text: 'Kategori: 0 Dipilih', cls: '' });
+      } else {
+        parts.push({ text: `Kategori: ${currentFilter.category.join(', ')}`, cls: '' });
+      }
+    }
     if (currentFilter.modelBisnis) {
       const isKonsin = currentFilter.modelBisnis === 'KONSINYASI';
       parts.push({ text: `Model: ${isKonsin ? 'Konsinyasi' : 'Dagangan'}`, cls: isKonsin ? 'badge-model-konsin' : 'badge-model-dagang' });
@@ -11991,28 +12046,11 @@
       const firstSuppOpt = document.querySelector('#supplierOptionsList .searchable-option');
       if (firstSuppOpt) suppLabel.textContent = firstSuppOpt.textContent.trim();
     }
-    // Reset kategori multi-select
-    currentFilter.category = [];
-    const catLabel = document.getElementById('categoryTriggerLabel');
-    const totalCat = (typeof data !== 'undefined' && data.category_options) ? data.category_options.length : 0;
-    if (catLabel) {
-      catLabel.textContent = `Semua Kategori (${totalCat})`;
+    // Reset kategori multi-select (semua terpilih kembali)
+    document.querySelectorAll('.category-checkbox').forEach(cb => { cb.checked = true; });
+    if (typeof updateCategoryTriggerLabel === 'function') {
+      updateCategoryTriggerLabel();
     }
-    const catNative = document.getElementById('filterCategory');
-    if (catNative) {
-      const catOpts = catNative.querySelectorAll('option');
-      catOpts.forEach(opt => { opt.selected = (opt.value === ''); });
-    }
-    document.querySelectorAll('#categoryOptionsList .searchable-option').forEach(opt => {
-      const optVal = opt.getAttribute('data-value') || '';
-      if (optVal === '') {
-        opt.classList.add('is-selected');
-      } else {
-        opt.classList.remove('is-selected');
-      }
-      const cb = opt.querySelector('.option-checkbox');
-      if (cb) cb.textContent = (optVal === '') ? '☑' : '☐';
-    });
 
     document.querySelectorAll('#supplierOptionsList .searchable-option').forEach(opt => {
       if (opt.getAttribute('data-value')) {
@@ -12025,7 +12063,7 @@
     const sInput = document.getElementById('supplierSearchInput');
     if (sInput) { sInput.value = ''; filterSearchableList('supplier'); }
     const cInput = document.getElementById('categorySearchInput');
-    if (cInput) { cInput.value = ''; filterSearchableList('category'); }
+    if (cInput) { cInput.value = ''; if (typeof filterCategoryList === 'function') filterCategoryList(); }
 
     // Reset product sorting to Net Sales desc
     currentProductSortCol = 'sales';
@@ -13199,7 +13237,16 @@
 
   function quickFilterCategory(catName) {
     if (!catName) return;
-    selectSearchableOption('category', catName, catName);
+    const cbs = document.querySelectorAll('.category-checkbox');
+    if (cbs.length) {
+      cbs.forEach(cb => {
+        cb.checked = (cb.value === catName);
+      });
+      if (typeof updateCategoryTriggerLabel === 'function') {
+        updateCategoryTriggerLabel();
+      }
+    }
+    applyFilters();
     showFilterToast(`Filter aktif: Kategori <strong>${catName}</strong>`);
     quickJumpTo('kpiGridSection');
   }
@@ -13693,7 +13740,9 @@
         params.set('outlet', currentFilter.outlet);
       }
       if (currentFilter.supplier) params.set('supplier', currentFilter.supplier);
-      if (currentFilter.category && currentFilter.category.length > 0) params.set('category', currentFilter.category.join(','));
+      if (currentFilter.category && currentFilter.category.length > 0 && !(currentFilter.category.length === 1 && currentFilter.category[0] === '__NONE__')) {
+        params.set('category', currentFilter.category.join(','));
+      }
       if (currentFilter.modelBisnis) params.set('jenis', currentFilter.modelBisnis);
       window.location.href = '/download?' + params.toString();
       return;
