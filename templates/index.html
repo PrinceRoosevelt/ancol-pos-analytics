@@ -6692,18 +6692,28 @@
         <div>
           <div style="display:flex; align-items:center; gap:8px;">
             <h2 id="spendingChartTitle" style="font-size:15px; font-weight:700; color:var(--text); margin:0;">
-              Korelasi Spending Revenue vs Struk Transaksi (2026 vs 2025)
+              Perbandingan Basket Size / ATV (2026 vs 2025)
             </h2>
             <span class="badge-spending-mode" id="spendingModeBadge" style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; background:rgba(0,51,160,0.1); color:var(--brand); border:1px solid rgba(0,51,160,0.25);">
               Bulanan
             </span>
           </div>
           <span id="spendingChartSubtitle" style="font-size:12px; color:var(--text-muted); display:block; margin-top:3px;">
-            Analisis efektivitas spending (omzet penjualan) terhadap volume struk transaksi &amp; daya beli (ATV) per kuartal/periode
+            Tren rata-rata belanja per struk (ATV) 2026 vs 2025 — arahkan kursor untuk detail spending, struk &amp; insight
           </span>
         </div>
         
-        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+          <!-- View Mode Switcher Pills (Fokus ATV vs Gabungan) -->
+          <div class="chart-level-pills" id="spendingViewModePills" aria-label="Pilih mode tampilan grafik">
+            <button type="button" class="chart-level-pill active" id="btnSpendingModeAtv" onclick="setSpendingChartViewMode('atv')">
+              Fokus ATV
+            </button>
+            <button type="button" class="chart-level-pill" id="btnSpendingModeCombined" onclick="setSpendingChartViewMode('combined')">
+              Gabungan
+            </button>
+          </div>
+
           <!-- Level Switcher Pills -->
           <div class="chart-level-pills" id="spendingLevelPills">
             <button type="button" class="chart-level-pill" id="btnSpendingLevelQuarter" onclick="setSpendingChartLevel('quarter')">
@@ -6717,8 +6727,16 @@
             </button>
           </div>
 
-          <!-- Legend Items -->
-          <div class="chart-legend" style="gap:12px;">
+          <!-- Legend Items: Mode Fokus ATV -->
+          <div class="chart-legend" id="spendingLegendAtv" style="gap:12px;">
+            <div class="legend-item"><span class="legend-dot" style="background:#00B5E2;"></span> <span>ATV '26 (Daya Beli)</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:rgba(0,181,226,0.45); border:1px dashed #00B5E2;"></span> <span>ATV '25 (Baseline)</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span> <span>YoY Naik</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:#ef4444;"></span> <span>YoY Turun</span></div>
+          </div>
+
+          <!-- Legend Items: Mode Gabungan -->
+          <div class="chart-legend" id="spendingLegendCombined" style="gap:12px; display:none;">
             <div class="legend-item"><span class="legend-dot" style="background:var(--brand);"></span> <span>Spending '26</span></div>
             <div class="legend-item"><span class="legend-dot" style="background:#a78bfa;"></span> <span>Spending '25</span></div>
             <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span> <span>Struk '26 (Kanan)</span></div>
@@ -10691,9 +10709,16 @@
           else modeBadgeEl.textContent = focusedQ ? `Harian (${focusedQ})` : (selMonth ? `Harian (Bulan ${selMonth})` : 'Harian (Kalender)');
         }
         if (chartSubEl) {
-          if (activeLevel === 'quarter') chartSubEl.textContent = 'Ringkasan performa spending revenue vs struk per kuartal (YoY 2026 vs 2025)';
-          else if (activeLevel === 'monthly') chartSubEl.textContent = focusedQ ? `Detail spending & struk bulanan untuk ${focusedQ} (2026 vs 2025)` : 'Tren spending vs struk transaksi bulanan Jan – Des (YoY)';
-          else chartSubEl.textContent = 'Pergerakan spending omzet vs struk harian (Dual Y-Axis)';
+          const isAtvMode = (typeof spendingChartState !== 'undefined' && spendingChartState.viewMode === 'atv');
+          if (isAtvMode) {
+            if (activeLevel === 'quarter') chartSubEl.textContent = 'Perbandingan daya beli per struk (ATV) per kuartal (YoY 2026 vs 2025) — arahkan kursor untuk detail spending & struk';
+            else if (activeLevel === 'monthly') chartSubEl.textContent = focusedQ ? `Tren ATV bulanan untuk ${focusedQ} (2026 vs 2025) — arahkan kursor untuk detail spending & insight` : 'Tren rata-rata belanja per struk (ATV) bulanan Jan – Des (2026 vs 2025)';
+            else chartSubEl.textContent = 'Pergerakan harian rata-rata belanja per struk (ATV 2026 vs 2025)';
+          } else {
+            if (activeLevel === 'quarter') chartSubEl.textContent = 'Ringkasan performa spending revenue vs struk per kuartal (YoY 2026 vs 2025)';
+            else if (activeLevel === 'monthly') chartSubEl.textContent = focusedQ ? `Detail spending & struk bulanan untuk ${focusedQ} (2026 vs 2025)` : 'Tren spending vs struk transaksi bulanan Jan – Des (YoY)';
+            else chartSubEl.textContent = 'Pergerakan spending omzet vs struk harian (Dual Y-Axis)';
+          }
         }
       }
     } catch (e) {
@@ -13935,7 +13960,8 @@
   // ----------------------------------------------------
   let spendingChartState = {
     level: 'monthly',
-    focusedQuarter: null
+    focusedQuarter: null,
+    viewMode: 'atv'
   };
   let spendingChartManualOverride = false;
 
@@ -13947,12 +13973,52 @@
     if (mPill) mPill.classList.toggle('active', spendingChartState.level === 'monthly');
     if (dPill) dPill.classList.toggle('active', spendingChartState.level === 'daily');
 
+    const atvModeBtn = document.getElementById('btnSpendingModeAtv');
+    const combModeBtn = document.getElementById('btnSpendingModeCombined');
+    const isAtvMode = (spendingChartState.viewMode !== 'combined');
+    if (atvModeBtn) atvModeBtn.classList.toggle('active', isAtvMode);
+    if (combModeBtn) combModeBtn.classList.toggle('active', !isAtvMode);
+
+    const legendAtv = document.getElementById('spendingLegendAtv');
+    const legendCombined = document.getElementById('spendingLegendCombined');
+    if (legendAtv) legendAtv.style.display = isAtvMode ? 'flex' : 'none';
+    if (legendCombined) legendCombined.style.display = isAtvMode ? 'none' : 'flex';
+
+    const titleEl = document.getElementById('spendingChartTitle');
+    if (titleEl) {
+      titleEl.textContent = isAtvMode
+        ? 'Perbandingan Basket Size / ATV (2026 vs 2025)'
+        : 'Korelasi Spending Revenue vs Struk Transaksi (2026 vs 2025)';
+    }
+
     ['Q1', 'Q2', 'Q3', 'Q4'].forEach(qk => {
       const card = document.getElementById('qCard' + qk);
       if (card) {
         card.classList.toggle('active', spendingChartState.focusedQuarter === qk);
       }
     });
+  }
+
+  function setSpendingChartViewMode(mode) {
+    spendingChartState.viewMode = (mode === 'combined') ? 'combined' : 'atv';
+    updateSpendingLevelPills();
+    const chartSubEl = document.getElementById('spendingChartSubtitle');
+    if (chartSubEl) {
+      const lvl = spendingChartState.level;
+      const fq = spendingChartState.focusedQuarter;
+      if (spendingChartState.viewMode === 'atv') {
+        if (lvl === 'quarter') chartSubEl.textContent = 'Perbandingan daya beli per struk (ATV) per kuartal (YoY 2026 vs 2025) — arahkan kursor untuk detail spending & struk';
+        else if (lvl === 'monthly') chartSubEl.textContent = fq ? `Tren ATV bulanan untuk ${fq} (2026 vs 2025) — arahkan kursor untuk detail spending & insight` : 'Tren rata-rata belanja per struk (ATV) bulanan Jan – Des (2026 vs 2025)';
+        else chartSubEl.textContent = 'Pergerakan harian rata-rata belanja per struk (ATV 2026 vs 2025)';
+      } else {
+        if (lvl === 'quarter') chartSubEl.textContent = 'Ringkasan performa spending revenue vs struk per kuartal (YoY 2026 vs 2025)';
+        else if (lvl === 'monthly') chartSubEl.textContent = fq ? `Detail spending & struk bulanan untuk ${fq} (2026 vs 2025)` : 'Tren spending vs struk transaksi bulanan Jan – Des (YoY)';
+        else chartSubEl.textContent = 'Pergerakan spending omzet vs struk harian (Dual Y-Axis)';
+      }
+    }
+    if (typeof drawSpendingStrukChart === 'function') {
+      drawSpendingStrukChart();
+    }
   }
 
   function setSpendingChartLevel(lvl) {
@@ -15093,6 +15159,188 @@
       return;
     }
 
+    const isAtvOnlyMode = (typeof spendingChartState !== 'undefined' && spendingChartState.viewMode !== 'combined');
+    if (isAtvOnlyMode) {
+      // ====================================================
+      // MODE FOKUS ATV: Perbandingan Murni ATV 2026 vs 2025
+      // ====================================================
+      const allAtvVals = chartData.flatMap(x => [x.atv_2026 || 0, x.atv_2025 || 0]).filter(v => v > 0);
+      if (!allAtvVals.length) {
+        ctx.fillStyle = textColor;
+        ctx.textAlign = 'center';
+        ctx.font = '13px sans-serif';
+        ctx.fillText('Tidak ada data ATV untuk filter ini', width / 2, height / 2);
+        return;
+      }
+
+      const rawMin = Math.min(...allAtvVals);
+      const rawMax = Math.max(...allAtvVals);
+      const span = Math.max(rawMax - rawMin, 10000);
+      const pad = span * 0.22;
+      const yMin = Math.max(0, Math.floor((rawMin - pad) / 5000) * 5000);
+      let yMax = Math.ceil((rawMax + pad) / 5000) * 5000;
+      if (yMax <= yMin) yMax = yMin + 10000;
+      const yRange = yMax - yMin;
+
+      const left = 72, bottom = 40, top = 34, right = 28;
+      const plotW = width - left - right;
+      const plotH = height - top - bottom;
+      const numItems = chartData.length;
+      const slotW = plotW / Math.max(numItems, 1);
+
+      // Gridlines & Single Y-Axis (ATV in Rp)
+      ctx.font = '11px sans-serif';
+      ctx.lineWidth = 1;
+      [0, 0.25, 0.5, 0.75, 1].forEach(t => {
+        const y = top + plotH * (1 - t);
+        ctx.strokeStyle = gridColor;
+        ctx.beginPath();
+        ctx.moveTo(left, y);
+        ctx.lineTo(width - right, y);
+        ctx.stroke();
+
+        const val = yMin + yRange * t;
+        let lblStr = 'Rp 0';
+        if (val >= 1000000) lblStr = 'Rp ' + (val / 1000000).toFixed(2).replace(/\.00$/, '') + 'jt';
+        else if (val > 0) lblStr = 'Rp ' + Math.round(val / 1000) + 'rb';
+        ctx.fillStyle = textColor;
+        ctx.textAlign = 'right';
+        ctx.fillText(lblStr, left - 10, y + 4);
+      });
+
+      spendingPoints = [];
+      let peakIdx = -1, peakAtv26 = -1;
+      chartData.forEach((item, i) => {
+        const cx = left + i * slotW + slotW / 2;
+        const a26 = (item.atv_2026 !== null && item.atv_2026 !== undefined && item.atv_2026 > 0) ? item.atv_2026 : null;
+        const a25 = (item.atv_2025 && item.atv_2025 > 0) ? item.atv_2025 : null;
+        const yAtv26 = a26 !== null ? (top + plotH - ((a26 - yMin) / yRange) * plotH) : null;
+        const yAtv25 = a25 !== null ? (top + plotH - ((a25 - yMin) / yRange) * plotH) : null;
+        if (a26 !== null && a26 > peakAtv26) {
+          peakAtv26 = a26;
+          peakIdx = i;
+        }
+        spendingPoints.push({ x: cx, yAtv26, yAtv25, item });
+      });
+
+      // 1. Area Gradient Fill under ATV 2026
+      const active26Pts = spendingPoints.filter(pt => pt.yAtv26 !== null);
+      if (active26Pts.length >= 2) {
+        const grad = ctx.createLinearGradient(0, top, 0, top + plotH);
+        grad.addColorStop(0, isDark ? 'rgba(0, 181, 226, 0.28)' : 'rgba(0, 181, 226, 0.18)');
+        grad.addColorStop(1, 'rgba(0, 181, 226, 0.0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.moveTo(active26Pts[0].x, top + plotH);
+        active26Pts.forEach(pt => ctx.lineTo(pt.x, pt.yAtv26));
+        ctx.lineTo(active26Pts[active26Pts.length - 1].x, top + plotH);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // 2. ATV 2025 Baseline Line (Dashed)
+      const atv25Color = isDark ? 'rgba(148, 163, 184, 0.65)' : 'rgba(0, 181, 226, 0.55)';
+      const atv26Color = isDark ? '#38c8ee' : '#00B5E2';
+      ctx.strokeStyle = atv25Color;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      let started25 = false;
+      spendingPoints.forEach(pt => {
+        if (pt.yAtv25 !== null) {
+          if (!started25) { ctx.moveTo(pt.x, pt.yAtv25); started25 = true; }
+          else ctx.lineTo(pt.x, pt.yAtv25);
+        }
+      });
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 3. ATV 2026 Active Line (Solid)
+      ctx.strokeStyle = atv26Color;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      let started26 = false;
+      spendingPoints.forEach(pt => {
+        if (pt.yAtv26 !== null) {
+          if (!started26) { ctx.moveTo(pt.x, pt.yAtv26); started26 = true; }
+          else ctx.lineTo(pt.x, pt.yAtv26);
+        }
+      });
+      ctx.stroke();
+
+      // 4. Markers & Value Callouts
+      spendingPoints.forEach((pt, i) => {
+        if (pt.yAtv25 !== null) {
+          ctx.fillStyle = isDark ? '#0f172a' : '#ffffff';
+          ctx.strokeStyle = atv25Color;
+          ctx.lineWidth = 1.8;
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.yAtv25, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        }
+        if (pt.yAtv26 !== null) {
+          const a26 = pt.item.atv_2026;
+          const a25 = pt.item.atv_2025 || 0;
+          const dotColor = (a25 > 0) ? (a26 >= a25 ? '#10b981' : '#ef4444') : atv26Color;
+          ctx.fillStyle = dotColor;
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.yAtv26, 5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+
+          if (numItems <= 12) {
+            const valStr = a26 >= 1000000 ? ('Rp ' + (a26 / 1000000).toFixed(1) + 'jt') : ('Rp ' + Math.round(a26 / 1000) + 'rb');
+            ctx.font = 'bold 10.5px sans-serif';
+            ctx.fillStyle = isDark ? '#e2e8f0' : '#0f172a';
+            ctx.textAlign = 'center';
+            ctx.fillText(valStr, pt.x, Math.max(pt.yAtv26 - 10, top + 12));
+          }
+        }
+      });
+
+      // 5. Peak ATV Badge
+      if (peakIdx >= 0 && peakAtv26 > 0) {
+        const pt = spendingPoints[peakIdx];
+        const pinText = '★ Puncak ATV: ' + formatRp(peakAtv26);
+        ctx.font = 'bold 10px sans-serif';
+        const textW = ctx.measureText(pinText).width;
+        const bW = textW + 16, bH = 20;
+        let bX = pt.x - bW / 2;
+        if (bX < left) bX = left;
+        if (bX + bW > width - right) bX = width - right - bW;
+        const bY = Math.max((pt.yAtv26 || top) - 34, 4);
+
+        ctx.fillStyle = '#1e293b';
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(bX, bY, bW, bH, 6);
+        else ctx.rect(bX, bY, bW, bH);
+        ctx.fill();
+        ctx.strokeStyle = '#00B5E2';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.fillStyle = '#38c8ee';
+        ctx.textAlign = 'center';
+        ctx.fillText(pinText, bX + bW / 2, bY + 14);
+      }
+
+      // 6. X-Axis Labels
+      ctx.fillStyle = textColor;
+      ctx.textAlign = 'center';
+      ctx.font = '11px sans-serif';
+      chartData.forEach((item, i) => {
+        const cx = left + i * slotW + slotW / 2;
+        const lbl = item.short_label || item.label;
+        if (numItems <= 12 || i === 0 || i === numItems - 1 || i % Math.ceil(numItems / 10) === 0) {
+          ctx.fillText(lbl, cx, height - 12);
+        }
+      });
+      return;
+    }
+
     const spending26Color = isDark ? '#00B5E2' : '#0033A0';
     const spending25Color = isDark ? '#818cf8' : '#a78bfa';
     const struk26Color = '#10b981';
@@ -15434,8 +15682,66 @@
             <div class="tooltip-row"><span class="tooltip-label" style="color:#00B5E2;">● ATV 2025:</span> <span class="tooltip-val">${formatRp(atv25)} /struk</span></div>
           `;
         } else {
+          // Bangun Auto-Insight Kausalitas (Spending vs Struk vs ATV)
+          let insightBadge = '';
+          let insightBorder = '#00B5E2';
+          let insightBg = 'rgba(0, 181, 226, 0.12)';
+          let insightText = '';
+
+          if (sp25 > 0 && st25 > 0 && atv25 > 0) {
+            const isSpUp = spDiff > 0;
+            const isSpDown = spDiff < 0;
+            const isStUp = stDiff > 0;
+            const isStDown = stDiff < 0;
+            const isAtvUp = (atvDiff || 0) > 0;
+            const isAtvDown = (atvDiff || 0) < 0;
+
+            if (isSpUp && isStUp && isAtvUp) {
+              insightBadge = '🟢 Sejalan Naik (Optimal)';
+              insightBorder = '#10b981';
+              insightBg = 'rgba(16, 185, 129, 0.14)';
+              insightText = `Sejalan: Kenaikan spending (+${spGrowth}) didukung naiknya traffic struk (+${stGrowth}) & daya beli ATV (+${atvGrowth}).`;
+            } else if (isSpUp && !isStUp && isAtvUp) {
+              insightBadge = '🔵 Sejalan ATV (Basket-Driven)';
+              insightBorder = '#00B5E2';
+              insightBg = 'rgba(0, 181, 226, 0.14)';
+              insightText = `Basket-Driven: Spending naik (+${spGrowth}) meski struk ${isStDown ? 'turun (' + stGrowth + ')' : 'stagnan'}, tertolong kenaikan ATV (+${atvGrowth}).`;
+            } else if (isSpUp && isStUp && isAtvDown) {
+              insightBadge = '🟡 Divergen (Traffic-Driven)';
+              insightBorder = '#f59e0b';
+              insightBg = 'rgba(245, 158, 11, 0.14)';
+              insightText = `Traffic-Driven: Spending naik (+${spGrowth}) karena lonjakan struk (+${stGrowth}), namun ATV per struk turun (${atvGrowth}).`;
+            } else if (isSpDown && isStDown && isAtvUp) {
+              insightBadge = '🟠 Tertekan Traffic';
+              insightBorder = '#f97316';
+              insightBg = 'rgba(249, 115, 22, 0.14)';
+              insightText = `Traffic Melemah: ATV sebenarnya naik (+${atvGrowth}), namun belum menutup turunnya struk (${stGrowth}) sehingga spending turun (${spGrowth}).`;
+            } else if (isSpDown && !isStUp && isAtvDown) {
+              insightBadge = '🔴 Sejalan Turun (Double Pressure)';
+              insightBorder = '#ef4444';
+              insightBg = 'rgba(239, 68, 68, 0.14)';
+              insightText = `Sejalan Turun: Penurunan spending (${spGrowth}) sejalan dengan melemahnya struk (${stGrowth}) & turunnya ATV (${atvGrowth}).`;
+            } else {
+              insightBadge = 'ℹ️ Ringkasan YoY';
+              insightBorder = '#94a3b8';
+              insightBg = 'rgba(148, 163, 184, 0.14)';
+              insightText = `Spending ${(spDiff>=0?'+':'')}${spGrowth}, Struk ${(stDiff>=0?'+':'')}${stGrowth}, ATV ${((atvDiff||0)>=0?'+':'')}${atvGrowth}.`;
+            }
+          }
+
+          const insightHtml = insightText ? `
+            <div style="margin-top:7px; padding:6px 8px; border-left:3px solid ${insightBorder}; background:${insightBg}; border-radius:4px; font-size:11px; line-height:1.38; max-width:295px; white-space:normal;">
+              <div style="font-weight:700; margin-bottom:2px; color:#f8fafc;">${insightBadge}</div>
+              <div style="color:#cbd5e1;">${insightText}</div>
+            </div>
+          ` : '';
+
           contentHtml = `
             ${titleHtml}
+            <div class="tooltip-row"><span class="tooltip-label" style="color:#00B5E2;">● Basket Size (ATV) '26:</span> <span class="tooltip-val" style="color:#00B5E2; font-weight:700;">${formatRp(atv26)}</span></div>
+            <div class="tooltip-row"><span class="tooltip-label" style="color:rgba(0,181,226,0.75);">● Basket Size (ATV) '25:</span> <span class="tooltip-val">${formatRp(atv25)}</span></div>
+            <div class="tooltip-row"><span class="tooltip-label">YoY ATV:</span> <span class="tooltip-val" style="color:${(atvDiff||0)>=0?'#34d399':'#f87171'}; font-weight:700;">${(atvDiff||0)>=0?'+':''}${atvGrowth} (${(atvDiff||0)>=0?'+':''}${formatRp(atvDiff||0)})</span></div>
+            <div style="border-top:1px dashed rgba(255,255,255,0.15); margin:5px 0;"></div>
             <div class="tooltip-row"><span class="tooltip-label" style="color:#60a5fa;">● Spending '26:</span> <span class="tooltip-val">${formatRp(sp26)}</span></div>
             <div class="tooltip-row"><span class="tooltip-label" style="color:#c4b5fd;">● Spending '25:</span> <span class="tooltip-val">${formatRp(sp25)}</span></div>
             <div class="tooltip-row"><span class="tooltip-label">YoY Spending:</span> <span class="tooltip-val" style="color:${(spDiff||0)>=0?'#34d399':'#f87171'};">${(spDiff||0)>=0?'+':''}${spGrowth} (${(spDiff||0)>=0?'+':''}${formatRp(spDiff)})</span></div>
@@ -15443,16 +15749,13 @@
             <div class="tooltip-row"><span class="tooltip-label" style="color:#10b981;">● Struk Transaksi '26:</span> <span class="tooltip-val">${formatNum(st26)} struk</span></div>
             <div class="tooltip-row"><span class="tooltip-label" style="color:#f59e0b;">● Struk Transaksi '25:</span> <span class="tooltip-val">${formatNum(st25)} struk</span></div>
             <div class="tooltip-row"><span class="tooltip-label">YoY Struk:</span> <span class="tooltip-val" style="color:${(stDiff||0)>=0?'#34d399':'#f87171'};">${(stDiff||0)>=0?'+':''}${stGrowth} (${(stDiff||0)>=0?'+':''}${formatNum(stDiff)} tx)</span></div>
-            <div style="border-top:1px dashed rgba(255,255,255,0.15); margin:5px 0;"></div>
-            <div class="tooltip-row"><span class="tooltip-label" style="color:#00B5E2;">● Basket Size (ATV) '26:</span> <span class="tooltip-val" style="color:#00B5E2; font-weight:700;">${formatRp(atv26)}</span></div>
-            <div class="tooltip-row"><span class="tooltip-label" style="color:rgba(0,181,226,0.75);">● Basket Size (ATV) '25:</span> <span class="tooltip-val">${formatRp(atv25)}</span></div>
-            <div class="tooltip-row"><span class="tooltip-label">YoY ATV:</span> <span class="tooltip-val" style="color:${(atvDiff||0)>=0?'#34d399':'#f87171'}; font-weight:700;">${(atvDiff||0)>=0?'+':''}${atvGrowth}</span></div>
+            ${insightHtml}
           `;
         }
 
         spendingTooltip.style.display = 'block';
-        spendingTooltip.style.left = Math.min(nearest.x + 12, spendingCanvas.clientWidth - 300) + 'px';
-        spendingTooltip.style.top = Math.max(10, Math.min(y - 50, spendingCanvas.clientHeight - 200)) + 'px';
+        spendingTooltip.style.left = Math.min(nearest.x + 12, spendingCanvas.clientWidth - 320) + 'px';
+        spendingTooltip.style.top = Math.max(8, Math.min(y - 60, spendingCanvas.clientHeight - 250)) + 'px';
         spendingTooltip.innerHTML = contentHtml;
       } else {
         spendingTooltip.style.display = 'none';
