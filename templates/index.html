@@ -947,6 +947,44 @@
       text-align: center;
     }
 
+    /* Category multi-select: checkbox visual */
+    .option-checkbox {
+      font-size: 14px;
+      margin-right: 8px;
+      color: var(--brand);
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    /* Category options list: checkbox kiri, text kanan, left-aligned */
+    #categoryOptionsList .searchable-option {
+      justify-content: flex-start;
+      gap: 2px;
+    }
+
+    /* Category select-all / clear action buttons */
+    .btn-sm {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--brand);
+      cursor: pointer;
+      min-height: 28px;
+      transition: background .15s ease, border-color .15s ease;
+      touch-action: manipulation;
+    }
+    .btn-sm:hover {
+      background: rgba(0, 51, 160, 0.08);
+      border-color: var(--brand);
+    }
+    .btn-sm:active {
+      transform: scale(0.97);
+    }
+
     /* Scrolled mode adjustments */
     .filter-card.is-scrolled .searchable-trigger {
       padding: 6px 10px;
@@ -5587,7 +5625,7 @@
 
       <div class="filter-group">
         <label for="filterCategory" class="filter-label">Kategori Barang</label>
-        <select id="filterCategory" aria-label="Pilih Kategori Barang" onchange="applyFilters()" style="display:none;">
+        <select id="filterCategory" aria-label="Pilih Kategori Barang" onchange="applyFilters()" style="display:none;" multiple>
           <option value="">Semua Kategori ({{ data.category_options|length if data.category_options else 0 }})</option>
           {% for c in data.category_options %}
           <option value="{{ c }}">{{ c }}</option>
@@ -5603,12 +5641,17 @@
               <input type="text" class="searchable-search-input" id="categorySearchInput" placeholder="Ketik nama kategori..." aria-label="Cari nama kategori" oninput="filterSearchableList('category')" autocomplete="off">
               <button type="button" class="searchable-clear-btn" onclick="clearSearchableInput('category')" aria-label="Hapus pencarian kategori">✕</button>
             </div>
+            <div class="category-select-actions" style="padding:8px 12px; border-bottom:1px solid var(--border); display:flex; gap:8px;">
+              <button type="button" class="btn-sm" onclick="toggleAllCategoryOptions(true)" aria-label="Pilih semua kategori">Pilih Semua</button>
+              <button type="button" class="btn-sm" onclick="toggleAllCategoryOptions(false)" aria-label="Kosongkan semua kategori">Kosongkan</button>
+            </div>
             <div class="searchable-options-list" id="categoryOptionsList">
-              <div class="searchable-option is-selected" onclick="selectSearchableOption('category', '', 'Semua Kategori ({{ data.category_options|length if data.category_options else 0 }})')">
+              <div class="searchable-option is-selected" data-value="" onclick="selectSearchableOption('category', '', 'Semua Kategori ({{ data.category_options|length if data.category_options else 0 }})')">
                 <span>Semua Kategori ({{ data.category_options|length if data.category_options else 0 }})</span>
               </div>
               {% for c in data.category_options %}
               <div class="searchable-option" data-value="{{ c }}" onclick="selectSearchableOption('category', '{{ c|replace("'", "\\'") }}', '{{ c|replace("'", "\\'") }}')">
+                <span class="option-checkbox">☐</span>
                 <span>{{ c }}</span>
               </div>
               {% endfor %}
@@ -7760,7 +7803,7 @@
     area: "{{ selected_area or '' }}",
     outlet: "{{ selected_outlet or '' }}",
     supplier: "",
-    category: "",
+    category: [],
     modelBisnis: "{{ selected_jenis or '' }}",
     weekendOnly: false,
     activePresetId: null
@@ -7828,20 +7871,29 @@
 
     // Reset Supplier & Category
     if (suppSelect) suppSelect.value = '';
-    if (catSelect) catSelect.value = '';
+    // Reset category multi-select state
+    currentFilter.category = [];
+    if (catSelect) {
+      const catOpts = catSelect.querySelectorAll('option');
+      catOpts.forEach(opt => { opt.selected = (opt.value === ''); });
+    }
     const suppLabel = document.getElementById('supplierTriggerLabel');
     if (suppLabel) {
       const first = document.querySelector('#supplierOptionsList .searchable-option');
       if (first) suppLabel.textContent = first.textContent.trim();
     }
     const catLabel = document.getElementById('categoryTriggerLabel');
-    if (catLabel) {
-      const first = document.querySelector('#categoryOptionsList .searchable-option');
-      if (first) catLabel.textContent = first.textContent.trim();
-    }
-    document.querySelectorAll('#supplierOptionsList .searchable-option, #categoryOptionsList .searchable-option').forEach(opt => {
+    const totalCatPreset = (typeof data !== 'undefined' && data.category_options) ? data.category_options.length : 0;
+    if (catLabel) catLabel.textContent = `Semua Kategori (${totalCatPreset})`;
+    document.querySelectorAll('#supplierOptionsList .searchable-option').forEach(opt => {
       if (opt.getAttribute('data-value')) opt.classList.remove('is-selected');
       else opt.classList.add('is-selected');
+    });
+    document.querySelectorAll('#categoryOptionsList .searchable-option').forEach(opt => {
+      const optVal = opt.getAttribute('data-value') || '';
+      if (optVal === '') { opt.classList.add('is-selected'); } else { opt.classList.remove('is-selected'); }
+      const cb = opt.querySelector('.option-checkbox');
+      if (cb) cb.textContent = (optVal === '') ? '☑' : '☐';
     });
 
     if (presetId === 'dufan_weekend') {
@@ -7901,7 +7953,7 @@
   function saveCurrentFilterAsPreset() {
     const hasAny = currentFilter.month || currentFilter.startDate || currentFilter.endDate || 
                    currentFilter.area || currentFilter.outlet || currentFilter.supplier || 
-                   currentFilter.category || currentFilter.modelBisnis || currentFilter.weekendOnly;
+                   (currentFilter.category && currentFilter.category.length > 0) || currentFilter.modelBisnis || currentFilter.weekendOnly;
     if (!hasAny) {
       alert('Silakan pilih setidaknya satu filter (misal: Area, Model Bisnis, atau Tanggal) sebelum menyimpan pintasan.');
       return;
@@ -7934,7 +7986,7 @@
         area: currentFilter.area || '',
         outlet: currentFilter.outlet || '',
         supplier: currentFilter.supplier || '',
-        category: currentFilter.category || '',
+        category: (Array.isArray(currentFilter.category) ? currentFilter.category.join(',') : currentFilter.category || ''),
         modelBisnis: currentFilter.modelBisnis || '',
         weekendOnly: Boolean(currentFilter.weekendOnly)
       }
@@ -7993,14 +8045,30 @@
     });
 
     const catSel = document.getElementById('filterCategory');
-    if (catSel) catSel.value = f.category || '';
+    // Category: f.category disimpan sebagai comma-separated string, restore ke array
+    const fCatArr = f.category ? f.category.split(',').map(s => s.trim()).filter(Boolean) : [];
+    currentFilter.category = fCatArr;
+    if (catSel) {
+      const catOpts = catSel.querySelectorAll('option');
+      catOpts.forEach(opt => {
+        opt.selected = (opt.value === '') ? (fCatArr.length === 0) : fCatArr.includes(opt.value);
+      });
+    }
     const catLabel = document.getElementById('categoryTriggerLabel');
+    const totalCatLoad = (typeof data !== 'undefined' && data.category_options) ? data.category_options.length : 0;
     if (catLabel) {
-      catLabel.textContent = f.category || document.querySelector('#categoryOptionsList .searchable-option')?.textContent?.trim() || 'Semua Kategori';
+      if (fCatArr.length === 0 || fCatArr.length === totalCatLoad) {
+        catLabel.textContent = `Semua Kategori (${totalCatLoad})`;
+      } else {
+        catLabel.textContent = `${fCatArr.length} Kategori Dipilih`;
+      }
     }
     document.querySelectorAll('#categoryOptionsList .searchable-option').forEach(opt => {
-      if (opt.getAttribute('data-value') === (f.category || '')) opt.classList.add('is-selected');
-      else opt.classList.remove('is-selected');
+      const optVal = opt.getAttribute('data-value') || '';
+      const isSel = (optVal === '') ? (fCatArr.length === 0) : fCatArr.includes(optVal);
+      if (isSel) opt.classList.add('is-selected'); else opt.classList.remove('is-selected');
+      const cb = opt.querySelector('.option-checkbox');
+      if (cb) cb.textContent = isSel ? '☑' : '☐';
     });
 
     const modelSel = document.getElementById('filterModelBisnis');
@@ -8664,7 +8732,7 @@
     if (currentFilter.area) parts.push(`Area: ${currentFilter.area}`);
     if (currentFilter.outlet) parts.push(`Outlet: ${currentFilter.outlet}`);
     if (currentFilter.supplier) parts.push(`Supplier: ${currentFilter.supplier}`);
-    if (currentFilter.category) parts.push(`Kategori: ${currentFilter.category}`);
+    if (currentFilter.category && currentFilter.category.length > 0) parts.push(`Kategori: ${currentFilter.category.join(', ')}`);
     if (currentFilter.modelBisnis) parts.push(`Model: ${currentFilter.modelBisnis === 'KONSINYASI' ? 'Konsinyasi' : 'Dagangan'}`);
     if (currentFilter.weekendOnly) parts.push('Khusus Akhir Pekan (Sabtu-Minggu)');
 
@@ -8768,6 +8836,66 @@
     const triggerLabel = document.getElementById(type + 'TriggerLabel');
     const list = document.getElementById(type + 'OptionsList');
 
+    // --- Kategori: multi-select toggle ---
+    if (type === 'category') {
+      if (!Array.isArray(currentFilter.category)) currentFilter.category = [];
+
+      // Klik "Semua Kategori" (value === '') -> kosongkan semua pilihan kategori
+      if (value === '') {
+        currentFilter.category = [];
+      } else {
+        const idx = currentFilter.category.indexOf(value);
+        if (idx >= 0) {
+          currentFilter.category.splice(idx, 1); // hapus jika sudah dipilih
+        } else {
+          currentFilter.category.push(value); // tambah jika belum dipilih
+        }
+      }
+
+      // Sinkronkan native <select multiple>
+      if (nativeSelect) {
+        const opts = nativeSelect.querySelectorAll('option');
+        opts.forEach(opt => {
+          opt.selected = (opt.value === '') ? (currentFilter.category.length === 0) : currentFilter.category.includes(opt.value);
+        });
+      }
+
+      // Update label trigger
+      const totalCat = (typeof data !== 'undefined' && data.category_options) ? data.category_options.length : 0;
+      if (triggerLabel) {
+        if (currentFilter.category.length === 0) {
+          triggerLabel.textContent = `Semua Kategori (${totalCat})`;
+        } else if (currentFilter.category.length === totalCat) {
+          triggerLabel.textContent = `Semua Kategori (${totalCat})`;
+        } else {
+          triggerLabel.textContent = `${currentFilter.category.length} Kategori Dipilih`;
+        }
+      }
+
+      // Update is-selected class pada setiap opsi di daftar
+      if (list) {
+        const options = list.querySelectorAll('.searchable-option');
+        options.forEach(opt => {
+          const optVal = opt.getAttribute('data-value') || '';
+          const isAll = (optVal === '');
+          const selected = isAll ? (currentFilter.category.length === 0) : currentFilter.category.includes(optVal);
+          if (selected) {
+            opt.classList.add('is-selected');
+          } else {
+            opt.classList.remove('is-selected');
+          }
+          // Update checkbox visual
+          const cb = opt.querySelector('.option-checkbox');
+          if (cb) cb.textContent = selected ? '☑' : '☐';
+        });
+      }
+
+      closeAllSearchableDropdowns();
+      applyFilters();
+      return;
+    }
+
+    // --- Supplier dan yang lain: single-select (tidak berubah) ---
     if (nativeSelect) {
       nativeSelect.value = value;
     }
@@ -8785,6 +8913,60 @@
         } else {
           opt.classList.remove('is-selected');
         }
+      });
+    }
+
+    closeAllSearchableDropdowns();
+    applyFilters();
+  }
+
+  // Pilih / kosongkan semua opsi kategori sekaligus
+  function toggleAllCategoryOptions(selectAll) {
+    const list = document.getElementById('categoryOptionsList');
+    const triggerLabel = document.getElementById('categoryTriggerLabel');
+    const nativeSelect = document.getElementById('filterCategory');
+    const totalCat = (typeof data !== 'undefined' && data.category_options) ? data.category_options.length : 0;
+
+    if (selectAll) {
+      currentFilter.category = (data.category_options || []).map(c => c);
+    } else {
+      currentFilter.category = [];
+    }
+
+    // Sinkronkan native <select multiple>
+    if (nativeSelect) {
+      const opts = nativeSelect.querySelectorAll('option');
+      opts.forEach(opt => {
+        opt.selected = (opt.value === '') ? (!selectAll) : currentFilter.category.includes(opt.value);
+      });
+    }
+
+    // Update label trigger
+    if (triggerLabel) {
+      if (currentFilter.category.length === 0 || currentFilter.category.length === totalCat) {
+        triggerLabel.textContent = `Semua Kategori (${totalCat})`;
+      } else {
+        triggerLabel.textContent = `${currentFilter.category.length} Kategori Dipilih`;
+      }
+    }
+
+    // Update is-selected class + checkbox visual
+    if (list) {
+      const options = list.querySelectorAll('.searchable-option');
+      options.forEach(opt => {
+        const optVal = opt.getAttribute('data-value') || '';
+        const isAll = (optVal === '');
+        const selected = isAll ? (!selectAll && currentFilter.category.length === 0) : (selectAll ? true : currentFilter.category.includes(optVal));
+        // Jika selectAll=true, semua kategori terpilih (kecuali "Semua Kategori" opsi)
+        // Jika selectAll=false, hanya "Semua Kategori" yang terpilih
+        const isSelected = selectAll ? (optVal !== '') : (optVal === '');
+        if (isSelected) {
+          opt.classList.add('is-selected');
+        } else {
+          opt.classList.remove('is-selected');
+        }
+        const cb = opt.querySelector('.option-checkbox');
+        if (cb) cb.textContent = isSelected ? '☑' : '☐';
       });
     }
 
@@ -9036,10 +9218,11 @@
     const outlet = document.getElementById('filterOutlet').value;
     const supplierEl = document.getElementById('filterSupplier');
     const supplier = supplierEl ? supplierEl.value : '';
-    const categoryEl = document.getElementById('filterCategory');
-    const category = categoryEl ? categoryEl.value : '';
     const modelBisnisEl = document.getElementById('filterModelBisnis');
     const modelBisnis = modelBisnisEl ? modelBisnisEl.value : '';
+
+    // Kategori: baca dari state currentFilter (array multi-select), bukan dari DOM select
+    const category = Array.isArray(currentFilter.category) ? currentFilter.category : (currentFilter.category ? [currentFilter.category] : []);
 
     const allOutletCbs = getOutletCheckboxes();
     const totalOutletCount = allOutletCbs.length || 18;
@@ -9160,7 +9343,7 @@
 
     // Pre-evaluate Date, Product & Outlet Filter Masks on Dictionary Arrays (636 dates, 3161 products, 18 outlets)
     const _datePass = _IS_COMPACT_SALES ? new Uint8Array(_SD_DATES.length) : null;
-    const _hasProdFilter = Boolean(supplier || category || modelBisnis);
+    const _hasProdFilter = Boolean(supplier || (category && category.length > 0) || modelBisnis);
     const _prodPass = (_IS_COMPACT_SALES && _hasProdFilter) ? new Uint8Array(_SD_PRODS.length) : null;
     const _outletPass = _IS_COMPACT_SALES ? new Uint8Array(_SD_OUTLETS.length) : null;
 
@@ -9180,7 +9363,7 @@
       if (_prodPass) {
         for (let pi = 0, pLen = _SD_PRODS.length; pi < pLen; pi++) {
           if (supplier && _SD_PROD_SUPP[pi] !== supplier) continue;
-          if (category && _SD_PROD_CAT[pi] !== category) continue;
+          if (category && category.length > 0 && !category.includes(_SD_PROD_CAT[pi])) continue;
           if (modelBisnis && _SD_PROD_JENIS[pi] !== modelBisnis) continue;
           _prodPass[pi] = 1;
         }
@@ -9287,7 +9470,7 @@
         }
 
         if (supplier && lkSupplier !== supplier) continue;
-        if (category && lkCategory !== category) continue;
+        if (category && category.length > 0 && !category.includes(lkCategory)) continue;
         if (modelBisnis && lkJenis !== modelBisnis) continue;
 
         rUnit = OUTLET_TO_VISITOR_MAP[rOutlet];
@@ -9544,7 +9727,7 @@
     const kpiTargetProgEl = document.getElementById('kpiTargetProgressFill');
     const kpiTargetStatusEl = document.getElementById('kpiTargetStatus');
 
-    if (supplier || category) {
+    if (supplier || (category && category.length > 0)) {
       if (kpiTargetRevEl) kpiTargetRevEl.textContent = formatRp(targetTotal) + '*';
       if (kpiTargetAchEl) kpiTargetAchEl.textContent = '-';
       if (kpiTargetProgEl) kpiTargetProgEl.style.width = '0%';
@@ -11484,7 +11667,7 @@
       const atv26 = r.tx26 > 0 ? (r.s26 / r.tx26) : 0;
       const cap26 = r.v26 > 0 ? (r.tx26 / r.v26 * 100) : 0;
       const diffRev = r.s26 - r.s25;
-      const hasProductFilter = Boolean(currentFilter.supplier || currentFilter.category || currentFilter.modelBisnis);
+      const hasProductFilter = Boolean(currentFilter.supplier || (currentFilter.category && currentFilter.category.length > 0) || currentFilter.modelBisnis);
 
       let diagText = '';
       if (r.gRev !== null && r.gVis !== null) {
@@ -11751,7 +11934,7 @@
       parts.push({ text: `Outlet: ${currentFilter.outlet}`, cls: '' });
     }
     if (currentFilter.supplier) parts.push({ text: `Supplier: ${currentFilter.supplier}`, cls: '' });
-    if (currentFilter.category) parts.push({ text: `Kategori: ${currentFilter.category}`, cls: '' });
+    if (currentFilter.category && currentFilter.category.length > 0) parts.push({ text: `Kategori: ${currentFilter.category.join(', ')}`, cls: '' });
     if (currentFilter.modelBisnis) {
       const isKonsin = currentFilter.modelBisnis === 'KONSINYASI';
       parts.push({ text: `Model: ${isKonsin ? 'Konsinyasi' : 'Dagangan'}`, cls: isKonsin ? 'badge-model-konsin' : 'badge-model-dagang' });
@@ -11792,8 +11975,6 @@
     document.getElementById('filterOutlet').value = '';
     const suppEl = document.getElementById('filterSupplier');
     if (suppEl) suppEl.value = '';
-    const catEl = document.getElementById('filterCategory');
-    if (catEl) catEl.value = '';
     const modelEl = document.getElementById('filterModelBisnis');
     if (modelEl) modelEl.value = '';
 
@@ -11810,13 +11991,30 @@
       const firstSuppOpt = document.querySelector('#supplierOptionsList .searchable-option');
       if (firstSuppOpt) suppLabel.textContent = firstSuppOpt.textContent.trim();
     }
+    // Reset kategori multi-select
+    currentFilter.category = [];
     const catLabel = document.getElementById('categoryTriggerLabel');
+    const totalCat = (typeof data !== 'undefined' && data.category_options) ? data.category_options.length : 0;
     if (catLabel) {
-      const firstCatOpt = document.querySelector('#categoryOptionsList .searchable-option');
-      if (firstCatOpt) catLabel.textContent = firstCatOpt.textContent.trim();
+      catLabel.textContent = `Semua Kategori (${totalCat})`;
     }
+    const catNative = document.getElementById('filterCategory');
+    if (catNative) {
+      const catOpts = catNative.querySelectorAll('option');
+      catOpts.forEach(opt => { opt.selected = (opt.value === ''); });
+    }
+    document.querySelectorAll('#categoryOptionsList .searchable-option').forEach(opt => {
+      const optVal = opt.getAttribute('data-value') || '';
+      if (optVal === '') {
+        opt.classList.add('is-selected');
+      } else {
+        opt.classList.remove('is-selected');
+      }
+      const cb = opt.querySelector('.option-checkbox');
+      if (cb) cb.textContent = (optVal === '') ? '☑' : '☐';
+    });
 
-    document.querySelectorAll('#supplierOptionsList .searchable-option, #categoryOptionsList .searchable-option').forEach(opt => {
+    document.querySelectorAll('#supplierOptionsList .searchable-option').forEach(opt => {
       if (opt.getAttribute('data-value')) {
         opt.classList.remove('is-selected');
       } else {
@@ -11892,7 +12090,7 @@
     if (currentFilter.area) filterDesc += ` | Area: ${currentFilter.area}`;
     if (currentFilter.outlet) filterDesc += ` | Outlet: ${currentFilter.outlet}`;
     if (currentFilter.supplier) filterDesc += ` | Supplier: ${currentFilter.supplier}`;
-    if (currentFilter.category) filterDesc += ` | Kategori: ${currentFilter.category}`;
+    if (currentFilter.category && currentFilter.category.length > 0) filterDesc += ` | Kategori: ${currentFilter.category.join(', ')}`;
     if (currentFilter.modelBisnis) filterDesc += ` | Model: ${currentFilter.modelBisnis === 'KONSINYASI' ? 'Konsinyasi' : 'Dagangan'}`;
     if (currentFilter.weekendOnly) filterDesc += ` | Khusus Akhir Pekan (Sabtu-Minggu)`;
     if (subtitleEl) subtitleEl.textContent = `Analisis pintar otomatis untuk: ${filterDesc}`;
@@ -13426,7 +13624,7 @@
         outlet: currentFilter.outlet || null,
         area: currentFilter.area || null,
         supplier: currentFilter.supplier || null,
-        category: currentFilter.category || null,
+        category: (Array.isArray(currentFilter.category) ? currentFilter.category.join(',') : currentFilter.category || null),
         jenis: currentFilter.modelBisnis || null,
         weekend_only: Boolean(currentFilter.weekendOnly),
       };
@@ -13495,7 +13693,7 @@
         params.set('outlet', currentFilter.outlet);
       }
       if (currentFilter.supplier) params.set('supplier', currentFilter.supplier);
-      if (currentFilter.category) params.set('category', currentFilter.category);
+      if (currentFilter.category && currentFilter.category.length > 0) params.set('category', currentFilter.category.join(','));
       if (currentFilter.modelBisnis) params.set('jenis', currentFilter.modelBisnis);
       window.location.href = '/download?' + params.toString();
       return;
@@ -15423,8 +15621,8 @@
     if (currentFilter && currentFilter.supplier) {
       parts.push(`Supplier: ${currentFilter.supplier}`);
     }
-    if (currentFilter && currentFilter.category) {
-      parts.push(`Kategori: ${currentFilter.category}`);
+    if (currentFilter && currentFilter.category && currentFilter.category.length > 0) {
+      parts.push(`Kategori: ${currentFilter.category.join(', ')}`);
     }
     if (currentFilter && currentFilter.modelBisnis) {
       parts.push(`Model: ${currentFilter.modelBisnis === 'KONSINYASI' ? 'Konsinyasi' : 'Dagangan'}`);
@@ -16911,7 +17109,7 @@
           area: (currentFilter && currentFilter.area) || null,
           outlet: (currentFilter && currentFilter.outlet) || null,
           supplier: (currentFilter && currentFilter.supplier) || null,
-          category: (currentFilter && currentFilter.category) || null,
+          category: (currentFilter && currentFilter.category && (Array.isArray(currentFilter.category) ? currentFilter.category.join(',') : currentFilter.category)) || null,
           jenis: (currentFilter && currentFilter.modelBisnis) || null
         })
       });
